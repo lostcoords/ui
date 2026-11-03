@@ -35,7 +35,9 @@ class StandaloneTest < ActiveSupport::TestCase
     RUBY
     environment = {
       "BUNDLE_GEMFILE" => Lostcoords::Ui.root.join("test/standalone/Gemfile").to_s,
-      "BUNDLE_LOCKFILE" => Lostcoords::Ui.root.join("test/standalone/Gemfile.lock").to_s
+      "BUNDLE_LOCKFILE" => Lostcoords::Ui.root.join("test/standalone/Gemfile.lock").to_s,
+      "BUNDLE_FROZEN" => "true",
+      "BUNDLE_PATH" => Bundler.settings[:path] && File.expand_path(Bundler.settings[:path], Lostcoords::Ui.root)
     }
     output, error, status = Bundler.with_unbundled_env do
       Open3.capture3(environment, "bundle", "exec", "ruby", "-Ilib", "-e", script, chdir: Lostcoords::Ui.root)
