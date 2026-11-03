@@ -24,6 +24,8 @@ namespace :lostcoords do
         dir.join(name).write(html.gsub(%r{/assets/[^"'\s)]+}) { |path| ".#{undigest.(path)}" })
       end
 
+      dir.join("CNAME").write("ui.lostcoords.com\n")
+
       puts "Wrote #{pages.size} pages and #{assets.size} assets to #{dir}"
     end
   end

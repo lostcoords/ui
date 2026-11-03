@@ -123,7 +123,7 @@ if (violations.length > 0) {
   });
   console.error("");
   console.error(
-    "Stay within the browser floor (Safari 17.2, Chrome 120, Firefox 121), guard the feature with @supports, or mark a non-load-bearing enhancement with a `browser-compat: enhancement` comment."
+    "Stay within the browser floor (Safari 17.4, Chrome 122, Firefox 121), guard the feature with @supports, or mark a non-load-bearing enhancement with a `browser-compat: enhancement` comment."
   );
   process.exit(1);
 }

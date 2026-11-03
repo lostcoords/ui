@@ -23,7 +23,7 @@ module Lostcoords::Ui
     FORM_CARD_BASE =
       "form-card @container " \
       "#{CARD_SURFACE_CHROME} " \
-      "has-[.form-alert--error]:[border-color:color-mix(in_oklab,var(--berry)_30%,var(--hairline))]"
+      "has-[[data-tone=error]]:[border-color:color-mix(in_oklab,var(--berry)_30%,var(--hairline))]"
 
     FORM_CARD_PADDINGS = {
       default: "p-(--form-card-padding,1.25rem)",

@@ -7,7 +7,7 @@ Runtime stays on Propshaft and importmap; there is no JavaScript build step.
 ## Install
 
 ```ruby
-gem "lostcoords-ui"
+gem "lostcoords-ui", github: "lostcoords/ui"
 ```
 
 The engine adds its helpers to every host view, its JavaScript to the asset paths and its pins to the
@@ -15,7 +15,7 @@ importmap. Partials render as `lostcoords/ui/components/<name>`. Translations li
 
 ### Stylesheet
 
-Import the gem's single entry from the host's Tailwind input, after the host's tokens:
+Import the gem's entry from the host's Tailwind input, after the host's tokens:
 
 ```css
 @layer theme, base, layout, components, modules, utilities;
@@ -28,8 +28,15 @@ Import the gem's single entry from the host's Tailwind input, after the host's t
 
 /* tokens */
 
-@import "<gem path>/app/assets/tailwind/lostcoords/ui/ui.css";
+@import "../builds/tailwind/lostcoords_ui.css";
 ```
+
+Tailwind resolves `@import` by path, and Bundler decides where the gem lives. tailwindcss-rails' `tailwindcss:engines`
+task, which runs before every `tailwindcss:build` and `tailwindcss:watch` (and so before `assets:precompile`), writes
+`app/assets/builds/tailwind/lostcoords_ui.css` with the absolute path to the gem's
+`app/assets/tailwind/lostcoords_ui/engine.css`. `app/assets/builds` is already ignored by a Rails app's `.gitignore`
+and `.dockerignore`, so there is nothing to commit. The file does not exist until the first Tailwind build, so a lint
+that checks imports should skip it.
 
 The gem's stylesheets write into the `components` and `modules` layers, so the host declares that layer order.
 The builders use a `dark:` variant, which the host defines. `ui.css` carries its own `@source` lines, so Tailwind

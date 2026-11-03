@@ -180,7 +180,7 @@ export default class extends CatalogPicker {
 
   syncTones() {
     if (this.hasToneToggleTarget) {
-      this.toneToggleTarget.textContent = "✋" + TONE_MODIFIERS[this.tone]
+      this.toneToggleTarget.textContent = `✋${TONE_MODIFIERS[this.tone]}`
     }
     if (this.hasToneMenuTarget) {
       this.toneMenuTarget.querySelectorAll("[data-tone-index]").forEach((button) => {

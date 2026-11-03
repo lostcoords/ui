@@ -52,9 +52,9 @@ export default class extends Controller {
   }
 
   dismiss() {
-    if (this.element.classList.contains("is-leaving")) return
+    if (this.element.hasAttribute("data-leaving")) return
     if (this.timer) clearTimeout(this.timer)
-    this.element.classList.add("is-leaving")
+    this.element.dataset.leaving = ""
 
     const reduced = prefersReducedMotion()
     if (reduced) {

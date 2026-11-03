@@ -3,3 +3,9 @@
     <button type="button" class="<%= classes[:tab] %>" role="tab" aria-selected="<%= selected %>" data-action="showcase#select"><%= label %></button>
   <% end %>
 </div>
+
+<div class="<%= classes[:bar] %>" role="group" aria-label="Split method">
+  <% { "Equally" => true, "By amount" => false, "By shares" => false }.each do |label, selected| %>
+    <button type="button" class="<%= classes[:tab] %>" aria-pressed="<%= selected %>" data-action="showcase#choose"><%= label %></button>
+  <% end %>
+</div>

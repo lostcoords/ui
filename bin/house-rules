@@ -42,9 +42,12 @@ def dependency_violations
   end
 end
 
-# Tailwind's @import takes no globs, so ui.css lists every gem stylesheet and the dummy app imports ui.css.
-# A file neither imports never reaches the build.
-STYLESHEET_ENTRIES = [ DUMMY_TOKENS, "app/assets/tailwind/lostcoords/ui/ui.css" ].freeze
+# Tailwind's @import takes no globs, so ui.css lists every gem stylesheet. A host reaches it through engine.css,
+# via the file tailwindcss-rails' engines task generates before every build, so that import is not checked to exist.
+# A file nothing imports never reaches the build.
+ENGINE_STYLESHEET = "app/assets/tailwind/lostcoords_ui/engine.css"
+GENERATED_ENGINE_IMPORT = "test/dummy/app/assets/builds/tailwind/lostcoords_ui.css"
+STYLESHEET_ENTRIES = [ DUMMY_TOKENS, ENGINE_STYLESHEET, "app/assets/tailwind/lostcoords/ui/ui.css" ].freeze
 
 def stylesheet_import_violations(files)
   imports = STYLESHEET_ENTRIES.flat_map do |entry|
@@ -55,15 +58,18 @@ def stylesheet_import_violations(files)
     end
   end
 
-  missing = imports.reject { |_, path, _| File.file?(path) }.map do |entry, path, line|
+  missing = imports.reject { |_, path, _| path == GENERATED_ENGINE_IMPORT || File.file?(path) }.map do |entry, path, line|
     Violation.new(entry, line, "imports #{path}, which does not exist")
   end
 
-  unimported = (files.grep(STYLESHEET) - STYLESHEET_ENTRIES.first(1) - imports.map { |_, path, _| path }).map do |path|
+  engine_unreached = imports.none? { |entry, path, _| entry == DUMMY_TOKENS && path == GENERATED_ENGINE_IMPORT }
+  engine_violation = engine_unreached ? [ Violation.new(DUMMY_TOKENS, 1, "does not import #{GENERATED_ENGINE_IMPORT}, so the gem never builds") ] : []
+
+  unimported = (files.grep(STYLESHEET) - STYLESHEET_ENTRIES.first(2) - imports.map { |_, path, _| path }).map do |path|
     Violation.new(path, 1, "not imported by #{STYLESHEET_ENTRIES.last}, so Tailwind never builds it")
   end
 
-  missing + unimported
+  missing + engine_violation + unimported
 end
 
 def css_without_comments(source)
@@ -88,18 +94,12 @@ def authored_state_class_violations(files)
   end
 end
 
-# Controllers not yet converted, with the state classes they still toggle. Shrink as they move to attributes.
-JS_STATE_CLASS_ALLOWED = {
-  "app/javascript/lostcoords/ui/controllers/toast_controller.js" => %w[is-leaving]
-}.freeze
-
 def js_state_class_violations(files)
   files.grep(%r{\A(?:test/dummy/)?app/javascript/.*\.js\z}).flat_map do |path|
-    allowed = JS_STATE_CLASS_ALLOWED.fetch(path, [])
     File.readlines(path, chomp: true).each_with_index.flat_map do |line, index|
       line.scan(/classList\.(?:add|remove|toggle)\(\s*((?:["'][^"']*["']\s*,?\s*)+)/).flatten
         .flat_map { |args| args.scan(/["']([^"']*)["']/).flatten }
-        .grep(/\A(?:open|active|is-[\w-]+)\z/).reject { |state| allowed.include?(state) }.map do |state|
+        .grep(/\A(?:open|active|is-[\w-]+)\z/).map do |state|
           Violation.new(path, index + 1, "`#{state}` is a state class; set an aria-* or data-* attribute and style it with a variant")
         end
     end

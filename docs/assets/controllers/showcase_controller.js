@@ -60,6 +60,12 @@ export default class extends Controller {
     }
   }
 
+  choose({ currentTarget }) {
+    for (const button of currentTarget.closest("[role=group]").querySelectorAll("button")) {
+      button.setAttribute("aria-pressed", String(button === currentTarget))
+    }
+  }
+
   toast() {
     this.toastsTarget.append(this.toastTarget.content.cloneNode(true))
   }
