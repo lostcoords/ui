@@ -85,6 +85,8 @@ class MigrationTest < ActiveSupport::TestCase
   private
 
   def migrate(directory, *arguments)
-    Open3.capture3({ "PATH" => "" }, RbConfig.ruby, Lostcoords::Ui.root.join("script/migrate_helpers.rb").to_s, directory, *arguments)
+    Bundler.with_unbundled_env do
+      Open3.capture3({ "PATH" => "" }, RbConfig.ruby, Lostcoords::Ui.root.join("script/migrate_helpers.rb").to_s, directory, *arguments)
+    end
   end
 end

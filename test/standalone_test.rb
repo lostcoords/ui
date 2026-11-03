@@ -33,8 +33,13 @@ class StandaloneTest < ActiveSupport::TestCase
       abort "helper namespace" unless Lostcoords::Ui::Helpers.instance_methods.all? { |name| name.to_s.start_with?("lc_") }
       puts "standalone rendering passed"
     RUBY
-    environment = { "BUNDLE_GEMFILE" => Lostcoords::Ui.root.join("test/standalone/Gemfile").to_s }
-    output, error, status = Open3.capture3(environment, "bundle", "exec", "ruby", "-Ilib", "-e", script, chdir: Lostcoords::Ui.root)
+    environment = {
+      "BUNDLE_GEMFILE" => Lostcoords::Ui.root.join("test/standalone/Gemfile").to_s,
+      "BUNDLE_LOCKFILE" => Lostcoords::Ui.root.join("test/standalone/Gemfile.lock").to_s
+    }
+    output, error, status = Bundler.with_unbundled_env do
+      Open3.capture3(environment, "bundle", "exec", "ruby", "-Ilib", "-e", script, chdir: Lostcoords::Ui.root)
+    end
     assert status.success?, "#{output}\n#{error}"
     assert_includes output, "standalone rendering passed"
   end
