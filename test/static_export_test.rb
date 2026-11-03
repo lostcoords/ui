@@ -27,6 +27,7 @@ class StaticExportTest < ActiveSupport::TestCase
         importmap = document.at_css('script[type="importmap"]')
         if importmap
           JSON.parse(importmap.content).fetch("imports").each_value do |path|
+            assert_match(/-\h{8}\.js\z/, path)
             assert_match %r{\A\.\.?/}, path, "#{page} has an invalid importmap URL: #{path}"
             assert File.file?(File.expand_path(path, File.dirname(page))), "Missing module: #{path} in #{page}"
           end

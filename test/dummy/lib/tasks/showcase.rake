@@ -9,7 +9,6 @@ namespace :lostcoords do
         abort "#{path} answered #{session.response.status}" unless session.response.successful?
         session.response.body
       end
-      undigest = ->(path) { path.sub(/-\h{8}(?=\.\w+\z)/, "") }
 
       pages = { "index.html" => fetch.("/"), "emoji-catalog.html" => fetch.("/emoji-catalog.html") }
       Showcase.sections.each do |section|
@@ -20,7 +19,7 @@ namespace :lostcoords do
 
       FileUtils.rm_rf(dir.join("assets"))
       assets.each do |path|
-        target = dir.join(undigest.(path.delete_prefix("/")))
+        target = dir.join(path.delete_prefix("/"))
         target.dirname.mkpath
         target.binwrite(fetch.(path).sub(%r{^//# sourceMappingURL=.*\n?}, ""))
       end
@@ -29,7 +28,7 @@ namespace :lostcoords do
         target.dirname.mkpath
         depth = Pathname(name).each_filename.to_a.length.pred
         prefix = depth.zero? ? "./" : "../" * depth
-        target.write(html.gsub(%r{/assets/[^"'\s)]+}) { |path| "#{prefix}#{undigest.(path).delete_prefix("/")}" })
+        target.write(html.gsub(%r{/assets/[^"'\s)]+}) { |path| "#{prefix}#{path.delete_prefix("/")}" })
       end
 
       dir.join("CNAME").write("ui.lostcoords.com\n")
