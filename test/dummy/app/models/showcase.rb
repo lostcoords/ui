@@ -18,14 +18,14 @@ module Showcase
     confirm: "button_class(variant: :danger)"
   }.freeze
 
-  def self.matrix(specimen, builder, stage: :card, across: nil, **options)
+  def self.matrix(specimen, builder, stage: :card, across: nil, title: nil, **options)
     spread = across ? options.delete(across) : [ nil ]
     combinations(options).map do |fixed|
       calls = spread.to_h do |value|
         arguments = across ? fixed.merge(across => value) : fixed
         [ across ? value : :value, "#{builder}(#{arguments.map { |key, argument| "#{key}: #{argument.inspect}" }.join(", ")})" ]
       end
-      Example.new(specimen:, calls:, stage:)
+      Example.new(specimen:, calls:, stage:, title:)
     end
   end
 
@@ -41,10 +41,31 @@ module Showcase
     ui = Lostcoords::Ui
     [
       Section.new(:buttons, "Buttons", [
-        *matrix(:button, "button_class", across: :size, variant: ui::ButtonHelper::BUTTON_VARIANTS.keys, size: ui::ButtonHelper::BUTTON_SIZES.keys),
+        example(:button, "button_class(variant: :accent)", title: "Primary action"),
+        example(:button_options, {
+          primary: "button_class(variant: :accent)",
+          secondary: "button_class(variant: :secondary)",
+          ghost: "button_class(variant: :ghost)",
+          destructive: "button_class(variant: :danger)",
+          surface: "button_class(variant: :default)",
+          glass: "button_class(variant: :glass)"
+        }, title: "Variants"),
+        example(:button_options, {
+          small: "button_class(variant: :accent, size: :sm)",
+          default: "button_class(variant: :accent)",
+          large: "button_class(variant: :accent, size: :lg)"
+        }, title: "Sizes"),
+        example(:button_with_icon, "button_class(variant: :accent)", title: "With an icon"),
+        example(:button_loading, { button: "button_class(variant: :accent)", spinner: "spinner_class(size: :sm)" }, title: "Loading"),
+        example(:button_disabled, "button_class(variant: :accent)", title: "Disabled"),
+        example(:button_link, "button_class(variant: :secondary)", title: "As a link"),
         example(:button, "button_class(variant: :accent, block: true)", title: "Full width"),
-        example(:button_states, { button: "button_class(variant: :accent)", spinner: "spinner_class(size: :sm)" }, title: "Icons, loading and disabled"),
-        *matrix(:icon_button, "icon_button_class", across: :size, shape: ui::ButtonHelper::ICON_BUTTON_SHAPES.keys, size: ui::ButtonHelper::ICON_BUTTON_SIZES.keys)
+        example(:icon_button, {
+          square: "icon_button_class(shape: :square)", circle: "icon_button_class(shape: :circle)"
+        }, title: "Shapes"),
+        example(:icon_button, {
+          small: "icon_button_class(size: :sm)", default: "icon_button_class", large: "icon_button_class(size: :lg)"
+        }, title: "Sizes")
       ]),
       Section.new(:badges, "Badges and pills", [
         *matrix(:badge, "badge_class", across: :tone, tone: ui::BadgeHelper::BADGE_TONES.keys),
@@ -56,7 +77,8 @@ module Showcase
         example(:pill_disabled, "pill_class", title: "Disabled"),
         example(:pill_toggles, { row: "pill_row_class", pill: "pill_class" }),
         example(:pill_links, { row: "pill_row_class", pill: "pill_class(size: :sm)" }),
-        *matrix(:medallion, "icon_medallion_class", across: :tone, size: ui::BadgeHelper::ICON_MEDALLION_SIZES.keys, tone: ui::BadgeHelper::ICON_MEDALLION_TONES.keys)
+        *matrix(:medallion, "icon_medallion_class", across: :tone, title: "Tones", tone: ui::BadgeHelper::ICON_MEDALLION_TONES.keys),
+        *matrix(:medallion, "icon_medallion_class", across: :size, title: "Sizes", size: ui::BadgeHelper::ICON_MEDALLION_SIZES.keys)
       ]),
       Section.new(:avatars, "Avatars and icon badges", [
         *matrix(:avatar, "avatar_class", across: :size, size: ui::BadgeHelper::AVATAR_SIZES.keys),
@@ -68,7 +90,9 @@ module Showcase
         *matrix(:icon_badge, "icon_badge_class", across: :size, size: ui::BadgeHelper::ICON_BADGE_SIZES.keys)
       ]),
       Section.new(:cards, "Cards", [
-        *matrix(:card, "card_class", stage: :page, across: :dense, interactive: [ false, true ], dense: [ false, true ]),
+        example(:card, "card_class", stage: :page, title: "Default"),
+        example(:card, "card_class(dense: true)", stage: :page, title: "Dense"),
+        example(:card, "card_class(interactive: true)", stage: :page, title: "Interactive"),
         example(:card, "card_surface_class(extra: \"p-5\")", stage: :page),
         *matrix(:card, "form_card_class", stage: :page, padding: ui::CardHelper::FORM_CARD_PADDINGS.keys),
         example(:empty_state, { card: "form_card_class(padding: :empty)", empty: "empty_state_class" }, stage: :page)
@@ -158,7 +182,7 @@ module Showcase
   end
 
   COMPONENTS = [
-    [ :button, "Button", :buttons, %i[button button_states], "Actions and links with consistent sizing." ],
+    [ :button, "Button", :buttons, %i[button button_options button_with_icon button_loading button_disabled button_link], "Actions and links with consistent sizing." ],
     [ :icon_button, "Icon button", :buttons, %i[icon_button], "Compact actions with an accessible label." ],
     [ :badge, "Badge", :badges, %i[badge status_pill eyebrow], "Labels, counts and status." ],
     [ :pill, "Pill", :badges, %i[pill pill_disabled pill_toggles pill_links], "Filters and selections." ],

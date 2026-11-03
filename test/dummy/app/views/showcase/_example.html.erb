@@ -1,7 +1,7 @@
 <section id="<%= id %>" class="flex min-w-0 scroll-mt-28 flex-col gap-4" data-controller="example">
   <h2 class="text-lg font-semibold tracking-tight"><a href="#<%= id %>"><%= title %></a></h2>
   <div class="overflow-hidden rounded-3xl bg-paper-2">
-    <div class="flex min-h-52 flex-wrap items-center justify-center gap-4 p-6 sm:p-10 <%= 'bg-paper' if example.stage == :page %>">
+    <div class="flex min-h-40 flex-wrap items-center justify-center gap-4 p-6 sm:p-10 <%= 'bg-paper' if example.stage == :page %>">
       <%= render inline: showcase_source(example, id:) %>
     </div>
     <div class="flex min-h-12 items-center justify-between gap-4 bg-paper-2 px-4">

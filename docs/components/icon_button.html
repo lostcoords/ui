@@ -11,7 +11,7 @@
       const theme = localStorage.getItem("lostcoords-ui:theme")
       if (theme === "dark" || (!theme && matchMedia("(prefers-color-scheme: dark)").matches)) document.documentElement.dataset.theme = "dark"
     </script>
-    <link rel="stylesheet" href="../assets/tailwind-6c936c06.css" />
+    <link rel="stylesheet" href="../assets/tailwind-4b1fb047.css" />
     <script type="importmap" data-turbo-track="reload">{
   "imports": {
     "application": "../assets/application-20c5ac24.js",
@@ -185,9 +185,35 @@
       </header>
       <div class="flex flex-col gap-12">
           <section id="example-0" class="flex min-w-0 scroll-mt-28 flex-col gap-4" data-controller="example">
-  <h2 class="text-lg font-semibold tracking-tight"><a href="#example-0">Square</a></h2>
+  <h2 class="text-lg font-semibold tracking-tight"><a href="#example-0">Shapes</a></h2>
   <div class="overflow-hidden rounded-3xl bg-paper-2">
-    <div class="flex min-h-52 flex-wrap items-center justify-center gap-4 p-6 sm:p-10 ">
+    <div class="flex min-h-40 flex-wrap items-center justify-center gap-4 p-6 sm:p-10 ">
+      <button type="button" class="inline-grid place-items-center shrink-0 border-0 bg-transparent text-ink-3 cursor-pointer no-underline transition-[background-color,color,transform] duration-[140ms] ease-out hover:bg-paper-2 hover:text-ink active:scale-[0.94] disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg]:shrink-0 rounded-xl size-12 [&amp;_svg]:size-5" aria-label="More actions"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"></path>
+</svg>
+</button>
+<button type="button" class="inline-grid place-items-center shrink-0 border-0 bg-transparent text-ink-3 cursor-pointer no-underline transition-[background-color,color,transform] duration-[140ms] ease-out hover:bg-paper-2 hover:text-ink active:scale-[0.94] disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg]:shrink-0 rounded-full size-12 [&amp;_svg]:size-5" aria-label="More actions"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"></path>
+</svg>
+</button>
+    </div>
+    <div class="flex min-h-12 items-center justify-between gap-4 bg-paper-2 px-4">
+      <button type="button" class="flex min-h-11 items-center gap-2 font-mono text-xs text-ink-2 hover:text-ink" aria-expanded="false" aria-controls="example-0-code" data-action="example#toggle" data-example-target="toggle"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon size-4">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"></path>
+</svg>
+ View code</button>
+      <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2))" data-action="example#copy" data-example-target="copy" aria-label="Copy Shapes code">Copy</button>
+    </div>
+    <pre id="example-0-code" class="max-h-120 overflow-auto bg-paper-3 p-5 font-mono text-xs text-ink-2" data-example-target="code" hidden><code>&lt;button type=&quot;button&quot; class=&quot;&lt;%= icon_button_class(shape: :square) %&gt;&quot; aria-label=&quot;More actions&quot;&gt;&lt;%= heroicon &quot;ellipsis-horizontal&quot; %&gt;&lt;/button&gt;
+&lt;button type=&quot;button&quot; class=&quot;&lt;%= icon_button_class(shape: :circle) %&gt;&quot; aria-label=&quot;More actions&quot;&gt;&lt;%= heroicon &quot;ellipsis-horizontal&quot; %&gt;&lt;/button&gt;</code></pre>
+  </div>
+  <span class="sr-only" role="status" data-example-target="status"></span>
+</section>
+
+          <section id="example-1" class="flex min-w-0 scroll-mt-28 flex-col gap-4" data-controller="example">
+  <h2 class="text-lg font-semibold tracking-tight"><a href="#example-1">Sizes</a></h2>
+  <div class="overflow-hidden rounded-3xl bg-paper-2">
+    <div class="flex min-h-40 flex-wrap items-center justify-center gap-4 p-6 sm:p-10 ">
       <button type="button" class="inline-grid place-items-center shrink-0 border-0 bg-transparent text-ink-3 cursor-pointer no-underline transition-[background-color,color,transform] duration-[140ms] ease-out hover:bg-paper-2 hover:text-ink active:scale-[0.94] disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg]:shrink-0 rounded-xl size-11 [&amp;_svg]:size-4" aria-label="More actions"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon">
   <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"></path>
 </svg>
@@ -202,46 +228,15 @@
 </button>
     </div>
     <div class="flex min-h-12 items-center justify-between gap-4 bg-paper-2 px-4">
-      <button type="button" class="flex min-h-11 items-center gap-2 font-mono text-xs text-ink-2 hover:text-ink" aria-expanded="false" aria-controls="example-0-code" data-action="example#toggle" data-example-target="toggle"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon size-4">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"></path>
-</svg>
- View code</button>
-      <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2))" data-action="example#copy" data-example-target="copy" aria-label="Copy Square code">Copy</button>
-    </div>
-    <pre id="example-0-code" class="max-h-120 overflow-auto bg-paper-3 p-5 font-mono text-xs text-ink-2" data-example-target="code" hidden><code>&lt;button type=&quot;button&quot; class=&quot;&lt;%= icon_button_class(shape: :square, size: :sm) %&gt;&quot; aria-label=&quot;More actions&quot;&gt;&lt;%= heroicon &quot;ellipsis-horizontal&quot; %&gt;&lt;/button&gt;
-&lt;button type=&quot;button&quot; class=&quot;&lt;%= icon_button_class(shape: :square, size: :base) %&gt;&quot; aria-label=&quot;More actions&quot;&gt;&lt;%= heroicon &quot;ellipsis-horizontal&quot; %&gt;&lt;/button&gt;
-&lt;button type=&quot;button&quot; class=&quot;&lt;%= icon_button_class(shape: :square, size: :lg) %&gt;&quot; aria-label=&quot;More actions&quot;&gt;&lt;%= heroicon &quot;ellipsis-horizontal&quot; %&gt;&lt;/button&gt;</code></pre>
-  </div>
-  <span class="sr-only" role="status" data-example-target="status"></span>
-</section>
-
-          <section id="example-1" class="flex min-w-0 scroll-mt-28 flex-col gap-4" data-controller="example">
-  <h2 class="text-lg font-semibold tracking-tight"><a href="#example-1">Circle</a></h2>
-  <div class="overflow-hidden rounded-3xl bg-paper-2">
-    <div class="flex min-h-52 flex-wrap items-center justify-center gap-4 p-6 sm:p-10 ">
-      <button type="button" class="inline-grid place-items-center shrink-0 border-0 bg-transparent text-ink-3 cursor-pointer no-underline transition-[background-color,color,transform] duration-[140ms] ease-out hover:bg-paper-2 hover:text-ink active:scale-[0.94] disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg]:shrink-0 rounded-full size-11 [&amp;_svg]:size-4" aria-label="More actions"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"></path>
-</svg>
-</button>
-<button type="button" class="inline-grid place-items-center shrink-0 border-0 bg-transparent text-ink-3 cursor-pointer no-underline transition-[background-color,color,transform] duration-[140ms] ease-out hover:bg-paper-2 hover:text-ink active:scale-[0.94] disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg]:shrink-0 rounded-full size-12 [&amp;_svg]:size-5" aria-label="More actions"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"></path>
-</svg>
-</button>
-<button type="button" class="inline-grid place-items-center shrink-0 border-0 bg-transparent text-ink-3 cursor-pointer no-underline transition-[background-color,color,transform] duration-[140ms] ease-out hover:bg-paper-2 hover:text-ink active:scale-[0.94] disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg]:shrink-0 rounded-full size-14 [&amp;_svg]:size-6" aria-label="More actions"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"></path>
-</svg>
-</button>
-    </div>
-    <div class="flex min-h-12 items-center justify-between gap-4 bg-paper-2 px-4">
       <button type="button" class="flex min-h-11 items-center gap-2 font-mono text-xs text-ink-2 hover:text-ink" aria-expanded="false" aria-controls="example-1-code" data-action="example#toggle" data-example-target="toggle"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon size-4">
   <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"></path>
 </svg>
  View code</button>
-      <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2))" data-action="example#copy" data-example-target="copy" aria-label="Copy Circle code">Copy</button>
+      <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2))" data-action="example#copy" data-example-target="copy" aria-label="Copy Sizes code">Copy</button>
     </div>
-    <pre id="example-1-code" class="max-h-120 overflow-auto bg-paper-3 p-5 font-mono text-xs text-ink-2" data-example-target="code" hidden><code>&lt;button type=&quot;button&quot; class=&quot;&lt;%= icon_button_class(shape: :circle, size: :sm) %&gt;&quot; aria-label=&quot;More actions&quot;&gt;&lt;%= heroicon &quot;ellipsis-horizontal&quot; %&gt;&lt;/button&gt;
-&lt;button type=&quot;button&quot; class=&quot;&lt;%= icon_button_class(shape: :circle, size: :base) %&gt;&quot; aria-label=&quot;More actions&quot;&gt;&lt;%= heroicon &quot;ellipsis-horizontal&quot; %&gt;&lt;/button&gt;
-&lt;button type=&quot;button&quot; class=&quot;&lt;%= icon_button_class(shape: :circle, size: :lg) %&gt;&quot; aria-label=&quot;More actions&quot;&gt;&lt;%= heroicon &quot;ellipsis-horizontal&quot; %&gt;&lt;/button&gt;</code></pre>
+    <pre id="example-1-code" class="max-h-120 overflow-auto bg-paper-3 p-5 font-mono text-xs text-ink-2" data-example-target="code" hidden><code>&lt;button type=&quot;button&quot; class=&quot;&lt;%= icon_button_class(size: :sm) %&gt;&quot; aria-label=&quot;More actions&quot;&gt;&lt;%= heroicon &quot;ellipsis-horizontal&quot; %&gt;&lt;/button&gt;
+&lt;button type=&quot;button&quot; class=&quot;&lt;%= icon_button_class %&gt;&quot; aria-label=&quot;More actions&quot;&gt;&lt;%= heroicon &quot;ellipsis-horizontal&quot; %&gt;&lt;/button&gt;
+&lt;button type=&quot;button&quot; class=&quot;&lt;%= icon_button_class(size: :lg) %&gt;&quot; aria-label=&quot;More actions&quot;&gt;&lt;%= heroicon &quot;ellipsis-horizontal&quot; %&gt;&lt;/button&gt;</code></pre>
   </div>
   <span class="sr-only" role="status" data-example-target="status"></span>
 </section>
@@ -270,8 +265,8 @@
   <aside class="sticky top-20 hidden h-[calc(100dvh-5rem)] w-40 shrink-0 overflow-y-auto py-12 text-xs xl:block">
     <p class="pb-4 font-medium">On this page</p>
     <nav class="flex flex-col items-start gap-3 text-ink-3" aria-label="On this page">
-        <a class="hover:text-ink" href="#example-0">Square</a>
-        <a class="hover:text-ink" href="#example-1">Circle</a>
+        <a class="hover:text-ink" href="#example-0">Shapes</a>
+        <a class="hover:text-ink" href="#example-1">Sizes</a>
       <a class="pt-2 hover:text-ink" href="#api">API reference</a>
     </nav>
   </aside>

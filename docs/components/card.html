@@ -11,7 +11,7 @@
       const theme = localStorage.getItem("lostcoords-ui:theme")
       if (theme === "dark" || (!theme && matchMedia("(prefers-color-scheme: dark)").matches)) document.documentElement.dataset.theme = "dark"
     </script>
-    <link rel="stylesheet" href="../assets/tailwind-6c936c06.css" />
+    <link rel="stylesheet" href="../assets/tailwind-4b1fb047.css" />
     <script type="importmap" data-turbo-track="reload">{
   "imports": {
     "application": "../assets/application-20c5ac24.js",
@@ -187,12 +187,8 @@
           <section id="example-0" class="flex min-w-0 scroll-mt-28 flex-col gap-4" data-controller="example">
   <h2 class="text-lg font-semibold tracking-tight"><a href="#example-0">Default</a></h2>
   <div class="overflow-hidden rounded-3xl bg-paper-2">
-    <div class="flex min-h-52 flex-wrap items-center justify-center gap-4 p-6 sm:p-10 bg-paper">
+    <div class="flex min-h-40 flex-wrap items-center justify-center gap-4 p-6 sm:p-10 bg-paper">
       <div class="squircle bg-paper-2 border border-transparent rounded-3xl p-5">
-  <p class="font-semibold">Website redesign</p>
-  <p class="text-sm text-ink-3">Design system · Updated today</p>
-</div>
-<div class="squircle bg-paper-2 border border-transparent rounded-3xl py-4 px-3.5 sm:p-5">
   <p class="font-semibold">Website redesign</p>
   <p class="text-sm text-ink-3">Design system · Updated today</p>
 </div>
@@ -204,11 +200,7 @@
  View code</button>
       <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2))" data-action="example#copy" data-example-target="copy" aria-label="Copy Default code">Copy</button>
     </div>
-    <pre id="example-0-code" class="max-h-120 overflow-auto bg-paper-3 p-5 font-mono text-xs text-ink-2" data-example-target="code" hidden><code>&lt;div class=&quot;&lt;%= card_class(interactive: false, dense: false) %&gt;&quot;&gt;
-  &lt;p class=&quot;font-semibold&quot;&gt;Website redesign&lt;/p&gt;
-  &lt;p class=&quot;text-sm text-ink-3&quot;&gt;Design system · Updated today&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;&lt;%= card_class(interactive: false, dense: true) %&gt;&quot;&gt;
+    <pre id="example-0-code" class="max-h-120 overflow-auto bg-paper-3 p-5 font-mono text-xs text-ink-2" data-example-target="code" hidden><code>&lt;div class=&quot;&lt;%= card_class %&gt;&quot;&gt;
   &lt;p class=&quot;font-semibold&quot;&gt;Website redesign&lt;/p&gt;
   &lt;p class=&quot;text-sm text-ink-3&quot;&gt;Design system · Updated today&lt;/p&gt;
 &lt;/div&gt;</code></pre>
@@ -217,14 +209,10 @@
 </section>
 
           <section id="example-1" class="flex min-w-0 scroll-mt-28 flex-col gap-4" data-controller="example">
-  <h2 class="text-lg font-semibold tracking-tight"><a href="#example-1">Interactive</a></h2>
+  <h2 class="text-lg font-semibold tracking-tight"><a href="#example-1">Dense</a></h2>
   <div class="overflow-hidden rounded-3xl bg-paper-2">
-    <div class="flex min-h-52 flex-wrap items-center justify-center gap-4 p-6 sm:p-10 bg-paper">
-      <div class="squircle bg-paper-2 border border-transparent rounded-3xl p-5 transition-[transform,box-shadow] duration-[180ms] ease-out hover:-translate-y-0.5 hover:shadow-(--shadow) hover:bg-paper-3">
-  <p class="font-semibold">Website redesign</p>
-  <p class="text-sm text-ink-3">Design system · Updated today</p>
-</div>
-<div class="squircle bg-paper-2 border border-transparent rounded-3xl py-4 px-3.5 sm:p-5 transition-[transform,box-shadow] duration-[180ms] ease-out hover:-translate-y-0.5 hover:shadow-(--shadow) hover:bg-paper-3">
+    <div class="flex min-h-40 flex-wrap items-center justify-center gap-4 p-6 sm:p-10 bg-paper">
+      <div class="squircle bg-paper-2 border border-transparent rounded-3xl py-4 px-3.5 sm:p-5">
   <p class="font-semibold">Website redesign</p>
   <p class="text-sm text-ink-3">Design system · Updated today</p>
 </div>
@@ -234,13 +222,9 @@
   <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"></path>
 </svg>
  View code</button>
-      <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2))" data-action="example#copy" data-example-target="copy" aria-label="Copy Interactive code">Copy</button>
+      <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2))" data-action="example#copy" data-example-target="copy" aria-label="Copy Dense code">Copy</button>
     </div>
-    <pre id="example-1-code" class="max-h-120 overflow-auto bg-paper-3 p-5 font-mono text-xs text-ink-2" data-example-target="code" hidden><code>&lt;div class=&quot;&lt;%= card_class(interactive: true, dense: false) %&gt;&quot;&gt;
-  &lt;p class=&quot;font-semibold&quot;&gt;Website redesign&lt;/p&gt;
-  &lt;p class=&quot;text-sm text-ink-3&quot;&gt;Design system · Updated today&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;&lt;%= card_class(interactive: true, dense: true) %&gt;&quot;&gt;
+    <pre id="example-1-code" class="max-h-120 overflow-auto bg-paper-3 p-5 font-mono text-xs text-ink-2" data-example-target="code" hidden><code>&lt;div class=&quot;&lt;%= card_class(dense: true) %&gt;&quot;&gt;
   &lt;p class=&quot;font-semibold&quot;&gt;Website redesign&lt;/p&gt;
   &lt;p class=&quot;text-sm text-ink-3&quot;&gt;Design system · Updated today&lt;/p&gt;
 &lt;/div&gt;</code></pre>
@@ -249,10 +233,10 @@
 </section>
 
           <section id="example-2" class="flex min-w-0 scroll-mt-28 flex-col gap-4" data-controller="example">
-  <h2 class="text-lg font-semibold tracking-tight"><a href="#example-2">Surface</a></h2>
+  <h2 class="text-lg font-semibold tracking-tight"><a href="#example-2">Interactive</a></h2>
   <div class="overflow-hidden rounded-3xl bg-paper-2">
-    <div class="flex min-h-52 flex-wrap items-center justify-center gap-4 p-6 sm:p-10 bg-paper">
-      <div class="squircle bg-(--card-surface-bg,var(--paper-2)) [border:var(--card-surface-border,1px_solid_transparent)] rounded-(--card-surface-radius,var(--radius-3xl)) shadow-(--card-surface-shadow,none) [--field-bg:var(--paper)] [--avatar-cutout:var(--card-surface-bg,var(--paper-2))] transition-[background,border-color,box-shadow] duration-[180ms] ease-(--ease-out) p-5">
+    <div class="flex min-h-40 flex-wrap items-center justify-center gap-4 p-6 sm:p-10 bg-paper">
+      <div class="squircle bg-paper-2 border border-transparent rounded-3xl p-5 transition-[transform,box-shadow] duration-[180ms] ease-out hover:-translate-y-0.5 hover:shadow-(--shadow) hover:bg-paper-3">
   <p class="font-semibold">Website redesign</p>
   <p class="text-sm text-ink-3">Design system · Updated today</p>
 </div>
@@ -262,9 +246,9 @@
   <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"></path>
 </svg>
  View code</button>
-      <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2))" data-action="example#copy" data-example-target="copy" aria-label="Copy Surface code">Copy</button>
+      <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2))" data-action="example#copy" data-example-target="copy" aria-label="Copy Interactive code">Copy</button>
     </div>
-    <pre id="example-2-code" class="max-h-120 overflow-auto bg-paper-3 p-5 font-mono text-xs text-ink-2" data-example-target="code" hidden><code>&lt;div class=&quot;&lt;%= card_surface_class(extra: &quot;p-5&quot;) %&gt;&quot;&gt;
+    <pre id="example-2-code" class="max-h-120 overflow-auto bg-paper-3 p-5 font-mono text-xs text-ink-2" data-example-target="code" hidden><code>&lt;div class=&quot;&lt;%= card_class(interactive: true) %&gt;&quot;&gt;
   &lt;p class=&quot;font-semibold&quot;&gt;Website redesign&lt;/p&gt;
   &lt;p class=&quot;text-sm text-ink-3&quot;&gt;Design system · Updated today&lt;/p&gt;
 &lt;/div&gt;</code></pre>
@@ -273,10 +257,10 @@
 </section>
 
           <section id="example-3" class="flex min-w-0 scroll-mt-28 flex-col gap-4" data-controller="example">
-  <h2 class="text-lg font-semibold tracking-tight"><a href="#example-3">Default</a></h2>
+  <h2 class="text-lg font-semibold tracking-tight"><a href="#example-3">Surface</a></h2>
   <div class="overflow-hidden rounded-3xl bg-paper-2">
-    <div class="flex min-h-52 flex-wrap items-center justify-center gap-4 p-6 sm:p-10 bg-paper">
-      <div class="form-card @container squircle bg-(--card-surface-bg,var(--paper-2)) [border:var(--card-surface-border,1px_solid_transparent)] rounded-(--card-surface-radius,var(--radius-3xl)) shadow-(--card-surface-shadow,none) [--field-bg:var(--paper)] [--avatar-cutout:var(--card-surface-bg,var(--paper-2))] transition-[background,border-color,box-shadow] duration-[180ms] ease-(--ease-out) has-[[data-tone=error]]:[border-color:color-mix(in_oklab,var(--berry)_30%,var(--hairline))] p-(--form-card-padding,1.25rem)">
+    <div class="flex min-h-40 flex-wrap items-center justify-center gap-4 p-6 sm:p-10 bg-paper">
+      <div class="squircle bg-(--card-surface-bg,var(--paper-2)) [border:var(--card-surface-border,1px_solid_transparent)] rounded-(--card-surface-radius,var(--radius-3xl)) shadow-(--card-surface-shadow,none) [--field-bg:var(--paper)] [--avatar-cutout:var(--card-surface-bg,var(--paper-2))] transition-[background,border-color,box-shadow] duration-[180ms] ease-(--ease-out) p-5">
   <p class="font-semibold">Website redesign</p>
   <p class="text-sm text-ink-3">Design system · Updated today</p>
 </div>
@@ -286,9 +270,9 @@
   <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"></path>
 </svg>
  View code</button>
-      <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2))" data-action="example#copy" data-example-target="copy" aria-label="Copy Default code">Copy</button>
+      <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2))" data-action="example#copy" data-example-target="copy" aria-label="Copy Surface code">Copy</button>
     </div>
-    <pre id="example-3-code" class="max-h-120 overflow-auto bg-paper-3 p-5 font-mono text-xs text-ink-2" data-example-target="code" hidden><code>&lt;div class=&quot;&lt;%= form_card_class(padding: :default) %&gt;&quot;&gt;
+    <pre id="example-3-code" class="max-h-120 overflow-auto bg-paper-3 p-5 font-mono text-xs text-ink-2" data-example-target="code" hidden><code>&lt;div class=&quot;&lt;%= card_surface_class(extra: &quot;p-5&quot;) %&gt;&quot;&gt;
   &lt;p class=&quot;font-semibold&quot;&gt;Website redesign&lt;/p&gt;
   &lt;p class=&quot;text-sm text-ink-3&quot;&gt;Design system · Updated today&lt;/p&gt;
 &lt;/div&gt;</code></pre>
@@ -297,10 +281,10 @@
 </section>
 
           <section id="example-4" class="flex min-w-0 scroll-mt-28 flex-col gap-4" data-controller="example">
-  <h2 class="text-lg font-semibold tracking-tight"><a href="#example-4">Compact</a></h2>
+  <h2 class="text-lg font-semibold tracking-tight"><a href="#example-4">Default</a></h2>
   <div class="overflow-hidden rounded-3xl bg-paper-2">
-    <div class="flex min-h-52 flex-wrap items-center justify-center gap-4 p-6 sm:p-10 bg-paper">
-      <div class="form-card @container squircle bg-(--card-surface-bg,var(--paper-2)) [border:var(--card-surface-border,1px_solid_transparent)] rounded-(--card-surface-radius,var(--radius-3xl)) shadow-(--card-surface-shadow,none) [--field-bg:var(--paper)] [--avatar-cutout:var(--card-surface-bg,var(--paper-2))] transition-[background,border-color,box-shadow] duration-[180ms] ease-(--ease-out) has-[[data-tone=error]]:[border-color:color-mix(in_oklab,var(--berry)_30%,var(--hairline))] p-(--form-card-padding,1rem_14px) sm:p-(--form-card-padding,20px)">
+    <div class="flex min-h-40 flex-wrap items-center justify-center gap-4 p-6 sm:p-10 bg-paper">
+      <div class="form-card @container squircle bg-(--card-surface-bg,var(--paper-2)) [border:var(--card-surface-border,1px_solid_transparent)] rounded-(--card-surface-radius,var(--radius-3xl)) shadow-(--card-surface-shadow,none) [--field-bg:var(--paper)] [--avatar-cutout:var(--card-surface-bg,var(--paper-2))] transition-[background,border-color,box-shadow] duration-[180ms] ease-(--ease-out) has-[[data-tone=error]]:[border-color:color-mix(in_oklab,var(--berry)_30%,var(--hairline))] p-(--form-card-padding,1.25rem)">
   <p class="font-semibold">Website redesign</p>
   <p class="text-sm text-ink-3">Design system · Updated today</p>
 </div>
@@ -310,9 +294,9 @@
   <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"></path>
 </svg>
  View code</button>
-      <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2))" data-action="example#copy" data-example-target="copy" aria-label="Copy Compact code">Copy</button>
+      <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2))" data-action="example#copy" data-example-target="copy" aria-label="Copy Default code">Copy</button>
     </div>
-    <pre id="example-4-code" class="max-h-120 overflow-auto bg-paper-3 p-5 font-mono text-xs text-ink-2" data-example-target="code" hidden><code>&lt;div class=&quot;&lt;%= form_card_class(padding: :compact) %&gt;&quot;&gt;
+    <pre id="example-4-code" class="max-h-120 overflow-auto bg-paper-3 p-5 font-mono text-xs text-ink-2" data-example-target="code" hidden><code>&lt;div class=&quot;&lt;%= form_card_class(padding: :default) %&gt;&quot;&gt;
   &lt;p class=&quot;font-semibold&quot;&gt;Website redesign&lt;/p&gt;
   &lt;p class=&quot;text-sm text-ink-3&quot;&gt;Design system · Updated today&lt;/p&gt;
 &lt;/div&gt;</code></pre>
@@ -321,10 +305,10 @@
 </section>
 
           <section id="example-5" class="flex min-w-0 scroll-mt-28 flex-col gap-4" data-controller="example">
-  <h2 class="text-lg font-semibold tracking-tight"><a href="#example-5">Snug</a></h2>
+  <h2 class="text-lg font-semibold tracking-tight"><a href="#example-5">Compact</a></h2>
   <div class="overflow-hidden rounded-3xl bg-paper-2">
-    <div class="flex min-h-52 flex-wrap items-center justify-center gap-4 p-6 sm:p-10 bg-paper">
-      <div class="form-card @container squircle bg-(--card-surface-bg,var(--paper-2)) [border:var(--card-surface-border,1px_solid_transparent)] rounded-(--card-surface-radius,var(--radius-3xl)) shadow-(--card-surface-shadow,none) [--field-bg:var(--paper)] [--avatar-cutout:var(--card-surface-bg,var(--paper-2))] transition-[background,border-color,box-shadow] duration-[180ms] ease-(--ease-out) has-[[data-tone=error]]:[border-color:color-mix(in_oklab,var(--berry)_30%,var(--hairline))] p-(--form-card-padding,1rem_14px) sm:p-(--form-card-padding,1rem_20px)">
+    <div class="flex min-h-40 flex-wrap items-center justify-center gap-4 p-6 sm:p-10 bg-paper">
+      <div class="form-card @container squircle bg-(--card-surface-bg,var(--paper-2)) [border:var(--card-surface-border,1px_solid_transparent)] rounded-(--card-surface-radius,var(--radius-3xl)) shadow-(--card-surface-shadow,none) [--field-bg:var(--paper)] [--avatar-cutout:var(--card-surface-bg,var(--paper-2))] transition-[background,border-color,box-shadow] duration-[180ms] ease-(--ease-out) has-[[data-tone=error]]:[border-color:color-mix(in_oklab,var(--berry)_30%,var(--hairline))] p-(--form-card-padding,1rem_14px) sm:p-(--form-card-padding,20px)">
   <p class="font-semibold">Website redesign</p>
   <p class="text-sm text-ink-3">Design system · Updated today</p>
 </div>
@@ -334,9 +318,9 @@
   <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"></path>
 </svg>
  View code</button>
-      <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2))" data-action="example#copy" data-example-target="copy" aria-label="Copy Snug code">Copy</button>
+      <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2))" data-action="example#copy" data-example-target="copy" aria-label="Copy Compact code">Copy</button>
     </div>
-    <pre id="example-5-code" class="max-h-120 overflow-auto bg-paper-3 p-5 font-mono text-xs text-ink-2" data-example-target="code" hidden><code>&lt;div class=&quot;&lt;%= form_card_class(padding: :snug) %&gt;&quot;&gt;
+    <pre id="example-5-code" class="max-h-120 overflow-auto bg-paper-3 p-5 font-mono text-xs text-ink-2" data-example-target="code" hidden><code>&lt;div class=&quot;&lt;%= form_card_class(padding: :compact) %&gt;&quot;&gt;
   &lt;p class=&quot;font-semibold&quot;&gt;Website redesign&lt;/p&gt;
   &lt;p class=&quot;text-sm text-ink-3&quot;&gt;Design system · Updated today&lt;/p&gt;
 &lt;/div&gt;</code></pre>
@@ -345,10 +329,10 @@
 </section>
 
           <section id="example-6" class="flex min-w-0 scroll-mt-28 flex-col gap-4" data-controller="example">
-  <h2 class="text-lg font-semibold tracking-tight"><a href="#example-6">Empty</a></h2>
+  <h2 class="text-lg font-semibold tracking-tight"><a href="#example-6">Snug</a></h2>
   <div class="overflow-hidden rounded-3xl bg-paper-2">
-    <div class="flex min-h-52 flex-wrap items-center justify-center gap-4 p-6 sm:p-10 bg-paper">
-      <div class="form-card @container squircle bg-(--card-surface-bg,var(--paper-2)) [border:var(--card-surface-border,1px_solid_transparent)] rounded-(--card-surface-radius,var(--radius-3xl)) shadow-(--card-surface-shadow,none) [--field-bg:var(--paper)] [--avatar-cutout:var(--card-surface-bg,var(--paper-2))] transition-[background,border-color,box-shadow] duration-[180ms] ease-(--ease-out) has-[[data-tone=error]]:[border-color:color-mix(in_oklab,var(--berry)_30%,var(--hairline))] p-(--form-card-padding,2rem_1.25rem) text-center text-ink-3">
+    <div class="flex min-h-40 flex-wrap items-center justify-center gap-4 p-6 sm:p-10 bg-paper">
+      <div class="form-card @container squircle bg-(--card-surface-bg,var(--paper-2)) [border:var(--card-surface-border,1px_solid_transparent)] rounded-(--card-surface-radius,var(--radius-3xl)) shadow-(--card-surface-shadow,none) [--field-bg:var(--paper)] [--avatar-cutout:var(--card-surface-bg,var(--paper-2))] transition-[background,border-color,box-shadow] duration-[180ms] ease-(--ease-out) has-[[data-tone=error]]:[border-color:color-mix(in_oklab,var(--berry)_30%,var(--hairline))] p-(--form-card-padding,1rem_14px) sm:p-(--form-card-padding,1rem_20px)">
   <p class="font-semibold">Website redesign</p>
   <p class="text-sm text-ink-3">Design system · Updated today</p>
 </div>
@@ -358,9 +342,33 @@
   <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"></path>
 </svg>
  View code</button>
+      <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2))" data-action="example#copy" data-example-target="copy" aria-label="Copy Snug code">Copy</button>
+    </div>
+    <pre id="example-6-code" class="max-h-120 overflow-auto bg-paper-3 p-5 font-mono text-xs text-ink-2" data-example-target="code" hidden><code>&lt;div class=&quot;&lt;%= form_card_class(padding: :snug) %&gt;&quot;&gt;
+  &lt;p class=&quot;font-semibold&quot;&gt;Website redesign&lt;/p&gt;
+  &lt;p class=&quot;text-sm text-ink-3&quot;&gt;Design system · Updated today&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+  <span class="sr-only" role="status" data-example-target="status"></span>
+</section>
+
+          <section id="example-7" class="flex min-w-0 scroll-mt-28 flex-col gap-4" data-controller="example">
+  <h2 class="text-lg font-semibold tracking-tight"><a href="#example-7">Empty</a></h2>
+  <div class="overflow-hidden rounded-3xl bg-paper-2">
+    <div class="flex min-h-40 flex-wrap items-center justify-center gap-4 p-6 sm:p-10 bg-paper">
+      <div class="form-card @container squircle bg-(--card-surface-bg,var(--paper-2)) [border:var(--card-surface-border,1px_solid_transparent)] rounded-(--card-surface-radius,var(--radius-3xl)) shadow-(--card-surface-shadow,none) [--field-bg:var(--paper)] [--avatar-cutout:var(--card-surface-bg,var(--paper-2))] transition-[background,border-color,box-shadow] duration-[180ms] ease-(--ease-out) has-[[data-tone=error]]:[border-color:color-mix(in_oklab,var(--berry)_30%,var(--hairline))] p-(--form-card-padding,2rem_1.25rem) text-center text-ink-3">
+  <p class="font-semibold">Website redesign</p>
+  <p class="text-sm text-ink-3">Design system · Updated today</p>
+</div>
+    </div>
+    <div class="flex min-h-12 items-center justify-between gap-4 bg-paper-2 px-4">
+      <button type="button" class="flex min-h-11 items-center gap-2 font-mono text-xs text-ink-2 hover:text-ink" aria-expanded="false" aria-controls="example-7-code" data-action="example#toggle" data-example-target="toggle"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon size-4">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"></path>
+</svg>
+ View code</button>
       <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2))" data-action="example#copy" data-example-target="copy" aria-label="Copy Empty code">Copy</button>
     </div>
-    <pre id="example-6-code" class="max-h-120 overflow-auto bg-paper-3 p-5 font-mono text-xs text-ink-2" data-example-target="code" hidden><code>&lt;div class=&quot;&lt;%= form_card_class(padding: :empty) %&gt;&quot;&gt;
+    <pre id="example-7-code" class="max-h-120 overflow-auto bg-paper-3 p-5 font-mono text-xs text-ink-2" data-example-target="code" hidden><code>&lt;div class=&quot;&lt;%= form_card_class(padding: :empty) %&gt;&quot;&gt;
   &lt;p class=&quot;font-semibold&quot;&gt;Website redesign&lt;/p&gt;
   &lt;p class=&quot;text-sm text-ink-3&quot;&gt;Design system · Updated today&lt;/p&gt;
 &lt;/div&gt;</code></pre>
@@ -418,12 +426,13 @@
     <p class="pb-4 font-medium">On this page</p>
     <nav class="flex flex-col items-start gap-3 text-ink-3" aria-label="On this page">
         <a class="hover:text-ink" href="#example-0">Default</a>
-        <a class="hover:text-ink" href="#example-1">Interactive</a>
-        <a class="hover:text-ink" href="#example-2">Surface</a>
-        <a class="hover:text-ink" href="#example-3">Default</a>
-        <a class="hover:text-ink" href="#example-4">Compact</a>
-        <a class="hover:text-ink" href="#example-5">Snug</a>
-        <a class="hover:text-ink" href="#example-6">Empty</a>
+        <a class="hover:text-ink" href="#example-1">Dense</a>
+        <a class="hover:text-ink" href="#example-2">Interactive</a>
+        <a class="hover:text-ink" href="#example-3">Surface</a>
+        <a class="hover:text-ink" href="#example-4">Default</a>
+        <a class="hover:text-ink" href="#example-5">Compact</a>
+        <a class="hover:text-ink" href="#example-6">Snug</a>
+        <a class="hover:text-ink" href="#example-7">Empty</a>
       <a class="pt-2 hover:text-ink" href="#api">API reference</a>
     </nav>
   </aside>
