@@ -53,17 +53,17 @@ module Lostcoords::Ui
     AVATAR_STACK_BASE =
       "avatar-stack relative inline-flex items-center min-w-0 [&_.avatar]:outline-none " \
       "[--avatar-size:--spacing(8)] [--avatar-border:--spacing(0.5)] [--avatar-ring-gap:1] " \
-      "[--transaction-avatar-overlap:--spacing(1.5)]"
+      "[--avatar-stack-overlap:--spacing(1.5)]"
 
     AVATAR_STACK_COMPACT =
       "[--avatar-size:--spacing(4.5)] [--avatar-font-size:0.4375rem] [--avatar-border:0px] [--avatar-ring-gap:2] " \
       "@sm:[--avatar-size:--spacing(5.5)] @sm:[--avatar-font-size:0.5rem] " \
-      "[--transaction-avatar-overlap:--spacing(1.25)] [--avatar-stack-padding:0px]"
+      "[--avatar-stack-overlap:--spacing(1.25)] [--avatar-stack-padding:0px]"
 
     # dynamic_avatar_stack_controller marks the leading visible avatar with data-first as it narrows the stack.
     AVATAR_STACK_ROW =
       "avatar-stack__row flex shrink-0 p-[var(--avatar-stack-padding,--spacing(1))] " \
-      "[&>.avatar]:-ms-(--transaction-avatar-overlap) [&>.avatar:first-child]:ms-0 [&>.avatar[data-first]]:ms-0"
+      "[&>.avatar]:-ms-(--avatar-stack-overlap) [&>.avatar:first-child]:ms-0 [&>.avatar[data-first]]:ms-0"
 
     EYEBROW_BASE =
       "font-mono uppercase tracking-widest text-xs font-medium text-ink-3"
@@ -95,9 +95,13 @@ module Lostcoords::Ui
       "font-body text-ink-2 whitespace-nowrap cursor-pointer no-underline " \
       "transition-[background-color,border-color,color,transform] duration-[150ms] ease-out " \
       "hover:text-ink active:scale-[0.96] " \
-      "[&:is(.active,:has(:checked))]:[background:var(--sky-soft)] [&:is(.active,:has(:checked))]:border-accent " \
-      "[&:is(.active,:has(:checked))]:text-accent [&:is(.active,:has(:checked))]:shadow-none " \
+      "aria-pressed:[background:var(--sky-soft)] aria-pressed:border-accent aria-pressed:text-accent aria-pressed:shadow-none " \
+      "aria-[current]:not-aria-[current=false]:[background:var(--sky-soft)] aria-[current]:not-aria-[current=false]:border-accent " \
+      "aria-[current]:not-aria-[current=false]:text-accent aria-[current]:not-aria-[current=false]:shadow-none " \
+      "has-checked:[background:var(--sky-soft)] has-checked:border-accent has-checked:text-accent has-checked:shadow-none " \
       "[&_svg]:size-[1.1em] [&_svg]:shrink-0"
+
+    PILL_ACTIVE = "bg-sky-soft border-accent text-accent hover:text-accent shadow-none"
 
     PILL_GHOST = "border-dashed border-ink-3/40 [background:none] shadow-none text-ink-3"
 
@@ -146,7 +150,7 @@ module Lostcoords::Ui
         PILL_BASE,
         ButtonHelper::BUTTON_SIZES.fetch(size.to_sym, ButtonHelper::BUTTON_SIZES[:base]),
         (PILL_GHOST if ghost),
-        ("active" if active),
+        (PILL_ACTIVE if active),
         extra
       )
     end

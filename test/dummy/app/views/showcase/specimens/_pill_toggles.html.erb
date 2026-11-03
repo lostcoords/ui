@@ -1,0 +1,5 @@
+<div class="<%= classes[:row] %>" role="group" aria-label="Categories">
+  <% { "Food" => true, "Travel" => false, "Rent" => false }.each do |label, pressed| %>
+    <button type="button" class="<%= classes[:pill] %>" aria-pressed="<%= pressed %>" data-action="showcase#press"><%= label %></button>
+  <% end %>
+</div>

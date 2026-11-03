@@ -1,0 +1,8 @@
+<div class="flex flex-col items-center gap-3">
+  <div class="<%= classes[:toast] %>" role="status"><%= classes[:icon] %><span>Expense saved</span></div>
+  <button type="button" class="<%= classes[:trigger] %>" data-action="showcase#toast">Show a live toast</button>
+  <template data-showcase-target="toast">
+    <div class="<%= classes[:toast] %> pointer-events-auto" role="status" data-controller="toast"><%= classes[:icon] %><span>Expense saved</span></div>
+  </template>
+  <div class="pointer-events-none fixed inset-x-0 bottom-6 z-nav-popover flex justify-center" aria-live="polite" data-showcase-target="toasts"></div>
+</div>

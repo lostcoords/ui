@@ -1,0 +1,17 @@
+<section id="tokens" class="flex scroll-mt-24 flex-col gap-3">
+  <div class="flex flex-col gap-2">
+    <h2 class="text-xl font-semibold">Tokens</h2>
+    <p class="text-sm text-ink-3">The <%= Lostcoords::Ui::TOKENS.size %> properties in <code class="font-mono">Lostcoords::Ui::TOKENS</code>, with the values this stylesheet gives them.</p>
+  </div>
+  <ul class="<%= card_class(extra: "grid grid-cols-[repeat(auto-fill,minmax(min(100%,17rem),1fr))] gap-x-4 gap-y-3") %>">
+    <% Lostcoords::Ui::TOKENS.each do |token| %>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="<%= token %>">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink"><%= token %></code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+    <% end %>
+  </ul>
+</section>

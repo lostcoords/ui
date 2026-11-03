@@ -1,0 +1,9 @@
+<details class="<%= classes[:value] %>" data-controller="disclosure" data-action="click->disclosure#toggle">
+  <summary class="flex cursor-pointer list-none items-center justify-between gap-3 font-semibold">
+    <span>How the split works</span>
+    <%= heroicon "chevron-down", variant: :mini, options: { class: "size-5 text-ink-3", "aria-hidden": "true" } %>
+  </summary>
+  <div class="pt-3 text-sm text-ink-2">
+    <p>Each expense divides by the shares you set. Balances net out across the group, so settling takes the fewest transfers.</p>
+  </div>
+</details>

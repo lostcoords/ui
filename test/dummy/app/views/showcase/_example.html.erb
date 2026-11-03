@@ -1,0 +1,11 @@
+<% values = showcase_evaluate(example) %>
+<figure class="flex min-w-0 flex-col gap-2">
+  <div class="<%= example.stage == :page ? "flex min-h-28 flex-col justify-center gap-3" : "flex min-h-28 flex-wrap items-center justify-center gap-3 rounded-3xl bg-paper-2 p-5" %>">
+    <%= render "showcase/specimens/#{example.specimen}", classes: values, id: %>
+  </div>
+  <figcaption class="flex flex-col gap-0.5">
+    <% example.calls.each_value do |call| %>
+      <code class="font-mono text-xs break-all text-ink-2"><%= call %></code>
+    <% end %>
+  </figcaption>
+</figure>

@@ -1,0 +1,7 @@
+<div class="relative" data-controller="row-menu">
+  <button type="button" class="<%= classes[:trigger] %>" aria-haspopup="menu" aria-expanded="false"
+    data-row-menu-target="trigger" data-action="row-menu#toggle">Sort<%= heroicon "chevron-down", variant: :mini, options: { "aria-hidden": "true" } %></button>
+  <div class="<%= classes[:popover] %>" role="menu" data-row-menu-target="popover">
+    <%= render "showcase/specimens/menu_options", classes: %>
+  </div>
+</div>

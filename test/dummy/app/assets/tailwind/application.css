@@ -5,6 +5,7 @@
 @import "tailwindcss/utilities.css" layer(utilities);
 
 @source "../../views/**/*.erb";
+@source "../../models/**/*.rb";
 
 @theme inline {
   --color-paper: var(--paper);

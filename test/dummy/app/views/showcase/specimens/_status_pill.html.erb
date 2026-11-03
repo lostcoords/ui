@@ -1,0 +1,3 @@
+<% classes.each do |tone, value| %>
+  <span class="<%= value %>"><%= tone == :danger ? "Owes" : "Settled" %></span>
+<% end %>

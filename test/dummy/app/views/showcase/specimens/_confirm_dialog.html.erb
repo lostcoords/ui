@@ -1,0 +1,6 @@
+<div data-controller="confirm-dialog">
+  <button type="button" class="<%= classes[:trigger] %>" data-action="confirm-dialog#open">Open confirm dialog</button>
+  <dialog class="<%= classes[:dialog] %>" aria-labelledby="<%= id %>-title" data-confirm-dialog-target="dialog">
+    <%= render "showcase/specimens/dialog_body", classes:, id:, title: "Delete this expense?", body: "It leaves every balance in the group.", confirm: "Delete", close: "confirm-dialog#close" %>
+  </dialog>
+</div>

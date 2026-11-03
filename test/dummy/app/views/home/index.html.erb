@@ -1,3 +1,41 @@
-<h1>lostcoords-ui</h1>
-<p>The component showcase lands here.</p>
-<button type="button" class="<%= button_class(variant: :accent) %>">Accent button</button>
+<header class="sticky top-3 z-nav-popover mx-auto mt-3 w-[calc(100%-2rem)] max-w-6xl [html[data-frame]_&]:hidden">
+  <div class="<%= glass_class(shape: :bar, extra: "flex flex-wrap items-center gap-3 px-4 py-2") %>">
+    <p class="font-semibold">lostcoords-ui</p>
+    <div class="<%= pill_row_class(extra: "ms-auto") %>" role="group" aria-label="Theme">
+      <% %w[light dark].each do |theme| %>
+        <button type="button" class="<%= pill_class(size: :sm) %>" aria-pressed="<%= theme == "light" %>"
+          data-showcase-target="theme" data-showcase-theme-param="<%= theme %>" data-action="showcase#setTheme"><%= theme.capitalize %></button>
+      <% end %>
+    </div>
+    <div class="<%= pill_row_class(extra: "max-sm:hidden") %>" role="group" aria-label="Width">
+      <% %w[desktop phone].each do |width| %>
+        <button type="button" class="<%= pill_class(size: :sm) %>" aria-pressed="<%= width == "desktop" %>"
+          data-showcase-target="width" data-showcase-width-param="<%= width %>" data-action="showcase#setWidth"><%= width.capitalize %></button>
+      <% end %>
+    </div>
+  </div>
+</header>
+
+<main class="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-8 sm:px-6" data-showcase-target="desktop">
+  <div class="flex flex-col gap-3">
+    <p class="<%= eyebrow_class %>">Component library</p>
+    <h1 class="text-3xl font-semibold">Every builder, rendered by the gem</h1>
+    <p class="max-w-prose text-ink-2">Each specimen is the output of the call printed under it. The page is generated from <code class="font-mono text-sm">Showcase.sections</code>, so it changes when the builders do.</p>
+    <nav class="<%= pill_row_class %>" aria-label="Sections">
+      <% @sections.each do |section| %>
+        <a class="<%= pill_class(size: :sm) %>" href="#<%= section.id %>"><%= section.title %></a>
+      <% end %>
+      <a class="<%= pill_class(size: :sm) %>" href="#tokens">Tokens</a>
+    </nav>
+  </div>
+
+  <% @sections.each do |section| %>
+    <%= render "showcase/section", section: %>
+  <% end %>
+
+  <%= render "showcase/tokens" %>
+</main>
+
+<div class="flex justify-center px-4 py-8" data-showcase-target="phone" hidden>
+  <iframe class="<%= card_surface_class(extra: "h-211 w-97.5 shadow-(--shadow)") %>" title="The showcase at phone width" data-showcase-target="frame" data-showcase-src="?frame=phone"></iframe>
+</div>

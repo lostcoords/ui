@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html lang="<%= I18n.locale %>">
   <head>
+    <meta charset="utf-8">
     <title>lostcoords-ui</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+    <link rel="icon" href="data:,">
+    <script>
+      if (localStorage.getItem("lostcoords-ui:theme") === "dark") document.documentElement.dataset.theme = "dark"
+      if (new URLSearchParams(location.search).has("frame")) document.documentElement.dataset.frame = ""
+    </script>
+    <%= stylesheet_link_tag "tailwind" %>
     <%= javascript_importmap_tags %>
   </head>
-  <body>
-    <main>
-      <%= yield %>
-    </main>
+  <body data-controller="showcase">
+    <%= yield %>
   </body>
 </html>

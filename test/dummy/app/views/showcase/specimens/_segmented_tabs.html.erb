@@ -1,0 +1,5 @@
+<div class="<%= classes[:bar] %>" role="tablist" aria-label="View">
+  <% { "Balances" => true, "Activity" => false, "Members" => false }.each do |label, selected| %>
+    <button type="button" class="<%= classes[:tab] %>" role="tab" aria-selected="<%= selected %>" data-action="showcase#select"><%= label %></button>
+  <% end %>
+</div>

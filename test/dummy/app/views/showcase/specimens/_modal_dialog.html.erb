@@ -1,0 +1,6 @@
+<div data-controller="modal">
+  <button type="button" class="<%= classes[:trigger] %>" data-action="modal#open">Open wide modal</button>
+  <dialog class="<%= classes[:dialog] %>" aria-labelledby="<%= id %>-title" data-modal-target="dialog">
+    <%= render "showcase/specimens/dialog_body", classes:, id:, title: "Leave the group?", body: "You keep your history; the group stops showing up for you.", confirm: "Leave", close: "modal#close" %>
+  </dialog>
+</div>

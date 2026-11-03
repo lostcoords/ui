@@ -8,10 +8,14 @@ module Lostcoords::Ui
       "min-h-11 rounded-xl border-0 bg-transparent " \
       "px-4 py-2 font-body text-sm font-medium cursor-pointer no-underline " \
       "text-ink-2 hover:text-ink " \
-      "[&.active]:bg-paper [&.active]:text-ink " \
+      "aria-selected:bg-paper aria-selected:text-ink " \
+      "aria-pressed:bg-paper aria-pressed:text-ink " \
+      "aria-[current]:not-aria-[current=false]:bg-paper aria-[current]:not-aria-[current=false]:text-ink " \
       "transition-[background-color,color,box-shadow,transform] duration-[150ms] ease-out " \
       "active:scale-[0.96] disabled:opacity-40 disabled:pointer-events-none " \
       "[&_svg]:size-[1.1em] [&_svg]:shrink-0"
+
+    SEGMENTED_TAB_ACTIVE = "bg-paper text-ink hover:text-ink"
 
     INPUT_BASE =
       "w-full max-w-full min-w-0 " \
@@ -45,7 +49,7 @@ module Lostcoords::Ui
     end
 
     def segmented_tab_class(active: false, extra: nil)
-      tw(SEGMENTED_TAB_BASE, ("active" if active), extra)
+      tw(SEGMENTED_TAB_BASE, (SEGMENTED_TAB_ACTIVE if active), extra)
     end
 
     def input_class(size: :base, extra: nil)

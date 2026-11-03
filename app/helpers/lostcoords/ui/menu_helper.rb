@@ -5,7 +5,7 @@ module Lostcoords::Ui
       "row-menu__popover squircle popover-shell hidden absolute top-[calc(100%+--spacing(1))] end-0 overscroll-contain [&_form]:m-0"
 
     MENU_POPOVER_BASE =
-      "nav-user-menu__popover data-open:flex flex-col gap-0.5 z-nav-popover p-2 " \
+      "data-open:flex flex-col gap-0.5 z-nav-popover p-2 " \
       "min-w-56 max-w-[calc(100vw-clamp(1rem,3vw,1.5rem)*2)] max-h-[min(24rem,70vh)] overflow-y-auto"
 
     MENU_POPOVER_ALIGN = {

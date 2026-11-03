@@ -20,3 +20,16 @@ jobs:
       - run: npm ci
       - run: bin/lint
       - run: bin/test
+
+  showcase:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - run: bin/rails lostcoords:ui:showcase
+      - name: Fail when the committed docs/ export is stale
+        run: |
+          git add --intent-to-add docs
+          git diff --exit-code --stat docs/

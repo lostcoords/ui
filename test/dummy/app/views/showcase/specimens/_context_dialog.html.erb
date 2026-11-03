@@ -1,0 +1,10 @@
+<div class="relative" data-controller="row-menu confirm-dialog">
+  <button type="button" class="<%= classes[:trigger] %>" aria-haspopup="menu" aria-expanded="false" aria-label="Actions"
+    data-row-menu-target="trigger" data-action="row-menu#toggle"><%= heroicon "ellipsis-horizontal", options: { "aria-hidden": "true" } %></button>
+  <div class="<%= classes[:menu] %>" role="menu" data-row-menu-target="popover">
+    <button type="button" class="<%= classes[:option] %>" role="menuitem" data-action="confirm-dialog#open row-menu#close"><%= heroicon "trash", options: { class: "size-5", "aria-hidden": "true" } %><span>Delete…</span></button>
+  </div>
+  <dialog class="<%= classes[:dialog] %>" aria-labelledby="<%= id %>-title" data-confirm-dialog-target="dialog">
+    <%= render "showcase/specimens/dialog_body", classes:, id:, title: "Delete this expense?", body: "Anchored to the menu that opened it.", confirm: "Delete", close: "confirm-dialog#close" %>
+  </dialog>
+</div>
