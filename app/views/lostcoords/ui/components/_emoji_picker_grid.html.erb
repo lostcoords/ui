@@ -1,0 +1,29 @@
+<% emoji_picker_groups.each do |group| %>
+  <section
+    class="emoji-picker__category"
+    data-section="<%= group[:key] %>"
+    aria-label="<%= group[:name] %>"
+  >
+    <header class="emoji-picker__category-head">
+      <h3><%= group[:name] %></h3>
+      <span class="count"><%= group[:emojis].size %></span>
+    </header>
+
+    <div class="emoji-picker__grid">
+      <% group[:emojis].each do |emoji| %>
+        <button
+          type="button"
+          data-emoji="<%= emoji %>"
+          data-tone="<%= "true" if emoji_picker_toneable?(emoji) %>"
+          data-search="<%= emoji_picker_search_text(emoji) %>"
+          data-search-name="<%= emoji_picker_search_name(emoji) %>"
+          data-search-labels="<%= emoji_picker_search_labels(emoji) %>"
+          title="<%= emoji_picker_search_name(emoji) %>"
+          aria-label="<%= emoji_picker_search_name(emoji) %>"
+        >
+          <%= emoji %>
+        </button>
+      <% end %>
+    </div>
+  </section>
+<% end %>

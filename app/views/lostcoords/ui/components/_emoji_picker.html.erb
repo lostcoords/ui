@@ -1,0 +1,182 @@
+<%# locals: (form:, field:, value: nil, quick: [], recent: [], recent_scope: nil, label:, catalog_url:, picker_class: nil, trigger_class: nil, popover_class: nil, auto_submit: false) %>
+<% quick = Array(quick).uniq
+  recent = Array(recent).uniq
+  selected = value.presence || form.object&.public_send(field).presence || quick.first || emoji_picker_groups.first[:emojis].first
+  selected_is_quick = quick.include?(selected)
+  trigger_label = selected_is_quick ? "＋" : selected
+  tone_modifiers = [ "", "🏻", "🏼", "🏽", "🏾", "🏿" ]
+  tone_names = %w[default light medium_light medium medium_dark dark] %>
+
+<div
+  class="emoji-picker <%= picker_class %>"
+  data-controller="emoji-picker"
+  data-emoji-picker-auto-submit-value="<%= auto_submit %>"
+  data-emoji-picker-catalog-url-value="<%= catalog_url %>"
+  data-emoji-picker-recent-scope-value="<%= recent_scope %>"
+>
+  <%= form.hidden_field field,
+      value: selected,
+      data: { emoji_picker_target: "input" } %>
+
+  <% quick.each do |emoji| %>
+    <button
+      type="button"
+      class="emoji-picker__choice"
+      aria-current="<%= emoji == selected %>"
+      data-emoji="<%= emoji %>"
+      data-action="click->emoji-picker#select"
+    >
+      <%= emoji %>
+    </button>
+  <% end %>
+
+  <div class="emoji-picker__more">
+    <button
+      type="button"
+      class="emoji-picker__trigger <%= trigger_class %>"
+      aria-current="<%= !selected_is_quick %>"
+      data-emoji-picker-target="trigger"
+      data-action="click->emoji-picker#toggle"
+      data-default-label="＋"
+      data-value="<%= selected %>"
+      aria-label="<%= label %>"
+      aria-expanded="false"
+    >
+      <%= trigger_label %>
+    </button>
+
+    <div
+      class="emoji-picker__popover <%= popover_class %>"
+      data-emoji-picker-target="popover"
+      data-controller="sheet"
+      data-action="click->emoji-picker#select pointerover->emoji-picker#preview focusin->emoji-picker#preview sheet:dismiss->emoji-picker#close"
+      role="dialog"
+      aria-label="<%= label %>"
+      hidden
+    >
+      <span class="emoji-picker__handle" data-sheet-target="handle" aria-hidden="true"></span>
+
+      <div class="emoji-picker__search">
+        <div class="emoji-picker__search-field">
+          <svg class="emoji-picker__search-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.6" />
+            <path d="m14 14 3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+          </svg>
+
+          <input
+            class="emoji-picker__search-input"
+            type="search"
+            inputmode="search"
+            autocomplete="off"
+            autocapitalize="off"
+            spellcheck="false"
+            enterkeyhint="search"
+            aria-label="<%= t("lostcoords.ui.emoji_picker.search_label") %>"
+            placeholder="<%= t("lostcoords.ui.emoji_picker.search_placeholder") %>"
+            data-emoji-picker-target="searchInput"
+            data-action="input->emoji-picker#filter keydown->emoji-picker#onSearchKeydown"
+          >
+        </div>
+
+        <div class="emoji-picker__tones" data-emoji-picker-target="tones">
+          <button
+            type="button"
+            class="emoji-picker__tone-toggle"
+            data-emoji-picker-target="toneToggle"
+            data-action="click->emoji-picker#toggleTones"
+            aria-haspopup="true"
+            aria-expanded="false"
+            aria-label="<%= t("lostcoords.ui.emoji_picker.skin_tone") %>"
+          >✋</button>
+
+          <div class="emoji-picker__tone-menu <%= popover_class %>" data-emoji-picker-target="toneMenu" role="menu" hidden>
+            <% tone_modifiers.each_with_index do |modifier, index| %>
+              <button
+                type="button"
+                class="emoji-picker__tone"
+                role="menuitemradio"
+                data-tone-index="<%= index %>"
+                data-action="click->emoji-picker#selectTone"
+                aria-label="<%= t("lostcoords.ui.emoji_picker.skin_tones.#{tone_names[index]}") %>"
+              >✋<%= modifier %></button>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <nav class="emoji-picker__tabs" data-emoji-picker-target="tabs" aria-label="<%= t("lostcoords.ui.emoji_picker.categories_nav") %>">
+        <% if recent.any? %>
+          <button
+            type="button"
+            class="emoji-picker__tab"
+            data-emoji-picker-target="tab"
+            data-target-section="recent"
+            data-action="click->emoji-picker#jumpTo"
+            aria-label="<%= t("lostcoords.ui.emoji_picker.recently_used") %>"
+          >🕘</button>
+        <% end %>
+
+        <% emoji_picker_groups.each do |group| %>
+          <button
+            type="button"
+            class="emoji-picker__tab"
+            data-emoji-picker-target="tab"
+            data-target-section="<%= group[:key] %>"
+            data-action="click->emoji-picker#jumpTo"
+            aria-label="<%= group[:name] %>"
+          ><%= group[:icon] %></button>
+        <% end %>
+      </nav>
+
+      <div class="emoji-picker__body" data-emoji-picker-target="body">
+        <% if recent.any? %>
+          <section
+            class="emoji-picker__recent"
+            data-section="recent"
+            aria-label="<%= t('lostcoords.ui.emoji_picker.recently_used') %>"
+            data-emoji-picker-target="recent"
+          >
+            <header class="emoji-picker__category-head">
+              <h3><%= t("lostcoords.ui.emoji_picker.recently_used") %></h3>
+              <span class="count"><%= recent.size %></span>
+            </header>
+
+            <div class="emoji-picker__grid">
+              <% recent.each do |emoji| %>
+                <button
+                  type="button"
+                  aria-current="<%= emoji == selected %>"
+                  data-emoji="<%= emoji %>"
+                  data-search="<%= emoji %>"
+                  data-search-name="<%= emoji_picker_search_name(emoji) %>"
+                  title="<%= emoji_picker_search_name(emoji) %>"
+                  aria-label="<%= emoji_picker_search_name(emoji) %>"
+                >
+                  <%= emoji %>
+                </button>
+              <% end %>
+            </div>
+          </section>
+        <% end %>
+
+        <section class="emoji-picker__results" data-emoji-picker-target="results" aria-label="<%= t('lostcoords.ui.emoji_picker.search_results') %>" hidden>
+          <header class="emoji-picker__category-head">
+            <h3><%= t("lostcoords.ui.emoji_picker.search_results") %></h3>
+            <span class="count" data-emoji-picker-target="resultsCount">0</span>
+          </header>
+
+          <div class="emoji-picker__grid" data-emoji-picker-target="resultsGrid"></div>
+        </section>
+
+        <p class="emoji-picker__empty" data-emoji-picker-target="empty" hidden>
+          <%= t("lostcoords.ui.emoji_picker.no_results") %>
+        </p>
+      </div>
+
+      <footer class="emoji-picker__preview" data-emoji-picker-target="preview">
+        <span class="emoji-picker__preview-emoji" data-emoji-picker-target="previewEmoji"><%= selected %></span>
+        <span class="emoji-picker__preview-name" data-emoji-picker-target="previewName"><%= emoji_picker_search_name(selected) %></span>
+      </footer>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,462 @@
+@layer components {
+  .emoji-picker {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    align-items: center;
+
+    /* Sit above the mobile app nav (z-100 + 25) so the sheet covers it. */
+    --emoji-sheet-z: calc(100 + 30);
+    --emoji-cell: 2.25rem;
+  }
+
+  /* ---- Trigger + quick choices -------------------------------------- */
+  .emoji-picker__choice,
+  .emoji-picker__trigger {
+    display: inline-grid;
+    place-items: center;
+    inline-size: 44px;
+    block-size: 44px;
+    border-radius: var(--radius-2xl, 1rem);
+    border: 1px solid var(--hairline);
+    background: var(--paper);
+    color: var(--ink);
+    cursor: pointer;
+    font-size: var(--text-xl, 1.25rem);
+    line-height: 1;
+    transition:
+      border-color 0.15s,
+      background 0.15s,
+      transform 0.15s var(--ease-out),
+      box-shadow 0.15s;
+
+    &:hover { border-color: var(--ink-3); }
+
+    &[aria-current="true"] {
+      border-color: var(--sky);
+      background: var(--sky-soft);
+    }
+  }
+
+  .emoji-picker__trigger {
+    color: var(--ink-3);
+    font-weight: var(--font-weight-normal, 400);
+  }
+
+  .emoji-picker__more {
+    position: relative;
+    display: inline-flex;
+  }
+
+  /* ==================================================================== */
+
+  /* Mobile-first: the picker opens as a bottom half-sheet.               */
+
+  /* ==================================================================== */
+
+  /* The sheet renders in the top layer (Popover API), so this ::backdrop
+     dims everything beneath it — including the app nav. The allow-discrete
+     transitions keep it in the top layer while it eases out, so it fades
+     both ways instead of snapping away on close. */
+  .emoji-picker__popover::backdrop {
+    background: var(--scrim);
+    opacity: 0;
+    transition:
+      opacity 220ms var(--ease-out),
+      display 220ms allow-discrete,
+      overlay 220ms allow-discrete;
+
+    @media (prefers-reduced-motion: reduce) { transition: none; }
+  }
+
+  /* Only the phone sheet dims the page; the desktop popover rides the top
+     layer too (so nothing paints over it) but floats over an undimmed page. */
+  @media (width < 40rem) {
+    .emoji-picker__popover:popover-open::backdrop {
+      opacity: 1;
+
+      @starting-style { opacity: 0; }
+    }
+  }
+
+  /* Phones get a solid sheet; on desktop the host paints the popover as a
+     floating surface (glass in wariwari), so the gem leaves it unpainted. */
+  @media (width < 40rem) {
+    .emoji-picker__popover {
+      border: 1px solid var(--glass-edge, var(--hairline));
+      border-block-end: 0;
+      background: var(--paper);
+      box-shadow: 0 -12px 40px -12px color-mix(in oklab, var(--ink) 45%, transparent);
+    }
+  }
+
+  .emoji-picker__popover {
+    position: fixed;
+    inset: auto 0 0;
+    margin: 0;
+    z-index: var(--emoji-sheet-z);
+    display: none;
+    max-inline-size: none;
+    color: var(--ink);
+    flex-direction: column;
+    inline-size: 100%;
+    max-block-size: min(72svh, 34rem);
+    padding-block-end: max(env(safe-area-inset-bottom), 8px);
+    border-start-start-radius: var(--radius-3xl, 1.5rem);
+    border-start-end-radius: var(--radius-3xl, 1.5rem);
+    overscroll-behavior: contain;
+    transform: translateY(100%);
+    transition:
+      transform 260ms var(--ease-out-expo),
+      display 260ms allow-discrete,
+      overlay 260ms allow-discrete;
+
+    /* Top-layer (Popover API) drives display, so showPopover()/hidePopover()
+       animate the slide in AND out via the allow-discrete transitions. */
+    &:popover-open {
+      display: flex;
+      transform: translateY(0);
+
+      @starting-style { transform: translateY(100%); }
+    }
+
+    @media (prefers-reduced-motion: reduce) { transition: none; }
+  }
+
+  /* Fallback for browsers without the Popover API: class-driven display. */
+  @supports not selector(:popover-open) {
+    .emoji-picker__popover[data-open] {
+      display: flex;
+      transform: translateY(0);
+    }
+  }
+
+  /* Drag handle for swipe-to-dismiss. Full-width grab strip, so the touch target
+     is large; the host's sheet draws the pill.
+     touch-action: none lets a vertical drag pull the sheet down rather than
+     scroll. Drag-to-dismiss is wired by the sheet controller. */
+  .emoji-picker__handle {
+    flex: 0 0 auto;
+    display: grid;
+    place-items: center;
+    inline-size: 100%;
+    min-block-size: 1.75rem;
+    touch-action: none;
+    cursor: grab;
+  }
+
+  .emoji-picker__handle:active { cursor: grabbing; }
+
+  /* ---- Search row --------------------------------------------------- */
+  .emoji-picker__search {
+    flex: 0 0 auto;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    padding: 0.75rem 0.75rem 0.5rem;
+  }
+
+  .emoji-picker__search-field {
+    position: relative;
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+  }
+
+  .emoji-picker__search-icon {
+    position: absolute;
+    inset-inline-start: 14px;
+    inline-size: 18px;
+    block-size: 18px;
+    color: var(--ink-3);
+    pointer-events: none;
+  }
+
+  .emoji-picker__search-input {
+    inline-size: 100%;
+    min-block-size: 44px;
+    padding-inline: 40px 1rem;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    background: var(--paper-2);
+    color: var(--ink);
+    font: inherit;
+    font-size: 1rem;
+    transition: border-color 150ms ease-out, box-shadow 150ms ease-out;
+
+    &::placeholder { color: var(--ink-3); }
+    &::-webkit-search-cancel-button {
+      /* stylelint-disable-next-line property-no-vendor-prefix -- WebKit search decoration */
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: var(--focus-halo, 0 0 0 2px color-mix(in oklab, var(--sky) 50%, transparent));
+    }
+  }
+
+  /* ---- Skin-tone control ------------------------------------------- */
+  .emoji-picker__tones {
+    position: relative;
+    flex: 0 0 auto;
+  }
+
+  .emoji-picker__tone-toggle {
+    display: inline-grid;
+    place-items: center;
+    inline-size: 44px;
+    block-size: 44px;
+    border: none;
+    border-radius: 999px;
+    background: var(--paper-2);
+    cursor: pointer;
+    font-size: var(--text-lg, 1.125rem);
+    line-height: 1;
+    transition: background 150ms ease-out;
+
+    &:hover { background: var(--paper-3); }
+
+    &[aria-expanded="true"] { background: var(--sky-soft); }
+  }
+
+  .emoji-picker__tone-menu {
+    position: absolute;
+    inset-block-end: calc(100% + 6px);
+    inset-inline-end: 0;
+    z-index: 4;
+    display: flex;
+    gap: 2px;
+    padding: 4px;
+    border-radius: 999px;
+
+    &[hidden] { display: none; }
+  }
+
+  .emoji-picker__tone {
+    display: inline-grid;
+    place-items: center;
+    inline-size: 36px;
+    block-size: 36px;
+    border: none;
+    border-radius: 999px;
+    background: transparent;
+    cursor: pointer;
+    font-size: var(--text-lg, 1.125rem);
+    line-height: 1;
+
+    &:hover { background: var(--paper-2); }
+
+    &[aria-current="true"] { background: var(--sky-soft); }
+  }
+
+  /* ---- Category tab navigation ------------------------------------- */
+
+  /* Category tabs: a segmented track, like the app's tab strips — a paper-2
+     track with the active tab raised on a paper thumb. */
+  .emoji-picker__tabs {
+    flex: 0 0 auto;
+    display: flex;
+    gap: 2px;
+    margin: 0 0.75rem 0.25rem;
+    padding: 4px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    border-radius: var(--radius-2xl, 1rem);
+    background: var(--paper-2);
+
+    &::-webkit-scrollbar { display: none; }
+  }
+
+  .emoji-picker__tab {
+    flex: 0 0 auto;
+    display: inline-grid;
+    place-items: center;
+    inline-size: 36px;
+    block-size: 36px;
+    border: none;
+    border-radius: var(--radius-xl, 0.75rem);
+    background: transparent;
+    cursor: pointer;
+    font-size: var(--text-lg, 1.125rem);
+    line-height: 1;
+    opacity: 0.55;
+    transition: opacity 0.12s, background 0.12s, box-shadow 0.12s;
+
+    &:hover { opacity: 0.85; }
+
+    &[aria-current="true"] {
+      opacity: 1;
+      background: var(--paper);
+      box-shadow: var(--shadow-sm);
+    }
+  }
+
+  /* ---- Scrollable body --------------------------------------------- */
+  .emoji-picker__body {
+    position: relative;
+    flex: 1 1 auto;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 0 0.75rem 0.75rem;
+    scroll-behavior: smooth;
+
+    /* Emoji melt under the tabs and into the footer rather than cutting off
+       against a divider. */
+    mask-image: linear-gradient(to bottom, transparent, #000 0.5rem, #000 calc(100% - 1.25rem), transparent);
+
+    @media (prefers-reduced-motion: reduce) { scroll-behavior: auto; }
+  }
+
+  .emoji-picker__category + .emoji-picker__category,
+  .emoji-picker__recent + .emoji-picker__catalog,
+  .emoji-picker__results + * {
+    margin-block-start: 0.5rem;
+  }
+
+  /* Heads scroll with their section: the tab track already marks the current
+     category, and a sticky band would sit as a stripe across the panel. */
+  .emoji-picker__category-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.625rem 0.25rem 0.25rem;
+
+    h3 {
+      margin: 0;
+      font-size: var(--text-sm, 0.875rem);
+      font-weight: var(--font-weight-semibold, 600);
+      color: var(--ink-2);
+    }
+
+    .count {
+      font-family: var(--font-body, system-ui);
+      font-size: var(--text-xs, 0.75rem);
+      color: var(--ink-3);
+    }
+  }
+
+  .emoji-picker__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(var(--emoji-cell), 1fr));
+    gap: 2px;
+    padding-block-start: 4px;
+
+    button {
+      display: inline-grid;
+      place-items: center;
+      aspect-ratio: 1;
+      min-inline-size: 0;
+      border: none;
+      border-radius: var(--radius-xl, 0.75rem);
+      background: transparent;
+      cursor: pointer;
+      font-size: var(--text-xl, 1.25rem);
+      line-height: 1;
+      padding: 0;
+      transition: background 0.1s, transform 0.1s var(--ease-out);
+
+      &:hover,
+      &:focus-visible {
+        background: var(--paper-2);
+        transform: scale(1.12);
+        outline: none;
+      }
+
+      &[aria-current="true"] { background: var(--sky-soft); }
+    }
+  }
+
+  /* Section that owns the sticky header needs the scroll anchor, not the grid */
+  .emoji-picker__category,
+  .emoji-picker__recent,
+  .emoji-picker__results {
+    scroll-margin-block-start: 0;
+  }
+
+  .emoji-picker__empty {
+    margin: 0;
+    padding: 1rem 0.5rem;
+    color: var(--ink-3);
+    font-size: 1rem;
+    text-align: center;
+  }
+
+  /* ---- Search mode: swap catalog for a single ranked result list ---- */
+  .emoji-picker__popover:not([data-searching]) .emoji-picker__results { display: none; }
+
+  .emoji-picker__popover[data-searching] {
+    .emoji-picker__tabs,
+    .emoji-picker__recent,
+    .emoji-picker__catalog { display: none; }
+  }
+
+  /* ---- Preview footer ---------------------------------------------- */
+  .emoji-picker__preview {
+    flex: 0 0 auto;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    min-block-size: 2.75rem;
+    padding: 0.25rem 1rem 0.75rem;
+  }
+
+  .emoji-picker__preview-emoji {
+    font-size: 1.5rem;
+    line-height: 1;
+  }
+
+  .emoji-picker__preview-name {
+    overflow: hidden;
+    font-size: 1rem;
+    color: var(--ink-3);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* ==================================================================== */
+
+  /* Desktop: anchored popover instead of a sheet.                        */
+
+  /* ==================================================================== */
+  @media (width >= 40rem) {
+    .emoji-picker__popover {
+      position: absolute;
+      inset-block: calc(100% + 8px) auto;
+      inset-inline: 0 auto;
+      inline-size: min(22rem, calc(100vw - 32px));
+      max-block-size: min(28rem, calc(100vh - 96px));
+      padding-block-end: 0;
+      border-radius: var(--radius-3xl, 1.5rem);
+      transform: translateY(-4px) scale(0.98);
+      opacity: 0;
+      transition:
+        opacity 160ms var(--ease-out-expo),
+        transform 160ms var(--ease-out-expo),
+        display 160ms allow-discrete,
+        overlay 160ms allow-discrete;
+
+      &[data-open] {
+        display: flex;
+        opacity: 1;
+        transform: translateY(0) scale(1);
+
+        @starting-style {
+          opacity: 0;
+          transform: translateY(-4px) scale(0.98);
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) { transition: none; }
+    }
+
+    .emoji-picker__handle { display: none; }
+
+    main:has(.emoji-picker__popover[data-open]),
+    .emoji-picker:has(.emoji-picker__popover[data-open]) {
+      z-index: 60;
+    }
+  }
+}

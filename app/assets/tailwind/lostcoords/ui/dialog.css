@@ -1,0 +1,60 @@
+@layer components {
+  .app-dialog {
+    --dialog-from: translateY(0.4rem) scale(0.98);
+    --dialog-fade: 0.2s;
+    --dialog-duration: 0.2s;
+
+    /* Preflight's `margin: 0` clobbers the UA `margin: auto` that centres a modal dialog. */
+    margin: auto;
+    overflow: hidden;
+    overscroll-behavior: contain;
+    opacity: 0;
+    transform: var(--dialog-from);
+    transition:
+      opacity var(--dialog-fade) var(--ease-out-expo),
+      transform var(--dialog-duration) var(--ease-out-expo),
+      display var(--dialog-duration) allow-discrete,
+      overlay var(--dialog-duration) allow-discrete;
+
+    &[open] {
+      opacity: 1;
+      transform: none;
+
+      @starting-style {
+        opacity: 0;
+        transform: var(--dialog-from);
+      }
+    }
+
+    /* Fades the tint and the blur, not opacity: Chrome applies a backdrop-filter
+       under opacity < 1 to only some of the page's layers. */
+    &::backdrop {
+      background: transparent;
+      backdrop-filter: blur(0);
+      transition:
+        background-color var(--dialog-fade) var(--ease-out),
+        backdrop-filter var(--dialog-fade) var(--ease-out),
+        display var(--dialog-fade) allow-discrete,
+        overlay var(--dialog-fade) allow-discrete;
+    }
+
+    &[open]::backdrop {
+      background: var(--scrim);
+      backdrop-filter: blur(2px);
+
+      @starting-style {
+        background: transparent;
+        backdrop-filter: blur(0);
+      }
+    }
+
+    &.context-dialog[open]::backdrop {
+      background: var(--scrim-soft);
+      backdrop-filter: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      &::backdrop { transition: none; }
+    }
+  }
+}

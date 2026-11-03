@@ -1,0 +1,209 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "open3"
+require "pathname"
+
+Dir.chdir(File.expand_path("..", __dir__))
+
+Violation = Data.define(:path, :line, :message)
+
+STYLESHEET = %r{\A(?:test/dummy/)?app/assets/tailwind/.*\.css\z}
+DUMMY_TOKENS = "test/dummy/app/assets/tailwind/application.css"
+HELPERS = "app/helpers/lostcoords/ui"
+
+def tracked_files
+  out, status = Open3.capture2("git", "ls-files", "--cached", "--others", "--exclude-standard")
+  abort "house-rules: could not list files" unless status.success?
+
+  out.lines(chomp: true).uniq.select { |path| File.file?(path) }
+end
+
+def dependency_violations
+  banned = {
+    "devise" => "authentication is hand-rolled passwordless",
+    "pundit" => "authorization belongs on models",
+    "cancancan" => "authorization belongs on models",
+    "sidekiq" => "Solid Queue is used here",
+    "redis" => "Solid Queue, Cache, and Cable do not use Redis",
+    "rspec" => "Minitest and fixtures are used here",
+    "factory_bot" => "Minitest and fixtures are used here",
+    "view_component" => "views use partials",
+    "sass" => "Tailwind is the CSS pipeline",
+    "postcss" => "Tailwind runs without PostCSS"
+  }
+
+  %w[Gemfile lostcoords-ui.gemspec package.json].flat_map do |manifest|
+    File.readlines(manifest, chomp: true).each_with_index.filter_map do |line, index|
+      name = line[/^\s*(?:gem|spec\.add_(?:development_)?dependency)\s+["']([^"']+)["']/, 1] || line[/^\s*"([^"']+)"\s*:/, 1]
+      reason = name && banned[name.downcase.delete_prefix("@").split("/").last]
+      Violation.new(manifest, index + 1, "`#{name}` is not used here: #{reason}") if reason
+    end
+  end
+end
+
+# Tailwind's @import takes no globs, so ui.css lists every gem stylesheet and the dummy app imports ui.css.
+# A file neither imports never reaches the build.
+STYLESHEET_ENTRIES = [ DUMMY_TOKENS, "app/assets/tailwind/lostcoords/ui/ui.css" ].freeze
+
+def stylesheet_import_violations(files)
+  imports = STYLESHEET_ENTRIES.flat_map do |entry|
+    File.readlines(entry, chomp: true).each_with_index.filter_map do |line, index|
+      next unless (target = line[/^\s*@import\s+["'](\.[^"']+)["']/, 1])
+
+      [ entry, Pathname(File.expand_path(target, File.dirname(entry))).relative_path_from(Dir.pwd).to_s, index + 1 ]
+    end
+  end
+
+  missing = imports.reject { |_, path, _| File.file?(path) }.map do |entry, path, line|
+    Violation.new(entry, line, "imports #{path}, which does not exist")
+  end
+
+  unimported = (files.grep(STYLESHEET) - STYLESHEET_ENTRIES.first(1) - imports.map { |_, path, _| path }).map do |path|
+    Violation.new(path, 1, "not imported by #{STYLESHEET_ENTRIES.last}, so Tailwind never builds it")
+  end
+
+  missing + unimported
+end
+
+def css_without_comments(source)
+  source.gsub(%r{/\*.*?\*/}m) { |comment| "\n" * comment.count("\n") }
+end
+
+def css_line(css, offset) = css[0, offset].count("\n") + 1
+
+# Runtime state reaches markup as an attribute or ARIA state and is styled with a variant
+# (`aria-expanded:`, `data-[closing]:`, `aria-[current=true]:`), never an authored state class.
+def authored_state_class_violations(files)
+  files.grep(STYLESHEET).flat_map do |path|
+    css = css_without_comments(File.read(path))
+    css.to_enum(:scan, /[^{};]+(?=\{)/m).flat_map do
+      prelude, offset = Regexp.last_match[0], Regexp.last_match.begin(0)
+      next [] if prelude.lstrip.start_with?("@")
+
+      prelude.scan(/\.(?:open|active|is-[\w-]+)(?![\w-])/).uniq.map do |state|
+        Violation.new(path, css_line(css, offset + prelude.index(state)), "`#{state}` is authored state; style it with a variant on an attribute")
+      end
+    end
+  end
+end
+
+# Controllers not yet converted, with the state classes they still toggle. Shrink as they move to attributes.
+JS_STATE_CLASS_ALLOWED = {
+  "app/javascript/lostcoords/ui/controllers/toast_controller.js" => %w[is-leaving]
+}.freeze
+
+def js_state_class_violations(files)
+  files.grep(%r{\A(?:test/dummy/)?app/javascript/.*\.js\z}).flat_map do |path|
+    allowed = JS_STATE_CLASS_ALLOWED.fetch(path, [])
+    File.readlines(path, chomp: true).each_with_index.flat_map do |line, index|
+      line.scan(/classList\.(?:add|remove|toggle)\(\s*((?:["'][^"']*["']\s*,?\s*)+)/).flatten
+        .flat_map { |args| args.scan(/["']([^"']*)["']/).flatten }
+        .grep(/\A(?:open|active|is-[\w-]+)\z/).reject { |state| allowed.include?(state) }.map do |state|
+          Violation.new(path, index + 1, "`#{state}` is a state class; set an aria-* or data-* attribute and style it with a variant")
+        end
+    end
+  end
+end
+
+# Stylesheets not yet converted, with the literals they still use. Shrink as they move to tokens.
+CSS_LITERAL_ALLOWED = {
+  "app/assets/tailwind/lostcoords/ui/avatar.css" => %w[1.5px 3px],
+  "app/assets/tailwind/lostcoords/ui/card.css" => %w[1px],
+  "app/assets/tailwind/lostcoords/ui/dialog.css" => %w[2px],
+  "app/assets/tailwind/lostcoords/ui/emoji-picker.css" => %w[1px 2px 4px 6px 8px 14px 18px 32px 36px 40px 44px 96px 999px #000],
+  "app/assets/tailwind/lostcoords/ui/glass.css" => %w[1px 12px 24px],
+  "app/assets/tailwind/lostcoords/ui/sheet.css" => %w[#000 0px 1px 2px 40px 9999px rgb(]
+}.freeze
+
+# Colours and pixel sizes are tokens: a literal elsewhere skips dark mode and drifts from the scale.
+# Lengths come from calc(var(--spacing) * n) or a token. url() is skipped: a data URI cannot read a variable.
+def css_literal_violations(files)
+  (files.grep(STYLESHEET) - [ DUMMY_TOKENS ]).flat_map do |path|
+    css = css_without_comments(File.read(path)).gsub(/url\([^)]*\)/) { |url| " " * url.size }
+    allowed = CSS_LITERAL_ALLOWED.fetch(path, [])
+    css.to_enum(:scan, /[\w-]+\s*:\s*[^;{}]+;/m).flat_map do
+      declaration, offset = Regexp.last_match[0], Regexp.last_match.begin(0)
+      declaration.scan(/#\h{3,8}\b|\brgba?\(|(?<![\w.-])\d*\.?\d+px\b/).uniq.reject { |literal| allowed.include?(literal) }.map do |literal|
+        Violation.new(path, css_line(css, offset + declaration.index(literal)), "`#{literal}` is a literal; use a token or calc(var(--spacing) * n)")
+      end
+    end
+  end
+end
+
+# Tailwind and button load before the rest because later constants interpolate theirs;
+# the emoji picker needs gems and has no builders.
+def ui_builders
+  paths = (Dir["#{HELPERS}/*_helper.rb"] - [ "#{HELPERS}/emoji_picker_helper.rb" ])
+    .sort_by { |path| [ %w[tailwind_helper.rb button_helper.rb].index(File.basename(path)) || 2, path ] }
+  require_relative "../lib/lostcoords/ui/version"
+  paths.each { |path| load File.expand_path(path) }
+
+  Lostcoords::Ui.constants.map { |name| Lostcoords::Ui.const_get(name) }.grep(Module).flat_map do |mod|
+    mod.public_instance_methods(false).grep(/_class\z/).map { |name| mod.instance_method(name) }
+  end
+end
+
+# Two builders that return the same classes are one component under two names: one should call the other.
+# `tw` is replaced by a whitespace-normalising join so the script needs no gems.
+def builder_duplicate_violations(builders)
+  view = Class.new { define_method(:tw) { |*classes| classes.flatten.compact.join(" ").split.join(" ") } }
+  builders.each { |builder| view.include(builder.owner) }
+  view = view.new
+
+  builders.reject { |builder| builder.parameters.any? { |type, _| %i[req keyreq].include?(type) } }
+    .group_by { |builder| view.public_send(builder.name) }
+    .values.select { |same| same.size > 1 }
+    .flat_map do |same|
+      names = same.map(&:name).join(", ")
+      same.map do |builder|
+        path, line = builder.source_location
+        Violation.new(Pathname(path).relative_path_from(Dir.pwd).to_s, line, "#{names} return identical classes; have one call the other")
+      end
+    end
+end
+
+# Hosts call builders from their own repositories, so here a caller is another builder, a view, or the snapshot.
+# A builder with neither is untested surface that drifts from the design rules unnoticed.
+def orphan_builder_violations(files, builders)
+  sources = files.grep(%r{\A(?:app|test)/}).to_h { |path| [ path, File.read(path) ] }
+
+  builders.filter_map do |builder|
+    called = /\b#{builder.name}\b/
+    definition = /^\s*def #{builder.name}\b/
+    next if sources.any? { |_, source| source.lines.any? { |line| line.match?(called) && !line.match?(definition) } }
+
+    path, line = builder.source_location
+    Violation.new(Pathname(path).relative_path_from(Dir.pwd).to_s, line, "`#{builder.name}` has no caller or snapshot; pin it in the builders snapshot or delete it")
+  end
+end
+
+# The gem's stylesheets and builders read these properties from the host; the dummy app is the reference host.
+def ui_token_contract_violations
+  require_relative "../lib/lostcoords/ui/tokens"
+  Lostcoords::Ui::Tokens.missing_from(File.read(DUMMY_TOKENS)).map do |token|
+    Violation.new(DUMMY_TOKENS, 1, "`#{token}` is in Lostcoords::Ui::TOKENS but not defined here")
+  end
+end
+
+def readme_builders_violations
+  require_relative "../lib/lostcoords/ui/builders"
+  readme = File.read("README.md")
+  listed = readme[/<!-- builders -->\n(.*?)\n<!-- \/builders -->/m, 1]
+  return [] if listed == Lostcoords::Ui::Builders.markdown
+
+  [ Violation.new("README.md", 1, "the builders list is stale; regenerate it with bin/rails lostcoords:ui:builders") ]
+end
+
+files = tracked_files
+builders = ui_builders
+violations = dependency_violations + stylesheet_import_violations(files) + authored_state_class_violations(files) +
+  js_state_class_violations(files) + css_literal_violations(files) + builder_duplicate_violations(builders) +
+  orphan_builder_violations(files, builders) + ui_token_contract_violations + readme_builders_violations
+
+if violations.any?
+  violations.each { |violation| warn "#{violation.path}:#{violation.line}: #{violation.message}" }
+  exit 1
+end
+
+puts "House rules passed"

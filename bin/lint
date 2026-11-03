@@ -1,0 +1,163 @@
+#!/usr/bin/env bash
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+usage() {
+  cat <<'USAGE'
+Usage:
+  bin/lint [--fix] [step...]
+
+Steps:
+  ruby       RuboCop
+  js         Biome
+  css        Stylelint
+  browser    Browser feature compatibility
+  house      bin/house-rules
+
+With no steps, runs every linter. --fix autocorrects where the tool supports it.
+USAGE
+}
+
+fix=false
+if [[ "${1:-}" == "--fix" ]]; then
+  fix=true
+  shift
+fi
+
+case "${1:-}" in
+  --help | -h | help)
+    usage
+    exit
+    ;;
+esac
+
+run_ruby() {
+  echo "== Linting Ruby =="
+  if [[ "$fix" == true ]]; then bundle exec rubocop -a; else bundle exec rubocop; fi
+}
+
+run_javascript() {
+  echo "== Linting JavaScript =="
+  if [[ "$fix" == true ]]; then
+    npx --no-install biome check --write app/javascript test/dummy/app/javascript
+  else
+    npx --no-install biome check app/javascript test/dummy/app/javascript
+  fi
+}
+
+run_css() {
+  echo "== Linting CSS =="
+  if [[ "$fix" == true ]]; then
+    npx --no-install stylelint --fix 'app/assets/tailwind/**/*.css' 'test/dummy/app/assets/tailwind/**/*.css'
+  else
+    npx --no-install stylelint 'app/assets/tailwind/**/*.css' 'test/dummy/app/assets/tailwind/**/*.css'
+  fi
+}
+
+run_browser() {
+  echo "== Checking browser features =="
+  node --input-type=module <<'JS'
+import { readdirSync, readFileSync, statSync } from "node:fs";
+import { relative } from "node:path";
+
+const checks = [
+  { feature: "anchor-name", pattern: /\banchor-name\s*:/ },
+  { feature: "position-anchor", pattern: /\bposition-anchor\s*:/ },
+  { feature: "anchor()", pattern: /\banchor\s*\(/ },
+  { feature: "scroll-timeline", pattern: /\bscroll-timeline(?:-[\w-]+)?\s*:/ },
+  { feature: "view-timeline", pattern: /\bview-timeline(?:-[\w-]+)?\s*:/ },
+  { feature: "animation-timeline", pattern: /\banimation-timeline\s*:/ },
+  { feature: "@scope", pattern: /@scope\b/ },
+  { feature: "light-dark()", pattern: /\blight-dark\s*\(/ },
+  { feature: "field-sizing", pattern: /\bfield-sizing\s*:/ },
+  { feature: "interpolate-size", pattern: /\binterpolate-size\s*:/ },
+  { feature: "relative oklch()", pattern: /\boklch\s*\(\s*from\b/ },
+];
+
+const roots = ["app/assets/tailwind", "test/dummy/app/assets/tailwind"];
+const violations = [];
+
+for (const root of roots) {
+  for (const file of cssFiles(root)) {
+    const path = relative(process.cwd(), file);
+    const source = readFileSync(file, "utf8");
+
+    const blockIsSupports = [];
+
+    source.split("\n").forEach((line, index) => {
+      const lineDeclaresSupports = /@supports\b/.test(line);
+      const guarded = lineDeclaresSupports || blockIsSupports.includes(true);
+
+      if (!guarded) {
+        checks.forEach((check) => {
+          if (!check.pattern.test(line)) return;
+          if (line.includes("browser-compat: enhancement")) return;
+
+          violations.push({ file: path, line: index + 1, feature: check.feature });
+        });
+      }
+
+      for (const ch of line) {
+        if (ch === "{") blockIsSupports.push(lineDeclaresSupports);
+        else if (ch === "}") blockIsSupports.pop();
+      }
+    });
+  }
+}
+
+function cssFiles(root) {
+  return readdirSync(root).flatMap((entry) => {
+    const path = `${root}/${entry}`;
+    const stats = statSync(path);
+
+    if (stats.isDirectory()) return cssFiles(path);
+    if (stats.isFile() && path.endsWith(".css")) return [path];
+    return [];
+  });
+}
+
+if (violations.length > 0) {
+  console.error("Unsupported browser features found:");
+  violations.forEach((violation) => {
+    console.error(`  ${violation.file}:${violation.line} uses ${violation.feature}`);
+  });
+  console.error("");
+  console.error(
+    "Stay within the browser floor (Safari 17.2, Chrome 120, Firefox 121), guard the feature with @supports, or mark a non-load-bearing enhancement with a `browser-compat: enhancement` comment."
+  );
+  process.exit(1);
+}
+
+console.log("Browser feature compatibility passed");
+JS
+}
+
+run_house() {
+  echo "== Checking house rules =="
+  bin/house-rules
+}
+
+run_step() {
+  case "$1" in
+    ruby | rubocop) run_ruby ;;
+    js | javascript | biome) run_javascript ;;
+    css | stylelint) run_css ;;
+    browser | browser-features) run_browser ;;
+    house | house-rules) run_house ;;
+    *)
+      echo "Unknown lint step: $1" >&2
+      usage >&2
+      exit 1
+      ;;
+  esac
+}
+
+if (( $# == 0 )); then
+  steps=(ruby js css browser house)
+else
+  steps=("$@")
+fi
+
+for step in "${steps[@]}"; do
+  run_step "$step"
+done

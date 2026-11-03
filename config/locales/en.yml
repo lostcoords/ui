@@ -1,0 +1,28 @@
+en:
+  lostcoords:
+    ui:
+      emoji_picker:
+        recently_used: "Recently used"
+        search_label: "Search emoji"
+        search_placeholder: "Search emoji"
+        no_results: "No emoji found."
+        search_results: "Search results"
+        categories_nav: "Emoji categories"
+        skin_tone: "Skin tone"
+        skin_tones:
+          default: "Default"
+          light: "Light"
+          medium_light: "Medium-light"
+          medium: "Medium"
+          medium_dark: "Medium-dark"
+          dark: "Dark"
+        categories:
+          smileys_emotion: "Smileys & Emotion"
+          people_body: "People & Body"
+          animals_nature: "Animals & Nature"
+          food_drink: "Food & Drink"
+          travel_places: "Travel & Places"
+          activities: "Activities"
+          objects: "Objects"
+          symbols: "Symbols"
+          flags: "Flags"

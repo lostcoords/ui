@@ -1,0 +1,13 @@
+{
+  "name": "lostcoords-ui-tooling",
+  "version": "0.0.0",
+  "description": "Dev-only lint tooling for lostcoords-ui. The gem ships no JavaScript build step.",
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "@biomejs/biome": "^2.5.6",
+    "prettier": "^3.9.6",
+    "stylelint": "^17.14.1",
+    "stylelint-config-standard": "^40.0.0"
+  }
+}

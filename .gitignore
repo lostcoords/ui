@@ -1,0 +1,6 @@
+/node_modules/
+/pkg/
+/test/dummy/tmp/
+/test/dummy/log/
+/test/dummy/app/assets/builds/*
+!/test/dummy/app/assets/builds/.keep

@@ -1,0 +1,28 @@
+ja:
+  lostcoords:
+    ui:
+      emoji_picker:
+        recently_used: "最近使った絵文字"
+        search_label: "絵文字を検索"
+        search_placeholder: "絵文字を検索"
+        no_results: "一致する絵文字がありません。"
+        search_results: "検索結果"
+        categories_nav: "絵文字のカテゴリ"
+        skin_tone: "肌の色"
+        skin_tones:
+          default: "標準"
+          light: "薄い"
+          medium_light: "やや薄い"
+          medium: "中間"
+          medium_dark: "やや濃い"
+          dark: "濃い"
+        categories:
+          smileys_emotion: "表情と感情"
+          people_body: "人と体"
+          animals_nature: "動物と自然"
+          food_drink: "食べ物と飲み物"
+          travel_places: "旅行と場所"
+          activities: "アクティビティ"
+          objects: "もの"
+          symbols: "記号"
+          flags: "旗"

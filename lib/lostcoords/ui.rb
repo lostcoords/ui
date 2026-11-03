@@ -1,0 +1,5 @@
+require "heroicons"
+require "importmap-rails"
+require "tailwind_merge"
+require "lostcoords/ui/version"
+require "lostcoords/ui/engine"

@@ -1,0 +1,43 @@
+/* Removing [open] hides the content at once, so disclosure_controller holds the
+   panel open under [data-closing] for the exit, then closes it. Transitioning
+   content-visibility makes WebKit keep the panel hidden for part of the opening. */
+@layer components {
+  .disclosure-animated {
+    interpolate-size: allow-keywords; /* browser-compat: enhancement */
+
+    &::details-content {
+      block-size: 0;
+      overflow-y: clip;
+      opacity: 0;
+      translate: 0 -0.375rem;
+      transition:
+        block-size 420ms var(--ease-out-expo),
+        opacity 220ms var(--ease-out),
+        translate 320ms var(--ease-out-expo);
+    }
+
+    &[open]::details-content {
+      block-size: auto;
+      opacity: 1;
+      translate: 0;
+    }
+
+    /* Where `auto` cannot ease, a 0 here would snap shut before the fade
+       shows; the controller shrinks the <details> instead. */
+    &[data-closing]::details-content {
+      opacity: 0;
+      translate: 0 -0.375rem;
+      transition-duration: 260ms, 160ms, 200ms;
+      transition-timing-function: var(--ease-out);
+    }
+
+    @supports (interpolate-size: allow-keywords) {
+      &[data-closing]::details-content { block-size: 0; }
+    }
+
+    /* The global reduced-motion reset's *::after does not reach this pseudo. */
+    @media (prefers-reduced-motion: reduce) {
+      &::details-content { transition-duration: 0.01ms; }
+    }
+  }
+}

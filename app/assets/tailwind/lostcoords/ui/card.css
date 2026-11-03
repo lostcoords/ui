@@ -1,0 +1,26 @@
+@layer components {
+  /* Shared paper-card chrome. Used as a bare `.card-surface` hook in ~17
+     places across many feature partials (group lists, transactions, overview
+     cards and currency tools. Kept authored — not folded into
+     card_surface_class — because several call sites override the border
+     (`border-transparent`), background or radius with utilities that must
+     out-cascade this base; a utilities-layer helper emitting a `[border:…]`
+     shorthand would defeat those overrides. Semantic classes set the
+     --card-surface-* vars for local tone. (Form cards use form_card_class,
+     which carries this same chrome plus padding/container/error border.) */
+  .card-surface {
+    --avatar-cutout: var(--card-surface-bg, var(--paper-2));
+    background: var(--card-surface-bg, var(--paper-2));
+    border: var(--card-surface-border, 1px solid transparent);
+    border-radius: var(--card-surface-radius, var(--radius-3xl));
+    box-shadow: var(--card-surface-shadow, none);
+    transition:
+      background 0.18s var(--ease-out),
+      border-color 0.18s var(--ease-out),
+      box-shadow 0.18s var(--ease-out);
+  }
+
+  .form-card + .form-card { margin-block-start: 1rem; }
+
+  .form-submit { margin-block-start: 2rem; }
+}
