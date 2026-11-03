@@ -1,0 +1,51 @@
+@layer components {
+  .lc-table {
+    --table-rule: color-mix(in oklab, var(--foreground) 8%, transparent);
+    border-collapse: collapse;
+
+    & :where(th, td) {
+      padding: var(--spacing-heading) var(--spacing-content);
+    }
+
+    & :where(th) {
+      text-align: inherit;
+      font-weight: 600;
+    }
+
+    & :where(thead th) {
+      background-color: var(--muted);
+      color: var(--muted-foreground);
+      font-size: var(--text-caption);
+      line-height: var(--text-caption--line-height);
+      border-block-end: thin solid color-mix(in oklab, var(--foreground) 14%, transparent);
+    }
+
+    & :where(tbody tr > *) {
+      border-block-end: thin solid var(--table-rule);
+    }
+
+    & :where(tbody:last-of-type tr:last-child > *) {
+      border-block-end: 0;
+    }
+
+    & :where(tbody tr) {
+      transition: background-color 150ms ease-out;
+    }
+
+    & :where(tbody tr:hover) {
+      background-color: color-mix(in oklab, var(--foreground) 4%, transparent);
+    }
+
+    & :where(caption) {
+      padding: 0 var(--spacing-content) var(--spacing-heading);
+      color: var(--muted-foreground);
+      text-align: start;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lc-table :where(tbody tr) {
+      transition: none;
+    }
+  }
+}

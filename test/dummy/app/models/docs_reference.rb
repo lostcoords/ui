@@ -13,7 +13,7 @@ module DocsReference
   end
 
   def self.json
-    JSON.pretty_generate({ library: "lostcoords-ui", adapter: "Rails", components: components, blocks: blocks, tokens: Lostcoords::Ui::TOKENS, styles: Lostcoords::Ui::Builders.all.map(&:signature) }) + "\n"
+    JSON.pretty_generate({ library: "lostcoords-ui", adapter: "Rails", components: components, blocks: blocks, tokens: Lostcoords::Ui::TOKENS, color_roles: Lostcoords::Ui::Tokens::COLORS, styles: Lostcoords::Ui::Builders.all.map(&:signature) }) + "\n"
   end
 
   def self.blocks
@@ -28,6 +28,9 @@ module DocsReference
 
   def self.text
     lines = [ "# lostcoords-ui", "", "Rails rendering helpers with semantic HTML, native attributes and browser interactions.", "", "Install and styling: https://ui.lostcoords.com/installation.html", "Theming: https://ui.lostcoords.com/theming.html", "API JSON: https://ui.lostcoords.com/api.json", "", "Tailwind CSS v4 is required. Install the gem once; the Rails engine exposes all lc_* helpers without per-component imports.", "The engine includes a default light and dark theme. Override CSS variables only as needed. Use class: to merge Tailwind utilities, data: and aria: for native attributes. Block helpers capture Rails ERB.", "lc_button_to keeps Rails form, method and CSRF semantics. Each host application's lockfile pins its version.", "" ]
+    lines += [ "## Theme colors", "", "Override only the roles you need. Soft status backgrounds are generated automatically. Primary controls actions, links, selection and focus.", "" ]
+    Lostcoords::Ui::Tokens::COLORS.each { |name, description| lines << "- `#{name}`: #{description}" }
+    lines << ""
     components.each do |component|
       lines += [ "## #{component[:name]}", "", "```ruby", component[:signature], "```", "" ]
       component[:examples].each do |example|

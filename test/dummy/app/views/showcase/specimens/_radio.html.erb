@@ -1,0 +1,5 @@
+<%= lc_choice_group legend: "Plan", hint: "You can change plans at any time." do %>
+  <%= lc_radio "Free", name: "plan", value: "free", checked: true %>
+  <%= lc_radio "Team", name: "plan", value: "team", hint: "Shared projects and roles." %>
+  <%= lc_radio "Enterprise", name: "plan", value: "enterprise" %>
+<% end %>

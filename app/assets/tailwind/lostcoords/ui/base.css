@@ -1,0 +1,45 @@
+/* Document defaults for apps that let the library own the page. components.css
+   omits this file, so a host with its own base styles keeps them. */
+@layer base {
+  :root { color-scheme: light; }
+  html[data-theme="dark"] { color-scheme: dark; }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    line-height: 1.5;
+  }
+
+  :is(h1, h2, h3, h4, h5) {
+    font-family: var(--font-display);
+    line-height: 1.2;
+    color: var(--foreground);
+  }
+
+  button { cursor: pointer; background: none; }
+
+  dialog { background: transparent; color: inherit; }
+
+  :where([popover]) { color: inherit; }
+
+  :is(a, button, input, textarea, select, summary, [tabindex]):focus-visible,
+  label:has(input.sr-only:focus-visible) {
+    outline: calc(var(--spacing) * 0.5) solid var(--ring, color-mix(in oklab, var(--primary) 50%, transparent));
+    outline-offset: 0;
+  }
+
+  dialog:focus-visible { outline: none; }
+
+  :where(code):not(:where(pre code)) {
+    @apply lc-inline-code;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}

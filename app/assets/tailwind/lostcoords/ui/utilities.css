@@ -1,45 +1,37 @@
-/* The rim is the border box painted with --pill-rim under the surface, so
-   one element carries both layers. */
-@utility pill-3d {
-  border: calc(var(--spacing) * 0.375) solid transparent;
-  background: var(--pill-surface) padding-box, var(--pill-rim) border-box;
-  box-shadow: var(--pill-light), var(--pill-depth);
-}
-
 /* A control gives a little as it is pressed, unless it is disabled. */
-@utility press {
+@utility lc-press {
   @media (prefers-reduced-motion: no-preference) {
     &:not([disabled], :disabled, [aria-disabled="true"]):active {
-      transform: scale(var(--press-scale, var(--ui-press-scale)));
+      transform: scale(var(--lc-press-scale));
     }
   }
 }
 
 @layer components {
   /* A data-URI image cannot read CSS variables, so the chevron's ink is baked in. */
-  select.select-control {
+  select.lc-select {
     appearance: none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%237b808a' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 8 4 4 4-4'/%3E%3C/svg%3E");
     background-size: calc(var(--spacing) * 5) calc(var(--spacing) * 5);
     background-repeat: no-repeat;
-    background-position: right calc(var(--spacing) * 4) center;
+    background-position: right calc(var(--spacing) * 3) center;
   }
 }
 
-@property --scroll-fade-start { syntax: "<length>"; inherits: false; initial-value: 0; }
-@property --scroll-fade-end { syntax: "<length>"; inherits: false; initial-value: 0; }
+@property --lc-scroll-fade-start { syntax: "<length>"; inherits: false; initial-value: 0; }
+@property --lc-scroll-fade-end { syntax: "<length>"; inherits: false; initial-value: 0; }
 
-@keyframes scroll-fade-x {
-  0%   { --scroll-fade-start: 0; --scroll-fade-end: 2rem; }
-  15%  { --scroll-fade-start: 2rem; }
-  85%  { --scroll-fade-end: 2rem; }
-  100% { --scroll-fade-start: 2rem; --scroll-fade-end: 0; }
+@keyframes lc-scroll-fade-x {
+  0%   { --lc-scroll-fade-start: 0; --lc-scroll-fade-end: 2rem; }
+  15%  { --lc-scroll-fade-start: 2rem; }
+  85%  { --lc-scroll-fade-end: 2rem; }
+  100% { --lc-scroll-fade-start: 2rem; --lc-scroll-fade-end: 0; }
 }
 
 @supports (animation-timeline: scroll(self inline)) {
-  .scroll-fade-x {
-    mask-image: linear-gradient(to right, transparent, black var(--scroll-fade-start), black calc(100% - var(--scroll-fade-end)), transparent);
-    animation: scroll-fade-x linear both;
+  .lc-scroll-fade-x {
+    mask-image: linear-gradient(to right, transparent, black var(--lc-scroll-fade-start), black calc(100% - var(--lc-scroll-fade-end)), transparent);
+    animation: lc-scroll-fade-x linear both;
     animation-timeline: scroll(self inline);
   }
 }

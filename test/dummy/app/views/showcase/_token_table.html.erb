@@ -1,0 +1,34 @@
+<%# locals: (tokens:, id:) %>
+<div class="overflow-x-auto">
+  <%= lc_table id: id, class: "min-w-[42rem]" do %>
+    <caption class="sr-only"><%= id == "theme-color-table" ? "Theme colors" : "Style settings" %></caption>
+    <thead>
+      <tr>
+        <th scope="col" class="text-start">CSS property</th>
+        <th scope="col" class="text-start">Value</th>
+        <th scope="col" class="text-start">Used for</th>
+      </tr>
+    </thead>
+    <% tokens.group_by(&:group).each do |group, settings| %>
+      <tbody>
+        <% unless group == "Colors" %><tr><th scope="rowgroup" colspan="3" class="bg-muted text-start"><%= group %></th></tr><% end %>
+        <% settings.each do |token| %>
+          <tr data-showcase-target="<%= token.default ? 'filterableToken' : 'token' %><%= ' filterableToken' if !token.default && group != 'Colors' %>" data-token="<%= token.name unless token.default %>">
+            <th scope="row" class="text-start"><code class="break-all"><%= token.name %></code></th>
+            <td class="max-w-72 break-words">
+              <% if token.default %>
+                <code class="font-mono text-xs"><%= token.default %></code>
+              <% else %>
+                <span class="flex min-w-0 items-center gap-2">
+                  <span class="size-5 shrink-0 rounded-md bg-(--swatch) shadow-(--lc-shadow)" data-token-swatch hidden></span>
+                  <code class="font-mono text-xs break-all" data-token-value></code>
+                </span>
+              <% end %>
+            </td>
+            <td class="text-muted-foreground"><%= token.controls %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    <% end %>
+  <% end %>
+</div>

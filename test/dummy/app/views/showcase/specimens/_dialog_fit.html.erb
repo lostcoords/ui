@@ -1,0 +1,6 @@
+<%= lc_dialog id: "EXAMPLE_ID-sheet", title: "Workspace details", trigger: "Open mobile dialog", detents: "fit" do %>
+  <p class="text-sm text-muted-foreground">Drag the handle down to dismiss.</p>
+  <%= lc_field label: "Workspace", id: "EXAMPLE_ID-workspace" do |field| %>
+    <%= lc_input value: "Design studio", **field %>
+  <% end %>
+<% end %>

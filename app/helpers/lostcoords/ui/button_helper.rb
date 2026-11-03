@@ -1,70 +1,73 @@
 module Lostcoords::Ui
   module ButtonHelper
     BUTTON_BASE =
-      "inline-flex items-center justify-center gap-2 rounded-full font-body font-medium " \
+      "inline-flex items-center justify-center gap-related rounded-pill font-sans " \
       "whitespace-nowrap no-underline cursor-pointer " \
-      "transition-[background-color,border-color,color,box-shadow,transform,translate,scale,filter] duration-(--ui-motion-control) ease-out " \
+      "transition-[background-color,border-color,color,box-shadow,transform,translate,scale,filter] duration-(--lc-motion-control) ease-(--lc-ease-out) " \
       "motion-safe:hover:-translate-y-px motion-safe:active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none " \
       "[&_svg]:block [&_svg:not([class*='size-'])]:size-[1.1em] [&_svg]:shrink-0"
 
+    # Height comes from the shared control sizes; an icon trims the padding on its side.
     BUTTON_SIZES = {
-      sm: "#{TailwindHelper::CONTROL_SIZES[:sm]} px-4 has-[>[data-icon=inline-start]]:ps-3 has-[>[data-icon=inline-end]]:pe-3 text-sm",
-      base: "#{TailwindHelper::CONTROL_SIZES[:base]} px-5 has-[>[data-icon=inline-start]]:ps-4 has-[>[data-icon=inline-end]]:pe-4 text-base",
-      lg: "#{TailwindHelper::CONTROL_SIZES[:lg]} px-7 has-[>[data-icon=inline-start]]:ps-6 has-[>[data-icon=inline-end]]:pe-6 text-base",
-      nav: "#{TailwindHelper::CONTROL_SIZES[:sm]} px-4 has-[>[data-icon=inline-start]]:ps-3 has-[>[data-icon=inline-end]]:pe-3 text-base"
+      sm: "#{TailwindHelper::CONTROL_SIZES[:sm]} px-3 has-[>[data-icon=inline-start]]:ps-2.5 has-[>[data-icon=inline-end]]:pe-2.5 text-label",
+      md: "#{TailwindHelper::CONTROL_SIZES[:md]} px-4 has-[>[data-icon=inline-start]]:ps-3.5 has-[>[data-icon=inline-end]]:pe-3.5 text-label",
+      lg: "#{TailwindHelper::CONTROL_SIZES[:lg]} px-5 has-[>[data-icon=inline-start]]:ps-4 has-[>[data-icon=inline-end]]:pe-4 text-body font-medium"
     }.freeze
 
+    BUTTON_HOVER =
+      "hover:bg-[color-mix(in_oklab,var(--lc-button-bg,var(--secondary))_94%,var(--lc-button-ink,var(--foreground)))] " \
+      "active:bg-[color-mix(in_oklab,var(--lc-button-bg,var(--secondary))_94%,var(--lc-button-ink,var(--foreground)))]"
+
     BUTTON_VARIANTS = {
-      default: "border border-transparent bg-paper text-ink active:bg-paper-2",
-      accent: "border border-transparent bg-sky text-ink-on-accent hover:bg-sky-deep active:bg-sky-deep",
-      secondary: "border border-transparent bg-paper-2 text-ink hover:bg-paper-3 active:bg-paper-3",
-      glass: "pill-3d text-ink hover:brightness-[0.98] active:brightness-[0.96]",
-      ghost: "border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2))",
-      danger: "border border-transparent bg-transparent text-berry hover:bg-berry/8 active:bg-berry/8"
+      primary: "border border-transparent [--lc-button-bg:var(--primary)] [--lc-button-ink:var(--primary-foreground)] bg-(--lc-button-bg) text-(--lc-button-ink) #{BUTTON_HOVER}",
+      secondary: "border border-transparent [--lc-button-bg:var(--secondary)] [--lc-button-ink:var(--secondary-foreground)] bg-(--lc-button-bg) text-(--lc-button-ink) #{BUTTON_HOVER}",
+      outline: "border border-border bg-transparent text-(--lc-button-ink,var(--foreground)) #{BUTTON_HOVER}",
+      glass: "[--lc-button-bg:var(--_lc-glass-fill)] text-(--lc-button-ink,var(--foreground)) #{BUTTON_HOVER}",
+      ghost: "border border-transparent bg-transparent text-muted-foreground hover:text-(--lc-button-ink,var(--foreground)) #{BUTTON_HOVER}",
+      destructive: "border border-transparent [--lc-button-bg:color-mix(in_oklab,var(--destructive)_60%,black)] [--lc-button-ink:#fff] bg-(--lc-button-bg) text-(--lc-button-ink) #{BUTTON_HOVER}"
     }.freeze
 
     ICON_BUTTON_BASE =
-      "inline-grid place-items-center shrink-0 border-0 bg-transparent " \
-      "text-ink-3 cursor-pointer no-underline " \
-      "transition-[background-color,color,transform,scale] duration-(--ui-motion-quick) ease-out " \
-      "hover:bg-paper-2 hover:text-ink motion-safe:active:scale-(--ui-press-scale) " \
+      "lc-press inline-grid place-items-center shrink-0 border-0 bg-transparent " \
+      "text-muted-foreground cursor-pointer no-underline " \
+      "transition-[background-color,color,transform,scale] duration-(--lc-motion-quick) ease-(--lc-ease-out) " \
+      "hover:text-(--lc-button-ink,var(--foreground)) #{BUTTON_HOVER} " \
       "disabled:opacity-40 disabled:pointer-events-none " \
       "[&_svg]:block [&_svg]:shrink-0"
 
     ICON_BUTTON_SHAPES = {
-      square: "rounded-xl",
-      circle: "rounded-full"
+      square: "rounded-xl lc-squircle",
+      circle: "rounded-pill"
     }.freeze
 
     ICON_BUTTON_SIZES = {
-      sm: "size-11 [&_svg]:size-4",
-      base: "size-12 [&_svg]:size-5",
-      lg: "size-14 [&_svg]:size-6"
+      sm: "size-control-sm [&_svg]:size-4",
+      md: "size-control-md [&_svg]:size-5",
+      lg: "size-control-lg [&_svg]:size-6"
     }.freeze
 
-    def lc_button_class(variant: :default, size: :base, block: false, extra: nil)
+    def lc_button_class(variant: :primary, size: :md, block: false, extra: nil)
+      variant = lc_option!(:variant, variant, BUTTON_VARIANTS.keys)
+      size = lc_option!(:size, size, BUTTON_SIZES.keys)
       lc_tw(
         BUTTON_BASE,
-        BUTTON_SIZES.fetch(size.to_sym, BUTTON_SIZES[:base]),
-        lc_button_variants.fetch(variant.to_sym, lc_button_variants[:default]),
+        BUTTON_SIZES.fetch(size),
+        (lc_glass_class(shape: :bar) if variant == :glass),
+        BUTTON_VARIANTS.fetch(variant),
         ("w-full" if block),
         extra
       )
     end
 
-    def lc_icon_button_class(shape: :square, size: :base, extra: nil)
+    def lc_icon_button_class(shape: :square, size: :md, extra: nil)
+      shape = lc_option!(:shape, shape, ICON_BUTTON_SHAPES.keys)
+      size = lc_option!(:size, size, ICON_BUTTON_SIZES.keys)
       lc_tw(
         ICON_BUTTON_BASE,
-        ICON_BUTTON_SHAPES.fetch(shape.to_sym, ICON_BUTTON_SHAPES[:square]),
-        ICON_BUTTON_SIZES.fetch(size.to_sym, ICON_BUTTON_SIZES[:base]),
+        ICON_BUTTON_SHAPES.fetch(shape),
+        ICON_BUTTON_SIZES.fetch(size),
         extra
       )
-    end
-
-    private
-
-    def lc_button_variants
-      BUTTON_VARIANTS
     end
   end
 end

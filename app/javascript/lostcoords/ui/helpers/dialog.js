@@ -1,4 +1,4 @@
-import { registerDismissable } from "helpers/dismiss_stack"
+import { registerDismissable } from "lostcoords/ui/helpers/dismiss_stack"
 
 const registrations = new WeakMap()
 
@@ -8,7 +8,7 @@ export function registerDialog(dialog, { close = () => dialog.close(), lockScrol
 
   const unregisterDismissable = registerDismissable({
     element: dialog,
-    type: "modal",
+    type: "lc-dialog",
     lockScroll,
     close,
     isOpen: () => dialog.open,

@@ -1,0 +1,11 @@
+<%= lc_tabs id: "EXAMPLE_ID-tabs", label: "Project", class: "w-full" do |tabs| %>
+  <% tabs.panel "Overview" do %>
+    <%= lc_text "Pages, members and recent changes." %>
+  <% end %>
+  <% tabs.panel "Activity" do %>
+    <%= lc_text "Nothing new this week.", tone: :muted %>
+  <% end %>
+  <% tabs.panel "Settings" do %>
+    <%= lc_switch "Public project", name: "project[public]" %>
+  <% end %>
+<% end %>

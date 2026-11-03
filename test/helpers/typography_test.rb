@@ -7,16 +7,16 @@ module Lostcoords::Ui
     end
 
     test "heading level controls semantics independently of visual size" do
-      heading = fragment(@view.lc_heading("Expenses", level: 3, size: :page)).at_css("h3")
+      heading = fragment(@view.lc_heading("Expenses", level: 3, size: :title)).at_css("h3")
 
       assert_equal "Expenses", heading.text
-      assert_includes heading["class"].split, "ui-heading-page"
+      assert_includes heading["class"].split, "text-title"
       assert_nil fragment(@view.lc_heading("Expenses", level: 3)).at_css("h2")
-      assert fragment(@view.lc_heading("Expenses")).at_css("h2.ui-heading-section")
+      assert fragment(@view.lc_heading("Expenses")).at_css("h2.text-heading")
     end
 
     test "heading content is escaped and native attributes are preserved" do
-      heading = fragment(@view.lc_heading("<Expenses>", level: 1, id: "title", lang: "ja", data: { controller: "title" }, aria: { describedby: "subtitle" }, class: [ "text-accent", { "min-w-0" => true } ])).at_css("h1")
+      heading = fragment(@view.lc_heading("<Expenses>", level: 1, id: "title", lang: "ja", data: { controller: "title" }, aria: { describedby: "subtitle" }, class: [ "text-primary", { "min-w-0" => true } ])).at_css("h1")
 
       assert_equal "<Expenses>", heading.text
       assert_nil heading.at_css("expenses")
@@ -24,8 +24,8 @@ module Lostcoords::Ui
       assert_equal "ja", heading["lang"]
       assert_equal "title", heading["data-controller"]
       assert_equal "subtitle", heading["aria-describedby"]
-      assert_includes heading["class"].split, "text-accent"
-      assert_not_includes heading["class"].split, "text-ink"
+      assert_includes heading["class"].split, "text-primary"
+      assert_not_includes heading["class"].split, "text-foreground"
       assert_includes heading["class"].split, "min-w-0"
     end
 
@@ -34,17 +34,17 @@ module Lostcoords::Ui
 
       assert_equal "<Details>", paragraph.text
       assert_nil paragraph.at_css("details")
-      assert_includes paragraph["class"].split, "ui-text-small"
-      assert_includes paragraph["class"].split, "text-ink-2"
-      assert fragment(@view.lc_text("Details")).at_css("p.ui-text-body")
-      assert fragment(@view.lc_text("Updated today", size: :caption, tone: :subtle)).at_css("p.ui-text-caption.text-ink-3")
+      assert_includes paragraph["class"].split, "text-small"
+      assert_includes paragraph["class"].split, "text-muted-foreground"
+      assert fragment(@view.lc_text("Details")).at_css("p.text-body")
+      assert fragment(@view.lc_text("Updated today", size: :caption, tone: :muted)).at_css("p.text-caption.text-muted-foreground")
     end
 
     test "typography blocks capture markup and preserve attributes" do
-      heading = @view.lc_heading(level: 4, size: :card) { @view.tag.em("Shared expenses") }
+      heading = @view.lc_heading(level: 4, size: :subheading) { @view.tag.em("Shared expenses") }
       paragraph = @view.lc_text(id: "description", lang: "ja", data: { state: "ready" }) { @view.tag.strong("Details") }
 
-      assert_equal "Shared expenses", fragment(heading).at_css("h4.ui-heading-card em").text
+      assert_equal "Shared expenses", fragment(heading).at_css("h4.text-subheading em").text
       assert_equal "Details", fragment(paragraph).at_css("p#description strong").text
       assert_equal "ja", fragment(paragraph).at_css("p")["lang"]
       assert_equal "ready", fragment(paragraph).at_css("p")["data-state"]
@@ -56,9 +56,9 @@ module Lostcoords::Ui
       end
       assert_raises(ArgumentError) { @view.lc_heading("Title", size: :huge) }
       assert_raises(ArgumentError) { @view.lc_text("Details", size: nil) }
-      assert_raises(ArgumentError) { @view.lc_text("Details", tone: :danger) }
+      assert_raises(ArgumentError) { @view.lc_text("Details", tone: :destructive) }
       assert_raises(ArgumentError) { @view.lc_heading_class(size: :huge) }
-      assert_raises(ArgumentError) { @view.lc_text_class(tone: :danger) }
+      assert_raises(ArgumentError) { @view.lc_text_class(tone: :destructive) }
     end
 
     private

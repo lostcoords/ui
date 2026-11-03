@@ -1,0 +1,5 @@
+<%= lc_stack gap: :related do %>
+  <%= lc_checkbox "Email me about comments", name: "notify[comments]", checked: true %>
+  <%= lc_checkbox "Weekly digest", name: "notify[digest]", hint: "A summary every Monday." %>
+  <%= lc_checkbox "Product news", name: "notify[news]", disabled: true %>
+<% end %>

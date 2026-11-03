@@ -4,6 +4,26 @@ require "tailwindcss/ruby"
 
 module Lostcoords::Ui
   class StylesheetTest < ActiveSupport::TestCase
+    test "the component entry compiles without document styles" do
+      Dir.mktmpdir do |dir|
+        input = File.join(dir, "input.css")
+        File.write(input, <<~CSS)
+          @import "tailwindcss/theme.css";
+          @import "tailwindcss/utilities.css";
+          @plugin "@tailwindcss/typography";
+          @import "#{Lostcoords::Ui.root.join('app/assets/tailwind/lostcoords/ui/components.css')}";
+        CSS
+        _, error, status = Open3.capture3(Tailwindcss::Ruby.executable, "-i", input, "-o", "#{dir}/out.css")
+        assert status.success?, error
+        css = File.read("#{dir}/out.css")
+        assert_includes css, ".lc-copy-content"
+        assert_includes css, ".lc-prose"
+        refute css.match?(/\n\s*body\s*\{/), "Component CSS contains a document body rule"
+        refute css.match?(/(?:^|[{}])\s*:where\(code\):not\(:where\(pre code\)\)/m), "Component CSS styles host inline code"
+        refute_includes css, "--text-sm--line-height: initial"
+      end
+    end
+
     test "a host build reaches the gem's stylesheet and scans its helpers through the engines entry" do
       Tailwindcss::Engines.bundle
       generated = Rails.root.join("app/assets/builds/tailwind/lostcoords_ui.css").read
@@ -16,8 +36,8 @@ module Lostcoords::Ui
         _, error, status = Open3.capture3(Tailwindcss::Ruby.executable, "-i", Rails.root.join("app/assets/tailwind/application.css").to_s, "-o", "#{dir}/out.css")
         assert status.success?, error
         css = File.read("#{dir}/out.css")
-        assert_includes css, ".duration-\\(--ui-motion-control\\)"
-        assert_includes css, ".ui-copy-content"
+        assert_includes css, ".duration-\\(--lc-motion-control\\)"
+        assert_includes css, ".lc-copy-content"
       end
     end
   end

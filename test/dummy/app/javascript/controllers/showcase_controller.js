@@ -4,7 +4,15 @@ const PALETTE_KEY = "lostcoords-ui:palette"
 const THEME_KEY = "lostcoords-ui:theme"
 
 export default class extends Controller {
-  static targets = ["theme", "token", "palette", "paletteStatus"]
+  static targets = [
+    "theme",
+    "token",
+    "palette",
+    "paletteStatus",
+    "tokenFilter",
+    "tokenCount",
+    "filterableToken",
+  ]
 
   connect() {
     this.onStorage = (event) => {
@@ -74,9 +82,30 @@ export default class extends Controller {
     for (const row of this.tokenTargets) {
       const value = style.getPropertyValue(row.dataset.token).trim()
       const swatch = row.querySelector("[data-token-swatch]")
-      row.querySelector("[data-token-value]").textContent = value || "inlined by @theme inline"
+      row.querySelector("[data-token-value]").textContent = value || "Not set"
       swatch.hidden = !CSS.supports("color", value)
       swatch.style.setProperty("--swatch", value)
     }
+    this.filterTokens()
+  }
+
+  filterTokens() {
+    if (!this.hasTokenFilterTarget) return
+
+    const query = this.tokenFilterTarget.value.trim().toLowerCase()
+    let visible = 0
+    for (const row of this.filterableTokenTargets) {
+      row.hidden = !row.textContent.toLowerCase().includes(query)
+      if (!row.hidden) visible += 1
+    }
+    for (const group of this.element.querySelectorAll("#foundation-token-table tbody")) {
+      const heading = group.querySelector(
+        ":scope > tr:not([data-showcase-target~='filterableToken'])",
+      )
+      const rows = [...group.querySelectorAll("[data-showcase-target~='filterableToken']")]
+      const hasMatches = rows.some((row) => !row.hidden)
+      if (heading) heading.hidden = !hasMatches
+    }
+    this.tokenCountTarget.textContent = `${visible} of ${this.filterableTokenTargets.length} tokens`
   }
 }

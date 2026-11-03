@@ -1,4 +1,0 @@
-<%= tag.div class: lc_form_alert_class(extra: local_assigns[:class]), data: { tone: local_assigns.fetch(:tone, :error) }, **local_assigns.fetch(:attributes, {}) do %>
-  <%= lc_form_alert_icon(tone: local_assigns.fetch(:tone, :error)) %>
-  <p class="m-0 min-w-0 text-pretty [overflow-wrap:anywhere]"><%= local_assigns[:message] %></p>
-<% end %>

@@ -1,5 +1,5 @@
 @layer components {
-  .ui-container-page {
-    padding-inline: var(--ui-gutter, clamp(1rem, 3vw, 1.5rem));
+  .lc-container-page {
+    padding-inline: var(--spacing-gutter);
   }
 }

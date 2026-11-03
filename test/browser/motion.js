@@ -11,8 +11,8 @@ async function _verifyMotion(page) {
   await page.goto(`${origin}/components/copy_button.html`)
   await page.waitForFunction(async () => {
     const { application } = await import("controllers/application")
-    const element = document.querySelector('#example-0 [data-controller="ui-copy"]')
-    return element && application.getControllerForElementAndIdentifier(element, "ui-copy")
+    const element = document.querySelector('#example-0 [data-controller="lc-copy"]')
+    return element && application.getControllerForElementAndIdentifier(element, "lc-copy")
   })
   await page.evaluate(() => {
     window.copyTest = { calls: [], mode: "success" }
@@ -34,7 +34,7 @@ async function _verifyMotion(page) {
   })
 
   try {
-    const root = page.locator('#example-0 [data-controller="ui-copy"]').first()
+    const root = page.locator('#example-0 [data-controller="lc-copy"]').first()
     const button = root.getByRole("button")
     const state = async (selector, value) => {
       await page.waitForFunction(
@@ -42,7 +42,7 @@ async function _verifyMotion(page) {
         { selector, value },
       )
     }
-    const selector = '#example-0 [data-controller="ui-copy"]'
+    const selector = '#example-0 [data-controller="lc-copy"]'
     const before = await button.boundingBox()
     await page.evaluate(() => {
       window.copyTest.mode = "pending"
@@ -113,7 +113,7 @@ async function _verifyMotion(page) {
         "https://example.com/edited?x=1&y=2",
       "Source copying reads an edited field's current value",
     )
-    const iconRoot = page.locator('#example-0 [data-controller="ui-copy"]').nth(2)
+    const iconRoot = page.locator('#example-0 [data-controller="lc-copy"]').nth(2)
     await iconRoot.getByRole("button", { name: "Copy link", exact: true }).click()
     verify(
       (await iconRoot.getByRole("status").textContent()) === "Copied",
@@ -121,14 +121,14 @@ async function _verifyMotion(page) {
     )
     verify(
       await page
-        .locator('#example-0 [data-controller="ui-copy"]')
+        .locator('#example-0 [data-controller="lc-copy"]')
         .nth(3)
         .getByRole("button")
         .isDisabled(),
       "Disabled copy controls remain native disabled buttons",
     )
 
-    const docs = page.locator("#usage [data-controller='example']")
+    const docs = page.locator("#usage [data-controller~='lc-code-block']")
     await docs.getByRole("button", { name: /Copy .* usage/ }).click()
     verify(
       (await page.evaluate(() => window.copyTest.calls.at(-1))) ===
@@ -155,8 +155,8 @@ async function _verifyMotion(page) {
     })
   }
 
-  await page.goto(`${origin}/components/motion.html`)
-  const movingButton = page.locator("#example-0 [data-example-preview] button").first()
+  await page.goto(`${origin}/components/foundations.html`)
+  const movingButton = page.locator("#example-6 [data-example-preview] button").first()
   await movingButton.hover()
   verify(
     await movingButton.evaluate((node) => {
@@ -166,18 +166,18 @@ async function _verifyMotion(page) {
     "Button movement uses the shared control timing and transitions translate",
   )
   await movingButton.evaluate((node) => {
-    node.parentElement.style.setProperty("--ui-motion-control", "75ms")
+    node.parentElement.style.setProperty("--lc-motion-control", "75ms")
   })
   verify(
     (await movingButton.evaluate((node) => getComputedStyle(node).transitionDuration)) === "0.075s",
     "Motion timing can be overridden on a container",
   )
   await movingButton.evaluate((node) => {
-    node.parentElement.style.removeProperty("--ui-motion-control")
+    node.parentElement.style.removeProperty("--lc-motion-control")
   })
   await page.emulateMedia({ reducedMotion: "reduce" })
   try {
-    const button = page.locator("#example-0 [data-example-preview] button").first()
+    const button = page.locator("#example-6 [data-example-preview] button").first()
     await button.hover()
     verify(
       await button.evaluate((node) => {
@@ -199,7 +199,7 @@ async function _verifyMotion(page) {
     }
     verify(
       await page
-        .locator("#example-1 [data-copy-state='copied']")
+        .locator("#example-7 [data-copy-state='copied']")
         .first()
         .evaluate((node) => {
           const style = getComputedStyle(node)

@@ -1,0 +1,8 @@
+<%= lc_card class: "w-full" do %>
+  <%= lc_stack do %>
+    <%= lc_alert "Choose a unique project name.", tone: :destructive %>
+    <%= lc_field label: "Project name", id: "EXAMPLE_ID-name", error: "This name is already taken." do |field| %>
+      <%= lc_input name: "project[name]", value: "Design system", **field %>
+    <% end %>
+  <% end %>
+<% end %>

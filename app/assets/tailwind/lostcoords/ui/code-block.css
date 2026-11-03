@@ -1,0 +1,10 @@
+@layer components {
+  @media (hover: hover) and (pointer: fine) {
+    .lc-code-block-copy { opacity: 0; }
+
+    .lc-code-block:is(:hover, :focus-within) .lc-code-block-copy,
+    .lc-code-block-copy:has([data-state="copied"], [data-state="error"]) {
+      opacity: 1;
+    }
+  }
+}

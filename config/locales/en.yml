@@ -1,6 +1,29 @@
 en:
   lostcoords:
     ui:
+      pager:
+        label: "Pages"
+        previous: "Previous"
+        next: "Next"
+      skip_link:
+        label: "Skip to content"
+      spinner:
+        label: "Loading…"
+      dialog:
+        trigger: "Open dialog"
+        cancel: "Cancel"
+        close: "Close %{title}"
+      menu:
+        label: "Actions"
+      popover:
+        trigger: "Open popover"
+      breadcrumb:
+        label: "Breadcrumb"
+      code_block:
+        label: "Source code"
+        copy: "Copy %{label}"
+        expand: "Show all code"
+        collapse: "Show less code"
       copy_button:
         label: "Copy"
         copied: "Copied"

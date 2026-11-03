@@ -16,9 +16,9 @@ module Lostcoords::Ui
       assert_equal "hint", button["aria-describedby"]
       assert_includes button["class"].split, "w-full"
       assert_equal "analytics", button["data-controller"]
-      assert_includes button["data-action"], "ui-copy#copy"
+      assert_includes button["data-action"], "lc-copy#copy"
       assert_includes button["data-action"], "click->analytics#track"
-      assert_equal "<script>unsafe</script>", fragment.at_css("[data-ui-copy-value-value]")["data-ui-copy-value-value"]
+      assert_equal "<script>unsafe</script>", fragment.at_css("[data-lc-copy-value-value]")["data-lc-copy-value-value"]
       assert_nil fragment.at_css("script, link, copied")
       assert_equal [ "Copy <link>", "<Copied>", "Retry" ], button.css("[data-copy-state]").map { |node| node.text.strip }
       assert button.css("[data-copy-state]").all? { |node| node["aria-hidden"] == "true" }
@@ -28,15 +28,15 @@ module Lostcoords::Ui
 
     test "a source reference has a named icon-only button and retains disabled state" do
       fragment = Nokogiri::HTML.fragment(@view.lc_copy_button("Copy code", source: "snippet", icon_only: true, size: :sm, disabled: true, reset_after: 3000))
-      assert_equal "snippet", fragment.at_css("[data-ui-copy-source-value]")["data-ui-copy-source-value"]
-      assert_nil fragment.at_css("[data-ui-copy-value-value]")
-      assert_equal "3000", fragment.at_css("[data-ui-copy-reset-after-value]")["data-ui-copy-reset-after-value"]
+      assert_equal "snippet", fragment.at_css("[data-lc-copy-source-value]")["data-lc-copy-source-value"]
+      assert_nil fragment.at_css("[data-lc-copy-value-value]")
+      assert_equal "3000", fragment.at_css("[data-lc-copy-reset-after-value]")["data-lc-copy-reset-after-value"]
       button = fragment.at_css("button")
       assert_equal "Copy code", button["aria-label"]
       assert_equal "disabled", button["disabled"]
       assert_equal "", button.text.strip
       assert_equal 3, button.css("svg").size
-      assert_includes button["class"].split, "size-11"
+      assert_includes button["class"].split, "size-control-sm"
     end
 
     test "copy labels use the current locale" do
@@ -58,7 +58,7 @@ module Lostcoords::Ui
       assert_raises(ArgumentError) { @view.lc_copy_button(value: "text", "aria-label": "") }
       assert_raises(ArgumentError) { @view.lc_copy_button(value: "text", size: :missing) }
       assert_raises(ArgumentError) { @view.lc_copy_button(value: "text", variant: :missing) }
-      assert_equal "", Nokogiri::HTML.fragment(@view.lc_copy_button(value: "")).at_css("[data-ui-copy-value-value]")["data-ui-copy-value-value"]
+      assert_equal "", Nokogiri::HTML.fragment(@view.lc_copy_button(value: "")).at_css("[data-lc-copy-value-value]")["data-lc-copy-value-value"]
     end
   end
 end

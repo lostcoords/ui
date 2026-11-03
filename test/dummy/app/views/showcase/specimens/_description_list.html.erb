@@ -1,0 +1,10 @@
+<%= lc_card class: "w-full" do |card| %>
+  <%= card.header title: "Workspace" %>
+  <%= lc_description_list do |list| %>
+    <%= list.item "Owner", "Ada Baker" %>
+    <%= list.item "Plan" do %>
+      <%= lc_badge "Team", tone: :primary %>
+    <% end %>
+    <%= list.item "Created", "March 4, 2026" %>
+  <% end %>
+<% end %>

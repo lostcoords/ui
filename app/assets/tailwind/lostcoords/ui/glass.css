@@ -1,17 +1,18 @@
 /* Glass — the floating control layer, used the way iOS uses it: only on
    chrome that floats over content (the nav pills, the phone CTA dock, menus
    and popovers), never on cards or sections. Menus lift further, on
-   --shadow-lg. Written once here because Safari
+   --lc-shadow-lg. Written once here because Safari
    drops custom properties inside -webkit-backdrop-filter, so the blur needs
    literal values, and because the solid fallbacks need @supports and
    prefers-reduced-transparency. glass_class is the only writer of the name. */
 @layer components {
   /* The emoji and currency pickers are glass only as desktop popovers; on
      phones they're bottom sheets, whose rules come later in the cascade and repaint them solid. */
-  .glass {
-    background: var(--glass-fill);
-    border: 1px solid var(--glass-edge);
-    box-shadow: var(--glass-shadow);
+  .lc-glass {
+    --_lc-glass-fill: var(--lc-glass-fill);
+    background: var(--_lc-glass-fill);
+    border: 1px solid var(--lc-glass-edge);
+    box-shadow: var(--lc-glass-shadow);
     -webkit-backdrop-filter: blur(24px) saturate(160%);
     backdrop-filter: blur(24px) saturate(160%);
 
@@ -23,13 +24,13 @@
       backdrop-filter: blur(12px) saturate(180%);
     }
 
-    /* --glass-solid lets inverted (HUD) glass fall back to its own colour. */
+    /* --lc-glass-solid lets inverted (HUD) glass fall back to its own colour. */
     @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-      background: var(--glass-solid, var(--paper));
+      --_lc-glass-fill: var(--lc-glass-solid, var(--background));
     }
 
     @media (prefers-reduced-transparency: reduce) {
-      background: var(--glass-solid, var(--paper));
+      --_lc-glass-fill: var(--lc-glass-solid, var(--background));
       -webkit-backdrop-filter: none;
       backdrop-filter: none;
     }

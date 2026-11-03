@@ -45,9 +45,9 @@ async function _verifyInlineCode(page) {
   }
   await page.goto(`${origin}/components/foundations.html`)
   const prose = await page.evaluate(() => {
-    const paragraph = document.querySelector(".ui-prose p")
+    const paragraph = document.querySelector(".lc-prose p")
     const code = document.createElement("code")
-    code.textContent = "--paper"
+    code.textContent = "--background"
     paragraph.append(code)
     const style = getComputedStyle(code)
     const result = {

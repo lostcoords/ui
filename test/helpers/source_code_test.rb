@@ -23,7 +23,7 @@ class SourceCodeTest < ActiveSupport::TestCase
   test "JavaScript and CSS preserve comments strings and Unicode" do
     samples = {
       javascript: 'const label = "保存 // label"; /* note */ button.focus()',
-      css: '.button { --accent: #315b9a; content: "保存"; /* note */ color: var(--accent); }'
+      css: '.button { --primary: #315b9a; content: "保存"; /* note */ color: var(--primary); }'
     }
     samples.each do |language, source|
       html = ApplicationController.helpers.highlight_source(source, language: language)

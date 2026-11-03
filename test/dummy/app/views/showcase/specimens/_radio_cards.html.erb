@@ -1,0 +1,7 @@
+<%= lc_choice_group legend: "Plan", class: "w-full max-w-md" do %>
+  <%= lc_radio "Free", name: "EXAMPLE_ID-plan", value: "free", hint: "Up to 3 projects.", card: true %>
+  <%= lc_radio "Team", name: "EXAMPLE_ID-plan", value: "team", hint: "Shared projects and roles.", card: true, checked: true do %>
+    <%= lc_text "$12 per member, per month", size: :caption, tone: :muted %>
+  <% end %>
+  <%= lc_radio "Enterprise", name: "EXAMPLE_ID-plan", value: "enterprise", hint: "SSO and audit logs.", card: true %>
+<% end %>

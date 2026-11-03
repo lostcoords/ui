@@ -1,0 +1,14 @@
+<div class="grid w-full gap-4">
+  <p class="text-sm text-muted-foreground">Use glass for controls floating over content. Its translucency is subtle on a flat background.</p>
+  <div class="relative isolate h-64 overflow-hidden rounded-3xl bg-linear-to-br from-success/40 via-warning/40 to-primary/30">
+    <div class="absolute inset-0 grid grid-cols-3 gap-4 p-6" aria-hidden="true">
+      <div class="rounded-3xl bg-background/40"></div>
+      <div class="translate-y-12 rounded-full bg-success/40"></div>
+      <div class="-translate-y-8 rounded-3xl bg-warning/50"></div>
+    </div>
+    <div class="absolute inset-x-6 bottom-6 flex flex-wrap justify-center gap-3">
+      <%= lc_button "Save", variant: :glass, icon: "bookmark" %>
+      <%= lc_button "Share", variant: :glass, icon: "arrow-up-tray" %>
+    </div>
+  </div>
+</div>

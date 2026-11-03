@@ -33,25 +33,24 @@ module ShowcaseHelper
   def showcase_choices(component, parameter)
     ui = Lostcoords::Ui
     choices = {
-      lc_button: { variant: ui::PrimitivesHelper::BUTTON_STYLES.keys, size: ui::TailwindHelper::CONTROL_SIZES.keys },
-      lc_button_link_to: { variant: ui::PrimitivesHelper::BUTTON_STYLES.keys, size: ui::TailwindHelper::CONTROL_SIZES.keys },
-      lc_copy_button: { variant: ui::PrimitivesHelper::BUTTON_STYLES.keys, size: ui::TailwindHelper::CONTROL_SIZES.keys },
-      lc_button_to: { variant: ui::PrimitivesHelper::BUTTON_STYLES.keys, size: ui::TailwindHelper::CONTROL_SIZES.keys },
+      lc_button: { variant: ui::ButtonHelper::BUTTON_VARIANTS.keys, size: ui::TailwindHelper::CONTROL_SIZES.keys },
+      lc_button_link_to: { variant: ui::ButtonHelper::BUTTON_VARIANTS.keys, size: ui::TailwindHelper::CONTROL_SIZES.keys },
+      lc_copy_button: { variant: ui::ButtonHelper::BUTTON_VARIANTS.keys, size: ui::TailwindHelper::CONTROL_SIZES.keys },
+      lc_button_to: { variant: ui::ButtonHelper::BUTTON_VARIANTS.keys, size: ui::TailwindHelper::CONTROL_SIZES.keys },
       lc_icon_button: { shape: ui::ButtonHelper::ICON_BUTTON_SHAPES.keys, size: ui::ButtonHelper::ICON_BUTTON_SIZES.keys },
       lc_badge: { tone: ui::BadgeHelper::BADGE_TONES.keys },
-      lc_status_pill: { tone: ui::BadgeHelper::STATUS_PILL_TONES.keys },
       lc_avatar: { size: ui::BadgeHelper::AVATAR_SIZES.keys },
-      lc_icon_badge: { size: ui::BadgeHelper::ICON_BADGE_SIZES.keys },
-      lc_medallion: { size: ui::BadgeHelper::ICON_MEDALLION_SIZES.keys, tone: ui::BadgeHelper::ICON_MEDALLION_TONES.keys },
-      lc_pill: { size: ui::TailwindHelper::CONTROL_SIZES.keys },
+      lc_icon_badge: { size: ui::BadgeHelper::ICON_BADGE_SIZES.keys, shape: ui::BadgeHelper::ICON_BADGE_SHAPES.keys, tone: ui::BadgeHelper::BADGE_TONES.keys },
+      lc_toggle: { size: ui::TailwindHelper::CONTROL_SIZES.keys },
       lc_input: { size: ui::TailwindHelper::CONTROL_SIZES.keys, type: ui::StructuresHelper::INPUT_TYPES },
       lc_select: { size: ui::TailwindHelper::CONTROL_SIZES.keys },
-      lc_form_card: { padding: ui::CardHelper::FORM_CARD_PADDINGS.keys },
+      lc_card: { padding: ui::CardHelper::CARD_PADDING.keys },
       lc_dialog: { kind: ui::DialogHelper::DIALOGS.keys },
-      lc_form_alert: { tone: ui::FormHelper::FORM_ALERT_ICONS.keys },
+      lc_alert: { tone: ui::FeedbackHelper::ALERT_ICONS.keys },
+      lc_toast: { tone: ui::FeedbackHelper::ALERT_ICONS.keys },
       lc_spinner: { size: ui::FeedbackHelper::SPINNER_SIZES.keys },
       lc_menu: { align: ui::MenuHelper::MENU_POPOVER_ALIGN.keys },
-      lc_popover: { align: ui::MenuHelper::MENU_POPOVER_ALIGN.keys },
+      lc_popover: { align: ui::MenuHelper::MENU_POPOVER_ALIGN.keys, trigger_variant: ui::ButtonHelper::BUTTON_VARIANTS.keys },
       lc_menu_option: { tone: ui::MenuHelper::MENU_OPTION_TONES.keys }
     }.dig(component.name, parameter)
     return choices.map { |key| ":#{key}" }.join(" · ") if choices
@@ -65,9 +64,5 @@ module ShowcaseHelper
     return "true · false" if %w[true false].include?(showcase_parameters(component).to_h[parameter])
 
     "—"
-  end
-
-  def docs_link_class
-    "flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink"
   end
 end

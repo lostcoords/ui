@@ -1,0 +1,11 @@
+<%= lc_nav_list label: "Settings", class: "w-full max-w-60" do |nav| %>
+  <%= nav.group "Workspace" do %>
+    <%= nav.link "General", "#general", current: true %>
+    <%= nav.link "Members", "#members" %>
+    <%= nav.link "Billing", "#billing" %>
+  <% end %>
+  <%= nav.group "Account" do %>
+    <%= nav.link "Profile", "#profile" %>
+    <%= nav.link "Notifications", "#notifications" %>
+  <% end %>
+<% end %>

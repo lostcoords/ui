@@ -1,6 +1,6 @@
 @layer components {
   /* A legend sits outside the fieldset's internal grid. */
-  :where(fieldset.ui-field > legend) {
-    margin-block-end: var(--ui-space-related, 0.5rem);
+  :where(fieldset.lc-field > legend) {
+    margin-block-end: var(--spacing-related);
   }
 }

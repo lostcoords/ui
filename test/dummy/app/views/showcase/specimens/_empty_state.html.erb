@@ -1,8 +1,8 @@
-<%= lc_form_card padding: :empty, class: "w-full" do %>
-  <%= lc_empty_state do %>
-    <%= lc_medallion icon: "folder-plus" %>
-    <h3 class="font-semibold">No projects yet</h3>
-    <p class="text-sm text-ink-2">Create a project to get started.</p>
-    <%= lc_button "Create project" %>
+<%= lc_empty_state class: "w-full" do %>
+  <%= lc_icon_badge shape: :circle, tone: :primary, icon: "folder-plus", size: :lg%>
+  <%= lc_stack gap: :tight, class: "max-w-xs" do %>
+    <%= lc_heading "No projects yet", level: 3, size: :subheading %>
+    <%= lc_text "Create a project to get started.", size: :small, tone: :muted %>
   <% end %>
+  <%= lc_button "Create project" %>
 <% end %>

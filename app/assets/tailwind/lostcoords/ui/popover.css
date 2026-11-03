@@ -1,12 +1,12 @@
 /* Closed is the exit pose, so closing animates too; allow-discrete holds
    display/overlay until it ends. FloatingPanel sets [data-open]. */
-@utility popover-shell {
+@utility lc-popover-shell {
   opacity: 0;
   transform: translateY(--spacing(-1)) scale(0.98);
   pointer-events: none;
   transition:
-    opacity 160ms var(--ease-out-expo),
-    transform 160ms var(--ease-out-expo),
+    opacity 160ms var(--lc-ease-out-expo),
+    transform 160ms var(--lc-ease-out-expo),
     display 160ms allow-discrete,
     overlay 160ms allow-discrete;
 
@@ -23,10 +23,10 @@
 }
 
 @layer components {
-  /* Desktop: the .sheet becomes an anchored popover instead of a bottom sheet. */
+  /* Desktop: the .lc-sheet becomes an anchored popover instead of a bottom sheet. */
   @media (width >= 40rem) {
-    .sheet--anchored {
-      @apply popover-shell;
+    .lc-sheet--anchored {
+      @apply lc-popover-shell;
 
       display: none;
       flex-direction: column;
@@ -48,27 +48,27 @@
   /* Enter/exit for small overlays, whichever way they open: a [hidden] toggle
      (amount calculator, colour picker), the Popover API (phone nav menus) or a
      modal <dialog>. The closed state is the exit pose, so close animates too;
-     allow-discrete holds display/overlay until it ends. --pop-y sets the
+     allow-discrete holds display/overlay until it ends. --lc-pop-y sets the
      direction: popovers drop from their trigger, dialogs rise. */
-  .popover-pop {
-    --pop-from: translateY(var(--pop-y, -0.25rem)) scale(0.96);
+  .lc-popover-pop {
+    --lc-pop-from: translateY(var(--lc-pop-y, -0.25rem)) scale(0.96);
 
-    transform-origin: var(--pop-origin, top);
+    transform-origin: var(--lc-pop-origin, top);
     transition:
-      opacity 160ms var(--ease-out-expo),
-      transform 240ms var(--ease-out-expo),
+      opacity 160ms var(--lc-ease-out-expo),
+      transform 240ms var(--lc-ease-out-expo),
       display 240ms allow-discrete,
       overlay 240ms allow-discrete;
 
     &:is([hidden], [popover]:not(:popover-open), dialog:not([open])) {
       opacity: 0;
-      transform: var(--pop-from);
+      transform: var(--lc-pop-from);
     }
 
     &:is(:not([hidden], [popover], dialog), :popover-open, dialog[open]) {
       @starting-style {
         opacity: 0;
-        transform: var(--pop-from);
+        transform: var(--lc-pop-from);
       }
     }
   }

@@ -1,11 +1,11 @@
 /* A linked avatar's ring draws inside its own footprint, so it takes exactly the space of an
    unlinked one: the outline sits on the edge, over any cutout border, and the inset shadow
    paints the gap in the surface colour. Contexts that already cut the avatar out with a
-   border set --avatar-ring-inset (or --avatar-ring-gap) so the gap doesn't double up. */
-@utility avatar-ring {
-  --avatar-ring: clamp(1.5px, calc(var(--avatar-size, var(--avatar-size-default, --spacing(8))) * 0.06), 3px);
+   border set --lc-avatar-ring-inset (or --lc-avatar-ring-gap) so the gap doesn't double up. */
+@utility lc-avatar-ring {
+  --lc-avatar-ring: clamp(1.5px, calc(var(--lc-avatar-size, var(--lc-avatar-size-default, --spacing(8))) * 0.06), 3px);
 
-  outline: var(--avatar-ring) solid color-mix(in oklab, var(--sky) 74%, var(--paper));
-  outline-offset: calc(var(--avatar-ring) * -1);
-  box-shadow: inset 0 0 0 var(--avatar-ring-inset, calc(var(--avatar-ring) * var(--avatar-ring-gap, 2))) var(--avatar-cutout, var(--paper));
+  outline: var(--lc-avatar-ring) solid color-mix(in oklab, var(--primary) 74%, var(--background));
+  outline-offset: calc(var(--lc-avatar-ring) * -1);
+  box-shadow: inset 0 0 0 var(--lc-avatar-ring-inset, calc(var(--lc-avatar-ring) * var(--lc-avatar-ring-gap, 2))) var(--lc-avatar-cutout, var(--background));
 }

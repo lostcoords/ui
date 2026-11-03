@@ -1,7 +1,7 @@
 <div class="mobile-example min-h-screen" data-controller="blocks-mobile-navigation" data-action="resize@window->blocks-mobile-navigation#keyboard focusin@document->blocks-mobile-navigation#keyboard focusout@document->blocks-mobile-navigation#keyboard">
   <header class="mx-auto flex max-w-2xl items-center justify-between gap-4 px-5 pt-7 pb-6 sm:px-8">
     <a href="#projects" class="flex min-h-11 items-center gap-2 font-semibold" data-action="blocks-mobile-navigation#home"><%= lc_icon "square-3-stack-3d", options: { class: "size-5", "aria-hidden": true } %> Studio</a>
-    <%= lc_avatar "AL", class: "bg-sky-soft text-sky-deep", aria: { label: "Alex Lee" } %>
+    <%= lc_avatar "AL", class: "bg-primary-soft text-primary", aria: { label: "Alex Lee" } %>
   </header>
 
   <nav class="mobile-example__tabs" aria-label="Studio sections">
@@ -16,17 +16,17 @@
   </nav>
 
   <main class="mobile-example__main mx-auto flex max-w-2xl flex-col gap-7 px-5 pt-3 sm:px-8">
-    <div class="flex flex-col gap-2"><%= lc_eyebrow "A space to make things" %><h1 class="text-4xl font-semibold tracking-tight">Your little studio.</h1><p class="text-ink-2">A few good ideas, and room for a few more.</p></div>
-    <p class="text-sm text-ink-2" role="status" aria-live="polite" data-blocks-mobile-navigation-target="status"></p>
+    <div class="flex flex-col gap-2"><%= lc_text "A space to make things", size: :caption, tone: :muted %><h1 class="text-4xl font-semibold tracking-tight">Your little studio.</h1><p class="text-muted-foreground">A few good ideas, and room for a few more.</p></div>
+    <p class="text-sm text-muted-foreground" role="status" aria-live="polite" data-blocks-mobile-navigation-target="status"></p>
 
     <section id="projects" class="flex flex-col gap-4" data-blocks-mobile-navigation-target="panel">
       <div class="flex min-h-11 items-center justify-between gap-3"><h2 class="text-xl font-semibold">On your desk</h2><%= lc_badge "This week" %></div>
       <div class="flex flex-col gap-4" data-blocks-mobile-navigation-target="projects">
-        <% [ [ "Brand refresh", "Finding a fresh perspective.", "swatch", :accent, "In progress" ], [ "Field notes", "Small observations, collected.", "book-open", :leaf, "Taking shape" ], [ "Summer collection", "Objects for everyday moments.", "sun", :neutral, "Just getting started" ] ].each do |title, description, icon, tone, status| %>
-          <%= lc_card class: "flex flex-col gap-5" do %>
-            <div class="flex items-center justify-between gap-3"><%= lc_medallion icon: icon, size: :lg, tone: tone %><%= lc_badge status %></div>
-            <div class="flex flex-col gap-1"><h3 class="text-lg font-semibold"><%= title %></h3><p class="text-sm text-ink-2"><%= description %></p></div>
-            <div class="flex items-center gap-2 text-sm text-ink-3"><%= lc_avatar "AL", size: :sm, class: "bg-paper text-ink-2" %><span>You and your collaborators</span></div>
+        <% [ [ "Brand refresh", "Finding a fresh perspective.", "swatch", :primary, "In progress" ], [ "Field notes", "Small observations, collected.", "book-open", :success, "Taking shape" ], [ "Summer collection", "Objects for everyday moments.", "sun", :neutral, "Just getting started" ] ].each do |title, description, icon, tone, status| %>
+          <%= lc_card class: "flex flex-col gap-content" do %>
+            <div class="flex items-center justify-between gap-3"><%= lc_icon_badge shape: :circle, icon: icon, size: :lg, tone: tone%><%= lc_badge status %></div>
+            <div class="flex flex-col gap-1"><h3 class="text-lg font-semibold"><%= title %></h3><p class="text-sm text-muted-foreground"><%= description %></p></div>
+            <div class="flex items-center gap-2 text-sm text-muted-foreground"><%= lc_avatar "AL", size: :sm, class: "bg-background text-muted-foreground" %><span>You and your collaborators</span></div>
           <% end %>
         <% end %>
       </div>
@@ -35,29 +35,29 @@
     <section id="notes" class="flex flex-col gap-4" data-blocks-mobile-navigation-target="panel" hidden>
       <h2 class="text-xl font-semibold">Notes to self</h2>
       <div class="flex flex-col gap-4" data-blocks-mobile-navigation-target="notes">
-        <%= lc_card class: "flex flex-col gap-3" do %><%= lc_eyebrow "A thought for today" %><h3 class="text-lg font-semibold">Leave a little room.</h3><p class="text-sm text-ink-2">The best ideas sometimes arrive between the things you planned.</p><% end %>
+        <%= lc_card class: "flex flex-col gap-3" do %><%= lc_text "A thought for today", size: :caption, tone: :muted %><h3 class="text-lg font-semibold">Leave a little room.</h3><p class="text-sm text-muted-foreground">The best ideas sometimes arrive between the things you planned.</p><% end %>
       </div>
       <%= lc_field label: "Capture a thought", id: "studio-thought", hint: "A small idea is a good place to start." do |field| %><%= lc_textarea name: "thought", placeholder: "What’s on your mind?", rows: 4, **field %><% end %>
     </section>
 
     <section id="people" class="flex flex-col gap-4" data-blocks-mobile-navigation-target="panel" hidden>
       <h2 class="text-xl font-semibold">Good company</h2>
-      <%= lc_card class: "flex flex-col gap-5" do %>
+      <%= lc_card class: "flex flex-col gap-content" do %>
         <% [ [ "AL", "Alex Lee", "Designer" ], [ "SK", "Sam Kim", "Writer" ], [ "JR", "Jamie Reed", "Maker" ] ].each do |initials, name, role| %>
-          <div class="flex items-center gap-3"><%= lc_avatar initials, class: "bg-paper text-ink-2" %><div class="flex-1"><h3 class="text-sm font-semibold"><%= name %></h3><p class="text-sm text-ink-3"><%= role %></p></div><%= lc_status_pill "Available" %></div>
+          <div class="flex items-center gap-3"><%= lc_avatar initials, class: "bg-background text-muted-foreground" %><div class="flex-1"><h3 class="text-sm font-semibold"><%= name %></h3><p class="text-sm text-muted-foreground"><%= role %></p></div><%= lc_badge "Available", tone: :primary, class: "rounded-full text-sm" %></div>
         <% end %>
       <% end %>
     </section>
   </main>
 
-  <div class="mobile-example__dock" data-controller="row-menu" data-row-menu-lift-value="false">
-    <button type="button" class="mobile-example__trigger <%= lc_glass_class(shape: :disc, thick: true) %>" aria-label="Create something" aria-haspopup="menu" aria-expanded="false" aria-controls="studio-create-menu" data-row-menu-target="trigger" data-action="row-menu#toggle">
+  <div class="mobile-example__dock" data-controller="lc-menu" data-lc-menu-lift-value="false">
+    <button type="button" class="mobile-example__trigger <%= lc_glass_class(shape: :disc, thick: true) %>" aria-label="Create something" aria-haspopup="menu" aria-expanded="false" aria-controls="studio-create-menu" data-lc-menu-target="trigger" data-action="lc-menu#toggle">
       <%= lc_icon "plus", options: { class: "size-7", "aria-hidden": true } %>
     </button>
-    <div id="studio-create-menu" class="mobile-example__actions" role="menu" aria-label="Create something" data-row-menu-target="popover">
-      <button type="button" class="mobile-example__scrim" aria-label="Close create menu" tabindex="-1" data-action="row-menu#close"></button>
+    <div id="studio-create-menu" class="mobile-example__actions" role="menu" aria-label="Create something" data-lc-menu-target="popover">
+      <button type="button" class="mobile-example__scrim" aria-label="Close create menu" tabindex="-1" data-action="lc-menu#close"></button>
       <% [ [ "New project", "rectangle-stack", "projects" ], [ "Add a note", "pencil-square", "notes" ] ].each_with_index do |(label, icon, destination), index| %>
-        <button type="button" role="menuitem" class="mobile-example__action <%= lc_glass_class(shape: :disc, thick: true) %>" style="--action-index: <%= index + 1 %>" data-action="blocks-mobile-navigation#add row-menu#close" data-blocks-mobile-navigation-destination-param="<%= destination %>">
+        <button type="button" role="menuitem" class="mobile-example__action <%= lc_glass_class(shape: :disc, thick: true) %>" style="--action-index: <%= index + 1 %>" data-action="blocks-mobile-navigation#add lc-menu#close" data-blocks-mobile-navigation-destination-param="<%= destination %>">
           <span class="mobile-example__action-label"><%= label %></span><%= lc_icon icon, options: { class: "size-6", "aria-hidden": true } %>
         </button>
       <% end %>
@@ -65,6 +65,6 @@
   </div>
 
   <template data-blocks-mobile-navigation-target="draft">
-    <%= lc_card class: "flex flex-col gap-3" do %><%= lc_badge "Draft" %><h3 class="text-lg font-semibold" data-draft-title></h3><p class="text-sm text-ink-2">A fresh start. Make it your own.</p><% end %>
+    <%= lc_card class: "flex flex-col gap-3" do %><%= lc_badge "Draft" %><h3 class="text-lg font-semibold" data-draft-title></h3><p class="text-sm text-muted-foreground">A fresh start. Make it your own.</p><% end %>
   </template>
 </div>

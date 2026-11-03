@@ -1,0 +1,6 @@
+<%= lc_form_with model: DocsProject.invalid_example, url: "#", class: "flex w-full max-w-sm flex-col gap-content" do |form| %>
+  <%= form.field :name, hint: "Shown to members." %>
+  <%= form.field :email, as: :email_field %>
+  <%= form.switch :public, hint: "Anyone with the link can view." %>
+  <%= form.submit "Save project" %>
+<% end %>

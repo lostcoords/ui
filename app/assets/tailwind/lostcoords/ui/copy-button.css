@@ -1,7 +1,7 @@
 @layer components {
-  .ui-copy { display: inline-grid; }
+  .lc-copy { display: inline-grid; }
 
-  .ui-copy-content {
+  .lc-copy-content {
     grid-area: 1 / 1;
     display: inline-flex;
     align-items: center;
@@ -11,21 +11,21 @@
     visibility: hidden;
     transform: translateY(0.2rem) scale(0.96);
     transition:
-      opacity var(--ui-motion-feedback) var(--ease-out),
-      transform var(--ui-motion-feedback) var(--ease-out),
-      visibility var(--ui-motion-feedback);
+      opacity var(--lc-motion-feedback) var(--lc-ease-out),
+      transform var(--lc-motion-feedback) var(--lc-ease-out),
+      visibility var(--lc-motion-feedback);
   }
 
-  .ui-copy[data-state="idle"] [data-copy-state="idle"],
-  .ui-copy[data-state="copied"] [data-copy-state="copied"],
-  .ui-copy[data-state="error"] [data-copy-state="error"] {
+  .lc-copy[data-state="idle"] [data-copy-state="idle"],
+  .lc-copy[data-state="copied"] [data-copy-state="copied"],
+  .lc-copy[data-state="error"] [data-copy-state="error"] {
     opacity: 1;
     visibility: visible;
     transform: none;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .ui-copy-content {
+    .lc-copy-content {
       transform: none;
       transition: none;
     }

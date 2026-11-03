@@ -1,0 +1,50 @@
+@layer components {
+  .lc-tooltip__content {
+    position: absolute;
+    inset-block-end: calc(100% + var(--spacing-related));
+    inset-inline-start: 50%;
+    z-index: var(--lc-z-popover);
+    inline-size: max-content;
+    max-inline-size: min(16rem, calc(100vw - 2rem));
+    padding: var(--spacing-tight) var(--spacing-related);
+    border-radius: var(--radius-md);
+    background: var(--foreground);
+    color: var(--background);
+    font-size: var(--text-caption);
+    line-height: var(--text-caption--line-height);
+    font-weight: 500;
+    text-align: center;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    translate: -50% 0.125rem;
+    transition:
+      opacity 120ms var(--lc-ease-out),
+      translate 120ms var(--lc-ease-out),
+      visibility 120ms;
+
+    &:dir(rtl) { translate: 50% 0.125rem; }
+  }
+
+  .lc-tooltip[data-side="bottom"] > .lc-tooltip__content {
+    inset-block: calc(100% + var(--spacing-related)) auto;
+    translate: -50% -0.125rem;
+  }
+
+  .lc-tooltip:is(:hover, :has(:focus-visible)) > .lc-tooltip__content {
+    opacity: 1;
+    visibility: visible;
+    translate: -50% 0;
+    transition-delay: 300ms;
+  }
+
+  .lc-tooltip:is(:hover, :has(:focus-visible)) > .lc-tooltip__content:dir(rtl) {
+    translate: 50% 0;
+  }
+
+  .lc-tooltip[data-dismissed] > .lc-tooltip__content {
+    opacity: 0;
+    visibility: hidden;
+    transition: none;
+  }
+}

@@ -1,8 +1,8 @@
 module Lostcoords::Ui
   module ReadingHelper
     PROSE_BASE =
-      "prose ui-prose min-w-0 max-w-(--ui-reading-measure,65ch) " \
-      "text-(length:--ui-reading-size,1rem) leading-(--ui-reading-leading,1.75)"
+      "prose lc-prose min-w-0 max-w-(--lc-reading-measure,65ch) " \
+      "text-(length:--lc-reading-size,1rem) leading-(--lc-reading-leading,1.75)"
 
     def lc_prose_class(extra: nil)
       lc_tw(PROSE_BASE, extra)

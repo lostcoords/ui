@@ -1,4 +1,12 @@
-<%= lc_card class: "w-full" do %>
-  <h3 class="font-semibold">Project notes</h3>
-  <p class="text-sm text-ink-2">Keep related content together.</p>
+<%= lc_card class: "w-full" do |card| %>
+  <%= card.header title: "Project notes", description: "Keep related content together." do %>
+    <%= lc_button "Edit", variant: :secondary, size: :sm %>
+  <% end %>
+  <%= card.content do %>
+    <%= lc_text "Notes, links and files for the launch." %>
+  <% end %>
+  <%= card.footer do %>
+    <%= lc_button "Archive", variant: :ghost %>
+    <%= lc_button "Share" %>
+  <% end %>
 <% end %>

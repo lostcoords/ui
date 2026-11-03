@@ -3,9 +3,8 @@ let nextOrder = 0
 let lockedScrollY = 0
 let scrollHolds = 0
 
-document.addEventListener("keydown", dismissOnEscape, true)
-
 export function registerDismissable(options) {
+  if (stack.length === 0) document.addEventListener("keydown", dismissOnEscape, true)
   const entry = {
     type: "panel",
     isOpen: defaultIsOpen,
@@ -17,7 +16,7 @@ export function registerDismissable(options) {
   stack.push(entry)
   syncModalScrollLock()
 
-  if (entry.type === "modal" && entry.element instanceof HTMLDialogElement) {
+  if (entry.type === "lc-dialog" && entry.element instanceof HTMLDialogElement) {
     entry.cancel = (event) => cancelDialog(event, entry)
     entry.element.addEventListener("cancel", entry.cancel)
   }
@@ -81,7 +80,7 @@ function topDismissable(scope = topModal()?.element) {
 
 function topModal() {
   return openEntries()
-    .filter((entry) => entry.type === "modal")
+    .filter((entry) => entry.type === "lc-dialog")
     .at(-1)
 }
 
@@ -92,6 +91,7 @@ function openEntries() {
 function unregisterDismissable(entry) {
   const index = stack.indexOf(entry)
   if (index >= 0) stack.splice(index, 1)
+  if (stack.length === 0) document.removeEventListener("keydown", dismissOnEscape, true)
 
   if (entry.cancel) {
     entry.element.removeEventListener("cancel", entry.cancel)
@@ -116,7 +116,7 @@ function priorityFor(type) {
 function syncModalScrollLock() {
   if (
     scrollHolds > 0 ||
-    openEntries().some((entry) => entry.type === "modal" && entry.lockScroll !== false)
+    openEntries().some((entry) => entry.type === "lc-dialog" && entry.lockScroll !== false)
   ) {
     lockDocumentScroll()
     return
@@ -136,7 +136,7 @@ function lockDocumentScroll() {
   body.style.top = `-${lockedScrollY}px`
   // Pinning the body drags the sticky nav off with the scrolled-away page;
   // the nav offsets itself by this to stay where it was.
-  body.style.setProperty("--scroll-lock-y", `${lockedScrollY}px`)
+  body.style.setProperty("--lc-scroll-lock-y", `${lockedScrollY}px`)
   body.style.inlineSize = "100%"
 }
 
@@ -147,7 +147,7 @@ function unlockDocumentScroll() {
   body.style.position = ""
   body.style.inset = ""
   body.style.top = ""
-  body.style.removeProperty("--scroll-lock-y")
+  body.style.removeProperty("--lc-scroll-lock-y")
   body.style.inlineSize = ""
   delete body.dataset.modalScrollLock
   window.scrollTo({ top: lockedScrollY, behavior: "instant" })

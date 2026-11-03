@@ -1,0 +1,151 @@
+<% sections_by_id = sections.index_by(&:id) %>
+<% render_example = lambda do |section_id, specimen_id, id|
+  section = sections_by_id.fetch(section_id)
+  example = section.examples.find { |candidate| candidate.specimen == specimen_id } || section.examples.first
+  render inline: showcase_source(example, id:)
+end %>
+<div class="grid grid-cols-1 items-start gap-4 md:grid-cols-2 xl:grid-cols-[1.15fr_1fr_0.85fr]">
+  <div class="flex min-w-0 flex-col gap-4">
+    <article class="flex min-w-0">
+      <%= lc_card class: "flex w-full flex-col gap-4", aria: { labelledby: "bento-workspace-title" } do %>
+        <%= render "showcase/bento_header", id: "workspace", title: "Workspace settings", component: :field %>
+        <div class="flex flex-1 flex-col justify-between gap-4">
+          <div class="flex items-center justify-between gap-3">
+            <div class="flex min-w-0 items-center gap-3">
+              <%= render_example.call(:avatar, :avatar_stack, "bento-workspace-avatars") %>
+              <div class="min-w-0"><p class="truncate text-sm font-medium">Alex, Sam and Jamie</p><p class="text-xs text-muted-foreground">Design team</p></div>
+            </div>
+            <%= lc_icon_badge shape: :circle, tone: :primary, icon: "squares-2x2", size: :sm%>
+          </div>
+          <form class="flex flex-col gap-4" data-action="submit->showcase#save">
+            <%= lc_field label: "Name", id: "bento-workspace-name" do |field| %>
+              <%= lc_input value: "Design studio", required: true, class: "bg-background", **field %>
+            <% end %>
+            <%= lc_field label: "About", id: "bento-workspace-about" do |field| %>
+              <%= lc_textarea placeholder: "What are you working on?", rows: 3, class: "bg-background", **field %>
+            <% end %>
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <%= lc_badge "Private workspace" %>
+              <div class="flex flex-wrap items-center gap-2"><%= lc_copy_button "Copy invite", value: "https://app.example.com/invite/design", copied_label: "Copied", size: :sm %><%= lc_button "Save changes", type: :submit, size: :sm %></div>
+            </div>
+            <p role="status" class="text-sm text-primary" data-save-status hidden>Changes saved.</p>
+          </form>
+        </div>
+      <% end %>
+    </article>
+
+    <article class="flex min-w-0">
+      <%= lc_card class: "flex w-full flex-col gap-4", aria: { labelledby: "bento-activity-title" } do %>
+        <%= render "showcase/bento_header", id: "activity", title: "Recent activity", component: :table %>
+        <div class="flex flex-1 items-center"><%= render_example.call(:table, :table, "bento-activity-table") %></div>
+      <% end %>
+    </article>
+
+    <article class="flex min-w-0">
+      <%= lc_card class: "flex w-full flex-col gap-4", aria: { labelledby: "bento-code-title" } do %>
+        <%= render "showcase/bento_header", id: "code", title: "Share and explain", component: :code_block %>
+        <div class="flex flex-col gap-3">
+          <%= render_example.call(:code_block, :code_block, "bento-code-example") %>
+          <div class="flex flex-wrap items-center justify-between gap-3"><%= render_example.call(:copy_button, :copy_button, "bento-code-copy") %><%= render_example.call(:collapsible, :collapsible, "bento-code-disclosure") %></div>
+        </div>
+      <% end %>
+    </article>
+  </div>
+  <div class="flex min-w-0 flex-col gap-4">
+    <article class="min-w-0">
+      <%= lc_card class: lc_stack_class, aria: { labelledby: "bento-invite-title" } do %>
+        <%= lc_icon_badge shape: :circle, icon: "user-plus", tone: :primary, size: :lg%>
+        <%= render "showcase/bento_header", id: "invite", title: "Invite a teammate", component: :field %>
+        <p class="text-sm text-muted-foreground">Invite someone to your workspace.</p>
+        <form class="flex flex-col gap-3" data-action="submit->showcase#save">
+          <%= lc_field label: "Email address", id: "bento-invite-email" do |field| %>
+            <%= lc_input type: :email, placeholder: "name@example.com", required: true, class: "bg-background", **field %>
+          <% end %>
+          <%= lc_button "Send invitation", type: :submit, class: "w-full", icon: "arrow-right", icon_position: :end %>
+          <p role="status" class="text-sm text-primary" data-save-status hidden>Invitation sent.</p>
+        </form>
+      <% end %>
+    </article>
+
+    <article class="flex min-w-0">
+      <%= lc_card class: "flex w-full flex-col gap-4", aria: { labelledby: "bento-overview-title" } do %>
+        <%= render "showcase/bento_header", id: "overview", title: "Project overview", component: :toggle_group %>
+        <div class="flex flex-1 flex-col justify-between gap-4">
+          <div class="flex items-center justify-between gap-3">
+            <%= render_example.call(:toggle_group, :toggle_group, "bento-overview-period") %>
+            <%= lc_icon_button "Project settings", icon: "cog-6-tooth", size: :sm %>
+          </div>
+          <%= render_example.call(:toggle, :toggle, "bento-overview-topics") %>
+          <div class="flex items-end justify-between gap-3"><div><p class="text-xs text-muted-foreground">Projects completed</p><p class="text-3xl font-semibold tabular-nums">24 <span class="text-lg text-muted-foreground">/ 32</span></p></div><%= lc_badge "On track", tone: :primary, class: "rounded-full text-sm" %></div>
+          <div class="h-2 overflow-hidden rounded-full bg-background"><div class="h-full w-3/4 rounded-full bg-primary"></div></div>
+          <%= render_example.call(:select, :select, "bento-overview-team") %>
+        </div>
+      <% end %>
+    </article>
+
+    <article class="flex min-w-0">
+      <%= lc_card class: "flex w-full flex-col gap-4", aria: { labelledby: "bento-feedback-title" } do %>
+        <%= render "showcase/bento_header", id: "feedback", title: "Feedback and loading", component: :alert %>
+        <div class="flex flex-1 flex-col justify-between gap-3">
+          <div class="flex flex-wrap gap-2"><%= lc_alert "Changes saved.", tone: :success %><%= lc_alert "That name is already taken." %></div>
+          <div class="flex items-center justify-between gap-3 rounded-2xl bg-background p-3"><div class="flex items-center gap-3"><%= lc_spinner size: :sm, label: "Saving changes" %><span class="text-sm text-muted-foreground">Saving project…</span></div><%= lc_badge "In progress", tone: :warning %></div>
+          <%= render_example.call(:skeleton, :skeleton, "bento-feedback-skeleton") %>
+          <%= render_example.call(:toast, :toast, "bento-feedback-toast") %>
+        </div>
+      <% end %>
+    </article>
+
+    <article class="flex min-w-0">
+      <%= lc_card class: "flex w-full flex-col gap-4", aria: { labelledby: "bento-emoji-title" } do %>
+        <%= render "showcase/bento_header", id: "emoji", title: "Add a little personality", component: :emoji %>
+        <div class="flex flex-1 items-center justify-center"><%= render_example.call(:emoji, :html, "bento-emoji-picker") %></div>
+      <% end %>
+    </article>
+  </div>
+  <div class="flex min-w-0 flex-col gap-4 md:col-span-2 md:grid md:grid-cols-2 xl:col-span-1 xl:flex">
+    <article class="flex min-w-0">
+      <%= lc_card class: "flex w-full flex-col gap-4", aria: { labelledby: "bento-team-title" } do %>
+        <%= render "showcase/bento_header", id: "team", title: "Team", component: :avatar %>
+        <div class="flex flex-1 flex-col justify-between gap-3">
+          <% { "Alex Lee" => ["AL", "Owner", "bg-success-soft"], "Sam Kim" => ["SK", "Editor", "bg-warning-soft"], "Jamie Reed" => ["JR", "Editor", "bg-destructive-soft"] }.each do |name, (initials, role, tone)| %>
+            <div class="flex items-center gap-3">
+              <%= lc_avatar initials, ink: true, class: tone, aria: { label: name } %>
+              <div class="min-w-0 flex-1"><p class="truncate text-sm font-medium"><%= name %></p><p class="text-xs text-muted-foreground"><%= role %></p></div>
+              <%= lc_badge "Available", tone: :primary, class: "rounded-full text-sm" %>
+            </div>
+          <% end %>
+          <div class="flex items-center justify-between pt-3"><%= lc_icon_badge icon: "user-group" %><%= render_example.call(:avatar, :avatar_stack, "bento-team-stack") %><%= lc_badge "3 people" %></div>
+        </div>
+      <% end %>
+    </article>
+
+    <article class="flex min-w-0">
+      <%= lc_card class: "flex w-full flex-col gap-4", aria: { labelledby: "bento-actions-title" } do %>
+        <%= render "showcase/bento_header", id: "actions", title: "Quick actions", component: :menu %>
+        <div class="flex min-h-28 flex-1 flex-wrap items-center justify-center gap-2">
+          <%= render_example.call(:menu, :row_menu, "bento-actions-menu") %>
+          <%= render_example.call(:popover, :open_popover, "bento-actions-popover") %>
+          <%= render_example.call(:dialog, :modal_dialog, "bento-actions-dialog") %>
+          <%= render_example.call(:dialog, :dialog_fit, "bento-actions-sheet") %>
+        </div>
+      <% end %>
+    </article>
+
+    <article class="flex min-w-0">
+      <%= lc_card class: "flex w-full flex-col gap-4", aria: { labelledby: "bento-empty-title" } do %>
+        <%= render "showcase/bento_header", id: "empty", title: "A clear starting point", component: :empty_state %>
+        <%= render_example.call(:empty_state, :empty_state, "bento-empty-projects") %>
+      <% end %>
+    </article>
+
+    <article class="flex min-w-0">
+      <%= lc_card class: "flex w-full flex-col gap-4", aria: { labelledby: "bento-motion-title" } do %>
+        <%= render "showcase/bento_header", id: "motion", title: "Small, clear motion", component: :foundations %>
+        <div class="flex min-h-28 flex-1 flex-wrap items-center justify-center gap-3">
+          <%= render_example.call(:foundations, :motion_controls, "bento-motion-controls") %>
+          <%= render_example.call(:foundations, :motion_feedback, "bento-motion-feedback") %>
+        </div>
+      <% end %>
+    </article>
+  </div>
+</div>

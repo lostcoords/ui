@@ -6,7 +6,6 @@ async function _verifyDocs(page) {
     checks.push(message)
   }
   for (const path of [
-    "/",
     "/installation.html",
     "/theming.html",
     "/components/button.html",
@@ -22,9 +21,25 @@ async function _verifyDocs(page) {
         const stack = main.querySelector("header").parentElement
         const heading = getComputedStyle(main.querySelector("h1"))
         const sections = [...main.querySelectorAll("section")].filter((section) =>
-          section.querySelector(":scope > header > .ui-heading-section"),
+          section.querySelector(":scope > header > .text-heading"),
         )
+        const left = main.previousElementSibling
+        const right = main.nextElementSibling
+        const hasSidebars =
+          left?.tagName === "ASIDE" &&
+          right?.tagName === "ASIDE" &&
+          left.offsetWidth > 0 &&
+          right.offsetWidth > 0
+        const gutters = hasSidebars
+          ? [
+              main.getBoundingClientRect().left -
+                left.querySelector("nav").getBoundingClientRect().right,
+              right.querySelector("nav").getBoundingClientRect().left -
+                main.getBoundingClientRect().right,
+            ]
+          : null
         return {
+          gutters,
           overflow: document.documentElement.scrollWidth > innerWidth,
           gap: getComputedStyle(stack).rowGap,
           title: [heading.fontSize, heading.lineHeight],
@@ -34,6 +49,11 @@ async function _verifyDocs(page) {
           ]),
         }
       })
+      if (layout.gutters)
+        verify(
+          Math.abs(layout.gutters[0] - layout.gutters[1]) < 1,
+          `${path} ${width}px: both navigation gutters match`,
+        )
       verify(!layout.overflow, `${path} ${width}px: docs fit the viewport`)
       verify(layout.gap === "32px", `${path} ${width}px: sections share 32px spacing`)
       verify(
@@ -49,12 +69,10 @@ async function _verifyDocs(page) {
     }
     const adjusted = await page.evaluate(() => {
       const root = document.documentElement
-      root.style.setProperty("--ui-space-section", "40px")
-      root.style.setProperty("--ui-space-heading", "18px")
-      root.style.setProperty("--ui-space-content", "24px")
+      root.style.setProperty("--lc-density", "1.25")
       const stack = document.querySelector("#main header").parentElement
       const section = [...document.querySelectorAll("#main section")].find((element) =>
-        element.querySelector(":scope > header > .ui-heading-section"),
+        element.querySelector(":scope > header > .text-heading"),
       )
       const result = [getComputedStyle(stack).rowGap]
       if (section)
@@ -62,12 +80,11 @@ async function _verifyDocs(page) {
           getComputedStyle(section).rowGap,
           getComputedStyle(section.lastElementChild).rowGap,
         )
-      for (const name of ["section", "heading", "content"])
-        root.style.removeProperty(`--ui-space-${name}`)
+      root.style.removeProperty("--lc-density")
       return result
     })
     verify(
-      adjusted[0] === "40px" && (adjusted.length === 1 || adjusted.slice(1).join() === "18px,24px"),
+      adjusted[0] === "40px" && (adjusted.length === 1 || adjusted.slice(1).join() === "15px,20px"),
       `${path}: spacing overrides reach the actual docs`,
     )
   }

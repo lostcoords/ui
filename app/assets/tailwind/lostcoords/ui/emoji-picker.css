@@ -6,8 +6,8 @@
     align-items: center;
 
     /* Sit above the mobile app nav (z-100 + 25) so the sheet covers it. */
-    --emoji-sheet-z: calc(100 + 30);
-    --emoji-cell: 2.25rem;
+    --lc-emoji-sheet-z: calc(100 + 30);
+    --lc-emoji-cell: 2.25rem;
   }
 
   /* ---- Trigger + quick choices -------------------------------------- */
@@ -18,28 +18,28 @@
     inline-size: 44px;
     block-size: 44px;
     border-radius: var(--radius-2xl, 1rem);
-    border: 1px solid var(--hairline);
-    background: var(--paper);
-    color: var(--ink);
+    border: 1px solid var(--border);
+    background: var(--background);
+    color: var(--foreground);
     cursor: pointer;
     font-size: var(--text-xl, 1.25rem);
     line-height: 1;
     transition:
       border-color 0.15s,
       background 0.15s,
-      transform 0.15s var(--ease-out),
+      transform 0.15s var(--lc-ease-out),
       box-shadow 0.15s;
 
-    &:hover { border-color: var(--ink-3); }
+    &:hover { border-color: var(--muted-foreground); }
 
     &[aria-current="true"] {
-      border-color: var(--sky);
-      background: var(--sky-soft);
+      border-color: var(--primary);
+      background: color-mix(in oklab, var(--primary) 12%, var(--background));
     }
   }
 
   .emoji-picker__trigger {
-    color: var(--ink-3);
+    color: var(--muted-foreground);
     font-weight: var(--font-weight-normal, 400);
   }
 
@@ -59,10 +59,10 @@
      transitions keep it in the top layer while it eases out, so it fades
      both ways instead of snapping away on close. */
   .emoji-picker__popover::backdrop {
-    background: var(--scrim);
+    background: var(--lc-scrim);
     opacity: 0;
     transition:
-      opacity 220ms var(--ease-out),
+      opacity 220ms var(--lc-ease-out),
       display 220ms allow-discrete,
       overlay 220ms allow-discrete;
 
@@ -83,10 +83,10 @@
      floating surface (glass in wariwari), so the gem leaves it unpainted. */
   @media (width < 40rem) {
     .emoji-picker__popover {
-      border: 1px solid var(--glass-edge, var(--hairline));
+      border: 1px solid var(--lc-glass-edge, var(--border));
       border-block-end: 0;
-      background: var(--paper);
-      box-shadow: 0 -12px 40px -12px color-mix(in oklab, var(--ink) 45%, transparent);
+      background: var(--background);
+      box-shadow: 0 -12px 40px -12px color-mix(in oklab, var(--foreground) 45%, transparent);
     }
   }
 
@@ -94,10 +94,10 @@
     position: fixed;
     inset: auto 0 0;
     margin: 0;
-    z-index: var(--emoji-sheet-z);
+    z-index: var(--lc-emoji-sheet-z);
     display: none;
     max-inline-size: none;
-    color: var(--ink);
+    color: var(--foreground);
     flex-direction: column;
     inline-size: 100%;
     max-block-size: min(72svh, 34rem);
@@ -107,7 +107,7 @@
     overscroll-behavior: contain;
     transform: translateY(100%);
     transition:
-      transform 260ms var(--ease-out-expo),
+      transform 260ms var(--lc-ease-out-expo),
       display 260ms allow-discrete,
       overlay 260ms allow-discrete;
 
@@ -168,7 +168,7 @@
     inset-inline-start: 14px;
     inline-size: 18px;
     block-size: 18px;
-    color: var(--ink-3);
+    color: var(--muted-foreground);
     pointer-events: none;
   }
 
@@ -178,13 +178,13 @@
     padding-inline: 40px 1rem;
     border: 1px solid transparent;
     border-radius: 999px;
-    background: var(--paper-2);
-    color: var(--ink);
+    background: var(--muted);
+    color: var(--foreground);
     font: inherit;
     font-size: 1rem;
     transition: border-color 150ms ease-out, box-shadow 150ms ease-out;
 
-    &::placeholder { color: var(--ink-3); }
+    &::placeholder { color: var(--muted-foreground); }
     &::-webkit-search-cancel-button {
       /* stylelint-disable-next-line property-no-vendor-prefix -- WebKit search decoration */
       -webkit-appearance: none;
@@ -193,7 +193,7 @@
 
     &:focus {
       outline: none;
-      box-shadow: var(--focus-halo, 0 0 0 2px color-mix(in oklab, var(--sky) 50%, transparent));
+      box-shadow: var(--focus-halo, 0 0 0 2px color-mix(in oklab, var(--primary) 50%, transparent));
     }
   }
 
@@ -210,15 +210,15 @@
     block-size: 44px;
     border: none;
     border-radius: 999px;
-    background: var(--paper-2);
+    background: var(--muted);
     cursor: pointer;
     font-size: var(--text-lg, 1.125rem);
     line-height: 1;
     transition: background 150ms ease-out;
 
-    &:hover { background: var(--paper-3); }
+    &:hover { background: var(--accent); }
 
-    &[aria-expanded="true"] { background: var(--sky-soft); }
+    &[aria-expanded="true"] { background: color-mix(in oklab, var(--primary) 12%, var(--background)); }
   }
 
   .emoji-picker__tone-menu {
@@ -246,9 +246,9 @@
     font-size: var(--text-lg, 1.125rem);
     line-height: 1;
 
-    &:hover { background: var(--paper-2); }
+    &:hover { background: var(--muted); }
 
-    &[aria-current="true"] { background: var(--sky-soft); }
+    &[aria-current="true"] { background: color-mix(in oklab, var(--primary) 12%, var(--background)); }
   }
 
   /* ---- Category tab navigation ------------------------------------- */
@@ -264,7 +264,7 @@
     overflow-x: auto;
     scrollbar-width: none;
     border-radius: var(--radius-2xl, 1rem);
-    background: var(--paper-2);
+    background: var(--muted);
 
     &::-webkit-scrollbar { display: none; }
   }
@@ -288,8 +288,8 @@
 
     &[aria-current="true"] {
       opacity: 1;
-      background: var(--paper);
-      box-shadow: var(--shadow-sm);
+      background: var(--background);
+      box-shadow: var(--lc-shadow-sm);
     }
   }
 
@@ -328,19 +328,19 @@
       margin: 0;
       font-size: var(--text-sm, 0.875rem);
       font-weight: var(--font-weight-semibold, 600);
-      color: var(--ink-2);
+      color: var(--muted-foreground);
     }
 
     .count {
-      font-family: var(--font-body, system-ui);
+      font-family: var(--font-sans, system-ui);
       font-size: var(--text-xs, 0.75rem);
-      color: var(--ink-3);
+      color: var(--muted-foreground);
     }
   }
 
   .emoji-picker__grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(var(--emoji-cell), 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(var(--lc-emoji-cell), 1fr));
     gap: 2px;
     padding-block-start: 4px;
 
@@ -356,16 +356,16 @@
       font-size: var(--text-xl, 1.25rem);
       line-height: 1;
       padding: 0;
-      transition: background 0.1s, transform 0.1s var(--ease-out);
+      transition: background 0.1s, transform 0.1s var(--lc-ease-out);
 
       &:hover,
       &:focus-visible {
-        background: var(--paper-2);
+        background: var(--muted);
         transform: scale(1.12);
         outline: none;
       }
 
-      &[aria-current="true"] { background: var(--sky-soft); }
+      &[aria-current="true"] { background: color-mix(in oklab, var(--primary) 12%, var(--background)); }
     }
   }
 
@@ -379,7 +379,7 @@
   .emoji-picker__empty {
     margin: 0;
     padding: 1rem 0.5rem;
-    color: var(--ink-3);
+    color: var(--muted-foreground);
     font-size: 1rem;
     text-align: center;
   }
@@ -411,7 +411,7 @@
   .emoji-picker__preview-name {
     overflow: hidden;
     font-size: 1rem;
-    color: var(--ink-3);
+    color: var(--muted-foreground);
     text-overflow: ellipsis;
     white-space: nowrap;
   }
@@ -433,8 +433,8 @@
       transform: translateY(-4px) scale(0.98);
       opacity: 0;
       transition:
-        opacity 160ms var(--ease-out-expo),
-        transform 160ms var(--ease-out-expo),
+        opacity 160ms var(--lc-ease-out-expo),
+        transform 160ms var(--lc-ease-out-expo),
         display 160ms allow-discrete,
         overlay 160ms allow-discrete;
 
@@ -456,7 +456,7 @@
 
     main:has(.emoji-picker__popover[data-open]),
     .emoji-picker:has(.emoji-picker__popover[data-open]) {
-      z-index: 60;
+      z-index: var(--lc-z-overlay);
     }
   }
 }

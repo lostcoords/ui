@@ -52,11 +52,20 @@ GENERATED_ENGINE_IMPORT = "test/dummy/app/assets/builds/tailwind/lostcoords_ui.c
 STYLESHEET_ENTRIES = [ HOST_STYLESHEET, ENGINE_STYLESHEET, "app/assets/tailwind/lostcoords/ui/ui.css" ].freeze
 
 def stylesheet_import_violations(files)
-  imports = STYLESHEET_ENTRIES.flat_map do |entry|
-    File.readlines(entry, chomp: true).each_with_index.filter_map do |line, index|
+  imports = []
+  pending = STYLESHEET_ENTRIES.dup
+  visited = []
+  until pending.empty?
+    entry = pending.shift
+    next if visited.include?(entry) || entry == GENERATED_ENGINE_IMPORT || !File.file?(entry)
+
+    visited << entry
+    File.readlines(entry, chomp: true).each_with_index do |line, index|
       next unless (target = line[/^\s*@import\s+["'](\.[^"']+)["']/, 1])
 
-      [ entry, Pathname(File.expand_path(target, File.dirname(entry))).relative_path_from(Dir.pwd).to_s, index + 1 ]
+      path = Pathname(File.expand_path(target, File.dirname(entry))).relative_path_from(Dir.pwd).to_s
+      imports << [ entry, path, index + 1 ]
+      pending << path
     end
   end
 
@@ -67,7 +76,7 @@ def stylesheet_import_violations(files)
   engine_unreached = imports.none? { |entry, path, _| entry == HOST_STYLESHEET && path == GENERATED_ENGINE_IMPORT }
   engine_violation = engine_unreached ? [ Violation.new(HOST_STYLESHEET, 1, "does not import #{GENERATED_ENGINE_IMPORT}, so the gem never builds") ] : []
 
-  unimported = (files.grep(STYLESHEET) - STYLESHEET_ENTRIES.first(2) - imports.map { |_, path, _| path }).map do |path|
+  unimported = (files.grep(STYLESHEET) - visited).map do |path|
     Violation.new(path, 1, "not imported by #{STYLESHEET_ENTRIES.last}, so Tailwind never builds it")
   end
 
@@ -111,7 +120,6 @@ end
 # Stylesheets not yet converted, with the literals they still use. Shrink as they move to tokens.
 CSS_LITERAL_ALLOWED = {
   "app/assets/tailwind/lostcoords/ui/avatar.css" => %w[1.5px 3px],
-  "app/assets/tailwind/lostcoords/ui/card.css" => %w[1px],
   "app/assets/tailwind/lostcoords/ui/dialog.css" => %w[2px],
   "app/assets/tailwind/lostcoords/ui/emoji-picker.css" => %w[1px 2px 4px 6px 8px 14px 18px 32px 36px 40px 44px 96px 999px #000],
   "app/assets/tailwind/lostcoords/ui/glass.css" => %w[1px 12px 24px],

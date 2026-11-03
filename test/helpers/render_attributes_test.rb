@@ -8,35 +8,35 @@ module Lostcoords::Ui
     end
 
     test "attributes merge classes and preserve independent data and aria values" do
-      defaults = { class: "p-2 text-sm", data: { controller: "sheet", action: "click->sheet#open", sheet_detents_value: "fit" }, aria: { expanded: false } }
-      custom = { "class" => [ "p-4", { "font-bold" => true, "hidden" => false } ], "data" => { "controller" => "analytics sheet", "action" => "click->analytics#track click->sheet#open" }, "aria" => { "label" => "Details" } }
+      defaults = { class: "p-2 text-sm", data: { controller: "lc-sheet", action: "click->lc-sheet#open", lc_sheet_detents_value: "fit" }, aria: { expanded: false } }
+      custom = { "class" => [ "p-4", { "font-bold" => true, "hidden" => false } ], "data" => { "controller" => "analytics lc-sheet", "action" => "click->analytics#track click->lc-sheet#open" }, "aria" => { "label" => "Details" } }
       merged = @view.send(:lc_attributes, defaults, custom)
 
       assert_equal "text-sm p-4 font-bold", merged[:class]
-      assert_equal "sheet analytics", merged.dig(:data, :controller)
-      assert_equal "click->sheet#open click->analytics#track", merged.dig(:data, :action)
-      assert_equal "fit", merged.dig(:data, :sheet_detents_value)
+      assert_equal "lc-sheet analytics", merged.dig(:data, :controller)
+      assert_equal "click->lc-sheet#open click->analytics#track", merged.dig(:data, :action)
+      assert_equal "fit", merged.dig(:data, :lc_sheet_detents_value)
       assert_equal false, merged.dig(:aria, :expanded)
       assert_equal "Details", merged.dig(:aria, :label)
       assert_equal "p-2 text-sm", defaults[:class]
-      assert_equal "analytics sheet", custom.dig("data", "controller")
+      assert_equal "analytics lc-sheet", custom.dig("data", "controller")
     end
 
     test "callers cannot remove required controller and action tokens" do
-      merged = @view.send(:lc_attributes, { data: { controller: "sheet", action: "click->sheet#open" } }, { data: { controller: nil, action: nil } })
+      merged = @view.send(:lc_attributes, { data: { controller: "lc-sheet", action: "click->lc-sheet#open" } }, { data: { controller: nil, action: nil } })
 
-      assert_equal "sheet", merged.dig(:data, :controller)
-      assert_equal "click->sheet#open", merged.dig(:data, :action)
+      assert_equal "lc-sheet", merged.dig(:data, :controller)
+      assert_equal "click->lc-sheet#open", merged.dig(:data, :action)
     end
 
     test "flat and nested HTML attributes share one merge boundary" do
-      defaults = { data: { controller: "sheet", sheet_detents_value: "fit" }, aria: { label: "Default" } }
-      custom = { "data-controller" => "analytics", data: { "sheet-detents-value" => "large" }, "aria-label" => "Custom" }
+      defaults = { data: { controller: "lc-sheet", lc_sheet_detents_value: "fit" }, aria: { label: "Default" } }
+      custom = { "data-controller" => "analytics", data: { "lc-sheet-detents-value" => "large" }, "aria-label" => "Custom" }
       merged = @view.send(:lc_attributes, defaults, custom)
       document = Nokogiri::HTML.fragment(@view.tag.div(**merged))
 
-      assert_equal "sheet analytics", merged.dig(:data, :controller)
-      assert_equal "large", merged.dig(:data, :sheet_detents_value)
+      assert_equal "lc-sheet analytics", merged.dig(:data, :controller)
+      assert_equal "large", merged.dig(:data, :lc_sheet_detents_value)
       assert_equal "Custom", document.at_css("div")["aria-label"]
       assert_equal 1, @view.tag.div(**merged).scan("aria-label=").size
       refute merged.key?(:"data-controller")

@@ -8,24 +8,24 @@
     <div class="grid gap-4 sm:grid-cols-2">
       <%= lc_card do %>
         <%= lc_stack gap: :related do %>
-          <%= lc_heading "Text roles", size: :card, level: 3 %>
+          <%= lc_heading "Text roles", size: :subheading, level: 3 %>
           <dl class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
             <% [ ["Page title", "30 / 36"], ["Section title", "20 / 24"], ["Card title", "18 / 24"], ["Body", "16 / 24"], ["Small", "14 / 20"], ["Caption", "12 / 16"] ].each do |role, value| %>
-              <dt><%= role %></dt><dd class="text-end tabular-nums text-ink-2"><%= value %></dd>
+              <dt><%= role %></dt><dd class="text-end tabular-nums text-muted-foreground"><%= value %></dd>
             <% end %>
           </dl>
-          <%= lc_text "Font size / line height in pixels at the default browser size. Values use rem units.", size: :caption, tone: :subtle %>
+          <%= lc_text "Font size / line height in pixels at the default browser size. Values use rem units.", size: :caption, tone: :muted %>
         <% end %>
       <% end %>
       <%= lc_card do %>
         <%= lc_stack gap: :related do %>
-          <%= lc_heading "Spacing roles", size: :card, level: 3 %>
+          <%= lc_heading "Spacing roles", size: :subheading, level: 3 %>
           <dl class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
             <% [ ["tight", "4"], ["related", "8"], ["heading", "12"], ["content", "16"], ["inset", "20"], ["section", "32"] ].each do |role, value| %>
-              <dt><code><%= role %></code></dt><dd class="text-end tabular-nums text-ink-2"><%= value %>px</dd>
+              <dt><code><%= role %></code></dt><dd class="text-end tabular-nums text-muted-foreground"><%= value %>px</dd>
             <% end %>
           </dl>
-          <%= lc_text "A section leaves 12px below its heading and 16px between its content blocks. Stack sections with gap: :section.", size: :caption, tone: :subtle %>
+          <%= lc_text "A section leaves 12px below its heading and 16px between its content blocks. Stack sections with gap: :section.", size: :caption, tone: :muted %>
         <% end %>
       <% end %>
     </div>
@@ -37,13 +37,35 @@
       Mark embedded controls or cards <code>not-prose</code> to keep their component styles.
     <% end %>
   <% end %>
-  <%= lc_section title: "Keep the rhythm, choose your fonts" do %>
+  <%= lc_section title: "Theme colors", id: "tokens" do %>
     <%= lc_text tone: :muted do %>
-      The engine import includes the foundation styles. The default theme supplies fonts and colours. Your app can override them.
-      Override the <code>--ui-*</code> custom properties in the host theme or on a container to tune a context.
-      For example, <code>--ui-space-section: 2.5rem</code> changes section stacks;
-      <code>--ui-heading-page-size: 2rem</code> changes page titles.
-      Containers provide page, reading and form widths. Japanese examples inherit their language from <code>lang="ja"</code>.
+      These eleven colors are the everyday theme settings. Defaults work without overrides.
+      Names describe their purpose: <code>bg-muted</code> for a card, <code>text-muted-foreground</code> for a hint,
+      <code>border-border</code> for a divider. Values below follow the selected palette and light or dark mode.
+    <% end %>
+    <%= lc_text size: :small, tone: :muted do %>
+      Change <code>--primary</code> to update actions, links, selection and focus together.
+      Soft backgrounds for primary and status colors are generated automatically.
+      <a href="/theming.html" class="<%= lc_link_class %>">See the theming guide</a> for examples.
+    <% end %>
+    <%= render "showcase/token_table", tokens: DocsFoundations::COLORS, id: "theme-color-table" %>
+  <% end %>
+  <%= lc_section title: "Typography, spacing and appearance", id: "style-settings" do %>
+    <%= lc_stack do %>
+      <%= lc_text size: :small, tone: :muted do %>
+        Use these settings when you need to change typography, spacing or rendering details.
+        Set a property on a page wrapper for a local change, or on <code>:root</code> for the whole app.
+        Load overrides after the engine stylesheet. Japanese text follows <code>lang="ja"</code>.
+      <% end %>
+      <%= render "showcase/source_code", source: DocsFoundations::OVERRIDE, language: :css, id: "foundation-overrides", label: "Page-scoped style overrides" %>
+      <div class="flex flex-wrap items-end justify-between gap-3">
+        <label for="foundation-token-filter" class="flex w-full max-w-sm flex-col gap-1 text-sm font-medium">
+          <span>Filter style settings</span>
+          <input id="foundation-token-filter" type="search" class="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm font-normal" placeholder="Name, value or use" aria-controls="foundation-token-table" data-showcase-target="tokenFilter" data-action="input->showcase#filterTokens">
+        </label>
+        <p class="text-sm text-muted-foreground" role="status" aria-live="polite" data-showcase-target="tokenCount"></p>
+      </div>
+      <%= render "showcase/token_table", tokens: DocsFoundations::TOKENS + DocsFoundations::APPEARANCE, id: "foundation-token-table" %>
     <% end %>
   <% end %>
 <% end %>

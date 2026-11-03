@@ -1,6 +1,29 @@
 ja:
   lostcoords:
     ui:
+      pager:
+        label: "ページ"
+        previous: "前へ"
+        next: "次へ"
+      skip_link:
+        label: "本文へ移動"
+      spinner:
+        label: "読み込み中…"
+      dialog:
+        trigger: "ダイアログを開く"
+        cancel: "キャンセル"
+        close: "%{title}を閉じる"
+      menu:
+        label: "操作"
+      popover:
+        trigger: "パネルを開く"
+      breadcrumb:
+        label: "パンくずリスト"
+      code_block:
+        label: "ソースコード"
+        copy: "%{label}をコピー"
+        expand: "コードをすべて表示"
+        collapse: "コードを折りたたむ"
       copy_button:
         label: "コピー"
         copied: "コピー済み"

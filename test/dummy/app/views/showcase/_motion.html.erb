@@ -1,4 +1,4 @@
-<%= lc_stack gap: :section do %>
+<%= lc_stack gap: :section, id: "motion" do %>
   <%= lc_section title: "Feedback follows the action" do %>
     <%= lc_text tone: :muted do %>
       Buttons respond to hover and press automatically. Copy buttons transition their label and icon after the clipboard write succeeds.
@@ -12,8 +12,8 @@
       Feedback duration controls the visual transition. The copy button's <code>reset_after:</code> controls how long confirmation remains visible.
     <% end %>
     <dl class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
-      <% [ ["--ui-motion-quick", "140ms · icon controls"], ["--ui-motion-control", "180ms · buttons"], ["--ui-motion-feedback", "160ms · label and icon swaps"], ["--ui-press-scale", "0.96 · pressed icon controls"], ["--ease-out", "Shared control easing"] ].each do |name, description| %>
-        <dt><code><%= name %></code></dt><dd class="text-ink-2"><%= description %></dd>
+      <% [ ["--lc-motion-quick", "140ms · icon controls"], ["--lc-motion-control", "180ms · buttons"], ["--lc-motion-feedback", "160ms · label and icon swaps"], ["--lc-press-scale", "0.96 · pressed icon controls"], ["--lc-ease-out", "Shared control easing"] ].each do |name, description| %>
+        <dt><code><%= name %></code></dt><dd class="text-muted-foreground"><%= description %></dd>
       <% end %>
     </dl>
   <% end %>

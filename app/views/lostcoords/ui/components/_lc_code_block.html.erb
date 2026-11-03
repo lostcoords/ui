@@ -1,0 +1,18 @@
+<%# locals: (id:, language:, title:, label:, content:, truncated:, max_lines:, attributes:) %>
+<%= tag.div(**attributes) do %>
+  <% if title %>
+    <div class="flex h-10 items-center ps-inset pe-16 pt-inset">
+      <span class="truncate font-mono text-xs text-muted-foreground"><%= title %></span>
+    </div>
+  <% end %>
+  <div class="lc-code-block-copy absolute end-2 top-2 z-10 rounded-full bg-muted">
+    <%= lc_copy_button source: "#{id}-content", icon_only: true, variant: :ghost, size: :sm, aria: { label: lc_t("lostcoords.ui.code_block.copy", label: label) } %>
+  </div>
+  <div class="relative">
+    <pre id="<%= id %>-content" class="m-0 overflow-x-auto ps-inset pe-16 pb-inset font-mono text-[0.8125rem] text-muted-foreground [tab-size:2] <%= title ? 'pt-2 [--lc-code-block-padding:--spacing(7)]' : 'pt-inset [--lc-code-block-padding:--spacing(10)]' %> <%= 'max-h-[calc(var(--lc-code-block-lines)*1lh+var(--lc-code-block-padding))] overflow-y-hidden group-data-expanded/code-block:max-h-none' if truncated %>" style="<%= "--lc-code-block-lines: #{max_lines}" if truncated %>" tabindex="0" role="region" aria-label="<%= label %>"><%= tag.code(content, data: { language: language }) %></pre>
+    <% if truncated %><div class="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-linear-to-t from-muted to-transparent group-data-expanded/code-block:hidden" aria-hidden="true"></div><% end %>
+  </div>
+  <% if truncated %>
+    <%= lc_button lc_t("lostcoords.ui.code_block.expand"), variant: :ghost, size: :sm, class: "w-full rounded-none", aria: { expanded: false, controls: "#{id}-content" }, data: { action: "lc-code-block#toggle", lc_code_block_target: "toggle", expand_label: lc_t("lostcoords.ui.code_block.expand"), collapse_label: lc_t("lostcoords.ui.code_block.collapse") } %>
+  <% end %>
+<% end %>

@@ -1,8 +1,8 @@
 <section id="<%= id %>" class="<%= lc_stack_class(gap: :heading, extra: "group/heading scroll-mt-28") %>">
-  <header class="<%= lc_section_header_class %>"><h3 class="<%= lc_heading_class(size: :card) %>"><a href="#<%= id %>" class="inline-flex items-center gap-2"><%= title %><span class="text-ink-3 opacity-0 transition-opacity group-hover/heading:opacity-100 group-has-focus-visible/heading:opacity-100" aria-hidden="true">#</span></a></h3></header>
+  <header class="<%= lc_section_header_class %>"><h3 class="<%= lc_heading_class(size: :subheading) %>"><a href="#<%= id %>" class="inline-flex items-center gap-2"><%= title %><span class="text-muted-foreground opacity-0 transition-opacity group-hover/heading:opacity-100 group-has-focus-visible/heading:opacity-100" aria-hidden="true">#</span></a></h3></header>
   <%= lc_stack do %>
-    <% if example.note %><p class="text-pretty text-sm text-ink-2"><%= example.note %></p><% end %>
-    <div class="flex min-h-48 flex-wrap items-center justify-center gap-4 rounded-2xl p-6 sm:p-10 <%= example.stage == :page ? 'bg-paper' : 'bg-paper-2' %>" data-example-preview>
+    <% if example.note %><p class="text-pretty text-sm text-muted-foreground"><%= example.note %></p><% end %>
+    <div class="<%= example.stage == :flush ? 'min-w-0' : "flex min-h-48 flex-wrap items-center justify-center gap-4 rounded-2xl p-6 sm:p-10 #{example.stage == :page ? 'bg-background' : 'bg-muted'}" %>" data-example-preview>
       <%= render inline: showcase_source(example, id:) %>
     </div>
     <%= render "showcase/source_code", source: showcase_source(example, id:), id: "#{id}-code", label: "#{title} code" %>

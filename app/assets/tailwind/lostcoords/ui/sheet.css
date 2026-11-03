@@ -1,74 +1,74 @@
 @layer components {
   @media (width < 40rem) {
-    .sheet {
+    .lc-sheet {
       position: fixed;
 
       /* Anchored from the top edge at the screen height it opened at
          (sheet_controller), then lifted by its own height. In-app browsers
          (Brave, Chrome) resize the page under the keyboard; anything hung
          from the bottom edge jumps a frame as they do, but the top holds. */
-      inset: var(--sheet-floor, 100dvh) 0 auto;
+      inset: var(--lc-sheet-floor, 100dvh) 0 auto;
       translate: 0 -100%;
       margin: 0;
-      z-index: var(--z-index-prompt);
+      z-index: var(--lc-z-sheet);
       inline-size: 100%;
-      max-block-size: calc(var(--sheet-floor, 100dvh) * 0.9);
+      max-block-size: calc(var(--lc-sheet-floor, 100dvh) * 0.9);
       overflow-y: auto;
       overscroll-behavior: contain;
       padding-block-end: max(env(safe-area-inset-bottom), 1rem);
-      border: 1px solid var(--glass-edge);
+      border: 1px solid var(--lc-glass-edge);
       border-start-start-radius: var(--radius-3xl);
       border-start-end-radius: var(--radius-3xl);
 
       /* Published as a variable, not just applied, because the sticky chrome
          that rides on top of the sheet — the grabber bar, the pinned action
          row — has to paint the *same* surface or it reads as a seam. In dark
-         mode the sheet is a lightened paper-2/paper-3 mix while --paper is
+         mode the sheet is a lightened paper-2/paper-3 mix while --background is
          0.045 lightness darker, which is exactly the band you could see. */
-      --sheet-bg: var(--paper);
+      --lc-sheet-bg: var(--background);
       @supports (background: light-dark(white, black)) {
-        --sheet-bg: light-dark(var(--paper), color-mix(in oklab, var(--paper-2) 92%, var(--paper-3)));
+        --lc-sheet-bg: light-dark(var(--background), color-mix(in oklab, var(--muted) 92%, var(--accent)));
       }
-      background: var(--sheet-bg);
-      color: var(--ink);
-      box-shadow: 0 -12px 40px -12px color-mix(in oklab, var(--ink) 45%, transparent);
-      transform: translateY(var(--sheet-offscreen));
+      background: var(--lc-sheet-bg);
+      color: var(--foreground);
+      box-shadow: 0 -12px 40px -12px color-mix(in oklab, var(--foreground) 45%, transparent);
+      transform: translateY(var(--lc-sheet-offscreen));
       transition:
-        transform var(--sheet-duration) var(--ease-sheet),
-        display var(--sheet-duration) allow-discrete,
-        overlay var(--sheet-duration) allow-discrete;
+        transform var(--lc-sheet-duration) var(--lc-ease-sheet),
+        display var(--lc-sheet-duration) allow-discrete,
+        overlay var(--lc-sheet-duration) allow-discrete;
     }
 
     /* Popover-API reveal (currency): top layer drives display, so showPopover()/
        hidePopover() animate the slide both ways, with a native ::backdrop. */
-    .sheet[popover] { display: none; flex-direction: column; max-block-size: min(calc(var(--sheet-floor, 100svh) * 0.72), 34rem); }
-    .sheet[popover]:popover-open {
+    .lc-sheet[popover] { display: none; flex-direction: column; max-block-size: min(calc(var(--lc-sheet-floor, 100svh) * 0.72), 34rem); }
+    .lc-sheet[popover]:popover-open {
       display: flex;
       transform: translateY(0);
 
-      @starting-style { transform: translateY(var(--sheet-offscreen)); }
+      @starting-style { transform: translateY(var(--lc-sheet-offscreen)); }
     }
-    .sheet[popover]::backdrop {
-      background: var(--scrim);
+    .lc-sheet[popover]::backdrop {
+      background: var(--lc-scrim);
       backdrop-filter: blur(2px);
       opacity: 0;
       transition:
-        opacity var(--sheet-duration) var(--ease-sheet),
-        display var(--sheet-duration) allow-discrete,
-        overlay var(--sheet-duration) allow-discrete;
+        opacity var(--lc-sheet-duration) var(--lc-ease-sheet),
+        display var(--lc-sheet-duration) allow-discrete,
+        overlay var(--lc-sheet-duration) allow-discrete;
 
       @media (prefers-reduced-motion: reduce) { transition: none; }
     }
-    .sheet[popover]:popover-open::backdrop { opacity: 1; @starting-style { opacity: 0; } }
+    .lc-sheet[popover]:popover-open::backdrop { opacity: 1; @starting-style { opacity: 0; } }
 
     /* UIKit's 36×5 grabber. */
-    :is([data-sheet-target~="handle"], dialog[data-controller~="sheet"])::before {
+    :is([data-lc-sheet-target~="handle"], dialog[data-controller~="lc-sheet"])::before {
       content: "";
       display: block;
       inline-size: 2.25rem;
       block-size: 0.3125rem;
       border-radius: 9999px;
-      background: color-mix(in oklab, var(--ink-3) 45%, transparent);
+      background: color-mix(in oklab, var(--muted-foreground) 45%, transparent);
     }
   }
 }
@@ -76,67 +76,67 @@
 @layer modules {
   /* Phones: every modal dialog is an iOS sheet (sheet_controller). It floats
      inset with all corners round while it is short, and docks to the screen
-     edges as it reaches the large detent: --sheet-p runs 0 → 1 between them.
+     edges as it reaches the large detent: --lc-sheet-p runs 0 → 1 between them.
      Lives in this layer so it out-ranks a dialog's own frame. */
   @media (width < 40rem) {
-    dialog[data-controller~="sheet"] {
-      --sheet-p: 0;
-      --sheet-inset: 0.5rem;
-      --sheet-radius: 2.25rem;
-      --sheet-bg: var(--paper);
-      --sheet-gap: calc(var(--sheet-inset) * (1 - var(--sheet-p)));
+    dialog[data-controller~="lc-sheet"] {
+      --lc-sheet-p: 0;
+      --lc-sheet-inset: 0.5rem;
+      --lc-sheet-radius: 2.25rem;
+      --lc-sheet-bg: var(--background);
+      --lc-sheet-gap: calc(var(--lc-sheet-inset) * (1 - var(--lc-sheet-p)));
 
       position: fixed;
 
-      /* Anchored from the top edge, like .sheet: the keyboard covers it and
+      /* Anchored from the top edge, like .lc-sheet: the keyboard covers it and
          nothing moves. */
-      inset: calc(var(--sheet-floor, 100dvh) - var(--sheet-gap)) 0 auto;
+      inset: calc(var(--lc-sheet-floor, 100dvh) - var(--lc-sheet-gap)) 0 auto;
       translate: 0 -100%;
-      margin: 0 var(--sheet-gap);
+      margin: 0 var(--lc-sheet-gap);
       inline-size: auto;
       max-inline-size: none;
       block-size: auto;
-      max-block-size: calc(var(--sheet-floor, 100dvh) - max(env(safe-area-inset-top), 0.75rem) - 0.625rem);
-      padding: 0 0 max(0px, calc(env(safe-area-inset-bottom) - var(--sheet-gap)));
+      max-block-size: calc(var(--lc-sheet-floor, 100dvh) - max(env(safe-area-inset-top), 0.75rem) - 0.625rem);
+      padding: 0 0 max(0px, calc(env(safe-area-inset-bottom) - var(--lc-sheet-gap)));
       overflow: hidden auto;
       overscroll-behavior: contain;
       scrollbar-width: none;
-      border: 1px solid var(--glass-edge);
+      border: 1px solid var(--lc-glass-edge);
       border-radius:
-        var(--sheet-radius) var(--sheet-radius)
-        calc(var(--sheet-radius) * (1 - var(--sheet-p))) calc(var(--sheet-radius) * (1 - var(--sheet-p)));
-      background: var(--sheet-bg);
-      box-shadow: var(--glass-rim), 0 -8px 40px -12px rgb(0 0 0 / 0.28);
+        var(--lc-sheet-radius) var(--lc-sheet-radius)
+        calc(var(--lc-sheet-radius) * (1 - var(--lc-sheet-p))) calc(var(--lc-sheet-radius) * (1 - var(--lc-sheet-p)));
+      background: var(--lc-sheet-bg);
+      box-shadow: var(--lc-glass-rim), 0 -8px 40px -12px rgb(0 0 0 / 0.28);
       opacity: 1;
-      transform: translateY(var(--sheet-offscreen));
+      transform: translateY(var(--lc-sheet-offscreen));
       transform-origin: bottom center;
       transition:
-        transform var(--sheet-duration) var(--ease-sheet),
-        display var(--sheet-duration) allow-discrete,
-        overlay var(--sheet-duration) allow-discrete;
+        transform var(--lc-sheet-duration) var(--lc-ease-sheet),
+        display var(--lc-sheet-duration) allow-discrete,
+        overlay var(--lc-sheet-duration) allow-discrete;
 
       &[open] {
         transform: none;
 
-        @starting-style { transform: translateY(var(--sheet-offscreen)); }
+        @starting-style { transform: translateY(var(--lc-sheet-offscreen)); }
       }
 
       &::before {
         position: absolute;
-        z-index: calc(var(--z-index-art) + 1);
+        z-index: 1;
         inset: 0.3125rem auto auto 50%;
         translate: -50% 0;
         pointer-events: none;
       }
 
       &::backdrop {
-        background: var(--scrim-sheet);
+        background: var(--lc-scrim-sheet);
         backdrop-filter: none;
         opacity: 0;
         transition:
-          opacity var(--sheet-duration) var(--ease-sheet),
-          display var(--sheet-duration) allow-discrete,
-          overlay var(--sheet-duration) allow-discrete;
+          opacity var(--lc-sheet-duration) var(--lc-ease-sheet),
+          display var(--lc-sheet-duration) allow-discrete,
+          overlay var(--lc-sheet-duration) allow-discrete;
       }
 
       &[open]::backdrop {
@@ -152,18 +152,18 @@
 
     /* Behind a large sheet the page shrinks back and rounds off, over black,
        as UIKit's page sheet does; sheet_controller drives the variables. */
-    html[data-sheet-page] {
+    html[data-lc-sheet-page] {
       background: #000;
 
       > body {
-        transform-origin: 50% var(--sheet-page-origin, 0);
+        transform-origin: 50% var(--lc-sheet-page-origin, 0);
         transform:
-          translateY(calc(var(--sheet-page-p, 0) * (max(env(safe-area-inset-top), 0.75rem) - 0.25rem)))
-          scale(var(--sheet-page-scale, 1));
-        clip-path: inset(var(--sheet-page-origin, 0) 0 0 round calc(var(--sheet-page-p, 0) * 0.75rem));
+          translateY(calc(var(--lc-sheet-page-p, 0) * (max(env(safe-area-inset-top), 0.75rem) - 0.25rem)))
+          scale(var(--lc-sheet-page-scale, 1));
+        clip-path: inset(var(--lc-sheet-page-origin, 0) 0 0 round calc(var(--lc-sheet-page-p, 0) * 0.75rem));
         transition:
-          transform var(--sheet-page-transition, 0s),
-          clip-path var(--sheet-page-transition, 0s);
+          transform var(--lc-sheet-page-transition, 0s),
+          clip-path var(--lc-sheet-page-transition, 0s);
       }
     }
   }

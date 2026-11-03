@@ -19,7 +19,7 @@ module Lostcoords::Ui
     test "named spacing accepts strings and caller utilities override defaults" do
       stack = fragment(@view.lc_stack(gap: "section", class: "gap-4") { "Content" }).at_css("div")
       assert_includes stack["class"].split, "gap-4"
-      assert_not_includes stack["class"], "--ui-space-section"
+      assert_not_includes stack["class"], "--lc-space-section"
 
       inline = fragment(@view.lc_inline(gap: "tight", class: "items-start") { "Content" }).at_css("div")
       assert_includes inline["class"].split, "items-start"
@@ -29,13 +29,13 @@ module Lostcoords::Ui
     test "reading and form containers do not add another page gutter" do
       [ :reading, :form ].each do |size|
         container = fragment(@view.lc_container(size: size) { "Content" }).at_css("div")
-        assert_not_includes container["class"].split, "ui-container-page"
+        assert_not_includes container["class"].split, "lc-container-page"
       end
 
       container = fragment(@view.lc_container(class: "max-w-4xl") { "Content" }).at_css("div")
-      assert_includes container["class"].split, "ui-container-page"
+      assert_includes container["class"].split, "lc-container-page"
       assert_includes container["class"].split, "max-w-4xl"
-      assert_not_includes container["class"], "--ui-page-max"
+      assert_not_includes container["class"], "--lc-page-max"
     end
 
     test "sections keep heading semantics independent of visual style and capture actions" do

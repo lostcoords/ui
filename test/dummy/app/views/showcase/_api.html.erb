@@ -1,26 +1,28 @@
 <%= lc_section title: "API reference", id: "api", class: "scroll-mt-28" do %>
-  <p class="text-sm text-ink-2">Helpers render semantic HTML and include their interaction wiring. Pass native attributes through <code>class:</code>, <code>data:</code>, <code>aria:</code> and the usual Rails options. Blocks use captured ERB content.</p>
+  <p class="text-sm text-muted-foreground">Helpers render semantic HTML and include their interaction wiring. Pass native attributes through <code>class:</code>, <code>data:</code>, <code>aria:</code> and the usual Rails options. Blocks use captured ERB content.</p>
   <%= lc_stack gap: :section do %>
     <% showcase_builders(section).each do |component| %>
       <div class="<%= lc_stack_class %>">
         <h3 id="<%= component.name %>" class="scroll-mt-28 font-mono text-sm font-medium"><%= component.name %></h3>
-        <pre class="overflow-x-auto rounded-2xl bg-paper-2 p-4 font-mono text-xs text-ink-2"><code><%= highlight_source(component.signature, language: :ruby) %></code></pre>
+        <%= render "showcase/source_code", source: component.signature, id: "#{component.name}-signature", language: :ruby, label: "#{component.name} signature" %>
         <div class="overflow-x-auto">
-          <table class="w-full min-w-80 text-start text-sm">
-            <thead><tr class="text-xs text-ink-3"><th class="py-3 pe-4 text-start font-medium">Input</th><th class="py-3 pe-4 text-start font-medium">Default</th><th class="py-3 text-start font-medium">Values</th></tr></thead>
+          <%= lc_table class: "min-w-80" do %>
+            <thead><tr><th scope="col">Input</th><th scope="col">Default</th><th scope="col">Values</th></tr></thead>
             <tbody>
               <% showcase_parameters(component).each do |name, default| %>
-                <tr class="border-t border-hairline"><td class="py-3 pe-4 align-top font-mono text-xs"><%= name %></td><td class="py-3 pe-4 align-top font-mono text-xs"><%= default %></td><td class="py-3 align-top text-xs text-ink-2"><%= showcase_choices(component, name) %></td></tr>
+                <tr><td class="align-top font-mono text-xs"><%= name %></td><td class="align-top font-mono text-xs"><%= default %></td><td class="align-top text-xs text-muted-foreground"><%= showcase_choices(component, name) %></td></tr>
               <% end %>
             </tbody>
-          </table>
+          <% end %>
         </div>
       </div>
     <% end %>
   <% end %>
-  <div class="flex flex-col gap-3 rounded-2xl bg-paper-2 p-5 text-sm text-ink-2">
-    <h3 class="font-semibold text-ink">Styling and extension</h3>
-    <p>Use <code>class:</code> to merge utilities, native attributes for application behavior, and the <a href="/theming.html" class="underline underline-offset-2">theming guide</a> for the shared palette. For custom markup, the <a href="https://github.com/lostcoords/ui#advanced-style-composition" class="underline underline-offset-2">advanced class helpers</a> expose the same styles, including glass surfaces and class merging.</p>
-    <p><a href="/api.json" class="underline underline-offset-2">API JSON</a> · <a href="/llms.txt" class="underline underline-offset-2">LLM reference</a></p>
-  </div>
+  <%= lc_card do |card| %>
+    <%= card.header title: "Styling and extension" %>
+    <%= card.content class: "text-small text-muted-foreground" do %>
+    <p>Use <code>class:</code> to merge utilities, native attributes for application behavior, and the <a href="/theming.html" class="<%= lc_link_class %>">theming guide</a> for the shared palette. For custom markup, the <a href="https://github.com/lostcoords/ui#advanced-style-composition" class="<%= lc_link_class %>">advanced class helpers</a> expose the same styles, including glass surfaces and class merging.</p>
+    <p><a href="/api.json" class="<%= lc_link_class %>">API JSON</a> · <a href="/llms.txt" class="<%= lc_link_class %>">LLM reference</a></p>
+    <% end %>
+  <% end %>
 <% end %>

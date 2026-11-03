@@ -1,6 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
-import { registerDialog } from "helpers/dialog"
-import { prefersReducedMotion } from "helpers/viewport"
+import { registerDialog } from "lostcoords/ui/helpers/dialog"
+import { prefersReducedMotion } from "lostcoords/ui/helpers/viewport"
 
 export default class extends Controller {
   static targets = [

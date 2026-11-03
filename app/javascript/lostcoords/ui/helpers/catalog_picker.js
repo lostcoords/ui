@@ -1,7 +1,7 @@
-import { holdDocumentScroll } from "helpers/dismiss_stack"
-import { FloatingPanel } from "helpers/floating_panel"
-import { SHEET_TIMING, sheetDuration } from "helpers/sheet_motion"
-import { isSheetViewport } from "helpers/viewport"
+import { holdDocumentScroll } from "lostcoords/ui/helpers/dismiss_stack"
+import { FloatingPanel } from "lostcoords/ui/helpers/floating_panel"
+import { SHEET_TIMING, sheetDuration } from "lostcoords/ui/helpers/sheet_motion"
+import { isSheetViewport } from "lostcoords/ui/helpers/viewport"
 
 const catalogs = new Map()
 const MAX_RESULTS = 250
@@ -433,7 +433,7 @@ export class CatalogPicker extends FloatingPanel {
       duration,
       settle: duration,
       transition: `transform ${SHEET_TIMING}`,
-      offscreen: "translateY(var(--sheet-offscreen))",
+      offscreen: "translateY(var(--lc-sheet-offscreen))",
     }
   }
 

@@ -1,72 +1,62 @@
 module Lostcoords::Ui
   module FormHelper
-    SEGMENTED_BASE =
-      "inline-flex items-center gap-1 rounded-2xl bg-paper-2 p-1"
+    TOGGLE_GROUP_BASE =
+      "inline-flex items-center gap-1 rounded-2xl bg-muted p-1 lc-squircle"
 
-    SEGMENTED_TAB_BASE =
-      "inline-flex items-center justify-center gap-1.5 whitespace-nowrap " \
-      "min-h-11 rounded-xl border-0 bg-transparent " \
-      "px-4 py-2 font-body text-sm font-medium cursor-pointer no-underline " \
-      "text-ink-2 hover:text-ink " \
-      "aria-selected:bg-paper aria-selected:text-ink " \
-      "aria-pressed:bg-paper aria-pressed:text-ink " \
-      "aria-[current]:not-aria-[current=false]:bg-paper aria-[current]:not-aria-[current=false]:text-ink " \
-      "transition-[background-color,color,box-shadow,transform] duration-[150ms] ease-out " \
-      "active:scale-[0.96] disabled:opacity-40 disabled:pointer-events-none " \
+    TOGGLE_GROUP_ITEM_BASE =
+      "lc-press inline-flex items-center justify-center gap-1.5 whitespace-nowrap " \
+      "h-control-sm rounded-xl border-0 bg-transparent " \
+      "px-3 font-sans text-label cursor-pointer no-underline " \
+      "text-muted-foreground hover:text-foreground " \
+      "aria-selected:bg-background aria-selected:text-foreground " \
+      "aria-pressed:bg-background aria-pressed:text-foreground " \
+      "aria-[current]:not-aria-[current=false]:bg-background aria-[current]:not-aria-[current=false]:text-foreground " \
+      "transition-[background-color,color,box-shadow,transform] duration-(--lc-motion-quick) ease-(--lc-ease-out) " \
+      "disabled:opacity-40 disabled:pointer-events-none " \
       "[&_svg]:size-[1.1em] [&_svg]:shrink-0"
 
-    SEGMENTED_TAB_ACTIVE = "bg-paper text-ink hover:text-ink"
+    TOGGLE_GROUP_ITEM_ACTIVE = "bg-background text-foreground hover:text-foreground"
 
     INPUT_BASE =
       "w-full max-w-full min-w-0 " \
       "px-3 " \
-      "font-body text-base bg-(--field-bg,var(--paper-2)) text-ink placeholder:text-ink-3 " \
-      "border border-transparent rounded-2xl outline-none " \
-      "transition-[border-color,box-shadow] duration-150 ease-out " \
-      "focus:shadow-(--focus-halo) " \
-      "aria-invalid:border-berry aria-invalid:shadow-[0_0_0_3px_color-mix(in_oklab,var(--berry)_16%,transparent)]"
+      "font-sans text-base bg-(--lc-field-bg,var(--input)) text-foreground placeholder:text-muted-foreground " \
+      "border border-transparent rounded-xl lc-squircle outline-none " \
+      "transition-[border-color,box-shadow] duration-(--lc-motion-quick) ease-(--lc-ease-out) " \
+      "focus:shadow-[0_0_0_calc(var(--spacing)*0.5)_var(--ring,color-mix(in_oklab,var(--primary)_50%,transparent))] " \
+      "aria-invalid:border-destructive aria-invalid:shadow-[0_0_0_3px_color-mix(in_oklab,var(--destructive)_16%,transparent)]"
 
-    FIELD_BASE = "ui-field grid min-w-0 gap-2 has-aria-invalid:[&>label]:text-berry"
+    FIELD_BASE = "lc-field grid min-w-0 gap-related has-aria-invalid:[&>label]:text-destructive"
 
     FIELD_LABEL_BASE =
-      "block font-body text-sm font-semibold text-ink-3 " \
-      "transition-colors duration-[120ms] ease-out"
+      "block font-sans text-label font-semibold text-muted-foreground " \
+      "transition-colors duration-(--lc-motion-quick) ease-(--lc-ease-out)"
 
-    FORM_ACTIONS_BASE = "flex flex-wrap items-center justify-end gap-2"
-
-    # The toast's surface (shared/_toast), set in the flow: the tone lives in the icon, not the fill.
-    FORM_ALERT_BASE =
-      "flex items-start gap-2 mb-4 py-3 px-4 rounded-2xl bg-(--glass-hud-solid) text-(--glass-hud-ink) text-sm font-semibold " \
-      "motion-safe:animate-alert-in"
-
-    FORM_ALERT_ICONS = {
-      error: [ "exclamation-circle", "text-berry" ],
-      notice: [ "check-circle", "text-leaf" ]
-    }.freeze
-
-    def lc_segmented_class(extra: nil)
-      lc_tw(SEGMENTED_BASE, extra)
+    # form_with with Lostcoords::Ui::FormBuilder, so form.text_field, form.field and form.submit
+    # render library controls.
+    def lc_form_with(**options, &block)
+      form_with(**options, builder: Lostcoords::Ui::FormBuilder, &block)
     end
 
-    def lc_segmented_tab_class(active: false, extra: nil)
-      lc_tw(SEGMENTED_TAB_BASE, (SEGMENTED_TAB_ACTIVE if active), extra)
+    def lc_toggle_group_class(extra: nil)
+      lc_tw(TOGGLE_GROUP_BASE, extra)
     end
 
-    def lc_input_class(size: :base, extra: nil)
-      lc_tw(INPUT_BASE, TailwindHelper::CONTROL_SIZES.fetch(size.to_sym, TailwindHelper::CONTROL_SIZES[:base]), extra)
+    def lc_toggle_group_item_class(active: false, extra: nil)
+      lc_tw(TOGGLE_GROUP_ITEM_BASE, (TOGGLE_GROUP_ITEM_ACTIVE if active), extra)
     end
 
-    def lc_dropdown_trigger_class(size: :base, extra: nil)
-      lc_button_class(variant: :secondary, size: size, block: true,
-        extra: lc_tw("justify-start text-start ps-5 pe-4 gap-3 [&_.caret]:ms-auto [&_.caret]:shrink-0", extra))
+    def lc_input_class(size: :md, extra: nil)
+      lc_tw(INPUT_BASE, TailwindHelper::CONTROL_SIZES.fetch(lc_option!(:size, size, TailwindHelper::CONTROL_SIZES.keys)), extra)
     end
 
-    def lc_select_class(size: :base, extra: nil)
-      lc_tw(lc_input_class(size: size), "select-control rounded-full ps-5 pe-11 cursor-pointer hover:bg-paper-3", extra)
+
+    def lc_select_class(size: :md, extra: nil)
+      lc_tw(lc_input_class(size: size), "lc-select rounded-pill ps-4 pe-10 cursor-pointer hover:bg-(--lc-input-hover)", extra)
     end
 
     def lc_textarea_class(extra: nil)
-      lc_tw(INPUT_BASE, "min-h-28 py-2.5 resize-y", extra)
+      lc_tw(INPUT_BASE, "min-h-28 py-2 resize-y", extra)
     end
 
     def lc_field_class(extra: nil)
@@ -75,19 +65,6 @@ module Lostcoords::Ui
 
     def lc_field_label_class(extra: nil)
       lc_tw(FIELD_LABEL_BASE, extra)
-    end
-
-    def lc_form_actions_class(extra: nil)
-      lc_tw(FORM_ACTIONS_BASE, extra)
-    end
-
-    def lc_form_alert_class(extra: nil)
-      lc_tw(FORM_ALERT_BASE, extra)
-    end
-
-    def lc_form_alert_icon(tone: :error)
-      name, color = FORM_ALERT_ICONS.fetch(tone.to_sym, FORM_ALERT_ICONS[:error])
-      lc_icon name, variant: :mini, options: { class: lc_tw("size-5 shrink-0", color), "aria-hidden": "true" }
     end
   end
 end

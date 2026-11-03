@@ -1,20 +1,20 @@
 @layer components {
-  .app-dialog {
-    --dialog-from: translateY(0.4rem) scale(0.98);
-    --dialog-fade: 0.2s;
-    --dialog-duration: 0.2s;
+  .lc-dialog {
+    --lc-dialog-from: translateY(0.4rem) scale(0.98);
+    --lc-dialog-fade: 0.2s;
+    --lc-dialog-duration: 0.2s;
 
     /* Preflight's `margin: 0` clobbers the UA `margin: auto` that centres a modal dialog. */
     margin: auto;
     overflow: hidden;
     overscroll-behavior: contain;
     opacity: 0;
-    transform: var(--dialog-from);
+    transform: var(--lc-dialog-from);
     transition:
-      opacity var(--dialog-fade) var(--ease-out-expo),
-      transform var(--dialog-duration) var(--ease-out-expo),
-      display var(--dialog-duration) allow-discrete,
-      overlay var(--dialog-duration) allow-discrete;
+      opacity var(--lc-dialog-fade) var(--lc-ease-out-expo),
+      transform var(--lc-dialog-duration) var(--lc-ease-out-expo),
+      display var(--lc-dialog-duration) allow-discrete,
+      overlay var(--lc-dialog-duration) allow-discrete;
 
     &[open] {
       opacity: 1;
@@ -22,7 +22,7 @@
 
       @starting-style {
         opacity: 0;
-        transform: var(--dialog-from);
+        transform: var(--lc-dialog-from);
       }
     }
 
@@ -32,14 +32,14 @@
       background: transparent;
       backdrop-filter: blur(0);
       transition:
-        background-color var(--dialog-fade) var(--ease-out),
-        backdrop-filter var(--dialog-fade) var(--ease-out),
-        display var(--dialog-fade) allow-discrete,
-        overlay var(--dialog-fade) allow-discrete;
+        background-color var(--lc-dialog-fade) var(--lc-ease-out),
+        backdrop-filter var(--lc-dialog-fade) var(--lc-ease-out),
+        display var(--lc-dialog-fade) allow-discrete,
+        overlay var(--lc-dialog-fade) allow-discrete;
     }
 
     &[open]::backdrop {
-      background: var(--scrim);
+      background: var(--lc-scrim);
       backdrop-filter: blur(2px);
 
       @starting-style {
@@ -48,8 +48,8 @@
       }
     }
 
-    &.context-dialog[open]::backdrop {
-      background: var(--scrim-soft);
+    &.lc-dialog-context[open]::backdrop {
+      background: var(--lc-scrim-soft);
       backdrop-filter: none;
     }
 

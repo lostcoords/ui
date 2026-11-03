@@ -1,0 +1,6 @@
+<%= lc_alert "Your card was declined. Update the payment method to keep the workspace active.", title: "Payment failed" do |alert| %>
+  <%= alert.actions do %>
+    <%= lc_button "Update payment", size: :sm %>
+    <%= lc_button "Dismiss", variant: :ghost, size: :sm %>
+  <% end %>
+<% end %>

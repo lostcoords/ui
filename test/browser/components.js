@@ -9,6 +9,7 @@ async function _verifyComponents(page) {
     checks.push(message)
   }
   const visit = async (component) => {
+    await page.bringToFront()
     await page.goto(`${origin}/components/${component}.html`)
     await page.locator('[data-controller~="showcase"]').waitFor()
     await page.locator('#palette-picker-trigger[aria-label^="Color palette:"]').waitFor()
@@ -30,7 +31,7 @@ async function _verifyComponents(page) {
     const root = document.documentElement
     const theme = root.getAttribute("data-theme")
     const palette = root.getAttribute("data-palette")
-    const panel = document.querySelector('[data-controller="example"]')
+    const panel = document.querySelector('[data-controller~="lc-code-block"]')
     const canvas = document.createElement("canvas")
     canvas.width = canvas.height = 1
     const context = canvas.getContext("2d", { willReadFrequently: true })
@@ -115,7 +116,7 @@ async function _verifyComponents(page) {
   const shortCode = page.locator("#usage-code")
   verify(await shortCode.isVisible(), "Usage code is visible by default")
   verify((await shortCode.locator("[data-syntax]").count()) > 0, "ERB code is syntax highlighted")
-  const fullCode = page.locator('[data-example-target="toggle"]').first()
+  const fullCode = page.locator('[data-lc-code-block-target="toggle"]').first()
   const longCode = page.locator(`#${await fullCode.getAttribute("aria-controls")}`)
   const collapsedHeight = await longCode.evaluate((node) => node.clientHeight)
   await fullCode.click()
@@ -130,18 +131,18 @@ async function _verifyComponents(page) {
   await fullCode.click()
   verify((await fullCode.getAttribute("aria-expanded")) === "false", "Long examples collapse again")
 
-  await visit("segmented")
+  await visit("toggle_group")
   const selected = page
     .locator('main section[id^="example-"]')
     .first()
-    .locator('[data-ui-selection-target="option"][aria-pressed="true"]')
+    .locator('[data-lc-selection-target="option"][aria-pressed="true"]')
   await selected.focus()
   await page.keyboard.press("ArrowRight")
   verify(
     (await page.locator('input[name="view"]').inputValue()) === "year",
     "Keyboard selection updates the native form value",
   )
-  verify((await selected.count()) === 1, "A segmented group keeps exactly one selected option")
+  verify((await selected.count()) === 1, "A toggle group keeps exactly one selected option")
 
   await page.getByRole("button", { name: "Annual", exact: true }).click()
   verify(
@@ -158,10 +159,13 @@ async function _verifyComponents(page) {
     "Disabled choices stay disabled",
   )
 
-  await visit("pill")
+  await visit("toggle")
   const pill = page.getByRole("button", { name: "Writing", exact: true }).first()
   await pill.click()
-  verify((await pill.getAttribute("aria-pressed")) === "true", "Pill buttons expose pressed state")
+  verify(
+    (await pill.getAttribute("aria-pressed")) === "true",
+    "Toggle buttons expose pressed state",
+  )
 
   await visit("menu")
   const menuTrigger = page.getByRole("button", { name: "Project actions", exact: true })
@@ -205,16 +209,17 @@ async function _verifyComponents(page) {
       `Dialog opens natively at ${width}px`,
     )
     verify(
-      (await dialog.getAttribute("data-controller")) === "sheet",
+      (await dialog.getAttribute("data-controller")) === "lc-sheet",
       `Dialog has responsive sheet behavior at ${width}px`,
     )
     await dialog.getByRole("textbox", { name: "Project name" }).fill("A project")
+    await page.bringToFront()
     await dialog.getByRole("button", { name: "Create project", exact: true }).click()
     await dialog.waitFor({ state: "hidden" })
     checks.push(`Native dialog form closes at ${width}px`)
   }
 
-  await visit("disclosure")
+  await visit("collapsible")
   const details = page.locator("main details").first()
   await details.locator("summary").click()
   verify(

@@ -1,8 +1,0 @@
-<form class="flex flex-col items-center gap-4">
-  <%= lc_segmented label: "Billing", name: "billing", value: "monthly" do %>
-    <%= lc_segmented_tab "Monthly", value: "monthly", selected: true %>
-    <%= lc_segmented_tab "Annual", value: "annual" %>
-    <%= lc_segmented_tab "Custom", value: "custom", disabled: true %>
-  <% end %>
-  <%= lc_button "Reset", type: :reset, variant: :ghost, size: :sm %>
-</form>

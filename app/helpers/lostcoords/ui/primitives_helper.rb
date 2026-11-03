@@ -1,17 +1,10 @@
 module Lostcoords::Ui
   module PrimitivesHelper
-    BUTTON_STYLES = {
-      primary: :accent,
-      secondary: :secondary,
-      ghost: :ghost,
-      destructive: :danger
-    }.freeze
-
-    def lc_button(content = nil, variant: :primary, size: :base, icon: nil, icon_position: :start, **attributes, &block)
+    def lc_button(content = nil, variant: :primary, size: :md, icon: nil, icon_position: :start, **attributes, &block)
       tag.button(lc_button_content(content, icon, icon_position, &block), **lc_button_attributes(variant, size, { type: "button" }, attributes))
     end
 
-    def lc_button_link_to(content = nil, url = nil, variant: :primary, size: :base, icon: nil, icon_position: :start, **attributes, &block)
+    def lc_button_link_to(content = nil, url = nil, variant: :primary, size: :md, icon: nil, icon_position: :start, **attributes, &block)
       attributes = lc_button_attributes(variant, size, {}, attributes)
       raise ArgumentError, "Links cannot be disabled; use lc_button for a disabled control" if attributes[:disabled]
 
@@ -23,7 +16,7 @@ module Lostcoords::Ui
       link_to(lc_button_content(content, icon, icon_position), url, attributes)
     end
 
-    def lc_button_to(content = nil, url = nil, variant: :primary, size: :base, icon: nil, icon_position: :start, **attributes, &block)
+    def lc_button_to(content = nil, url = nil, variant: :primary, size: :md, icon: nil, icon_position: :start, **attributes, &block)
       if block
         url ||= content
         content = capture(&block)
@@ -32,10 +25,10 @@ module Lostcoords::Ui
       button_to(lc_button_content(content, icon, icon_position), url, lc_button_attributes(variant, size, {}, attributes))
     end
 
-    def lc_icon_button(label, icon:, size: :base, shape: :circle, **attributes)
+    def lc_icon_button(label, icon:, size: :md, shape: :circle, **attributes)
       size = lc_option!(:size, size, ButtonHelper::ICON_BUTTON_SIZES.keys)
       shape = lc_option!(:shape, shape, ButtonHelper::ICON_BUTTON_SHAPES.keys)
-      defaults = { type: "button", class: lc_icon_button_class(size: size, shape: shape), aria: { label: label } }
+      defaults = { type: "button", class: lc_icon_button_class(size: size, shape: shape), aria: { label: label }, data: { slot: "icon-button", size: size } }
       attributes = lc_attributes(defaults, attributes)
       accessible_label = attributes.fetch(:"aria-label", attributes.dig(:aria, :label))
       raise ArgumentError, "lc_icon_button requires a nonblank accessible label" if label.blank? || accessible_label.blank?
@@ -47,36 +40,18 @@ module Lostcoords::Ui
 
     def lc_badge(content = nil, tone: :neutral, **attributes, &block)
       tone = lc_option!(:tone, tone, BadgeHelper::BADGE_TONES.keys)
-      tag.span(content, **lc_attributes({ class: lc_badge_class(tone: tone) }, attributes), &block)
+      tag.span(content, **lc_attributes({ class: lc_badge_class(tone: tone), data: { slot: "badge", tone: tone } }, attributes), &block)
     end
 
-    def lc_status_pill(content = nil, tone: :accent, **attributes, &block)
-      tone = lc_option!(:tone, tone, BadgeHelper::STATUS_PILL_TONES.keys)
-      tag.span(content, **lc_attributes({ class: lc_status_pill_class(tone: tone) }, attributes), &block)
-    end
-
-    def lc_eyebrow(content = nil, **attributes, &block)
-      tag.span(content, **lc_attributes({ class: lc_eyebrow_class }, attributes), &block)
-    end
-
-    def lc_icon_badge(icon:, size: :base, **attributes)
-      size = lc_option!(:size, size, BadgeHelper::ICON_BADGE_SIZES.keys)
-      tag.span(**lc_attributes({ class: lc_icon_badge_class(size: size) }, attributes)) do
+    def lc_icon_badge(icon:, size: :md, shape: :square, tone: :neutral, **attributes)
+      tag.span(**lc_attributes({ class: lc_icon_badge_class(size: size, shape: shape, tone: tone), data: { slot: "icon-badge" } }, attributes)) do
         lc_icon(icon, options: { class: "size-[1em]", "aria-hidden": true })
       end
     end
 
-    def lc_medallion(icon:, size: :sm, tone: :accent, **attributes)
-      size = lc_option!(:size, size, BadgeHelper::ICON_MEDALLION_SIZES.keys)
-      tone = lc_option!(:tone, tone, BadgeHelper::ICON_MEDALLION_TONES.keys)
-      tag.span(**lc_attributes({ class: lc_icon_medallion_class(size: size, tone: tone) }, attributes)) do
-        lc_icon(icon, options: { class: "size-1/2", "aria-hidden": true })
-      end
-    end
-
-    def lc_avatar(content = nil, src: nil, alt: nil, size: :base, ink: false, linked: false, **attributes, &block)
+    def lc_avatar(content = nil, src: nil, alt: nil, size: :md, ink: false, linked: false, **attributes, &block)
       size = lc_option!(:size, size, BadgeHelper::AVATAR_SIZES.keys)
-      defaults = { class: lc_avatar_class(size: size, ink: ink, linked: linked) }
+      defaults = { class: lc_avatar_class(size: size, ink: ink, linked: linked), data: { slot: "avatar" } }
       if src
         tag.img(**lc_attributes(defaults.merge(src: src, alt: alt.to_s, class: lc_tw(defaults[:class], "object-cover")), attributes))
       else
@@ -85,51 +60,55 @@ module Lostcoords::Ui
     end
 
     def lc_avatar_stack(compact: false, **attributes, &block)
-      tag.span(**lc_attributes({ class: lc_avatar_stack_class(compact: compact) }, attributes)) do
+      tag.span(**lc_attributes({ class: lc_avatar_stack_class(compact: compact), data: { slot: "avatar-stack" } }, attributes)) do
         tag.span(class: lc_avatar_stack_row_class, &block)
       end
     end
 
-    def lc_card(href: nil, interactive: false, dense: false, **attributes, &block)
-      defaults = { class: lc_card_class(interactive: interactive || !href.nil?, dense: dense) }
+    # Yields a card builder with header, title, description, content and footer parts. The card stacks
+    # its children with the same inset it pads with.
+    def lc_card(href: nil, interactive: false, padding: :md, **attributes, &block)
+      defaults = { class: lc_card_class(interactive: interactive || !href.nil?, padding: padding, extra: "flex flex-col gap-inset"), data: { slot: "card" } }
+      content = capture(Parts::Card.new(self), &block) if block
       if href.nil?
-        tag.div(**lc_attributes(defaults, attributes), &block)
+        tag.div(content, **lc_attributes(defaults, attributes))
       else
-        defaults.merge!(href: href, class: lc_tw(defaults[:class], "block no-underline text-inherit"))
-        tag.a(**lc_attributes(defaults, attributes), &block)
+        defaults.merge!(href: href, class: lc_tw(defaults[:class], "no-underline text-inherit"))
+        tag.a(content, **lc_attributes(defaults, attributes))
       end
     end
 
-    def lc_card_surface(**attributes, &block)
-      tag.div(**lc_attributes({ class: lc_card_surface_class }, attributes), &block)
-    end
-
-    def lc_form_card(padding: :default, **attributes, &block)
-      padding = lc_option!(:padding, padding, CardHelper::FORM_CARD_PADDINGS.keys)
-      tag.div(**lc_attributes({ class: lc_form_card_class(padding: padding) }, attributes), &block)
-    end
-
     def lc_empty_state(**attributes, &block)
-      tag.div(**lc_attributes({ class: lc_empty_state_class }, attributes), &block)
+      tag.div(**lc_attributes({ class: lc_empty_state_class, data: { slot: "empty-state" } }, attributes), &block)
     end
 
-    def lc_spinner(size: :base, label: "Loading…", **attributes)
+    def lc_spinner(size: :md, label: lc_t("lostcoords.ui.spinner.label"), **attributes)
       size = lc_option!(:size, size, FeedbackHelper::SPINNER_SIZES.keys)
-      defaults = { class: lc_spinner_class(size: size), role: ("status" if label.present?), aria: { hidden: (true if label.blank?) } }
+      defaults = { class: lc_spinner_class(size: size), role: ("status" if label.present?), aria: { hidden: (true if label.blank?) }, data: { slot: "spinner" } }
       tag.span(**lc_attributes(defaults, attributes)) do
         tag.span(label, class: "sr-only") if label.present?
       end
     end
 
     def lc_skeleton(**attributes)
-      tag.span(**lc_attributes({ class: lc_tw(lc_skeleton_class, "h-4 w-full"), aria: { hidden: true } }, attributes))
+      tag.span(**lc_attributes({ class: lc_tw(lc_skeleton_class, "h-4 w-full"), aria: { hidden: true }, data: { slot: "skeleton" } }, attributes))
     end
 
-    def lc_form_alert(message, tone: :error, **attributes)
-      tone = lc_option!(:tone, tone, FormHelper::FORM_ALERT_ICONS.keys)
-      defaults = { class: lc_form_alert_class, role: (tone == :error ? "alert" : "status"), data: { tone: tone } }
+    # A block adds content below the message and yields a builder with an actions part.
+    def lc_alert(message = nil, title: nil, tone: :destructive, **attributes, &block)
+      tone = lc_option!(:tone, tone, FeedbackHelper::ALERT_ICONS.keys)
+      raise ArgumentError, "lc_alert needs a message, a title or a block" if message.blank? && title.blank? && block.nil?
+
+      defaults = { class: lc_alert_class, role: (tone == :destructive ? "alert" : "status"), data: { tone: tone, slot: "alert" } }
+      extra = capture(Parts::Alert.new(self), &block) if block
+      text = "m-0 min-w-0 text-pretty [overflow-wrap:anywhere]"
       tag.div(**lc_attributes(defaults, attributes)) do
-        safe_join([ lc_form_alert_icon(tone: tone), tag.p(message, class: "m-0 min-w-0 text-pretty [overflow-wrap:anywhere]") ])
+        body = [
+          (tag.p(title, class: "#{text} font-semibold", data: { slot: "alert-title" }) if title.present?),
+          (tag.p(message, class: lc_tw(text, ("font-normal" if title.present?)), data: { slot: "alert-description" }) if message.present?),
+          extra.presence
+        ].compact
+        safe_join([ lc_alert_icon(tone: tone), tag.div(safe_join(body), class: "flex min-w-0 flex-col gap-tight") ])
       end
     end
 
@@ -144,9 +123,8 @@ module Lostcoords::Ui
       end
 
       def lc_button_attributes(variant, size, defaults, attributes)
-        variant = lc_option!(:variant, variant, BUTTON_STYLES.keys)
-        size = lc_option!(:size, size, %i[sm base lg])
-        lc_attributes(defaults.merge(class: lc_button_class(variant: BUTTON_STYLES.fetch(variant), size: size)), attributes)
+        data = { slot: "button", variant: lc_option!(:variant, variant, ButtonHelper::BUTTON_VARIANTS.keys), size: lc_option!(:size, size, ButtonHelper::BUTTON_SIZES.keys) }
+        lc_attributes(defaults.merge(class: lc_button_class(variant: variant, size: size), data: data), attributes)
       end
   end
 end

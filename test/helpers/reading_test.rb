@@ -15,7 +15,7 @@ module Lostcoords::Ui
       assert_equal "ja", prose["lang"]
       assert_equal "title", prose["aria-labelledby"]
       assert_includes prose["class"].split, "prose"
-      assert_includes prose["class"].split, "ui-prose"
+      assert_includes prose["class"].split, "lc-prose"
       assert_includes prose["class"].split, "mx-auto"
       assert_includes prose["class"].split, "w-full"
       assert_equal "<script> & text", prose.at_css("p").text
@@ -27,7 +27,7 @@ module Lostcoords::Ui
         @view.tag.div(class: "not-prose") { @view.lc_button("Continue") }
       end
 
-      assert_equal "Continue", Nokogiri::HTML.fragment(html).at_css(".ui-prose .not-prose button").text
+      assert_equal "Continue", Nokogiri::HTML.fragment(html).at_css(".lc-prose .not-prose button").text
     end
 
     test "reading size measure and leading allow ordinary utility overrides" do
@@ -36,9 +36,9 @@ module Lostcoords::Ui
       assert_includes prose["class"].split, "max-w-none"
       assert_includes prose["class"].split, "text-lg"
       assert_includes prose["class"].split, "leading-relaxed"
-      assert_not_includes prose["class"], "--ui-reading-measure"
-      assert_not_includes prose["class"], "--ui-reading-size"
-      assert_not_includes prose["class"], "--ui-reading-leading"
+      assert_not_includes prose["class"], "--lc-reading-measure"
+      assert_not_includes prose["class"], "--lc-reading-size"
+      assert_not_includes prose["class"], "--lc-reading-leading"
     end
 
     test "field spacing belongs inside fields and caller layout controls sibling spacing" do
@@ -55,7 +55,7 @@ module Lostcoords::Ui
       fields.each do |field|
         assert_equal [ "label", "input", "p" ], field.element_children.map(&:name)
         assert_includes field["class"].split, "grid"
-        assert_includes field["class"].split, "gap-2"
+        assert_includes field["class"].split, "gap-related"
         assert_empty field["class"].split.grep(/(?:^|:)m[bt]-/)
         assert_empty field.at_css("label")["class"].split.grep(/(?:^|:)m[bt]-/)
       end

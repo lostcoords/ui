@@ -1,0 +1,39 @@
+@layer components {
+  /* The thumb is a gradient on the input itself, so the switch needs no extra
+     element. Forced colors fall back to the native checkbox. */
+  .lc-switch {
+    --lc-switch-thumb: var(--background);
+
+    appearance: none;
+    inline-size: calc(var(--spacing) * 9);
+    block-size: calc(var(--spacing) * 5.5);
+    border-radius: var(--radius-pill);
+    background-color: var(--input);
+    background-image: radial-gradient(circle closest-side, var(--lc-switch-thumb) calc(100% - var(--spacing) * 0.375), transparent 100%);
+    background-size: calc(var(--spacing) * 5.5) calc(var(--spacing) * 5.5);
+    background-repeat: no-repeat;
+    background-position: left center;
+    transition:
+      background-color var(--lc-motion-control) var(--lc-ease-out),
+      background-position var(--lc-motion-control) var(--lc-ease-out);
+
+    &:checked {
+      --lc-switch-thumb: var(--primary-foreground);
+
+      background-color: var(--primary);
+      background-position: right center;
+    }
+
+    &:dir(rtl) { background-position: right center; }
+    &:dir(rtl):checked { background-position: left center; }
+
+    @media (forced-colors: active) {
+      appearance: auto;
+    }
+  }
+
+  /* Rails wraps invalid controls in .field_with_errors; library controls ignore the wrapper. */
+  .field_with_errors:has(> [data-slot]) {
+    display: contents;
+  }
+}

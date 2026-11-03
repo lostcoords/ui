@@ -1,6 +1,29 @@
 es:
   lostcoords:
     ui:
+      pager:
+        label: "Páginas"
+        previous: "Anterior"
+        next: "Siguiente"
+      skip_link:
+        label: "Saltar al contenido"
+      spinner:
+        label: "Cargando…"
+      dialog:
+        trigger: "Abrir diálogo"
+        cancel: "Cancelar"
+        close: "Cerrar %{title}"
+      menu:
+        label: "Acciones"
+      popover:
+        trigger: "Abrir panel"
+      breadcrumb:
+        label: "Ruta de navegación"
+      code_block:
+        label: "Código fuente"
+        copy: "Copiar %{label}"
+        expand: "Mostrar todo el código"
+        collapse: "Mostrar menos código"
       copy_button:
         label: "Copiar"
         copied: "Copiado"

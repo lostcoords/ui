@@ -1,4 +1,3 @@
-<%= lc_card href: "/components/card.html", class: "w-full" do %>
-  <h3 class="font-semibold">Design system</h3>
-  <p class="text-sm text-ink-2">Open the project.</p>
+<%= lc_card href: "/components/card.html", class: "w-full" do |card| %>
+  <%= card.header title: "Design system", description: "Open the project." %>
 <% end %>

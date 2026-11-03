@@ -1,6 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
-import { registerDismissable } from "helpers/dismiss_stack"
-import { liftToTopLayer } from "helpers/top_layer"
+import { registerDismissable } from "lostcoords/ui/helpers/dismiss_stack"
+import { liftToTopLayer } from "lostcoords/ui/helpers/top_layer"
 
 const BEFORE_OPEN = "overlay:before-open"
 const PAGE_LEAVES = ["turbo:before-cache", "turbo:before-visit", "turbo:before-render"]

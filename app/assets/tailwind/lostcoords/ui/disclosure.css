@@ -2,7 +2,7 @@
    panel open under [data-closing] for the exit, then closes it. Transitioning
    content-visibility makes WebKit keep the panel hidden for part of the opening. */
 @layer components {
-  .disclosure-animated {
+  .lc-collapsible {
     interpolate-size: allow-keywords; /* browser-compat: enhancement */
 
     &::details-content {
@@ -11,9 +11,9 @@
       opacity: 0;
       translate: 0 -0.375rem;
       transition:
-        block-size 420ms var(--ease-out-expo),
-        opacity 220ms var(--ease-out),
-        translate 320ms var(--ease-out-expo);
+        block-size 420ms var(--lc-ease-out-expo),
+        opacity 220ms var(--lc-ease-out),
+        translate 320ms var(--lc-ease-out-expo);
     }
 
     &[open]::details-content {
@@ -28,7 +28,7 @@
       opacity: 0;
       translate: 0 -0.375rem;
       transition-duration: 260ms, 160ms, 200ms;
-      transition-timing-function: var(--ease-out);
+      transition-timing-function: var(--lc-ease-out);
     }
 
     @supports (interpolate-size: allow-keywords) {

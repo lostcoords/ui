@@ -2,10 +2,10 @@ module Lostcoords::Ui
   module MenuHelper
     # FloatingPanel sets [data-open]; the caller picks the display.
     POPOVER_BASE =
-      "row-menu__popover squircle popover-shell hidden absolute top-[calc(100%+--spacing(1))] end-0 overscroll-contain [&_form]:m-0"
+      "lc-menu__popover lc-squircle lc-popover-shell hidden absolute top-[calc(100%+--spacing(1))] end-0 overscroll-contain [&_form]:m-0"
 
     MENU_POPOVER_BASE =
-      "data-open:flex flex-col gap-0.5 z-nav-popover p-2 " \
+      "data-open:flex flex-col gap-px z-(--lc-z-popover) p-related " \
       "min-w-56 max-w-[calc(100vw-clamp(1rem,3vw,1.5rem)*2)] max-h-[min(24rem,70vh)] overflow-y-auto"
 
     MENU_POPOVER_ALIGN = {
@@ -15,15 +15,15 @@ module Lostcoords::Ui
     }.freeze
 
     MENU_OPTION_BASE =
-      "row-menu__item press [--press-scale:0.98] group/option grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-3 w-full " \
-      "min-h-11 px-3 py-2 rounded-xl border-none bg-transparent text-start font-body text-[0.9375rem] font-medium text-ink " \
-      "no-underline cursor-pointer transition-[background-color] duration-120 [--avatar-size:--spacing(7)] " \
-      "hover:bg-paper-2 focus-visible:bg-paper-2 focus-visible:outline-none " \
-      "disabled:text-ink-3 disabled:cursor-not-allowed disabled:hover:bg-transparent"
+      "lc-menu__item lc-press [--lc-press-scale:0.98] group/option grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-3 w-full " \
+      "min-h-control-md px-3 py-1.5 rounded-2xl lc-squircle border-none bg-transparent text-start font-sans text-label text-foreground " \
+      "no-underline cursor-pointer transition-[background-color] duration-120 [--lc-avatar-size:--spacing(7)] " \
+      "hover:bg-accent focus-visible:bg-accent focus-visible:outline-none " \
+      "disabled:text-muted-foreground disabled:cursor-not-allowed disabled:hover:bg-transparent"
 
     MENU_OPTION_TONES = {
       default: "",
-      danger: "text-danger hover:bg-danger-soft focus-visible:bg-danger-soft"
+      destructive: "text-destructive hover:bg-destructive-soft focus-visible:bg-destructive-soft"
     }.freeze
 
     def lc_popover_class(align: :end, extra: nil)

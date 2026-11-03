@@ -1,17 +1,15 @@
-<nav class="flex flex-col gap-6" aria-label="Documentation">
-  <div class="flex flex-col gap-1">
-    <p class="px-3 text-xs font-medium text-ink-3">Library</p>
-    <a class="<%= docs_link_class %>" href="/">Overview</a>
-    <a class="<%= docs_link_class %>" href="/installation.html" <%= 'aria-current=page' if action_name == "installation" %>>Installation</a>
-    <a class="<%= docs_link_class %>" href="/theming.html" <%= 'aria-current=page' if action_name == "theming" %>>Theming</a>
-    <a class="<%= docs_link_class %>" href="/blocks.html" <%= 'aria-current=page' if controller_name == "blocks" %>>Blocks</a>
-    <a class="<%= docs_link_class %>" href="/components/foundations.html" <%= 'aria-current=page' if @section&.id == :foundations %>>Foundations</a>
-  </div>
-  <div class="flex flex-col gap-1">
-    <p class="px-3 pb-1 text-xs font-medium text-ink-3">Components</p>
+<%= lc_nav_list label: "Documentation" do |nav| %>
+  <%= nav.group "Library" do %>
+    <%= nav.link "Overview", "/" %>
+    <%= nav.link "Installation", "/installation.html", current: action_name == "installation" %>
+    <%= nav.link "Theming", "/theming.html", current: action_name == "theming" %>
+    <%= nav.link "Blocks", "/blocks.html", current: controller_name == "blocks" %>
+    <%= nav.link "Foundations", "/components/foundations.html", current: @section&.id == :foundations %>
+  <% end %>
+  <%= nav.group "Components" do %>
     <% @sections.each do |section| %>
       <% next if section.id == :foundations %>
-      <a class="<%= docs_link_class %>" href="/components/<%= section.id %>.html" <%= 'aria-current=page' if @section&.id == section.id %>><%= section.title %></a>
+      <%= nav.link section.title, "/components/#{section.id}.html", current: @section&.id == section.id %>
     <% end %>
-  </div>
-</nav>
+  <% end %>
+<% end %>

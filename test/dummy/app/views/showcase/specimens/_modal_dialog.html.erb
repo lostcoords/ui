@@ -1,10 +1,11 @@
-<%= lc_dialog id: "EXAMPLE_ID-dialog", title: "Create project", trigger: "New project" do %>
-  <form method="dialog" class="flex flex-col gap-5">
-  <%= lc_field label: "Project name", id: "EXAMPLE_ID-dialog-name" do |field| %>
-    <%= lc_input name: "project[name]", **field %>
-  <% end %>
-  <%= lc_form_actions do %>
-    <%= lc_button "Create project", type: :submit %>
-  <% end %>
+<%= lc_dialog id: "EXAMPLE_ID-dialog", title: "Create project", description: "Projects group pages and members.", trigger: "New project" do |dialog| %>
+  <form method="dialog" class="flex flex-col gap-inset">
+    <%= lc_field label: "Project name", id: "EXAMPLE_ID-dialog-name" do |field| %>
+      <%= lc_input name: "project[name]", **field %>
+    <% end %>
+    <%= dialog.footer do %>
+      <%= dialog.close %>
+      <%= lc_button "Create project", type: :submit %>
+    <% end %>
   </form>
 <% end %>

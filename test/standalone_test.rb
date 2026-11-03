@@ -13,7 +13,12 @@ class StandaloneTest < ActiveSupport::TestCase
       input = Nokogiri::HTML.fragment(view.lc_input(name: "title", value: "<draft>")).at_css("input")
       abort "input value" unless input["value"] == "<draft>"
       abort "card content" unless view.lc_card { "Content" }.include?("Content")
-      abort "partial lookup" unless view.lc_disclosure(title: "Details") { "Body" }.include?("<details")
+      table = Nokogiri::HTML.fragment(view.lc_table(id: "records", data: { records: true }) { view.tag.caption("Records <draft>") }).at_css("table")
+      abort "native table" unless table["id"] == "records" && table.key?("data-records") && table.at_css("caption").text == "Records <draft>" && !table.at_css("draft")
+      abort "partial lookup" unless view.lc_collapsible(title: "Details") { "Body" }.include?("<details")
+      code = Nokogiri::HTML.fragment(view.lc_code_block("<script>example</script>\nnext line", id: "snippet", max_lines: 1))
+      abort "code source" unless code.at_css("pre code").text == "<script>example</script>\nnext line" && !code.at_css("script")
+      abort "code behavior" unless code.at_css('[data-controller="lc-code-block"]') && code.at_css('[data-lc-copy-source-value="snippet-content"]') && code.at_css('[data-lc-code-block-target="toggle"]')
       I18n.with_locale(:ja) do
         abort "translation" unless view.lc_copy_button(value: "text").include?("コピー")
       end

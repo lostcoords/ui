@@ -1,255 +1,224 @@
+/* Every public setting lives in this file. Hosts override the plain custom
+   properties in :root or html[data-theme="dark"] after importing the library;
+   the @theme blocks only map those properties to Tailwind utilities. */
+
 @theme inline {
-  --color-paper: var(--paper);
-  --color-paper-2: var(--paper-2);
-  --color-paper-3: var(--paper-3);
-  --color-ink: var(--ink);
-  --color-ink-2: var(--ink-2);
-  --color-ink-3: var(--ink-3);
-  --color-ink-on-accent: var(--ink-on-accent);
-  --color-hairline: var(--hairline);
-
-  --color-sky: var(--sky);
-  --color-sky-deep: var(--sky-deep);
-  --color-sky-soft: var(--sky-soft);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
-  --color-leaf: var(--leaf);
-  --color-leaf-soft: var(--leaf-soft);
-  --color-gold: var(--gold);
-  --color-gold-soft: var(--gold-soft);
-  --color-berry: var(--berry);
-  --color-berry-soft: var(--berry-soft);
-  --color-danger: var(--danger);
-  --color-danger-soft: var(--danger-soft);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-border: var(--border);
+  --color-input: var(--input);
 
-  --font-display: var(--f-display);
-  --font-body: var(--f-body);
-  --font-mono: var(--f-mono);
+  /* Unset by default, so the ring follows a scoped --primary. */
+  --color-ring: var(--ring, color-mix(in oklab, var(--primary) 50%, transparent));
+
+  --color-primary-soft: color-mix(in oklab, var(--primary) 12%, var(--background));
+  --color-success-soft: color-mix(in oklab, var(--success) 12%, var(--background));
+  --color-warning-soft: color-mix(in oklab, var(--warning) 12%, var(--background));
+  --color-destructive-soft: color-mix(in oklab, var(--destructive) 12%, var(--background));
+
+  /* One --radius drives every corner, as in shadcn. The default reproduces
+     Tailwind's own scale, so host rounded-* classes keep their sizes until the
+     knob moves. rounded-pill collapses to square corners when --radius is 0. */
+  --radius-sm: calc(var(--radius) * 0.5 * var(--lc-corner-scale, 1));
+  --radius-md: calc(var(--radius) * 0.75 * var(--lc-corner-scale, 1));
+  --radius-lg: calc(var(--radius) * var(--lc-corner-scale, 1));
+  --radius-xl: calc(var(--radius) * 1.5 * var(--lc-corner-scale, 1));
+  --radius-2xl: calc(var(--radius) * 2 * var(--lc-corner-scale, 1));
+  --radius-3xl: calc(var(--radius) * 3 * var(--lc-corner-scale, 1));
+  --radius-pill: calc(var(--radius) * 1000);
+
+  /* Semantic spacing: gap-related, p-inset, gap-section and so on. Components
+     never set outer margin; these gaps belong to the layout around them. */
+  --spacing-tight: calc(var(--spacing) * 1 * var(--lc-density));
+  --spacing-related: calc(var(--spacing) * 2 * var(--lc-density));
+  --spacing-heading: calc(var(--spacing) * 3 * var(--lc-density));
+  --spacing-content: calc(var(--spacing) * 4 * var(--lc-density));
+  --spacing-inset: var(--lc-inset);
+  --spacing-section: calc(var(--spacing) * 8 * var(--lc-density));
+  --spacing-gutter: var(--lc-gutter);
+
+  /* Buttons, inputs, selects and icon buttons share these heights. */
+  --spacing-control-sm: var(--lc-control-sm);
+  --spacing-control-md: var(--lc-control-md);
+  --spacing-control-lg: var(--lc-control-lg);
 }
 
 @theme {
-  --text-xs--line-height: initial;
-  --text-sm--line-height: initial;
-  --text-base--line-height: initial;
-  --text-lg--line-height: initial;
-  --text-xl--line-height: initial;
-  --text-2xl--line-height: initial;
+  --font-display: var(--font-sans);
+  --font-japanese: "Hiragino Sans", "Yu Gothic", "YuGothic", "Meiryo", ui-sans-serif, system-ui, sans-serif;
 
-  --z-index-above: 1;
-  --z-index-raised: 2;
-  --z-index-art: 3;
+  /* Type roles. Each sets size, line height, tracking and weight together. */
+  --text-display: 2.25rem;
+  --text-display--line-height: 2.5rem;
+  --text-display--letter-spacing: -0.025em;
+  --text-display--font-weight: 700;
+  --text-title: 1.875rem;
+  --text-title--line-height: 2.25rem;
+  --text-title--letter-spacing: -0.025em;
+  --text-title--font-weight: 700;
+  --text-heading: 1.25rem;
+  --text-heading--line-height: 1.75rem;
+  --text-heading--letter-spacing: -0.02em;
+  --text-heading--font-weight: 700;
+  --text-subheading: 1.125rem;
+  --text-subheading--line-height: 1.5rem;
+  --text-subheading--letter-spacing: -0.015em;
+  --text-subheading--font-weight: 650;
+  --text-body: 1rem;
+  --text-body--line-height: 1.5rem;
+  --text-small: 0.875rem;
+  --text-small--line-height: 1.25rem;
+  --text-label: 0.875rem;
+  --text-label--line-height: 1.25rem;
+  --text-label--font-weight: 500;
+  --text-caption: 0.75rem;
+  --text-caption--line-height: 1rem;
 
-  --z-index-sticky-action: 10;
-  --z-index-float: 10;
-
-  --z-index-nav: 20;
-  --z-index-nav-popover: 30;
-  --z-index-popover: 30;
-  --z-index-mobile-nav: 40;
-  --z-index-mobile-action: 50;
-  --z-index-prompt: 51;
-
-  --z-index-overlay: 60;
-  --z-index-overlay-panel: 61;
-  --z-index-toast: 70;
-
-  --ease-out: cubic-bezier(0.3, 0, 0, 1);
-  --ease-out-long: cubic-bezier(0.2, 0.7, 0, 1);
-  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-sheet: cubic-bezier(0.32, 0.72, 0, 1);
-
-  --sheet-duration: 500ms;
-
-  --sheet-offscreen: calc(100% + 2rem);
-  --ease-out-overshoot-subtle: cubic-bezier(0.25, 1.25, 0.5, 1);
-  --ease-spring: cubic-bezier(0.34, 1.45, 0.64, 1);
-  --color-scrim-dock: rgb(10 14 24 / 0.22);
+  --container-page: 75rem;
+  --container-reading: 65ch;
+  --container-form: 32rem;
 }
 
 @custom-variant dark (&:where(html[data-theme="dark"], html[data-theme="dark"] *));
 
-@theme {
-  --animate-alert-in: alert-in 360ms var(--ease-out-expo) both;
-
-  @keyframes alert-in {
-    from { opacity: 0; transform: translateY(-0.25rem); }
-  }
-}
-
 @layer theme {
   :root {
-    --ui-motion-quick: 140ms;
-    --ui-motion-control: 180ms;
-    --ui-motion-feedback: 160ms;
-    --ui-press-scale: 0.96;
+    --radius: 0.5rem;
+    --lc-density: 1;
+    --lc-inset: calc(var(--spacing) * 5 * var(--lc-density));
+    --lc-gutter: clamp(1rem, 3vw, 1.5rem);
+    --lc-control-sm: calc(var(--spacing) * 8 * var(--lc-density));
+    --lc-control-md: calc(var(--spacing) * 10 * var(--lc-density));
+    --lc-control-lg: calc(var(--spacing) * 12 * var(--lc-density));
 
-    --lch-sky:      55.6% 0.176 256.6;
-    --lch-sky-deep: 51.5% 0.169 259.2;
-    --lch-leaf:     58.6% 0.089 144.3;
-    --lch-gold:     73.8% 0.130 86;
-    --lch-berry:    63.5% 0.151 41.4;
+    --lc-motion-quick: 140ms;
+    --lc-motion-control: 180ms;
+    --lc-motion-feedback: 160ms;
+    --lc-press-scale: 0.96;
+    --lc-ease-out: cubic-bezier(0.3, 0, 0, 1);
+    --lc-ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --lc-ease-sheet: cubic-bezier(0.32, 0.72, 0, 1);
+    --lc-sheet-duration: 500ms;
+    --lc-sheet-offscreen: calc(100% + 2rem);
 
-    --paper:    oklch(100% 0 0deg);
-    --paper-2:  oklch(97.6% 0.003 264.5deg);
-    --paper-3:  oklch(95.2% 0.006 264.5deg);
-    --ink:      oklch(23.1% 0.010 268.2deg);
-    --ink-2:    oklch(39.4% 0.012 267deg);
-    --ink-3:    oklch(52.0% 0.014 267deg);
-    --ink-on-accent: #fff;
-    --hairline: oklch(93.1% 0.006 264.5deg);
+    --lc-z-popover: 30;
+    --lc-z-sheet: 50;
+    --lc-z-overlay: 60;
+    --lc-z-toast: 70;
 
-    --scrim: color-mix(in oklab, var(--ink) 55%, transparent);
-    --scrim-soft: color-mix(in oklab, var(--ink) 12%, transparent);
+    --background: oklch(100% 0 0deg);
+    --foreground: oklch(23.1% 0 0deg);
 
-    --scrim-sheet: rgb(0 0 0 / 0.28);
+    /* Cards and secondary buttons follow --muted and --accent unless set. */
+    --card: var(--muted);
+    --card-foreground: var(--foreground);
+    --popover: var(--background);
+    --popover-foreground: var(--foreground);
+    --primary: oklch(23.1% 0 0deg);
+    --primary-foreground: #fff;
+    --secondary: var(--accent);
+    --secondary-foreground: var(--foreground);
+    --muted: oklch(97.6% 0 0deg);
+    --muted-foreground: oklch(48% 0 0deg);
+    --accent: oklch(95.2% 0 0deg);
+    --accent-foreground: var(--foreground);
+    --destructive: oklch(50% 0.151 41.4deg);
+    --success: oklch(48% 0.089 144.3deg);
+    --warning: oklch(48% 0.090 86deg);
+    --border: oklch(93.1% 0 0deg);
+    --input: color-mix(in oklab, var(--foreground) 8%, var(--accent));
 
-    --sky:      oklch(var(--lch-sky));
-    --sky-deep: oklch(var(--lch-sky-deep));
-    --sky-soft: oklch(95.2% 0.023 258.4deg);
-    --accent:   var(--sky-deep);
+    --lc-scrim: color-mix(in oklab, var(--foreground) 55%, transparent);
+    --lc-scrim-soft: color-mix(in oklab, var(--foreground) 12%, transparent);
+    --lc-scrim-sheet: rgb(0 0 0 / 0.28);
+    --lc-input-hover: color-mix(in oklab, var(--foreground) 13%, var(--accent));
 
-    --leaf:       oklch(var(--lch-leaf));
-    --leaf-soft:  oklch(95.0% 0.015 136deg);
-    --gold:       oklch(var(--lch-gold));
-    --gold-soft:  oklch(95.5% 0.040 88deg);
-    --berry:      oklch(var(--lch-berry));
-    --berry-soft: oklch(95.4% 0.020 58deg);
-    --danger:     var(--berry);
-    --danger-soft: var(--berry-soft);
+    --lc-shadow-sm: 0 1px 2px rgb(0 0 0 / 0.05);
+    --lc-shadow:
+      0 1px 3px rgb(0 0 0 / 0.05),
+      0 8px 24px -8px rgb(0 0 0 / 0.09);
+    --lc-shadow-lg:
+      0 1px 3px rgb(0 0 0 / 0.06),
+      0 24px 48px -12px rgb(0 0 0 / 0.18);
 
-    --f-display: ui-sans-serif, system-ui, sans-serif;
-    --f-body:    ui-sans-serif, system-ui, sans-serif;
-    --f-japanese: "Hiragino Sans", "Yu Gothic", "YuGothic", "Meiryo", ui-sans-serif, system-ui, sans-serif;
-    --f-mono:    ui-monospace, "SFMono-Regular", "SF Mono", menlo, consolas, monospace;
-
-    --shadow-sm: 0 1px 2px rgb(16 24 40 / 0.05);
-    --shadow:
-      0 1px 3px rgb(16 24 40 / 0.05),
-      0 8px 24px -8px rgb(16 24 40 / 0.09);
-    --shadow-lg:
-      0 1px 3px rgb(16 24 40 / 0.06),
-      0 24px 48px -12px rgb(16 24 40 / 0.18);
-
-    --glass-fill: color-mix(in oklab, var(--paper) 74%, transparent);
-    --glass-edge: rgb(255 255 255 / 0.4);
-    --glass-bar-edge: var(--glass-edge);
-    --glass-rim:
+    --lc-glass-fill: color-mix(in oklab, var(--background) 74%, transparent);
+    --lc-glass-edge: rgb(255 255 255 / 0.4);
+    --lc-glass-bar-edge: var(--lc-glass-edge);
+    --lc-glass-rim:
       inset 0 1px 0 rgb(255 255 255 / 0.6),
       inset 0 0 0 1px rgb(255 255 255 / 0.22);
-    --glass-shadow: var(--glass-rim), var(--shadow);
+    --lc-glass-shadow: var(--lc-glass-rim), var(--lc-shadow);
 
-    --glass-hud-fill:
+    --lc-glass-hud-fill:
       linear-gradient(rgb(255 255 255 / 0.6), rgb(255 255 255 / 0) 60%),
-      color-mix(in oklab, var(--paper) 82%, transparent);
-    --glass-hud-ink: var(--ink);
-    --glass-hud-solid: var(--paper);
-    --glass-hud-shadow:
-      inset 0 0 0 1px rgb(16 24 40 / 0.08),
-      0 1px 2px rgb(16 24 40 / 0.06),
-      0 6px 16px -6px rgb(16 24 40 / 0.16);
+      color-mix(in oklab, var(--background) 82%, transparent);
+    --lc-glass-hud-ink: var(--foreground);
+    --lc-glass-hud-solid: var(--background);
+    --lc-glass-hud-shadow:
+      inset 0 0 0 1px rgb(0 0 0 / 0.08),
+      0 1px 2px rgb(0 0 0 / 0.06),
+      0 6px 16px -6px rgb(0 0 0 / 0.16);
 
-    --pill-rim: linear-gradient(135deg, #fff 0%, #dcdce0 30%, #f7f7f8 55%, #c9c9ce 100%);
-    --pill-surface: linear-gradient(#fff, #f1f1f4);
-    --pill-light: inset 0 1px 0 #fff, inset 0 -1px 1px rgb(0 0 0 / 0.06);
-    --pill-depth: 0 1px 1px rgb(0 0 0 / 0.08), 0 8px 18px -6px rgb(0 0 0 / 0.18);
-
-    --focus-halo-color: color-mix(in oklab, var(--sky) 50%, transparent);
-    --focus-halo: 0 0 0 calc(var(--spacing) * 0.5) var(--focus-halo-color);
-
-    color-scheme: light;
-
-  }
-
-  html:lang(ja) {
-    --f-display: var(--f-japanese);
-    --f-body: var(--f-japanese);
+    /* Touch targets stay at least 40 and 44px. */
+    @media (pointer: coarse) {
+      --lc-control-sm: max(2.5rem, calc(var(--spacing) * 8 * var(--lc-density)));
+      --lc-control-md: max(2.75rem, calc(var(--spacing) * 10 * var(--lc-density)));
+    }
   }
 
   html[data-theme="dark"] {
-    color-scheme: dark;
+    --background: oklch(20.5% 0 0deg);
+    --foreground: oklch(91.5% 0 0deg);
+    --primary: oklch(91.5% 0 0deg);
+    --primary-foreground: var(--background);
+    --muted: oklch(24.2% 0 0deg);
+    --muted-foreground: color-mix(in oklab, var(--foreground) 76%, var(--background));
+    --accent: oklch(28.4% 0 0deg);
+    --destructive: oklch(78% 0.120 41.4deg);
+    --success: oklch(78% 0.089 144.3deg);
+    --warning: oklch(80% 0.110 86deg);
+    --border: color-mix(in oklab, var(--foreground) 16%, transparent);
 
-    --paper: oklch(20.5% 0.002 75deg);
-    --paper-2: oklch(24.2% 0.003 75deg);
-    --paper-3: oklch(28.4% 0.004 75deg);
-    --ink: oklch(91.5% 0.006 85deg);
-    --ink-2: color-mix(in oklab, var(--ink) 76%, var(--paper));
-    --ink-3: color-mix(in oklab, var(--ink) 68%, var(--paper));
-    --hairline: color-mix(in oklab, var(--ink) 16%, transparent);
+    --lc-scrim: rgb(0 0 0 / 0.6);
+    --lc-scrim-soft: rgb(0 0 0 / 0.32);
 
-    --scrim: rgb(0 0 0 / 0.6);
-    --scrim-soft: rgb(0 0 0 / 0.32);
-
-    --ink-on-accent: var(--paper);
-    --sky: oklch(65.5% 0.150 255deg);
-    --sky-deep: oklch(61.5% 0.155 257deg);
-    --sky-soft: color-mix(in oklab, var(--sky) 18%, var(--paper));
-    --accent: var(--sky);
-
-    --leaf-soft: color-mix(in oklab, var(--leaf) 16%, var(--paper));
-    --gold-soft: color-mix(in oklab, var(--gold) 16%, var(--paper));
-    --berry-soft: color-mix(in oklab, var(--berry) 16%, var(--paper));
-
-    --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.2);
-    --shadow:
+    --lc-shadow-sm: 0 1px 2px rgb(0 0 0 / 0.2);
+    --lc-shadow:
       0 1px 2px rgb(0 0 0 / 0.16),
       0 8px 24px -8px rgb(0 0 0 / 0.32);
-    --shadow-lg:
+    --lc-shadow-lg:
       0 1px 3px rgb(0 0 0 / 0.2),
       0 24px 48px -12px rgb(0 0 0 / 0.55);
 
-    --glass-fill: color-mix(in oklab, var(--paper) 80%, transparent);
-    --glass-edge: transparent;
-    --glass-rim: 0 0 #0000;
-    --glass-bar-edge: rgb(255 255 255 / 0.06);
-    --glass-shadow: 0 1px 3px rgb(0 0 0 / 0.04), 0 4px 12px rgb(0 0 0 / 0.03);
-    --glass-hud-fill:
+    --lc-glass-fill: color-mix(in oklab, var(--background) 80%, transparent);
+    --lc-glass-edge: transparent;
+    --lc-glass-rim: 0 0 #0000;
+    --lc-glass-bar-edge: rgb(255 255 255 / 0.06);
+    --lc-glass-shadow: 0 1px 3px rgb(0 0 0 / 0.04), 0 4px 12px rgb(0 0 0 / 0.03);
+    --lc-glass-hud-fill:
       linear-gradient(rgb(255 255 255 / 0.06), rgb(255 255 255 / 0) 60%),
-      color-mix(in oklab, var(--paper-3) 90%, transparent);
-    --glass-hud-solid: var(--paper-3);
-    --glass-hud-shadow:
+      color-mix(in oklab, var(--accent) 90%, transparent);
+    --lc-glass-hud-solid: var(--accent);
+    --lc-glass-hud-shadow:
       inset 0 1px 0 rgb(255 255 255 / 0.1),
       inset 0 0 0 1px rgb(255 255 255 / 0.1),
       0 8px 20px -8px rgb(0 0 0 / 0.6);
-
-    --pill-rim: linear-gradient(135deg, rgb(255 255 255 / 0.22) 0%, rgb(255 255 255 / 0.06) 30%, rgb(255 255 255 / 0.12) 55%, rgb(0 0 0 / 0.3) 100%);
-    --pill-surface: linear-gradient(var(--paper-3), var(--paper-2));
-    --pill-light: inset 0 1px 0 rgb(255 255 255 / 0.08), inset 0 -1px 1px rgb(0 0 0 / 0.2);
-    --pill-depth: 0 1px 1px rgb(0 0 0 / 0.3), 0 8px 18px -6px rgb(0 0 0 / 0.5);
-  }
-}
-
-@layer base {
-  body {
-    background-color: var(--paper);
-    color: var(--ink);
-    font-family: var(--f-body);
-    line-height: 1.5;
   }
 
-  :is(h1, h2, h3, h4, h5) {
-    font-family: var(--f-display);
-    line-height: 1.2;
-    color: var(--ink);
-  }
-
-  button { cursor: pointer; background: none; }
-
-  dialog { background: transparent; color: inherit; }
-
-  :where([popover]) { color: inherit; }
-
-  :is(a, button, input, textarea, select, summary, [tabindex]):focus-visible,
-  label:has(input.sr-only:focus-visible) {
-    outline: calc(var(--spacing) * 0.5) solid var(--focus-halo-color);
-    outline-offset: 0;
-  }
-
-  dialog:focus-visible { outline: none; }
-
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-    }
-  }
+  html:lang(ja) { --font-sans: var(--font-japanese); }
 }

@@ -1,81 +1,57 @@
+/* Type roles are utilities from theme.css (text-title, text-heading, text-body
+   …). These classes add what a role cannot carry: the display family, wrapping
+   and Japanese line breaking. */
 @layer components {
-  :where(.ui-heading) {
-    font-family: var(--font-display, var(--font-body, inherit));
-    font-weight: var(--ui-heading-weight, 700);
-    letter-spacing: var(--ui-heading-tracking, -0.025em);
+  :where(.lc-heading) {
+    font-family: var(--font-display);
     overflow-wrap: anywhere;
     text-wrap: balance;
   }
 
-  :where(.ui-heading-page) {
-    font-size: var(--ui-heading-page-size, 1.875rem);
-    line-height: var(--ui-heading-page-line-height, 2.25rem);
-  }
-
-  :where(.ui-heading-section) {
-    font-size: var(--ui-heading-section-size, 1.25rem);
-    line-height: var(--ui-heading-section-line-height, 1.5rem);
-  }
-
-  :where(.ui-heading-card) {
-    font-size: var(--ui-heading-card-size, 1.125rem);
-    line-height: var(--ui-heading-card-line-height, 1.5rem);
-  }
-
-  :where(.ui-heading:lang(ja)) {
-    letter-spacing: var(--ui-heading-ja-tracking, 0);
-    line-break: strict;
-  }
-
-  :where(.ui-text) {
-    font-family: var(--font-body, inherit);
-    font-weight: var(--ui-text-weight, 400);
-    letter-spacing: var(--ui-text-tracking, normal);
+  :where(.lc-text) {
     overflow-wrap: anywhere;
   }
 
-  :where(.ui-text-body) {
-    font-size: var(--ui-text-body-size, 1rem);
-    line-height: var(--ui-text-body-line-height, 1.5rem);
-  }
-
-  :where(.ui-text-small) {
-    font-size: var(--ui-text-small-size, 0.875rem);
-    line-height: var(--ui-text-small-line-height, 1.25rem);
-  }
-
-  :where(.ui-text-caption) {
-    font-size: var(--ui-text-caption-size, 0.75rem);
-    line-height: var(--ui-text-caption-line-height, 1rem);
-  }
-
-  :where(.ui-text:lang(ja)) {
+  /* Type role utilities read --tw-tracking first, so this wins over their tracking. */
+  :where(.lc-heading, .lc-text):lang(ja) {
+    --tw-tracking: 0;
     line-break: strict;
   }
 
   @supports (word-break: auto-phrase) {
-    :where(.ui-heading:lang(ja)) {
+    :where(.lc-heading:lang(ja)) {
       word-break: auto-phrase;
     }
   }
 }
 
-@layer utilities {
-  :where(code):not(:where(pre code)),
-  .ui-prose :where(code):not(:where(pre code)) {
-    font-family: var(--f-mono);
-    font-size: 0.875em;
-    font-weight: inherit;
-    line-height: inherit;
-    color: var(--ink);
-    background-color: var(--paper-3);
-    border-radius: var(--radius-sm);
-    padding: 0.125em 0.375em;
-    overflow-wrap: anywhere;
+/* Trims the space above the cap height and below the baseline, so padding and
+   gaps measure the visible text. Browsers without text-box keep the leading. */
+@utility lc-trim {
+  text-box: trim-both cap alphabetic; /* browser-compat: enhancement */
+}
 
-    &::before,
-    &::after {
-      content: none;
-    }
+/* Inline code inside running text. base.css applies it to every <code>; prose
+   applies it inside .lc-prose. */
+@utility lc-inline-code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  font-weight: inherit;
+  line-height: inherit;
+  color: var(--foreground);
+  background-color: var(--accent);
+  border-radius: var(--radius-sm);
+  padding: 0.125em 0.375em;
+  overflow-wrap: anywhere;
+
+  &::before,
+  &::after {
+    content: none;
+  }
+}
+
+@layer utilities {
+  .lc-prose :where(code):not(:where(pre code)) {
+    @apply lc-inline-code;
   }
 }

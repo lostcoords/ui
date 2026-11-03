@@ -1,7 +1,7 @@
 async function _verifyFoundations(page) {
   const origin = await page.evaluate(() => location.origin)
   await page.goto(`${origin}/components/foundations.html`)
-  await page.locator("#example-0 .ui-heading-page").waitFor()
+  await page.locator("#example-0 .text-title").waitFor()
   const checks = []
   const verify = (condition, message) => {
     if (!condition) throw new Error(message)
@@ -22,13 +22,13 @@ async function _verifyFoundations(page) {
         const content = section.lastElementChild
         const roles = [
           ...document.querySelectorAll(
-            "#example-0 [data-example-preview] .ui-heading, #example-0 [data-example-preview] .ui-text",
+            "#example-0 [data-example-preview] .lc-heading, #example-0 [data-example-preview] .lc-text",
           ),
         ]
-        const prose = document.querySelector("#example-4 .ui-prose")
+        const prose = document.querySelector("#example-4 .lc-prose")
         const paragraphs = [...prose.querySelectorAll(":scope > p")]
         const probe = document.createElement("span")
-        probe.style.color = "var(--ink-2)"
+        probe.style.color = "var(--muted-foreground)"
         document.body.append(probe)
         const bodyColor = getComputedStyle(probe).color
         probe.remove()
@@ -49,8 +49,8 @@ async function _verifyFoundations(page) {
           paragraphGap: getComputedStyle(paragraphs[1]).marginBlockStart,
           proseColor: getComputedStyle(paragraphs[0]).color,
           bodyColor,
-          japaneseTracking: style("#example-1 [data-example-preview] .ui-heading").letterSpacing,
-          japaneseReadingTracking: style("#example-5 .ui-prose h2").letterSpacing,
+          japaneseTracking: style("#example-1 [data-example-preview] .lc-heading").letterSpacing,
+          japaneseReadingTracking: style("#example-5 .lc-prose h2").letterSpacing,
           buttonSize: style("#example-4 .not-prose button").fontSize,
         }
       })
@@ -60,7 +60,7 @@ async function _verifyFoundations(page) {
         JSON.stringify(result.roles) ===
           JSON.stringify([
             ["30px", "36px", "0px", "0px"],
-            ["20px", "24px", "0px", "0px"],
+            ["20px", "28px", "0px", "0px"],
             ["18px", "24px", "0px", "0px"],
             ["16px", "24px", "0px", "0px"],
             ["14px", "20px", "0px", "0px"],
@@ -69,7 +69,7 @@ async function _verifyFoundations(page) {
         `${label}: text roles pair size and leading without external margins`,
       )
       verify(result.gaps.join() === "32px,12px,16px", `${label}: section rhythm is 32/12/16px`)
-      verify(result.headerHeight >= 44, `${label}: section heading accommodates a control`)
+      verify(result.headerHeight >= 40, `${label}: section heading accommodates a control`)
       verify(
         result.prose.join() === "16px,28px" && result.paragraphGap === "20px",
         `${label}: reading rhythm is 16/28px with 20px flow`,
@@ -83,13 +83,13 @@ async function _verifyFoundations(page) {
           ["normal", "0px"].includes(result.japaneseReadingTracking),
         `${label}: Japanese headings keep natural tracking`,
       )
-      verify(result.buttonSize === "16px", `${label}: embedded controls opt out of prose`)
+      verify(result.buttonSize === "14px", `${label}: embedded controls opt out of prose`)
     }
   }
 
   await page.goto(`${origin}/components/field.html`)
   const fields = await page.evaluate(() => {
-    const field = document.querySelector("[data-example-preview] .ui-field")
+    const field = document.querySelector("[data-example-preview] .lc-field")
     const label = field.querySelector("label")
     const fieldset = document.createElement("fieldset")
     fieldset.className = `${field.className} m-0 border-0 p-0`
@@ -117,12 +117,12 @@ async function _verifyFoundations(page) {
   await page.goto(`${origin}/components/foundations.html`)
   const overrides = await page.evaluate(() => {
     const stack = document.querySelector("#example-2 [data-example-preview]").firstElementChild
-    stack.style.setProperty("--ui-space-section", "40px")
-    const heading = document.querySelector("#example-0 .ui-heading-page")
-    heading.style.setProperty("--ui-heading-page-size", "32px")
+    stack.style.setProperty("--lc-density", "1.25")
+    const heading = document.querySelector("#example-0 .text-title")
+    heading.style.setProperty("--text-title", "32px")
     const result = [getComputedStyle(stack).rowGap, getComputedStyle(heading).fontSize]
-    stack.style.removeProperty("--ui-space-section")
-    heading.style.removeProperty("--ui-heading-page-size")
+    stack.style.removeProperty("--lc-density")
+    heading.style.removeProperty("--text-title")
     return result
   })
   verify(overrides.join() === "40px,32px", "Host custom properties adjust spacing and text roles")

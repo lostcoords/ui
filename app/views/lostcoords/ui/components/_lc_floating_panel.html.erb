@@ -1,0 +1,8 @@
+<%# locals: (id:, label:, title:, controller:, role:, trigger_variant:, attributes:, content:) %>
+<%= tag.div(class: "relative inline-flex", data: { controller: controller }) do %>
+  <%= lc_button label, variant: trigger_variant, id: "#{id}-trigger", aria: { haspopup: role, expanded: false, controls: id }, data: { "#{controller}_target" => "trigger", action: "#{controller}#toggle" } %>
+  <%= tag.div(**attributes) do %>
+    <% if title %><h2 id="<%= id %>-title" class="<%= lc_heading_class(size: :subheading) %>"><%= title %></h2><% end %>
+    <%= content %>
+  <% end %>
+<% end %>

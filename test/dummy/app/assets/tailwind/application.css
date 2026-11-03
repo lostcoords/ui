@@ -20,11 +20,11 @@
   --syntax-call: #315b9a;
   --syntax-tag: #216958;
   --syntax-comment: #5a6070;
-  --f-display: "Manrope", ui-sans-serif, system-ui, sans-serif;
-  --f-body: "Manrope", ui-sans-serif, system-ui, sans-serif;
-  --palette-original-1: oklch(var(--lch-sky));
-  --palette-original-2: white;
-  --palette-original-3: oklch(23.1% 0.010 268.2deg);
+  --font-display: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --palette-original-1: var(--foreground);
+  --palette-original-2: var(--background);
+  --palette-original-3: var(--muted-foreground);
   --palette-ivory-blue-1: #ebd3a2;
   --palette-ivory-blue-2: #e2b540;
   --palette-ivory-blue-3: #1c4286;
@@ -46,8 +46,8 @@
 }
 
 html:lang(ja) {
-  --f-display: var(--f-japanese);
-  --f-body: var(--f-japanese);
+  --font-display: var(--font-japanese);
+  --font-sans: var(--font-japanese);
 }
 
 html[data-theme="dark"] {
@@ -95,37 +95,27 @@ html[data-theme="dark"] {
 }
 
 :root[data-palette] {
-  --paper: color-mix(in oklab, var(--palette-paper) 24%, white);
-  --paper-2: color-mix(in oklab, var(--palette-paper) 45%, white);
-  --paper-3: color-mix(in oklab, var(--palette-paper) 64%, white);
-  --ink: color-mix(in oklab, var(--palette-ink) 78%, black);
-  --ink-2: color-mix(in oklab, var(--ink) 85%, var(--paper));
-  --ink-3: color-mix(in oklab, var(--ink) 78%, var(--paper));
-  --ink-on-accent: white;
-  --sky: color-mix(in oklab, var(--palette-primary) 85%, black);
-  --sky-deep: color-mix(in oklab, var(--palette-primary) 70%, black);
-  --sky-soft: color-mix(in oklab, var(--sky) 12%, var(--paper));
-  --accent: var(--sky);
-  --hairline: color-mix(in oklab, var(--ink) 12%, var(--paper));
-  --glass-fill: color-mix(in oklab, var(--paper) 88%, transparent);
-  --glass-hud-solid: var(--paper);
-  --glass-hud-fill: var(--paper);
-  --pill-surface: linear-gradient(var(--paper), var(--paper-3));
-  --pill-rim: linear-gradient(var(--paper), var(--paper-3));
+  --background: color-mix(in oklab, var(--palette-paper) 24%, white);
+  --muted: color-mix(in oklab, var(--palette-paper) 45%, white);
+  --accent: color-mix(in oklab, var(--palette-paper) 64%, white);
+  --foreground: color-mix(in oklab, var(--palette-ink) 78%, black);
+  --muted-foreground: color-mix(in oklab, var(--foreground) 78%, var(--background));
+  --primary-foreground: white;
+  --primary: color-mix(in oklab, var(--palette-primary) 85%, black);
+  --border: color-mix(in oklab, var(--foreground) 12%, var(--background));
+  --lc-glass-fill: color-mix(in oklab, var(--background) 88%, transparent);
+  --lc-glass-hud-solid: var(--background);
+  --lc-glass-hud-fill: var(--background);
 }
 
 :root[data-palette][data-theme="dark"] {
-  --paper: color-mix(in oklab, var(--palette-ink) 25%, oklch(19% 0.004 90deg));
-  --paper-2: color-mix(in oklab, var(--palette-ink) 35%, oklch(24% 0.006 90deg));
-  --paper-3: color-mix(in oklab, var(--palette-ink) 45%, oklch(29% 0.008 90deg));
-  --ink: color-mix(in oklab, var(--palette-paper) 85%, white);
-  --ink-2: color-mix(in oklab, var(--ink) 85%, var(--paper));
-  --ink-3: color-mix(in oklab, var(--ink) 78%, var(--paper));
-  --sky: var(--palette-primary-dark);
-  --sky-deep: color-mix(in oklab, var(--sky) 85%, white);
-  --ink-on-accent: var(--paper);
-  --sky-soft: color-mix(in oklab, var(--sky) 18%, var(--paper));
-  --accent: var(--sky);
+  --background: color-mix(in oklab, var(--palette-ink) 25%, oklch(19% 0.004 90deg));
+  --muted: color-mix(in oklab, var(--palette-ink) 35%, oklch(24% 0.006 90deg));
+  --accent: color-mix(in oklab, var(--palette-ink) 45%, oklch(29% 0.008 90deg));
+  --foreground: color-mix(in oklab, var(--palette-paper) 85%, white);
+  --muted-foreground: color-mix(in oklab, var(--foreground) 78%, var(--background));
+  --primary: var(--palette-primary-dark);
+  --primary-foreground: var(--background);
 }
 
 @import "../builds/tailwind/lostcoords_ui.css";

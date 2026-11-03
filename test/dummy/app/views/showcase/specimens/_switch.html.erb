@@ -1,0 +1,4 @@
+<%= lc_stack gap: :related do %>
+  <%= lc_switch "Public project", name: "project[public]", checked: true %>
+  <%= lc_switch "Allow comments", name: "project[comments]", hint: "Members can comment on pages." %>
+<% end %>

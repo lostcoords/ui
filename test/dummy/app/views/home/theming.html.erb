@@ -1,48 +1,50 @@
-<div class="mx-auto flex max-w-360 gap-10 px-5 sm:px-8 lg:px-10">
-  <%= render "showcase/sidebar" %>
-  <main id="main" class="min-w-0 max-w-4xl flex-1 py-5 lg:py-10">
-    <%= render "showcase/mobile_navigation" %>
-    <%= lc_stack gap: :section, class: "pt-6 lg:pt-0" do %>
-      <header class="<%= lc_stack_class(gap: :heading) %>">
-        <%= lc_heading "Theming", level: 1, size: :page %>
-        <%= lc_text tone: :muted do %>
-          The engine includes a complete light and dark theme. After <a href="/installation.html" class="underline underline-offset-2">installation</a>, no token file is required.
-        <% end %>
-      </header>
-      <%= lc_section title: "Change your colors", id: "colors" do %>
+<%= render layout: "blocks/examples/docs_shell", locals: { navigation: render("showcase/navigation"), menu_label: "Components", width: "max-w-4xl" } do %>
+<%= lc_stack gap: :section do %>
+  <header class="<%= lc_stack_class(gap: :heading) %>">
+    <%= lc_heading "Theming", level: 1, size: :title %>
+    <%= lc_text tone: :muted do %>
+      The default light and dark themes use neutral surfaces and accents, with color available for statuses and avatars. The theme has eleven color roles. After <a href="/installation.html" class="<%= lc_link_class %>">installation</a>, no token file is required.
+    <% end %>
+  </header>
+  <%= lc_section title: "Change your colors", id: "colors" do %>
+    <%= lc_text size: :small, tone: :muted do %>
+      Add overrides after the engine import in <code>app/assets/tailwind/application.css</code>. This example changes actions, links, selected states and keyboard focus to green. Soft backgrounds follow automatically. The default text color on primary buttons is white in light mode and dark in dark mode; set <code>--primary-foreground</code> if your color needs a different contrast.
+    <% end %>
+    <%= render "showcase/source_code", source: DocsTheming::COLORS, language: :css, id: "theme-colors", label: "Primary color overrides" %>
+    <%= lc_text size: :small, tone: :muted do %>
+      Use <code>--background</code> for the page, <code>--muted</code> for cards, <code>--foreground</code> for text and <code>--muted-foreground</code> for hints. Matching utilities include <code>bg-muted</code>, <code>text-muted-foreground</code> and <code>border-border</code>.
+    <% end %>
+  <% end %>
+  <%= lc_section title: "Choose colors by purpose", id: "color-roles" do %>
+    <%= lc_text size: :small, tone: :muted do %>
+      You only need to override the roles you want to change. Status colors control both text and soft feedback backgrounds.
+    <% end %>
+    <%= render "showcase/token_table", tokens: DocsFoundations::COLORS, id: "theme-color-table" %>
+  <% end %>
+  <%= lc_section title: "Switch themes", id: "dark-mode" do %>
+    <%= lc_text size: :small, tone: :muted do %>
+      Set <code>data-theme="dark"</code> on <code>&lt;html&gt;</code> for dark mode and Tailwind's <code>dark:</code> variant. Remove it for light mode. Your app controls the switch and saved preference.
+    <% end %>
+  <% end %>
+  <%= lc_stack id: "advanced" do %>
+    <%= lc_section title: "Fonts, corners and shadows" do %>
+      <%= lc_stack do %>
         <%= lc_text size: :small, tone: :muted do %>
-          Add overrides after the engine import in <code>app/assets/tailwind/application.css</code>. This example changes primary actions to green.
+          Load your font, then set the body and heading families. The defaults use system fonts.
         <% end %>
-        <%= render "showcase/source_code", source: DocsTheming::COLORS, language: :css, id: "theme-colors", label: "Primary color overrides" %>
+        <%= render "showcase/source_code", source: DocsTheming::FONTS, language: :css, id: "theme-fonts", label: "Font family overrides" %>
         <%= lc_text size: :small, tone: :muted do %>
-          Use <code>--paper</code> for backgrounds, <code>--ink</code> for text and <code>--hairline</code> for borders. Matching Tailwind utilities include <code>bg-paper</code> and <code>text-ink</code>.
+          Set radius variables on <code>body</code> for controls and cards. <code>rounded-full</code> buttons keep their pill shape. <code>--lc-shadow</code> controls the shared surface shadow.
         <% end %>
-      <% end %>
-      <%= lc_section title: "Switch themes", id: "dark-mode" do %>
+        <%= render "showcase/source_code", source: DocsTheming::SHAPE, language: :css, id: "theme-shape", label: "Radius and shadow overrides" %>
         <%= lc_text size: :small, tone: :muted do %>
-          Set <code>data-theme="dark"</code> on <code>&lt;html&gt;</code> for dark mode and Tailwind's <code>dark:</code> variant. Remove it for light mode. Your app controls the switch and saved preference.
-        <% end %>
-      <% end %>
-      <%= lc_stack id: "advanced" do %>
-        <%= lc_disclosure title: "Fonts, corners and shadows" do %>
-          <%= lc_stack do %>
-            <%= lc_text size: :small, tone: :muted do %>
-              Load your font, then set the body and heading families. The defaults use system fonts.
-            <% end %>
-            <%= render "showcase/source_code", source: DocsTheming::FONTS, language: :css, id: "theme-fonts", label: "Font family overrides" %>
-            <%= lc_text size: :small, tone: :muted do %>
-              Set radius variables on <code>body</code> for controls and cards. <code>rounded-full</code> buttons keep their pill shape. <code>--shadow</code> controls the shared surface shadow.
-            <% end %>
-            <%= render "showcase/source_code", source: DocsTheming::SHAPE, language: :css, id: "theme-shape", label: "Radius and shadow overrides" %>
-            <%= lc_text size: :small, tone: :muted do %>
-              For one component, use <code>class:</code>. See <a href="/components/foundations.html" class="underline underline-offset-2">Foundations</a> for typography, Japanese text and spacing.
-            <% end %>
-          <% end %>
-        <% end %>
-        <%= lc_disclosure title: "All theme variables" do %>
-          <%= render "showcase/tokens" %>
+          For one component, use <code>class:</code>. See <a href="/components/foundations.html" class="<%= lc_link_class %>">Foundations</a> for typography, Japanese text and spacing.
         <% end %>
       <% end %>
     <% end %>
-  </main>
-</div>
+    <%= lc_text size: :small, tone: :muted do %>
+      Browse the <a href="/components/foundations.html#tokens" class="<%= lc_link_class %>">color roles, typography, spacing and appearance settings</a> for defaults, current theme values and page-scoped override names.
+    <% end %>
+  <% end %>
+<% end %>
+<% end %>

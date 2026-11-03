@@ -28,9 +28,6 @@ async function _verifyTheming(page, defaultCss, customCss) {
     },
     { cardPage, buttonPage },
   )
-  await page
-    .getByText("All theme variables", { exact: true })
-    .evaluate((element) => element.click())
   for (const width of [1440, 390, 320]) {
     await page.setViewportSize({ width, height: 1000 })
     verify(
@@ -54,8 +51,8 @@ async function _verifyTheming(page, defaultCss, customCss) {
         primary: style.backgroundColor,
         font: style.fontFamily,
         radius: getComputedStyle(document.querySelector("[data-default-card]")).borderRadius,
-        shadow: root.getPropertyValue("--shadow").trim(),
-        duration: root.getPropertyValue("--sheet-duration").trim(),
+        shadow: root.getPropertyValue("--lc-shadow").trim(),
+        duration: root.getPropertyValue("--lc-sheet-duration").trim(),
       }
     })
 

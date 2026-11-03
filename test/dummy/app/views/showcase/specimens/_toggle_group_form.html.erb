@@ -1,0 +1,8 @@
+<form class="flex flex-col items-center gap-4">
+  <%= lc_toggle_group label: "Billing", name: "billing", value: "monthly" do %>
+    <%= lc_toggle_group_item "Monthly", value: "monthly", selected: true %>
+    <%= lc_toggle_group_item "Annual", value: "annual" %>
+    <%= lc_toggle_group_item "Custom", value: "custom", disabled: true %>
+  <% end %>
+  <%= lc_button "Reset", type: :reset, variant: :ghost, size: :sm %>
+</form>

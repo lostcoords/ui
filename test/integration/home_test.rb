@@ -7,7 +7,7 @@ class HomeTest < ActionDispatch::IntegrationTest
     get root_path
 
     assert_response :success
-    assert_includes response.body, ERB::Util.html_escape(ApplicationController.helpers.lc_button_class(variant: :accent))
+    assert_includes response.body, ERB::Util.html_escape(ApplicationController.helpers.lc_button_class(variant: :primary))
   end
 
   test "each component page renders its examples and public API" do
@@ -74,6 +74,19 @@ class HomeTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_equal guide, response.body
+  end
+
+  test "theme colors and other style settings stay visible in separate groups" do
+    get "/components/foundations.html"
+
+    assert_response :success
+    assert_select "#theme-color-table tbody tr", count: 20
+    assert_select "#theme-color-table [data-token='--primary']", text: /Primary actions, links, selected states and keyboard focus/
+    assert_select "section#style-settings #foundation-token-table"
+    assert_select "details #foundation-token-table", count: 0
+    refute_includes response.body, "Tailwind utility alias"
+    refute_includes response.body, "Palette and status colors"
+    refute_includes response.body, "--color-primary"
   end
 
   test "a component that does not exist returns not found" do

@@ -7,10 +7,10 @@
   tone_modifiers = [ "", "🏻", "🏼", "🏽", "🏾", "🏿" ]
   tone_names = %w[default light medium_light medium medium_dark dark] %>
 
-<%= tag.div(**lc_attributes({ class: lc_tw("emoji-picker", picker_class), data: { controller: "emoji-picker", emoji_picker_auto_submit_value: auto_submit, emoji_picker_catalog_url_value: catalog_url, emoji_picker_recent_scope_value: recent_scope } }, attributes)) do %>
+<%= tag.div(**lc_attributes({ class: lc_tw("lc-emoji-picker", picker_class), data: { controller: "lc-emoji-picker", lc_emoji_picker_auto_submit_value: auto_submit, lc_emoji_picker_catalog_url_value: catalog_url, lc_emoji_picker_recent_scope_value: recent_scope } }, attributes)) do %>
   <%= form.hidden_field field,
       value: selected,
-      data: { emoji_picker_target: "input" } %>
+      data: { lc_emoji_picker_target: "input" } %>
 
   <% quick.each do |emoji| %>
     <button
@@ -18,7 +18,7 @@
       class="emoji-picker__choice"
       aria-current="<%= emoji == selected %>"
       data-emoji="<%= emoji %>"
-      data-action="click->emoji-picker#select"
+      data-action="click->lc-emoji-picker#select"
     >
       <%= emoji %>
     </button>
@@ -29,8 +29,8 @@
       type="button"
       class="emoji-picker__trigger <%= trigger_class %>"
       aria-current="<%= !selected_is_quick %>"
-      data-emoji-picker-target="trigger"
-      data-action="click->emoji-picker#toggle"
+      data-lc-emoji-picker-target="trigger"
+      data-action="click->lc-emoji-picker#toggle"
       data-default-label="＋"
       data-value="<%= selected %>"
       aria-label="<%= label %>"
@@ -41,14 +41,14 @@
 
     <div
       class="emoji-picker__popover <%= popover_class %>"
-      data-emoji-picker-target="popover"
-      data-controller="sheet"
-      data-action="click->emoji-picker#select pointerover->emoji-picker#preview focusin->emoji-picker#preview sheet:dismiss->emoji-picker#close"
+      data-lc-emoji-picker-target="popover"
+      data-controller="lc-sheet"
+      data-action="click->lc-emoji-picker#select pointerover->lc-emoji-picker#preview focusin->lc-emoji-picker#preview lc-sheet:dismiss->lc-emoji-picker#close"
       role="dialog"
       aria-label="<%= label %>"
       hidden
     >
-      <span class="emoji-picker__handle" data-sheet-target="handle" aria-hidden="true"></span>
+      <span class="emoji-picker__handle" data-lc-sheet-target="handle" aria-hidden="true"></span>
 
       <div class="emoji-picker__search">
         <div class="emoji-picker__search-field">
@@ -67,30 +67,30 @@
             enterkeyhint="search"
             aria-label="<%= lc_t("lostcoords.ui.emoji_picker.search_label") %>"
             placeholder="<%= lc_t("lostcoords.ui.emoji_picker.search_placeholder") %>"
-            data-emoji-picker-target="searchInput"
-            data-action="input->emoji-picker#filter keydown->emoji-picker#onSearchKeydown"
+            data-lc-emoji-picker-target="searchInput"
+            data-action="input->lc-emoji-picker#filter keydown->lc-emoji-picker#onSearchKeydown"
           >
         </div>
 
-        <div class="emoji-picker__tones" data-emoji-picker-target="tones">
+        <div class="emoji-picker__tones" data-lc-emoji-picker-target="tones">
           <button
             type="button"
             class="emoji-picker__tone-toggle"
-            data-emoji-picker-target="toneToggle"
-            data-action="click->emoji-picker#toggleTones"
+            data-lc-emoji-picker-target="toneToggle"
+            data-action="click->lc-emoji-picker#toggleTones"
             aria-haspopup="true"
             aria-expanded="false"
             aria-label="<%= lc_t("lostcoords.ui.emoji_picker.skin_tone") %>"
           >✋</button>
 
-          <div class="emoji-picker__tone-menu <%= popover_class %>" data-emoji-picker-target="toneMenu" role="menu" hidden>
+          <div class="emoji-picker__tone-menu <%= popover_class %>" data-lc-emoji-picker-target="toneMenu" role="menu" hidden>
             <% tone_modifiers.each_with_index do |modifier, index| %>
               <button
                 type="button"
                 class="emoji-picker__tone"
                 role="menuitemradio"
                 data-tone-index="<%= index %>"
-                data-action="click->emoji-picker#selectTone"
+                data-action="click->lc-emoji-picker#selectTone"
                 aria-label="<%= lc_t("lostcoords.ui.emoji_picker.skin_tones.#{tone_names[index]}") %>"
               >✋<%= modifier %></button>
             <% end %>
@@ -98,14 +98,14 @@
         </div>
       </div>
 
-      <nav class="emoji-picker__tabs" data-emoji-picker-target="tabs" aria-label="<%= lc_t("lostcoords.ui.emoji_picker.categories_nav") %>">
+      <nav class="emoji-picker__tabs" data-lc-emoji-picker-target="tabs" aria-label="<%= lc_t("lostcoords.ui.emoji_picker.categories_nav") %>">
         <% if recent.any? %>
           <button
             type="button"
             class="emoji-picker__tab"
-            data-emoji-picker-target="tab"
+            data-lc-emoji-picker-target="tab"
             data-target-section="recent"
-            data-action="click->emoji-picker#jumpTo"
+            data-action="click->lc-emoji-picker#jumpTo"
             aria-label="<%= lc_t("lostcoords.ui.emoji_picker.recently_used") %>"
           >🕘</button>
         <% end %>
@@ -114,21 +114,21 @@
           <button
             type="button"
             class="emoji-picker__tab"
-            data-emoji-picker-target="tab"
+            data-lc-emoji-picker-target="tab"
             data-target-section="<%= group[:key] %>"
-            data-action="click->emoji-picker#jumpTo"
+            data-action="click->lc-emoji-picker#jumpTo"
             aria-label="<%= group[:name] %>"
           ><%= group[:icon] %></button>
         <% end %>
       </nav>
 
-      <div class="emoji-picker__body" data-emoji-picker-target="body">
+      <div class="emoji-picker__body" data-lc-emoji-picker-target="body">
         <% if recent.any? %>
           <section
             class="emoji-picker__recent"
             data-section="recent"
             aria-label="<%= lc_t('lostcoords.ui.emoji_picker.recently_used') %>"
-            data-emoji-picker-target="recent"
+            data-lc-emoji-picker-target="recent"
           >
             <header class="emoji-picker__category-head">
               <h3><%= lc_t("lostcoords.ui.emoji_picker.recently_used") %></h3>
@@ -153,23 +153,23 @@
           </section>
         <% end %>
 
-        <section class="emoji-picker__results" data-emoji-picker-target="results" aria-label="<%= lc_t('lostcoords.ui.emoji_picker.search_results') %>" hidden>
+        <section class="emoji-picker__results" data-lc-emoji-picker-target="results" aria-label="<%= lc_t('lostcoords.ui.emoji_picker.search_results') %>" hidden>
           <header class="emoji-picker__category-head">
             <h3><%= lc_t("lostcoords.ui.emoji_picker.search_results") %></h3>
-            <span class="count" data-emoji-picker-target="resultsCount">0</span>
+            <span class="count" data-lc-emoji-picker-target="resultsCount">0</span>
           </header>
 
-          <div class="emoji-picker__grid" data-emoji-picker-target="resultsGrid"></div>
+          <div class="emoji-picker__grid" data-lc-emoji-picker-target="resultsGrid"></div>
         </section>
 
-        <p class="emoji-picker__empty" data-emoji-picker-target="empty" hidden>
+        <p class="emoji-picker__empty" data-lc-emoji-picker-target="empty" hidden>
           <%= lc_t("lostcoords.ui.emoji_picker.no_results") %>
         </p>
       </div>
 
-      <footer class="emoji-picker__preview" data-emoji-picker-target="preview">
-        <span class="emoji-picker__preview-emoji" data-emoji-picker-target="previewEmoji"><%= selected %></span>
-        <span class="emoji-picker__preview-name" data-emoji-picker-target="previewName"><%= lc_emoji_picker_search_name(selected) %></span>
+      <footer class="emoji-picker__preview" data-lc-emoji-picker-target="preview">
+        <span class="emoji-picker__preview-emoji" data-lc-emoji-picker-target="previewEmoji"><%= selected %></span>
+        <span class="emoji-picker__preview-name" data-lc-emoji-picker-target="previewName"><%= lc_emoji_picker_search_name(selected) %></span>
       </footer>
     </div>
   </div>

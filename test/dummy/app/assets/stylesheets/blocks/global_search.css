@@ -15,11 +15,11 @@
   border: 0;
   overflow: hidden;
   background: transparent;
-  color: var(--ink);
+  color: var(--foreground);
 }
 
 .search-example__dialog::backdrop {
-  background: color-mix(in oklab, var(--paper) 45%, transparent);
+  background: color-mix(in oklab, var(--background) 45%, transparent);
   -webkit-backdrop-filter: blur(16px) saturate(140%);
   backdrop-filter: blur(16px) saturate(140%);
 }
@@ -35,7 +35,7 @@
 }
 
 .search-example__results {
-  --glass-fill: color-mix(in oklab, var(--paper) 88%, transparent);
+  --lc-glass-fill: color-mix(in oklab, var(--background) 88%, transparent);
 }
 
 .search-example__input::-webkit-search-cancel-button {
@@ -46,12 +46,12 @@
 .search-example__result {
   border: 0;
   background: transparent;
-  color: var(--ink);
+  color: var(--foreground);
   cursor: pointer;
 }
 
 .search-example__result:is(:hover, :focus-visible) {
-  background: color-mix(in oklab, var(--ink) 6%, transparent);
+  background: color-mix(in oklab, var(--foreground) 6%, transparent);
 }
 
 .search-example [hidden] {
@@ -74,7 +74,7 @@
 
 @media (prefers-reduced-transparency: reduce) {
   .search-example__dialog::backdrop {
-    background: var(--paper);
+    background: var(--background);
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
   }

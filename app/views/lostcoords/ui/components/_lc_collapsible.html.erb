@@ -1,0 +1,5 @@
+<%# locals: (title:, attributes:, content:) %>
+<%= tag.details(**attributes) do %>
+  <summary class="cursor-pointer text-label font-semibold"><%= title %></summary>
+  <div class="pt-heading"><%= content %></div>
+<% end %>

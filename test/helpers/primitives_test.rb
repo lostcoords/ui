@@ -45,20 +45,22 @@ module Lostcoords::Ui
 
     test "public button variants and sizes are strict and accept strings" do
       html = @view.lc_button("Remove", variant: "destructive", size: "sm")
-      assert_includes fragment(html).at_css("button")["class"].split, "text-berry"
+      assert_includes fragment(html).at_css("button")["class"].split, "[--lc-button-bg:color-mix(in_oklab,var(--destructive)_60%,black)]"
+      assert_includes fragment(@view.lc_button("More", variant: "outline")).at_css("button")["class"].split, "border-border"
+      assert_includes fragment(@view.lc_button("More", variant: "glass")).at_css("button")["class"].split, "lc-glass"
 
       { variant: :accent, size: :nav }.each do |name, value|
         error = assert_raises(ArgumentError) { @view.lc_button("Save", **{ name => value }) }
         assert_includes error.message, name.to_s
       end
       assert_raises(ArgumentError) { @view.lc_badge("New", tone: :missing) }
-      assert_raises(ArgumentError) { @view.lc_medallion(icon: "check", tone: :missing) }
+      assert_raises(ArgumentError) { @view.lc_icon_badge(icon: "check", tone: :missing) }
       assert_raises(ArgumentError) { @view.lc_icon_badge(icon: "check", size: :missing) }
       assert_raises(ArgumentError) { @view.lc_avatar("AB", size: nil) }
-      assert_raises(ArgumentError) { @view.lc_form_card(padding: :missing) }
-      assert_raises(ArgumentError) { @view.lc_status_pill("New", tone: :missing) }
+      assert_raises(ArgumentError) { @view.lc_card(padding: :missing) }
+      assert_raises(ArgumentError) { @view.lc_badge("New", tone: :missing) }
       assert_raises(ArgumentError) { @view.lc_spinner(size: :missing) }
-      assert_raises(ArgumentError) { @view.lc_form_alert("Oops", tone: :missing) }
+      assert_raises(ArgumentError) { @view.lc_alert("Oops", tone: :missing) }
     end
 
     test "button links preserve native navigation and block forms" do
@@ -106,12 +108,12 @@ module Lostcoords::Ui
     end
 
     test "badges and eyebrows support escaped text and captured content" do
-      [ :lc_badge, :lc_status_pill, :lc_eyebrow ].each do |name|
+      [ :lc_badge ].each do |name|
         assert_equal "<new>", fragment(@view.public_send(name, "<new>")).at_css("span").text
         html = @view.public_send(name, id: "label") { @view.tag.strong("New") }
         assert_equal "New", fragment(html).at_css("span#label strong").text
       end
-      [ :lc_icon_badge, :lc_medallion ].each do |name|
+      [ :lc_icon_badge ].each do |name|
         assert_equal "true", fragment(@view.public_send(name, icon: "check")).at_css("svg")["aria-hidden"]
       end
     end
@@ -127,11 +129,11 @@ module Lostcoords::Ui
       assert_equal "", fragment(@view.lc_avatar(src: "/avatar.jpg")).at_css("img")["alt"]
 
       html = @view.lc_avatar_stack(compact: true, id: "team") { @view.lc_avatar("AB") }
-      assert_equal "AB", fragment(html).at_css("#team .avatar-stack__row > .avatar").text
+      assert_equal "AB", fragment(html).at_css("#team .lc-avatar-stack__row > .lc-avatar").text
     end
 
     test "surfaces capture content with merged attributes" do
-      [ :lc_card, :lc_card_surface, :lc_form_card, :lc_empty_state ].each do |name|
+      [ :lc_card, :lc_empty_state ].each do |name|
         html = @view.public_send(name, id: "content", class: "p-8", data: { controller: "example" }) { @view.tag.h2("Title") }
         surface = fragment(html).at_css("div#content")
         assert_equal "Title", surface.at_css("h2").text
@@ -150,8 +152,8 @@ module Lostcoords::Ui
       assert_equal "<Guide>", card.at_css("h2").text
       assert_nil card.at_css("guide")
       assert_nil card["role"]
-      assert_includes card["class"].split, "block"
-      assert_includes card["class"].split, "hover:bg-paper-3"
+      assert_includes card["class"].split, "flex"
+      assert_includes card["class"].split, "hover:bg-accent"
 
       plain_card = fragment(@view.lc_card(interactive: true) { "Details" }).at_css("div")
       assert_nil plain_card["href"]
@@ -177,15 +179,15 @@ module Lostcoords::Ui
     end
 
     test "form alerts escape messages and preserve tone and caller data" do
-      alert = fragment(@view.lc_form_alert("<Error>", data: { controller: "dismiss" }, aria: { describedby: "hint" })).at_css("div")
+      alert = fragment(@view.lc_alert("<Error>", data: { controller: "dismiss" }, aria: { describedby: "hint" })).at_css("div")
       assert_equal "alert", alert["role"]
-      assert_equal "error", alert["data-tone"]
+      assert_equal "destructive", alert["data-tone"]
       assert_equal "dismiss", alert["data-controller"]
       assert_equal "hint", alert["aria-describedby"]
       assert_equal "<Error>", alert.at_css("p").text
       assert_nil alert.at_css("error")
       assert_equal "true", alert.at_css("svg")["aria-hidden"]
-      assert_equal "status", fragment(@view.lc_form_alert("Saved", tone: :notice)).at_css("div")["role"]
+      assert_equal "status", fragment(@view.lc_alert("Saved", tone: :success)).at_css("div")["role"]
     end
 
     private

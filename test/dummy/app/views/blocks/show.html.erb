@@ -1,50 +1,46 @@
-<div class="mx-auto flex max-w-360 gap-10 px-5 sm:px-8 lg:px-10">
-  <%= render "showcase/sidebar" %>
-  <main id="main" class="min-w-0 flex-1 py-5 lg:py-10">
-    <%= render "showcase/mobile_navigation" %>
-    <div class="<%= lc_stack_class(gap: :section, extra: "pt-6 lg:pt-0") %>">
-      <header class="<%= lc_stack_class(gap: :heading, extra: "max-w-3xl") %>">
-        <p class="text-xs text-ink-3"><a href="/blocks.html" class="hover:text-ink">Blocks</a><span class="px-2" aria-hidden="true">/</span><%= @block.title %></p>
-        <%= lc_heading @block.title, level: 1, size: :page %>
-        <p class="<%= lc_text_class(tone: :muted, extra: "text-pretty") %>"><%= @block.description %></p>
-      </header>
-      <section class="<%= lc_stack_class %>" aria-label="Interactive preview" data-controller="block-stage">
-        <div class="flex flex-wrap items-center justify-between gap-3">
-          <div class="flex gap-1 rounded-full bg-paper-2 p-1" role="group" aria-label="Preview width">
-            <%= lc_button "Desktop", variant: :ghost, size: :sm, class: "aria-pressed:bg-paper", aria: { pressed: true }, data: { block_stage_target: "width", action: "block-stage#resize", width: "desktop" } %>
-            <%= lc_button "Mobile", variant: :ghost, size: :sm, class: "aria-pressed:bg-paper", aria: { pressed: false }, data: { block_stage_target: "width", action: "block-stage#resize", width: "mobile" } %>
-          </div>
-          <%= lc_button_link_to "Open preview ↗", @block.preview_url, variant: :ghost, size: :sm, target: "_blank", rel: "noopener" %>
-        </div>
-        <div class="flex justify-center overflow-hidden rounded-3xl bg-paper-2 p-3 sm:p-5">
-          <iframe src="<%= @block.preview_url %>" title="<%= @block.title %> interactive preview" class="h-[40rem] w-full rounded-2xl bg-paper shadow-sm" data-block-stage-target="frame"></iframe>
-        </div>
-        <p class="text-xs text-ink-3">Interact with the example above, or open it in a full window.</p>
-      </section>
-      <%= lc_section title: "Make it yours", id: "adapt-title" do %>
-        <p class="<%= lc_text_class(size: :small, tone: :muted, extra: "max-w-3xl") %>">After <a href="/installation.html" class="underline underline-offset-2">setting up the library</a>, copy the example files into your app and adapt the content. These are composition references, with no block API to install or import.</p>
-        <p class="<%= lc_text_class(size: :small, tone: :muted, extra: "max-w-3xl") %>">Load the copied stylesheet from your application layout. Place the controller in your Stimulus controller directory and register it using your app's usual loading convention.</p>
-        <% @block.notes.each do |note| %><p class="<%= lc_text_class(size: :small, tone: :muted, extra: "max-w-3xl") %>"><%= note %></p><% end %>
-        <div class="flex flex-wrap items-center gap-2 text-sm">
-          <span class="text-ink-3">Built with</span>
-          <% @block.components.each do |component| %>
-            <% section = @sections.find { |section| section.id == component } %>
-            <a href="/components/<%= component %>.html" class="rounded-full bg-paper-2 px-3 py-2 font-medium hover:text-accent"><%= section.title %></a>
-          <% end %>
-        </div>
-      <% end %>
-      <%= lc_section title: "Example files", id: "files-title" do %>
-        <p class="<%= lc_text_class(size: :small, tone: :muted) %>">The preview renders this ERB and loads these styles and interactions.</p>
-        <%= lc_stack gap: :section do %>
-          <% @block.sources.each_with_index do |source, index| %>
-            <div class="<%= lc_stack_class(gap: :heading) %>">
-              <h3 class="break-all font-mono text-sm text-ink-2"><%= source.label %></h3>
-              <%= render "showcase/source_code", source: source.content, language: source.language, id: "block-file-#{index}", label: source.label %>
-            </div>
-          <% end %>
-        <% end %>
-      <% end %>
-      <a href="/blocks.html" class="text-sm font-medium hover:text-accent">← All blocks</a>
+<%= render layout: "blocks/examples/docs_shell", locals: { navigation: render("showcase/navigation"), menu_label: "Components" } do %>
+<div class="<%= lc_stack_class(gap: :section) %>">
+  <header class="<%= lc_stack_class(gap: :heading, extra: "max-w-3xl") %>">
+    <%= lc_breadcrumb [ [ "Blocks", "/blocks.html" ], @block.title ] %>
+    <%= lc_heading @block.title, level: 1, size: :title %>
+    <p class="<%= lc_text_class(tone: :muted, extra: "text-pretty") %>"><%= @block.description %></p>
+  </header>
+  <section class="<%= lc_stack_class %>" aria-label="Interactive preview" data-controller="block-stage">
+    <div class="flex flex-wrap items-center justify-between gap-3">
+      <div class="flex gap-1 rounded-full bg-muted p-1" role="group" aria-label="Preview width">
+        <%= lc_button "Desktop", variant: :ghost, size: :sm, class: "aria-pressed:bg-background", aria: { pressed: true }, data: { block_stage_target: "width", action: "block-stage#resize", width: "desktop" } %>
+        <%= lc_button "Mobile", variant: :ghost, size: :sm, class: "aria-pressed:bg-background", aria: { pressed: false }, data: { block_stage_target: "width", action: "block-stage#resize", width: "mobile" } %>
+      </div>
+      <%= lc_button_link_to "Open preview ↗", @block.preview_url, variant: :ghost, size: :sm, target: "_blank", rel: "noopener" %>
     </div>
-  </main>
+    <div class="flex justify-center overflow-hidden rounded-3xl bg-muted p-3 sm:p-5">
+      <iframe src="<%= @block.preview_url %>" title="<%= @block.title %> interactive preview" class="h-[40rem] w-full rounded-2xl bg-background shadow-sm" data-block-stage-target="frame"></iframe>
+    </div>
+    <p class="text-xs text-muted-foreground">Interact with the example above, or open it in a full window.</p>
+  </section>
+  <%= lc_section title: "Make it yours", id: "adapt-title" do %>
+    <p class="<%= lc_text_class(size: :small, tone: :muted, extra: "max-w-3xl") %>">After <a href="/installation.html" class="<%= lc_link_class %>">setting up the library</a>, copy the example files into your app and adapt the content. These are composition references, with no block API to install or import.</p>
+    <p class="<%= lc_text_class(size: :small, tone: :muted, extra: "max-w-3xl") %>">Load the copied stylesheet from your application layout. Place the controller in your Stimulus controller directory and register it using your app's usual loading convention.</p>
+    <% @block.notes.each do |note| %><p class="<%= lc_text_class(size: :small, tone: :muted, extra: "max-w-3xl") %>"><%= note %></p><% end %>
+    <div class="flex flex-wrap items-center gap-2 text-sm">
+      <span class="text-muted-foreground">Built with</span>
+      <% @block.components.each do |component| %>
+        <% section = @sections.find { |section| section.id == component } %>
+        <%= lc_button_link_to section.title, "/components/#{component}.html", variant: :secondary, size: :sm %>
+      <% end %>
+    </div>
+  <% end %>
+  <%= lc_section title: "Example files", id: "files-title" do %>
+    <p class="<%= lc_text_class(size: :small, tone: :muted) %>">The preview renders this ERB and loads these styles and interactions.</p>
+    <%= lc_stack gap: :section do %>
+      <% @block.sources.each_with_index do |source, index| %>
+        <div class="<%= lc_stack_class(gap: :heading) %>">
+          <h3 class="break-all font-mono text-sm text-muted-foreground"><%= source.label %></h3>
+          <%= render "showcase/source_code", source: source.content, language: source.language, id: "block-file-#{index}", label: source.label %>
+        </div>
+      <% end %>
+    <% end %>
+  <% end %>
+  <%= lc_link "← All blocks", "/blocks.html", class: "self-start text-label no-underline hover:underline" %>
 </div>
+<% end %>
