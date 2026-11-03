@@ -1,9 +1,5 @@
-<div class="relative" data-controller="row-menu">
-  <button type="button" class="<%= classes[:trigger] %>" aria-haspopup="menu" aria-expanded="false" aria-label="Actions"
-    data-row-menu-target="trigger" data-action="row-menu#toggle"><%= heroicon "ellipsis-horizontal", options: { "aria-hidden": "true" } %></button>
-  <div class="<%= classes[:popover] %>" role="menu" data-row-menu-target="popover">
-    <button type="button" class="<%= classes[:option] %>" role="menuitem"><%= heroicon "pencil-square", options: { class: "size-5", "aria-hidden": "true" } %><span>Edit</span></button>
-<button type="button" class="<%= classes[:option] %>" role="menuitem"><%= heroicon "document-duplicate", options: { class: "size-5", "aria-hidden": "true" } %><span>Duplicate</span></button>
-<button type="button" class="<%= classes[:danger] %>" role="menuitem"><%= heroicon "trash", options: { class: "size-5", "aria-hidden": "true" } %><span>Delete</span></button>
-  </div>
-</div>
+<%= ui_menu id: "EXAMPLE_ID-menu", label: "Project actions" do %>
+  <%= ui_menu_option "Edit project", href: "/components/input.html" %>
+  <%= ui_menu_option "Duplicate project" %>
+  <%= ui_menu_option "Archive project", tone: :danger %>
+<% end %>

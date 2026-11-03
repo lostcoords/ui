@@ -1,4 +1,4 @@
-<%# locals: (form:, field:, value: nil, quick: [], recent: [], recent_scope: nil, label:, catalog_url:, picker_class: nil, trigger_class: nil, popover_class: nil, auto_submit: false) %>
+<%# locals: (form:, field:, value: nil, quick: [], recent: [], recent_scope: nil, label:, catalog_url:, picker_class: nil, trigger_class: nil, popover_class: nil, auto_submit: false, attributes: {}) %>
 <% quick = Array(quick).uniq
   recent = Array(recent).uniq
   selected = value.presence || form.object&.public_send(field).presence || quick.first || emoji_picker_groups.first[:emojis].first
@@ -7,13 +7,7 @@
   tone_modifiers = [ "", "🏻", "🏼", "🏽", "🏾", "🏿" ]
   tone_names = %w[default light medium_light medium medium_dark dark] %>
 
-<div
-  class="emoji-picker <%= picker_class %>"
-  data-controller="emoji-picker"
-  data-emoji-picker-auto-submit-value="<%= auto_submit %>"
-  data-emoji-picker-catalog-url-value="<%= catalog_url %>"
-  data-emoji-picker-recent-scope-value="<%= recent_scope %>"
->
+<%= tag.div(**ui_attributes({ class: tw("emoji-picker", picker_class), data: { controller: "emoji-picker", emoji_picker_auto_submit_value: auto_submit, emoji_picker_catalog_url_value: catalog_url, emoji_picker_recent_scope_value: recent_scope } }, attributes)) do %>
   <%= form.hidden_field field,
       value: selected,
       data: { emoji_picker_target: "input" } %>
@@ -179,4 +173,4 @@
       </footer>
     </div>
   </div>
-</div>
+<% end %>

@@ -33,6 +33,7 @@ export default class extends Controller {
   }
 
   schedule(ms) {
+    if (this.timeoutValue === 0) return
     if (this.timer) clearTimeout(this.timer)
     this.startedAt = performance.now()
     this.timer = setTimeout(() => this.dismiss(), ms)

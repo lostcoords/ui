@@ -1,3 +1,4 @@
-<% classes.each do |tone, value| %>
-  <button type="button" class="<%= value %>"><%= tone.to_s.capitalize %></button>
-<% end %>
+<%= ui_button "Primary" %>
+<%= ui_button "Secondary", variant: :secondary %>
+<%= ui_button "Ghost", variant: :ghost %>
+<%= ui_button "Delete", variant: :destructive %>

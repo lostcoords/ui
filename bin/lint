@@ -39,9 +39,9 @@ run_ruby() {
 run_javascript() {
   echo "== Linting JavaScript =="
   if [[ "$fix" == true ]]; then
-    npx --no-install biome check --write app/javascript test/dummy/app/javascript
+    npx --no-install biome check --write app/javascript test/dummy/app/javascript test/browser
   else
-    npx --no-install biome check app/javascript test/dummy/app/javascript
+    npx --no-install biome check app/javascript test/dummy/app/javascript test/browser
   fi
 }
 

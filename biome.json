@@ -9,6 +9,7 @@
     "includes": [
       "app/javascript/**/*.js",
       "test/dummy/app/javascript/**/*.js",
+      "test/browser/**/*.js",
       "**/*.json",
       "!node_modules",
       "!test/dummy/tmp",

@@ -4,7 +4,7 @@ const PALETTE_KEY = "lostcoords-ui:palette"
 const THEME_KEY = "lostcoords-ui:theme"
 
 export default class extends Controller {
-  static targets = ["theme", "token", "palette", "paletteTrigger", "paletteStatus"]
+  static targets = ["theme", "token", "palette", "paletteStatus"]
 
   connect() {
     this.onStorage = (event) => {
@@ -42,10 +42,9 @@ export default class extends Controller {
     if (selected.value === "original") delete document.documentElement.dataset.palette
     else document.documentElement.dataset.palette = selected.value
     for (const input of this.paletteTargets) input.checked = input === selected
-    this.paletteTriggerTarget.setAttribute(
-      "aria-label",
-      `Color palette: ${selected.dataset.paletteName}`,
-    )
+    document
+      .getElementById("palette-picker-trigger")
+      .setAttribute("aria-label", `Color palette: ${selected.dataset.paletteName}`)
     this.readTokens()
   }
 

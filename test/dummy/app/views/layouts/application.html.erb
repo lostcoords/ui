@@ -30,8 +30,8 @@
         </nav>
         <div class="ms-auto flex items-center gap-2">
           <%= render "showcase/palette_picker" %>
-          <a href="https://github.com/lostcoords/ui" class="<%= icon_button_class(size: :sm, extra: "max-sm:hidden") %>" aria-label="Source on GitHub"><%= heroicon "code-bracket", options: { "aria-hidden": true } %></a>
-          <button type="button" class="<%= icon_button_class(size: :sm) %>" data-action="showcase#toggleTheme" aria-label="Switch color theme" aria-pressed="false" data-showcase-target="theme"><span class="dark:hidden"><%= heroicon "moon", options: { "aria-hidden": true } %></span><span class="hidden dark:inline"><%= heroicon "sun", options: { "aria-hidden": true } %></span></button>
+          <%= ui_button_link_to "https://github.com/lostcoords/ui", variant: :ghost, size: :sm, class: "max-sm:hidden", aria: { label: "Source on GitHub" } do %><%= heroicon "code-bracket", options: { "aria-hidden": true } %><% end %>
+          <%= ui_icon_button "Switch color theme", icon: "moon", size: :sm, data: { action: "showcase#toggleTheme", showcase_target: "theme" }, aria: { pressed: false } %>
         </div>
       </div>
     </header>

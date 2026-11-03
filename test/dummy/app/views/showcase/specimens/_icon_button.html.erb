@@ -1,3 +1,4 @@
-<% classes.each_value do |value| %>
-  <button type="button" class="<%= value %>" aria-label="More actions"><%= heroicon "ellipsis-horizontal" %></button>
-<% end %>
+<%= ui_icon_button "Add project", icon: "plus" %>
+<%= ui_icon_button "Settings", icon: "cog-6-tooth", shape: :square %>
+<%= ui_icon_button "Search", icon: "magnifying-glass", size: :sm %>
+<%= ui_icon_button "Close", icon: "x-mark", size: :lg %>

@@ -1,37 +1,6 @@
-<div class="flex w-full flex-col items-center gap-4" data-controller="confirm-dialog">
-  <button type="button" class="<%= classes[:trigger] %>" data-action="confirm-dialog#open">Open sheet</button>
-  <%= tag.dialog id: "#{id}-dialog", class: classes[:dialog], data: classes[:data], aria: { labelledby: "#{id}-title" } do %>
-    <div class="flex flex-col gap-4 pt-6 pb-5 sm:pt-5">
-      <h2 id="<%= id %>-title" class="px-5 text-lg font-semibold">New project</h2>
-      <div class="@container mx-4 flex flex-col gap-0.5 overflow-hidden rounded-2xl">
-        <label class="<%= classes[:row] %>">
-          <span class="<%= classes[:label] %>"><%= heroicon "pencil", options: { "aria-hidden": "true" } %><span>Title</span></span>
-          <input class="<%= classes[:text] %>" placeholder="Website redesign">
-        </label>
-        <div class="<%= classes[:row] %>">
-          <span class="<%= classes[:label] %>"><%= heroicon "calendar", options: { "aria-hidden": "true" } %><span>When</span></span>
-          <input type="datetime-local" class="<%= classes[:datetime] %>" value="2026-11-03T19:30" aria-label="When">
-        </div>
-        <div class="<%= classes[:row] %>">
-          <span class="<%= classes[:label] %>"><%= heroicon "tag", options: { "aria-hidden": "true" } %><span>Category</span></span>
-          <div class="flex flex-wrap gap-2">
-            <a class="<%= classes[:current] %>" href="#main">Design</a>
-            <button type="button" class="<%= classes[:chip] %>" aria-pressed="false" data-action="demo#press">Product</button>
-          </div>
-        </div>
-        <div class="<%= classes[:row] %>">
-          <span class="<%= classes[:label] %>"><%= heroicon "users", options: { "aria-hidden": "true" } %><span>Owner</span></span>
-          <div class="flex flex-wrap gap-2">
-            <% { "Alex" => true, "Sam" => false }.each do |name, pressed| %>
-              <button type="button" class="<%= classes[:member] %>" aria-pressed="<%= pressed %>" data-action="demo#press">
-                <span class="<%= classes[:avatar] %>" style="background-color: var(--<%= pressed ? "sky" : "leaf" %>)"><%= name.first %></span><%= name %>
-              </button>
-            <% end %>
-          </div>
-        </div>
-      </div>
-      <div class="px-5"><button type="button" class="<%= classes[:done] %>" data-action="confirm-dialog#close">Create project</button></div>
-    </div>
+<%= ui_sheet id: "EXAMPLE_ID-sheet", title: "Workspace details", trigger: "Open sheet", detents: "fit" do %>
+  <p class="text-sm text-ink-2">Drag the handle down to dismiss.</p>
+  <%= ui_field label: "Workspace", id: "EXAMPLE_ID-workspace" do |field| %>
+    <%= ui_input value: "Design studio", **field %>
   <% end %>
-
-</div>
+<% end %>

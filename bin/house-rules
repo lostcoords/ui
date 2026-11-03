@@ -195,14 +195,13 @@ def readme_builders_violations
   [ Violation.new("README.md", 1, "the builders list is stale; regenerate it with bin/rails lostcoords:ui:builders") ]
 end
 
-# The dummy app's home page renders Showcase.sections and is published as docs/, so a builder missing there is undocumented.
 def showcase_coverage_violations
-  require_relative "../lib/lostcoords/ui/builders"
+  require_relative "../lib/lostcoords/ui/components"
   require_relative "../test/dummy/app/models/showcase"
   shown = Showcase.builders
 
-  Lostcoords::Ui::Builders.all.reject { |builder| shown.include?(builder.name) }.map do |builder|
-    Violation.new(Pathname(builder.path).relative_path_from(Dir.pwd).to_s, builder.line, "`#{builder.name}` is not in the showcase; add an example to Showcase.sections")
+  Lostcoords::Ui::Components.all.reject { |builder| shown.include?(builder.name) }.map do |builder|
+    Violation.new(Pathname(builder.path).relative_path_from(Dir.pwd).to_s, builder.line, "`#{builder.name}` has no runnable documentation; add an example to Showcase.sections")
   end
 end
 

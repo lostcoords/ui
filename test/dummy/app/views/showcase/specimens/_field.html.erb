@@ -1,4 +1,3 @@
-<div class="<%= classes[:field] %>">
-  <label class="<%= classes[:label] %>" for="<%= id %>">Project name</label>
-  <input id="<%= id %>" class="<%= classes[:input] %>" placeholder="Website redesign">
-</div>
+<%= ui_field label: "Project name", id: "EXAMPLE_ID-name", hint: "A short, memorable name." do |field| %>
+  <%= ui_input name: "project[name]", **field %>
+<% end %>

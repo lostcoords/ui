@@ -1,0 +1,5 @@
+<%= form_with scope: :project, url: "#", class: "w-full max-w-sm" do |form| %>
+  <%= ui_field label: "Project name", id: form.field_id(:name), hint: "Works with Rails form builders." do |field| %>
+    <%= form.text_field :name, **field, class: input_class %>
+  <% end %>
+<% end %>

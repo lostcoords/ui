@@ -1,3 +1,2 @@
-<% classes.each do |tone, value| %>
-  <span class="<%= value %>"><%= tone.to_s.capitalize %></span>
-<% end %>
+<%= ui_badge "Draft" %>
+<%= ui_badge "Published", tone: :info %>

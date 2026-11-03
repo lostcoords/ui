@@ -20,7 +20,13 @@ namespace :lostcoords do
       end
     end
 
-    desc "Print every helper the engine gives host views, with its signature, as a Markdown list"
+    desc "Print the component rendering helpers and their signatures"
+    task :components do
+      require "lostcoords/ui/components"
+      puts Lostcoords::Ui::Components.markdown
+    end
+
+    desc "Print the style builders and their signatures"
     task :builders do
       require "lostcoords/ui/builders"
       puts Lostcoords::Ui::Builders.markdown

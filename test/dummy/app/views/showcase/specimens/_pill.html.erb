@@ -1,3 +1,5 @@
-<% classes.each_value do |value| %>
-  <button type="button" class="<%= value %>">Pill</button>
+<%= ui_pill_row role: "group", aria: { label: "Topics" } do %>
+  <%= ui_pill "Design", active: true %>
+  <%= ui_pill "Writing" %>
+  <%= ui_pill "Research" %>
 <% end %>

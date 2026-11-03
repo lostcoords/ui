@@ -1,0 +1,8 @@
+<form class="flex flex-col items-center gap-4">
+  <%= ui_segmented label: "Billing", name: "billing", value: "monthly" do %>
+    <%= ui_segmented_tab "Monthly", value: "monthly", selected: true %>
+    <%= ui_segmented_tab "Annual", value: "annual" %>
+    <%= ui_segmented_tab "Custom", value: "custom", disabled: true %>
+  <% end %>
+  <%= ui_button "Reset", type: :reset, variant: :ghost, size: :sm %>
+</form>

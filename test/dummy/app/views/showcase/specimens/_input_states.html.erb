@@ -1,2 +1,2 @@
-<input class="<%= classes[:value] %>" value="Not available" aria-label="Disabled input" disabled>
-<input class="<%= classes[:value] %>" value="Read-only value" aria-label="Read-only input" readonly>
+<%= ui_input value: "Read-only value", readonly: true, aria: { label: "Read-only input" } %>
+<%= ui_input placeholder: "Disabled", disabled: true, aria: { label: "Disabled input" } %>

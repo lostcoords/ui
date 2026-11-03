@@ -1,7 +1,5 @@
-<div class="<%= classes[:stack] %>">
-  <div class="<%= classes[:row] %>">
-    <% { "AL" => "sky", "AN" => "leaf", "MO" => "berry", "+2" => "gold" }.each do |initials, color| %>
-      <span class="<%= classes[:avatar] %>" style="background-color: var(--<%= color %>)"><%= initials %></span>
-    <% end %>
-  </div>
-</div>
+<%= ui_avatar_stack aria: { label: "Alex, Sam and Jamie" } do %>
+  <%= ui_avatar "AL" %>
+  <%= ui_avatar "SK" %>
+  <%= ui_avatar "JR" %>
+<% end %>

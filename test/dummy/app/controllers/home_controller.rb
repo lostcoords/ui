@@ -1,4 +1,5 @@
 require "lostcoords/ui/builders"
+require "lostcoords/ui/components"
 require "lostcoords/ui/tokens"
 
 class HomeController < ApplicationController
@@ -18,6 +19,14 @@ class HomeController < ApplicationController
 
   def palette_license
     render plain: Rails.root.join("vendor/wada/LICENSE.txt").read
+  end
+
+  def api
+    render plain: DocsReference.json, content_type: "application/json"
+  end
+
+  def llms
+    render plain: DocsReference.text, content_type: "text/plain"
   end
 
   def emoji_catalog

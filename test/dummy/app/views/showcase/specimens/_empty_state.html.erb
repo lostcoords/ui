@@ -1,6 +1,8 @@
-<div class="<%= classes[:card] %>">
-  <div class="<%= classes[:empty] %>">
-    <p class="font-semibold text-ink">No projects yet</p>
-    <p class="text-sm">Add the first one and it shows up here.</p>
-  </div>
-</div>
+<%= ui_form_card padding: :empty, class: "w-full" do %>
+  <%= ui_empty_state do %>
+    <%= ui_medallion icon: "folder-plus" %>
+    <h3 class="font-semibold">No projects yet</h3>
+    <p class="text-sm text-ink-2">Create a project to get started.</p>
+    <%= ui_button "Create project" %>
+  <% end %>
+<% end %>

@@ -1,1 +1,3 @@
-<div class="w-full"><%= classes[:value] %></div>
+<%= fields_for :project do |form| %>
+  <%= ui_emoji_picker form: form, field: :emoji, value: "✨", quick: %w[🥝 🍣 🍜 ☕], label: "Choose an emoji", catalog_url: "/emoji-catalog.html" %>
+<% end %>

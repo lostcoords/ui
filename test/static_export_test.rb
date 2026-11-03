@@ -10,6 +10,10 @@ class StaticExportTest < ActiveSupport::TestCase
       root = Lostcoords::Ui::Engine.root
       output, error, status = Open3.capture3({ "RAILS_ENV" => "development" }, "bin/rails", "lostcoords:ui:showcase[#{directory}]", chdir: root)
       assert status.success?, "#{output}\n#{error}"
+      assert_equal "ui.lostcoords.com\n", File.read(File.join(directory, "CNAME"))
+      reference = JSON.parse(File.read(File.join(directory, "api.json")))
+      assert_equal Lostcoords::Ui::Components.all.size, reference.fetch("components").size
+      assert_includes File.read(File.join(directory, "llms.txt")), "ui_button_to"
       pages = Dir["#{directory}/**/*.html"]
       assert_equal Showcase.sections.size + 3, pages.size
 
@@ -24,6 +28,7 @@ class StaticExportTest < ActiveSupport::TestCase
 
       pages.each do |page|
         document = Nokogiri::HTML(File.read(page))
+        assert_empty document.css('input[name="authenticity_token"]'), "Static form leaked a CSRF token: #{page}"
         importmap = document.at_css('script[type="importmap"]')
         if importmap
           JSON.parse(importmap.content).fetch("imports").each_value do |path|

@@ -1,4 +1,4 @@
-<div class="<%= classes[:actions] %>">
-  <button type="button" class="<%= classes[:cancel] %>">Cancel</button>
-  <button type="button" class="<%= classes[:submit] %>">Save</button>
-</div>
+<%= ui_form_actions do %>
+  <%= ui_button "Cancel", variant: :ghost %>
+  <%= ui_button "Save changes", type: :submit %>
+<% end %>

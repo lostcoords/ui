@@ -7,6 +7,10 @@ export default class extends Controller {
     clearTimeout(this.copyTimer)
   }
 
+  preventSubmit(event) {
+    if (event.target.method !== "dialog") event.preventDefault()
+  }
+
   toggle() {
     this.codeTarget.hidden = !this.codeTarget.hidden
     this.toggleTarget.setAttribute("aria-expanded", String(!this.codeTarget.hidden))

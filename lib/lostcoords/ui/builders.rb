@@ -10,6 +10,10 @@ module Lostcoords::Ui
     end
 
     def self.all
+      definitions.reject { |builder| builder.name.to_s.start_with?("ui_") }
+    end
+
+    def self.definitions
       Dir["#{HELPERS}/*_helper.rb"].sort.flat_map { |path| public_instance_methods_in(path) }
     end
 

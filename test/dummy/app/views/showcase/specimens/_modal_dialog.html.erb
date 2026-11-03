@@ -1,14 +1,10 @@
-<div data-controller="modal">
-  <button type="button" class="<%= classes[:trigger] %>" data-action="modal#open">Open dialog</button>
-  <dialog data-controller="sheet" data-sheet-detents-value="fit" class="<%= classes[:dialog] %>" aria-labelledby="<%= id %>-title" data-modal-target="dialog">
-    <div class="flex flex-col gap-4 p-5">
-  <h2 id="<%= id %>-title" class="text-lg font-semibold">Leave this workspace?</h2>
-  <p class="text-ink-2">You can rejoin with a new invitation.</p>
-  <div class="<%= classes[:actions] %>">
-    <button type="button" class="<%= classes[:cancel] %>" data-action="modal#close">Cancel</button>
-    <button type="button" class="<%= classes[:confirm] %>" data-action="modal#close">Leave</button>
-  </div>
-</div>
-
-  </dialog>
-</div>
+<%= ui_dialog id: "EXAMPLE_ID-dialog", title: "Create project", trigger: "New project" do %>
+  <form method="dialog" class="flex flex-col gap-5">
+  <%= ui_field label: "Project name", id: "EXAMPLE_ID-dialog-name" do |field| %>
+    <%= ui_input name: "project[name]", **field %>
+  <% end %>
+  <%= ui_form_actions do %>
+    <%= ui_button "Create project", type: :submit %>
+  <% end %>
+  </form>
+<% end %>

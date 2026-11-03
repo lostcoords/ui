@@ -13,7 +13,7 @@
       const theme = localStorage.getItem("lostcoords-ui:theme")
       if (theme === "dark" || (!theme && matchMedia("(prefers-color-scheme: dark)").matches)) document.documentElement.dataset.theme = "dark"
     </script>
-    <link rel="stylesheet" href="../assets/tailwind-18dee66c.css" />
+    <link rel="stylesheet" href="../assets/tailwind-8d727083.css" />
     <script type="importmap" data-turbo-track="reload">{
   "imports": {
     "application": "../assets/application-20c5ac24.js",
@@ -25,7 +25,10 @@
     "controllers/modal_controller": "../assets/lostcoords/ui/controllers/modal_controller-4e6e674a.js",
     "controllers/row_menu_controller": "../assets/lostcoords/ui/controllers/row_menu_controller-66f3d5ae.js",
     "controllers/sheet_controller": "../assets/lostcoords/ui/controllers/sheet_controller-435758d0.js",
-    "controllers/toast_controller": "../assets/lostcoords/ui/controllers/toast_controller-51c13045.js",
+    "controllers/toast_controller": "../assets/lostcoords/ui/controllers/toast_controller-d5292929.js",
+    "controllers/ui_popover_controller": "../assets/lostcoords/ui/controllers/ui_popover_controller-02e7a7b9.js",
+    "controllers/ui_selection_controller": "../assets/lostcoords/ui/controllers/ui_selection_controller-70eb14cd.js",
+    "controllers/ui_toggle_controller": "../assets/lostcoords/ui/controllers/ui_toggle_controller-c1f00ec9.js",
     "helpers/catalog_picker": "../assets/lostcoords/ui/helpers/catalog_picker-f7c87f66.js",
     "helpers/context_dialog": "../assets/lostcoords/ui/helpers/context_dialog-8d2876da.js",
     "helpers/dialog": "../assets/lostcoords/ui/helpers/dialog-c1f65b6b.js",
@@ -36,22 +39,18 @@
     "helpers/top_layer": "../assets/lostcoords/ui/helpers/top_layer-ed2ebe60.js",
     "helpers/viewport": "../assets/lostcoords/ui/helpers/viewport-d4d43aa5.js",
     "controllers/application": "../assets/controllers/application-2a5be8ca.js",
-    "controllers/demo_controller": "../assets/controllers/demo_controller-4466c193.js",
-    "controllers/example_controller": "../assets/controllers/example_controller-71d4d7e0.js",
+    "controllers/example_controller": "../assets/controllers/example_controller-72f8521b.js",
     "controllers": "../assets/controllers/index-e1e47e23.js",
-    "controllers/palette_picker_controller": "../assets/controllers/palette_picker_controller-cc118fcf.js",
-    "controllers/showcase_controller": "../assets/controllers/showcase_controller-04d58c1d.js"
+    "controllers/showcase_controller": "../assets/controllers/showcase_controller-da515a08.js"
   }
 }</script>
 <link rel="modulepreload" href="../assets/application-20c5ac24.js">
 <link rel="modulepreload" href="../assets/stimulus.min-7ea3d58b.js">
 <link rel="modulepreload" href="../assets/stimulus-loading-25917588.js">
 <link rel="modulepreload" href="../assets/controllers/application-2a5be8ca.js">
-<link rel="modulepreload" href="../assets/controllers/demo_controller-4466c193.js">
-<link rel="modulepreload" href="../assets/controllers/example_controller-71d4d7e0.js">
+<link rel="modulepreload" href="../assets/controllers/example_controller-72f8521b.js">
 <link rel="modulepreload" href="../assets/controllers/index-e1e47e23.js">
-<link rel="modulepreload" href="../assets/controllers/palette_picker_controller-cc118fcf.js">
-<link rel="modulepreload" href="../assets/controllers/showcase_controller-04d58c1d.js">
+<link rel="modulepreload" href="../assets/controllers/showcase_controller-da515a08.js">
 <script type="module">import "application"</script>
   </head>
   <body data-controller="showcase">
@@ -67,12 +66,12 @@
           <a class="text-ink-2 hover:text-ink" href="/tokens.html">Tokens</a>
         </nav>
         <div class="ms-auto flex items-center gap-2">
-          <div class="relative" data-controller="palette-picker">
-  <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm border border-transparent bg-paper-2 text-ink hover:bg-paper-3 active:bg-paper-3" aria-haspopup="dialog" aria-expanded="false" aria-controls="palette-picker" aria-label="Color palette: Default" data-palette-picker-target="trigger" data-showcase-target="paletteTrigger" data-action="palette-picker#toggle">
-    <span class="flex gap-0.5" aria-hidden="true"><span class="size-2.5 rounded-full bg-sky"></span><span class="size-2.5 rounded-full bg-ink"></span></span>Palette
-  </button>
-  <div id="palette-picker" class="glass rounded-3xl [--glass-shadow:var(--glass-rim),var(--shadow-lg)] max-md:[--glass-fill:var(--paper)] dark:max-md:[--glass-fill:var(--paper-3)] row-menu__popover squircle popover-shell hidden absolute top-[calc(100%+--spacing(1))] end-0 overscroll-contain [&amp;_form]:m-0 transition-none data-open:flex w-80 max-h-[calc(100dvh-7rem)] max-w-[calc(100vw-2rem)] flex-col gap-4 overflow-y-auto p-4" data-palette-picker-target="popover" role="dialog" aria-labelledby="palette-title">
-    <div class="flex flex-col gap-1"><h2 id="palette-title" class="text-sm font-semibold">Color palette</h2><p class="text-xs text-ink-3">Preview across every component.</p></div>
+          <div class="relative inline-flex" data-controller="ui-popover">
+  <button id="palette-picker-trigger" type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-12 py-2.5 px-5 text-base border border-transparent bg-paper-2 text-ink hover:bg-paper-3 active:bg-paper-3" aria-haspopup="dialog" aria-expanded="false" aria-controls="palette-picker" data-ui-popover-target="trigger" data-action="ui-popover#toggle">Palette</button>
+  <div class="glass rounded-3xl [--glass-shadow:var(--glass-rim),var(--shadow-lg)] max-md:[--glass-fill:var(--paper)] dark:max-md:[--glass-fill:var(--paper-3)] row-menu__popover squircle popover-shell hidden absolute top-[calc(100%+--spacing(1))] end-0 overscroll-contain [&amp;_form]:m-0 data-open:flex flex-col gap-4 p-5 z-nav-popover min-w-64 max-w-[calc(100vw-2rem)] transition-none w-80 max-h-[calc(100dvh-7rem)] overflow-y-auto" id="palette-picker" role="dialog" aria-labelledby="palette-picker-title" data-ui-popover-target="popover" tabindex="-1">
+    <h2 id="palette-picker-title" class="font-semibold">Color palette</h2>
+    
+    <p class="text-xs text-ink-3">Preview across every component.</p>
     <fieldset class="grid grid-cols-2 gap-2">
       <legend class="sr-only">Choose a palette</legend>
         <label class="flex cursor-pointer flex-col gap-3 rounded-2xl border border-transparent bg-paper-2 p-3 has-checked:border-accent has-checked:bg-sky-soft">
@@ -120,20 +119,16 @@
     </fieldset>
     <p class="text-xs text-ink-3">Based on Wada Sanzo’s <span lang="ja">配色事典</span>. UI tints adapted for contrast. <a class="underline underline-offset-2 hover:text-ink" href="https://github.com/mattdesl/dictionary-of-colour-combinations">Color data</a> · <a class="underline underline-offset-2 hover:text-ink" href="/wada-license.txt">License</a></p>
     <span role="status" class="sr-only" data-showcase-target="paletteStatus"></span>
-  </div>
-</div>
 
-          <a href="https://github.com/lostcoords/ui" class="inline-grid place-items-center shrink-0 border-0 bg-transparent text-ink-3 cursor-pointer no-underline transition-[background-color,color,transform] duration-[140ms] ease-out hover:bg-paper-2 hover:text-ink active:scale-[0.94] disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg]:shrink-0 rounded-xl size-11 [&amp;_svg]:size-4 max-sm:hidden" aria-label="Source on GitHub"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon">
+</div></div>
+          <a class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2)) max-sm:hidden" aria-label="Source on GitHub" href="https://github.com/lostcoords/ui"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon">
   <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"></path>
 </svg>
 </a>
-          <button type="button" class="inline-grid place-items-center shrink-0 border-0 bg-transparent text-ink-3 cursor-pointer no-underline transition-[background-color,color,transform] duration-[140ms] ease-out hover:bg-paper-2 hover:text-ink active:scale-[0.94] disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg]:shrink-0 rounded-xl size-11 [&amp;_svg]:size-4" data-action="showcase#toggleTheme" aria-label="Switch color theme" aria-pressed="false" data-showcase-target="theme"><span class="dark:hidden"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon">
+          <button type="button" class="inline-grid place-items-center shrink-0 border-0 bg-transparent text-ink-3 cursor-pointer no-underline transition-[background-color,color,transform] duration-[140ms] ease-out hover:bg-paper-2 hover:text-ink active:scale-[0.94] disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg]:shrink-0 rounded-full size-11 [&amp;_svg]:size-4" aria-label="Switch color theme" aria-pressed="false" data-action="showcase#toggleTheme" data-showcase-target="theme"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon">
   <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"></path>
 </svg>
-</span><span class="hidden dark:inline"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"></path>
-</svg>
-</span></button>
+</button>
         </div>
       </div>
     </header>
@@ -172,8 +167,6 @@
       <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/toast.html" >Toast</a>
       <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/disclosure.html" >Disclosure</a>
       <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/emoji.html" >Emoji picker</a>
-      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/glass.html" >Glass</a>
-      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/merging.html" >Class merging</a>
   </div>
 </nav>
 
@@ -218,8 +211,6 @@
       <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/toast.html" >Toast</a>
       <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/disclosure.html" >Disclosure</a>
       <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/emoji.html" >Emoji picker</a>
-      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/glass.html" >Glass</a>
-      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/merging.html" >Class merging</a>
   </div>
 </nav>
 </div>
@@ -230,185 +221,86 @@
         <div class="flex items-center justify-between gap-4">
           <p class="text-xs text-ink-3">Components <span class="px-2" aria-hidden="true">/</span> Pill</p>
           <div class="flex gap-1">
-                <a class="inline-grid place-items-center shrink-0 border-0 bg-transparent text-ink-3 cursor-pointer no-underline transition-[background-color,color,transform] duration-[140ms] ease-out hover:bg-paper-2 hover:text-ink active:scale-[0.94] disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg]:shrink-0 rounded-xl size-11 [&amp;_svg]:size-4" href="/components/badge.html" aria-label="Previous component: Badge"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon">
+                <a class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2))" aria-label="Previous component: Badge" href="/components/badge.html"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon">
   <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"></path>
 </svg>
 </a>
-                <a class="inline-grid place-items-center shrink-0 border-0 bg-transparent text-ink-3 cursor-pointer no-underline transition-[background-color,color,transform] duration-[140ms] ease-out hover:bg-paper-2 hover:text-ink active:scale-[0.94] disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg]:shrink-0 rounded-xl size-11 [&amp;_svg]:size-4" href="/components/avatar.html" aria-label="Next component: Avatar"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon">
+                <a class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2))" aria-label="Next component: Avatar" href="/components/avatar.html"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon">
   <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"></path>
 </svg>
 </a>
           </div>
         </div>
         <h1 class="text-4xl font-semibold tracking-tight sm:text-5xl">Pill</h1>
-        <p class="text-base text-ink-2">Filters and selections.</p>
+        <p class="text-base text-ink-2">Filters and navigation.</p>
       </header>
       <div class="flex flex-col gap-12">
-          <section id="example-0" class="flex min-w-0 scroll-mt-28 flex-col gap-4" data-controller="example">
-  <h2 class="text-lg font-semibold tracking-tight"><a href="#example-0">Default</a></h2>
+          <section id="example-0" class="flex min-w-0 scroll-mt-28 flex-col gap-4" data-controller="example" data-action="submit->example#preventSubmit">
+  <h2 class="text-lg font-semibold tracking-tight"><a href="#example-0">Filters</a></h2>
   <div class="overflow-hidden rounded-3xl bg-paper-2">
     <div class="flex min-h-40 flex-wrap items-center justify-center gap-4 p-6 sm:p-10 ">
-      <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full border border-transparent bg-paper-2 font-body text-ink-2 whitespace-nowrap cursor-pointer no-underline transition-[background-color,border-color,color,transform] duration-[150ms] ease-out hover:text-ink active:scale-[0.96] aria-pressed:[background:var(--sky-soft)] aria-pressed:border-accent aria-pressed:text-accent aria-pressed:shadow-none aria-[current]:not-aria-[current=false]:[background:var(--sky-soft)] aria-[current]:not-aria-[current=false]:border-accent aria-[current]:not-aria-[current=false]:text-accent aria-[current]:not-aria-[current=false]:shadow-none has-checked:[background:var(--sky-soft)] has-checked:border-accent has-checked:text-accent has-checked:shadow-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-12 py-2.5 px-5 text-base">Pill</button>
-<button type="button" class="inline-flex items-center justify-center gap-2 rounded-full border font-body whitespace-nowrap cursor-pointer no-underline transition-[background-color,border-color,color,transform] duration-[150ms] ease-out active:scale-[0.96] aria-pressed:[background:var(--sky-soft)] aria-pressed:border-accent aria-pressed:text-accent aria-pressed:shadow-none aria-[current]:not-aria-[current=false]:[background:var(--sky-soft)] aria-[current]:not-aria-[current=false]:border-accent aria-[current]:not-aria-[current=false]:text-accent aria-[current]:not-aria-[current=false]:shadow-none has-checked:[background:var(--sky-soft)] has-checked:border-accent has-checked:text-accent has-checked:shadow-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-12 py-2.5 px-5 text-base bg-sky-soft border-accent text-accent hover:text-accent shadow-none">Pill</button>
+      <div class="flex flex-wrap items-center gap-y-2 gap-x-2" role="group" aria-label="Topics">
+  <button class="inline-flex items-center justify-center gap-2 rounded-full border border-transparent bg-paper-2 font-body text-ink-2 whitespace-nowrap cursor-pointer no-underline transition-[background-color,border-color,color,transform] duration-[150ms] ease-out hover:text-ink active:scale-[0.96] aria-pressed:[background:var(--sky-soft)] aria-pressed:border-accent aria-pressed:text-accent aria-pressed:shadow-none aria-[current]:not-aria-[current=false]:[background:var(--sky-soft)] aria-[current]:not-aria-[current=false]:border-accent aria-[current]:not-aria-[current=false]:text-accent aria-[current]:not-aria-[current=false]:shadow-none has-checked:[background:var(--sky-soft)] has-checked:border-accent has-checked:text-accent has-checked:shadow-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-12 py-2.5 px-5 text-base" type="button" aria-pressed="true" data-controller="ui-toggle" data-action="click-&gt;ui-toggle#toggle">Design</button>
+  <button class="inline-flex items-center justify-center gap-2 rounded-full border border-transparent bg-paper-2 font-body text-ink-2 whitespace-nowrap cursor-pointer no-underline transition-[background-color,border-color,color,transform] duration-[150ms] ease-out hover:text-ink active:scale-[0.96] aria-pressed:[background:var(--sky-soft)] aria-pressed:border-accent aria-pressed:text-accent aria-pressed:shadow-none aria-[current]:not-aria-[current=false]:[background:var(--sky-soft)] aria-[current]:not-aria-[current=false]:border-accent aria-[current]:not-aria-[current=false]:text-accent aria-[current]:not-aria-[current=false]:shadow-none has-checked:[background:var(--sky-soft)] has-checked:border-accent has-checked:text-accent has-checked:shadow-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-12 py-2.5 px-5 text-base" type="button" aria-pressed="false" data-controller="ui-toggle" data-action="click-&gt;ui-toggle#toggle">Writing</button>
+  <button class="inline-flex items-center justify-center gap-2 rounded-full border border-transparent bg-paper-2 font-body text-ink-2 whitespace-nowrap cursor-pointer no-underline transition-[background-color,border-color,color,transform] duration-[150ms] ease-out hover:text-ink active:scale-[0.96] aria-pressed:[background:var(--sky-soft)] aria-pressed:border-accent aria-pressed:text-accent aria-pressed:shadow-none aria-[current]:not-aria-[current=false]:[background:var(--sky-soft)] aria-[current]:not-aria-[current=false]:border-accent aria-[current]:not-aria-[current=false]:text-accent aria-[current]:not-aria-[current=false]:shadow-none has-checked:[background:var(--sky-soft)] has-checked:border-accent has-checked:text-accent has-checked:shadow-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-12 py-2.5 px-5 text-base" type="button" aria-pressed="false" data-controller="ui-toggle" data-action="click-&gt;ui-toggle#toggle">Research</button>
+</div>
     </div>
     <div class="flex min-h-12 items-center justify-between gap-4 bg-paper-2 px-4">
       <button type="button" class="flex min-h-11 items-center gap-2 font-mono text-xs text-ink-2 hover:text-ink" aria-expanded="false" aria-controls="example-0-code" data-action="example#toggle" data-example-target="toggle"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon size-4">
   <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"></path>
 </svg>
  View code</button>
-      <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2))" data-action="example#copy" data-example-target="copy" aria-label="Copy Default code">Copy</button>
+      <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2))" data-action="example#copy" data-example-target="copy" aria-label="Copy Filters code">Copy</button>
     </div>
-    <pre id="example-0-code" class="max-h-120 overflow-auto bg-paper-3 p-5 font-mono text-xs text-ink-2" data-example-target="code" hidden><code>&lt;button type=&quot;button&quot; class=&quot;&lt;%= pill_class(active: false) %&gt;&quot;&gt;Pill&lt;/button&gt;
-&lt;button type=&quot;button&quot; class=&quot;&lt;%= pill_class(active: true) %&gt;&quot;&gt;Pill&lt;/button&gt;</code></pre>
+    <pre id="example-0-code" class="max-h-120 overflow-auto bg-paper-3 p-5 font-mono text-xs text-ink-2" data-example-target="code" hidden><code>&lt;%= ui_pill_row role: &quot;group&quot;, aria: { label: &quot;Topics&quot; } do %&gt;
+  &lt;%= ui_pill &quot;Design&quot;, active: true %&gt;
+  &lt;%= ui_pill &quot;Writing&quot; %&gt;
+  &lt;%= ui_pill &quot;Research&quot; %&gt;
+&lt;% end %&gt;</code></pre>
   </div>
   <span class="sr-only" role="status" data-example-target="status"></span>
 </section>
 
-          <section id="example-1" class="flex min-w-0 scroll-mt-28 flex-col gap-4" data-controller="example">
-  <h2 class="text-lg font-semibold tracking-tight"><a href="#example-1">Example 2</a></h2>
+          <section id="example-1" class="flex min-w-0 scroll-mt-28 flex-col gap-4" data-controller="example" data-action="submit->example#preventSubmit">
+  <h2 class="text-lg font-semibold tracking-tight"><a href="#example-1">Navigation</a></h2>
   <div class="overflow-hidden rounded-3xl bg-paper-2">
     <div class="flex min-h-40 flex-wrap items-center justify-center gap-4 p-6 sm:p-10 ">
-      <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full border bg-paper-2 font-body whitespace-nowrap cursor-pointer no-underline transition-[background-color,border-color,color,transform] duration-[150ms] ease-out hover:text-ink active:scale-[0.96] aria-pressed:[background:var(--sky-soft)] aria-pressed:border-accent aria-pressed:text-accent aria-pressed:shadow-none aria-[current]:not-aria-[current=false]:[background:var(--sky-soft)] aria-[current]:not-aria-[current=false]:border-accent aria-[current]:not-aria-[current=false]:text-accent aria-[current]:not-aria-[current=false]:shadow-none has-checked:[background:var(--sky-soft)] has-checked:border-accent has-checked:text-accent has-checked:shadow-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-12 py-2.5 px-5 text-base border-dashed border-ink-3/40 [background:none] shadow-none text-ink-3">Pill</button>
+      <div class="flex flex-wrap items-center gap-y-2 gap-x-2">
+  <a class="inline-flex items-center justify-center gap-2 rounded-full border border-transparent bg-paper-2 font-body text-ink-2 whitespace-nowrap cursor-pointer no-underline transition-[background-color,border-color,color,transform] duration-[150ms] ease-out hover:text-ink active:scale-[0.96] aria-pressed:[background:var(--sky-soft)] aria-pressed:border-accent aria-pressed:text-accent aria-pressed:shadow-none aria-[current]:not-aria-[current=false]:[background:var(--sky-soft)] aria-[current]:not-aria-[current=false]:border-accent aria-[current]:not-aria-[current=false]:text-accent aria-[current]:not-aria-[current=false]:shadow-none has-checked:[background:var(--sky-soft)] has-checked:border-accent has-checked:text-accent has-checked:shadow-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm" href="/components/pill.html" aria-current="page">All projects</a>
+  <a class="inline-flex items-center justify-center gap-2 rounded-full border border-transparent bg-paper-2 font-body text-ink-2 whitespace-nowrap cursor-pointer no-underline transition-[background-color,border-color,color,transform] duration-[150ms] ease-out hover:text-ink active:scale-[0.96] aria-pressed:[background:var(--sky-soft)] aria-pressed:border-accent aria-pressed:text-accent aria-pressed:shadow-none aria-[current]:not-aria-[current=false]:[background:var(--sky-soft)] aria-[current]:not-aria-[current=false]:border-accent aria-[current]:not-aria-[current=false]:text-accent aria-[current]:not-aria-[current=false]:shadow-none has-checked:[background:var(--sky-soft)] has-checked:border-accent has-checked:text-accent has-checked:shadow-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm" href="/components/badge.html">Archived</a>
+</div>
     </div>
     <div class="flex min-h-12 items-center justify-between gap-4 bg-paper-2 px-4">
       <button type="button" class="flex min-h-11 items-center gap-2 font-mono text-xs text-ink-2 hover:text-ink" aria-expanded="false" aria-controls="example-1-code" data-action="example#toggle" data-example-target="toggle"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon size-4">
   <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"></path>
 </svg>
  View code</button>
-      <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2))" data-action="example#copy" data-example-target="copy" aria-label="Copy Example 2 code">Copy</button>
+      <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2))" data-action="example#copy" data-example-target="copy" aria-label="Copy Navigation code">Copy</button>
     </div>
-    <pre id="example-1-code" class="max-h-120 overflow-auto bg-paper-3 p-5 font-mono text-xs text-ink-2" data-example-target="code" hidden><code>&lt;button type=&quot;button&quot; class=&quot;&lt;%= pill_class(ghost: true) %&gt;&quot;&gt;Pill&lt;/button&gt;</code></pre>
+    <pre id="example-1-code" class="max-h-120 overflow-auto bg-paper-3 p-5 font-mono text-xs text-ink-2" data-example-target="code" hidden><code>&lt;%= ui_pill_row do %&gt;
+  &lt;%= ui_pill &quot;All projects&quot;, href: &quot;/components/pill.html&quot;, active: true, size: :sm %&gt;
+  &lt;%= ui_pill &quot;Archived&quot;, href: &quot;/components/badge.html&quot;, size: :sm %&gt;
+&lt;% end %&gt;</code></pre>
   </div>
   <span class="sr-only" role="status" data-example-target="status"></span>
 </section>
 
-          <section id="example-2" class="flex min-w-0 scroll-mt-28 flex-col gap-4" data-controller="example">
-  <h2 class="text-lg font-semibold tracking-tight"><a href="#example-2">Example 3</a></h2>
+          <section id="example-2" class="flex min-w-0 scroll-mt-28 flex-col gap-4" data-controller="example" data-action="submit->example#preventSubmit">
+  <h2 class="text-lg font-semibold tracking-tight"><a href="#example-2">Disabled and ghost</a></h2>
   <div class="overflow-hidden rounded-3xl bg-paper-2">
     <div class="flex min-h-40 flex-wrap items-center justify-center gap-4 p-6 sm:p-10 ">
-      <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full border border-transparent bg-paper-2 font-body text-ink-2 whitespace-nowrap cursor-pointer no-underline transition-[background-color,border-color,color,transform] duration-[150ms] ease-out hover:text-ink active:scale-[0.96] aria-pressed:[background:var(--sky-soft)] aria-pressed:border-accent aria-pressed:text-accent aria-pressed:shadow-none aria-[current]:not-aria-[current=false]:[background:var(--sky-soft)] aria-[current]:not-aria-[current=false]:border-accent aria-[current]:not-aria-[current=false]:text-accent aria-[current]:not-aria-[current=false]:shadow-none has-checked:[background:var(--sky-soft)] has-checked:border-accent has-checked:text-accent has-checked:shadow-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm">Pill</button>
-<button type="button" class="inline-flex items-center justify-center gap-2 rounded-full border border-transparent bg-paper-2 font-body text-ink-2 whitespace-nowrap cursor-pointer no-underline transition-[background-color,border-color,color,transform] duration-[150ms] ease-out hover:text-ink active:scale-[0.96] aria-pressed:[background:var(--sky-soft)] aria-pressed:border-accent aria-pressed:text-accent aria-pressed:shadow-none aria-[current]:not-aria-[current=false]:[background:var(--sky-soft)] aria-[current]:not-aria-[current=false]:border-accent aria-[current]:not-aria-[current=false]:text-accent aria-[current]:not-aria-[current=false]:shadow-none has-checked:[background:var(--sky-soft)] has-checked:border-accent has-checked:text-accent has-checked:shadow-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-12 py-2.5 px-5 text-base">Pill</button>
-<button type="button" class="inline-flex items-center justify-center gap-2 rounded-full border border-transparent bg-paper-2 font-body text-ink-2 whitespace-nowrap cursor-pointer no-underline transition-[background-color,border-color,color,transform] duration-[150ms] ease-out hover:text-ink active:scale-[0.96] aria-pressed:[background:var(--sky-soft)] aria-pressed:border-accent aria-pressed:text-accent aria-pressed:shadow-none aria-[current]:not-aria-[current=false]:[background:var(--sky-soft)] aria-[current]:not-aria-[current=false]:border-accent aria-[current]:not-aria-[current=false]:text-accent aria-[current]:not-aria-[current=false]:shadow-none has-checked:[background:var(--sky-soft)] has-checked:border-accent has-checked:text-accent has-checked:shadow-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-14 py-3.5 px-7 text-base">Pill</button>
-<button type="button" class="inline-flex items-center justify-center gap-2 rounded-full border border-transparent bg-paper-2 font-body text-ink-2 whitespace-nowrap cursor-pointer no-underline transition-[background-color,border-color,color,transform] duration-[150ms] ease-out hover:text-ink active:scale-[0.96] aria-pressed:[background:var(--sky-soft)] aria-pressed:border-accent aria-pressed:text-accent aria-pressed:shadow-none aria-[current]:not-aria-[current=false]:[background:var(--sky-soft)] aria-[current]:not-aria-[current=false]:border-accent aria-[current]:not-aria-[current=false]:text-accent aria-[current]:not-aria-[current=false]:shadow-none has-checked:[background:var(--sky-soft)] has-checked:border-accent has-checked:text-accent has-checked:shadow-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-base">Pill</button>
+      <button class="inline-flex items-center justify-center gap-2 rounded-full border border-transparent bg-paper-2 font-body text-ink-2 whitespace-nowrap cursor-pointer no-underline transition-[background-color,border-color,color,transform] duration-[150ms] ease-out hover:text-ink active:scale-[0.96] aria-pressed:[background:var(--sky-soft)] aria-pressed:border-accent aria-pressed:text-accent aria-pressed:shadow-none aria-[current]:not-aria-[current=false]:[background:var(--sky-soft)] aria-[current]:not-aria-[current=false]:border-accent aria-[current]:not-aria-[current=false]:text-accent aria-[current]:not-aria-[current=false]:shadow-none has-checked:[background:var(--sky-soft)] has-checked:border-accent has-checked:text-accent has-checked:shadow-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-12 py-2.5 px-5 text-base" type="button" aria-pressed="false" data-controller="ui-toggle" data-action="click-&gt;ui-toggle#toggle" disabled="disabled">Unavailable</button>
+<button class="inline-flex items-center justify-center gap-2 rounded-full border bg-paper-2 font-body whitespace-nowrap cursor-pointer no-underline transition-[background-color,border-color,color,transform] duration-[150ms] ease-out hover:text-ink active:scale-[0.96] aria-pressed:[background:var(--sky-soft)] aria-pressed:border-accent aria-pressed:text-accent aria-pressed:shadow-none aria-[current]:not-aria-[current=false]:[background:var(--sky-soft)] aria-[current]:not-aria-[current=false]:border-accent aria-[current]:not-aria-[current=false]:text-accent aria-[current]:not-aria-[current=false]:shadow-none has-checked:[background:var(--sky-soft)] has-checked:border-accent has-checked:text-accent has-checked:shadow-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-12 py-2.5 px-5 text-base border-dashed border-ink-3/40 [background:none] shadow-none text-ink-3" type="button" aria-pressed="false" data-controller="ui-toggle" data-action="click-&gt;ui-toggle#toggle">Add filter</button>
     </div>
     <div class="flex min-h-12 items-center justify-between gap-4 bg-paper-2 px-4">
       <button type="button" class="flex min-h-11 items-center gap-2 font-mono text-xs text-ink-2 hover:text-ink" aria-expanded="false" aria-controls="example-2-code" data-action="example#toggle" data-example-target="toggle"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon size-4">
   <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"></path>
 </svg>
  View code</button>
-      <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2))" data-action="example#copy" data-example-target="copy" aria-label="Copy Example 3 code">Copy</button>
+      <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2))" data-action="example#copy" data-example-target="copy" aria-label="Copy Disabled and ghost code">Copy</button>
     </div>
-    <pre id="example-2-code" class="max-h-120 overflow-auto bg-paper-3 p-5 font-mono text-xs text-ink-2" data-example-target="code" hidden><code>&lt;button type=&quot;button&quot; class=&quot;&lt;%= pill_class(size: :sm) %&gt;&quot;&gt;Pill&lt;/button&gt;
-&lt;button type=&quot;button&quot; class=&quot;&lt;%= pill_class(size: :base) %&gt;&quot;&gt;Pill&lt;/button&gt;
-&lt;button type=&quot;button&quot; class=&quot;&lt;%= pill_class(size: :lg) %&gt;&quot;&gt;Pill&lt;/button&gt;
-&lt;button type=&quot;button&quot; class=&quot;&lt;%= pill_class(size: :nav) %&gt;&quot;&gt;Pill&lt;/button&gt;</code></pre>
-  </div>
-  <span class="sr-only" role="status" data-example-target="status"></span>
-</section>
-
-          <section id="example-3" class="flex min-w-0 scroll-mt-28 flex-col gap-4" data-controller="example">
-  <h2 class="text-lg font-semibold tracking-tight"><a href="#example-3">Disabled</a></h2>
-  <div class="overflow-hidden rounded-3xl bg-paper-2">
-    <div class="flex min-h-40 flex-wrap items-center justify-center gap-4 p-6 sm:p-10 ">
-      <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full border border-transparent bg-paper-2 font-body text-ink-2 whitespace-nowrap cursor-pointer no-underline transition-[background-color,border-color,color,transform] duration-[150ms] ease-out hover:text-ink active:scale-[0.96] aria-pressed:[background:var(--sky-soft)] aria-pressed:border-accent aria-pressed:text-accent aria-pressed:shadow-none aria-[current]:not-aria-[current=false]:[background:var(--sky-soft)] aria-[current]:not-aria-[current=false]:border-accent aria-[current]:not-aria-[current=false]:text-accent aria-[current]:not-aria-[current=false]:shadow-none has-checked:[background:var(--sky-soft)] has-checked:border-accent has-checked:text-accent has-checked:shadow-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-12 py-2.5 px-5 text-base" aria-pressed="false" disabled>Unavailable</button>
-    </div>
-    <div class="flex min-h-12 items-center justify-between gap-4 bg-paper-2 px-4">
-      <button type="button" class="flex min-h-11 items-center gap-2 font-mono text-xs text-ink-2 hover:text-ink" aria-expanded="false" aria-controls="example-3-code" data-action="example#toggle" data-example-target="toggle"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon size-4">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"></path>
-</svg>
- View code</button>
-      <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2))" data-action="example#copy" data-example-target="copy" aria-label="Copy Disabled code">Copy</button>
-    </div>
-    <pre id="example-3-code" class="max-h-120 overflow-auto bg-paper-3 p-5 font-mono text-xs text-ink-2" data-example-target="code" hidden><code>&lt;button type=&quot;button&quot; class=&quot;&lt;%= pill_class %&gt;&quot; aria-pressed=&quot;false&quot; disabled&gt;Unavailable&lt;/button&gt;</code></pre>
-  </div>
-  <span class="sr-only" role="status" data-example-target="status"></span>
-</section>
-
-          <section id="example-4" class="flex min-w-0 scroll-mt-28 flex-col gap-4" data-controller="example">
-  <h2 class="text-lg font-semibold tracking-tight"><a href="#example-4">Toggle buttons</a></h2>
-  <div class="overflow-hidden rounded-3xl bg-paper-2">
-    <div class="flex min-h-40 flex-wrap items-center justify-center gap-4 p-6 sm:p-10 ">
-      <div data-controller="demo">
-<div class="flex flex-wrap items-center gap-y-2 gap-x-2" role="group" aria-label="Categories">
-    <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full border border-transparent bg-paper-2 font-body text-ink-2 whitespace-nowrap cursor-pointer no-underline transition-[background-color,border-color,color,transform] duration-[150ms] ease-out hover:text-ink active:scale-[0.96] aria-pressed:[background:var(--sky-soft)] aria-pressed:border-accent aria-pressed:text-accent aria-pressed:shadow-none aria-[current]:not-aria-[current=false]:[background:var(--sky-soft)] aria-[current]:not-aria-[current=false]:border-accent aria-[current]:not-aria-[current=false]:text-accent aria-[current]:not-aria-[current=false]:shadow-none has-checked:[background:var(--sky-soft)] has-checked:border-accent has-checked:text-accent has-checked:shadow-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-12 py-2.5 px-5 text-base" aria-pressed="true" data-action="demo#press">Design</button>
-    <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full border border-transparent bg-paper-2 font-body text-ink-2 whitespace-nowrap cursor-pointer no-underline transition-[background-color,border-color,color,transform] duration-[150ms] ease-out hover:text-ink active:scale-[0.96] aria-pressed:[background:var(--sky-soft)] aria-pressed:border-accent aria-pressed:text-accent aria-pressed:shadow-none aria-[current]:not-aria-[current=false]:[background:var(--sky-soft)] aria-[current]:not-aria-[current=false]:border-accent aria-[current]:not-aria-[current=false]:text-accent aria-[current]:not-aria-[current=false]:shadow-none has-checked:[background:var(--sky-soft)] has-checked:border-accent has-checked:text-accent has-checked:shadow-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-12 py-2.5 px-5 text-base" aria-pressed="false" data-action="demo#press">Product</button>
-    <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full border border-transparent bg-paper-2 font-body text-ink-2 whitespace-nowrap cursor-pointer no-underline transition-[background-color,border-color,color,transform] duration-[150ms] ease-out hover:text-ink active:scale-[0.96] aria-pressed:[background:var(--sky-soft)] aria-pressed:border-accent aria-pressed:text-accent aria-pressed:shadow-none aria-[current]:not-aria-[current=false]:[background:var(--sky-soft)] aria-[current]:not-aria-[current=false]:border-accent aria-[current]:not-aria-[current=false]:text-accent aria-[current]:not-aria-[current=false]:shadow-none has-checked:[background:var(--sky-soft)] has-checked:border-accent has-checked:text-accent has-checked:shadow-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-12 py-2.5 px-5 text-base" aria-pressed="false" data-action="demo#press">Research</button>
-</div>
-</div>
-    </div>
-    <div class="flex min-h-12 items-center justify-between gap-4 bg-paper-2 px-4">
-      <button type="button" class="flex min-h-11 items-center gap-2 font-mono text-xs text-ink-2 hover:text-ink" aria-expanded="false" aria-controls="example-4-code" data-action="example#toggle" data-example-target="toggle"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon size-4">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"></path>
-</svg>
- View code</button>
-      <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2))" data-action="example#copy" data-example-target="copy" aria-label="Copy Toggle buttons code">Copy</button>
-    </div>
-    <pre id="example-4-code" class="max-h-120 overflow-auto bg-paper-3 p-5 font-mono text-xs text-ink-2" data-example-target="code" hidden><code>&lt;div data-controller=&quot;demo&quot;&gt;
-&lt;div class=&quot;&lt;%= pill_row_class %&gt;&quot; role=&quot;group&quot; aria-label=&quot;Categories&quot;&gt;
-  &lt;% { &quot;Design&quot; =&gt; true, &quot;Product&quot; =&gt; false, &quot;Research&quot; =&gt; false }.each do |label, pressed| %&gt;
-    &lt;button type=&quot;button&quot; class=&quot;&lt;%= pill_class %&gt;&quot; aria-pressed=&quot;&lt;%= pressed %&gt;&quot; data-action=&quot;demo#press&quot;&gt;&lt;%= label %&gt;&lt;/button&gt;
-  &lt;% end %&gt;
-&lt;/div&gt;
-&lt;/div&gt;</code></pre>
-  </div>
-  <span class="sr-only" role="status" data-example-target="status"></span>
-    <details class="rounded-2xl bg-paper-2">
-      <summary class="flex min-h-12 cursor-pointer items-center px-4 text-xs font-medium text-ink-2">Interaction controller</summary>
-      <div class="flex items-center justify-between gap-3 px-4 pb-3"><code class="font-mono text-xs text-ink-3">app/javascript/controllers/demo_controller.js</code><button class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2))" type="button" data-action="example#copyBehavior">Copy</button></div>
-      <pre class="max-h-96 overflow-auto rounded-b-2xl bg-paper-3 p-5 font-mono text-xs text-ink-2"><code>import { Controller } from &quot;@hotwired/stimulus&quot;
-
-export default class extends Controller {
-  static targets = [&quot;toast&quot;, &quot;toasts&quot;]
-
-  press({ currentTarget }) {
-    currentTarget.setAttribute(
-      &quot;aria-pressed&quot;,
-      String(currentTarget.getAttribute(&quot;aria-pressed&quot;) !== &quot;true&quot;),
-    )
-  }
-
-  select({ currentTarget }) {
-    for (const tab of currentTarget.closest(&quot;[role=tablist]&quot;).querySelectorAll(&quot;[role=tab]&quot;)) {
-      tab.setAttribute(&quot;aria-selected&quot;, String(tab === currentTarget))
-    }
-  }
-
-  choose({ currentTarget }) {
-    for (const button of currentTarget.closest(&quot;[role=group]&quot;).querySelectorAll(&quot;button&quot;)) {
-      button.setAttribute(&quot;aria-pressed&quot;, String(button === currentTarget))
-    }
-  }
-
-  toast() {
-    this.toastsTarget.append(this.toastTarget.content.cloneNode(true))
-  }
-}
-</code></pre>
-    </details>
-</section>
-
-          <section id="example-5" class="flex min-w-0 scroll-mt-28 flex-col gap-4" data-controller="example">
-  <h2 class="text-lg font-semibold tracking-tight"><a href="#example-5">Navigation</a></h2>
-  <div class="overflow-hidden rounded-3xl bg-paper-2">
-    <div class="flex min-h-40 flex-wrap items-center justify-center gap-4 p-6 sm:p-10 ">
-      <nav class="flex flex-wrap items-center gap-y-2 gap-x-2" aria-label="Periods">
-  <a class="inline-flex items-center justify-center gap-2 rounded-full border border-transparent bg-paper-2 font-body text-ink-2 whitespace-nowrap cursor-pointer no-underline transition-[background-color,border-color,color,transform] duration-[150ms] ease-out hover:text-ink active:scale-[0.96] aria-pressed:[background:var(--sky-soft)] aria-pressed:border-accent aria-pressed:text-accent aria-pressed:shadow-none aria-[current]:not-aria-[current=false]:[background:var(--sky-soft)] aria-[current]:not-aria-[current=false]:border-accent aria-[current]:not-aria-[current=false]:text-accent aria-[current]:not-aria-[current=false]:shadow-none has-checked:[background:var(--sky-soft)] has-checked:border-accent has-checked:text-accent has-checked:shadow-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm" href="#main" aria-current="page">Month</a>
-  <a class="inline-flex items-center justify-center gap-2 rounded-full border border-transparent bg-paper-2 font-body text-ink-2 whitespace-nowrap cursor-pointer no-underline transition-[background-color,border-color,color,transform] duration-[150ms] ease-out hover:text-ink active:scale-[0.96] aria-pressed:[background:var(--sky-soft)] aria-pressed:border-accent aria-pressed:text-accent aria-pressed:shadow-none aria-[current]:not-aria-[current=false]:[background:var(--sky-soft)] aria-[current]:not-aria-[current=false]:border-accent aria-[current]:not-aria-[current=false]:text-accent aria-[current]:not-aria-[current=false]:shadow-none has-checked:[background:var(--sky-soft)] has-checked:border-accent has-checked:text-accent has-checked:shadow-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm" href="#main" aria-current="false">Year</a>
-  <label class="inline-flex items-center justify-center gap-2 rounded-full border border-transparent bg-paper-2 font-body text-ink-2 whitespace-nowrap cursor-pointer no-underline transition-[background-color,border-color,color,transform] duration-[150ms] ease-out hover:text-ink active:scale-[0.96] aria-pressed:[background:var(--sky-soft)] aria-pressed:border-accent aria-pressed:text-accent aria-pressed:shadow-none aria-[current]:not-aria-[current=false]:[background:var(--sky-soft)] aria-[current]:not-aria-[current=false]:border-accent aria-[current]:not-aria-[current=false]:text-accent aria-[current]:not-aria-[current=false]:shadow-none has-checked:[background:var(--sky-soft)] has-checked:border-accent has-checked:text-accent has-checked:shadow-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm"><input type="checkbox" class="sr-only" checked>Checked</label>
-</nav>
-    </div>
-    <div class="flex min-h-12 items-center justify-between gap-4 bg-paper-2 px-4">
-      <button type="button" class="flex min-h-11 items-center gap-2 font-mono text-xs text-ink-2 hover:text-ink" aria-expanded="false" aria-controls="example-5-code" data-action="example#toggle" data-example-target="toggle"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon size-4">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"></path>
-</svg>
- View code</button>
-      <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2))" data-action="example#copy" data-example-target="copy" aria-label="Copy Navigation code">Copy</button>
-    </div>
-    <pre id="example-5-code" class="max-h-120 overflow-auto bg-paper-3 p-5 font-mono text-xs text-ink-2" data-example-target="code" hidden><code>&lt;nav class=&quot;&lt;%= pill_row_class %&gt;&quot; aria-label=&quot;Periods&quot;&gt;
-  &lt;a class=&quot;&lt;%= pill_class(size: :sm) %&gt;&quot; href=&quot;#main&quot; aria-current=&quot;page&quot;&gt;Month&lt;/a&gt;
-  &lt;a class=&quot;&lt;%= pill_class(size: :sm) %&gt;&quot; href=&quot;#main&quot; aria-current=&quot;false&quot;&gt;Year&lt;/a&gt;
-  &lt;label class=&quot;&lt;%= pill_class(size: :sm) %&gt;&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;sr-only&quot; checked&gt;Checked&lt;/label&gt;
-&lt;/nav&gt;</code></pre>
+    <pre id="example-2-code" class="max-h-120 overflow-auto bg-paper-3 p-5 font-mono text-xs text-ink-2" data-example-target="code" hidden><code>&lt;%= ui_pill &quot;Unavailable&quot;, disabled: true %&gt;
+&lt;%= ui_pill &quot;Add filter&quot;, ghost: true %&gt;</code></pre>
   </div>
   <span class="sr-only" role="status" data-example-target="status"></span>
 </section>
@@ -416,33 +308,43 @@ export default class extends Controller {
       </div>
       <section id="api" class="flex scroll-mt-28 flex-col gap-8">
   <h2 class="text-2xl font-semibold tracking-tight">API reference</h2>
+  <p class="text-sm text-ink-2">Helpers render semantic HTML and include their interaction wiring. Pass native attributes through <code>class:</code>, <code>data:</code>, <code>aria:</code> and the usual Rails options. Blocks use captured ERB content.</p>
     <div class="flex min-w-0 flex-col gap-4">
-      <h3 id="pill_class" class="scroll-mt-28 font-mono text-sm font-medium">pill_class</h3>
-      <pre class="overflow-x-auto rounded-2xl bg-paper-2 p-4 font-mono text-xs text-ink-2"><code>pill_class(active: false, ghost: false, size: :base, extra: nil)</code></pre>
+      <h3 id="ui_pill_row" class="scroll-mt-28 font-mono text-sm font-medium">ui_pill_row</h3>
+      <pre class="overflow-x-auto rounded-2xl bg-paper-2 p-4 font-mono text-xs text-ink-2"><code>ui_pill_row(**attributes, &amp;block)</code></pre>
       <div class="overflow-x-auto">
         <table class="w-full min-w-80 text-start text-sm">
-          <thead><tr class="text-xs text-ink-3"><th class="py-3 pe-4 text-start font-medium">Parameter</th><th class="py-3 pe-4 text-start font-medium">Default</th><th class="py-3 text-start font-medium">Values</th></tr></thead>
+          <thead><tr class="text-xs text-ink-3"><th class="py-3 pe-4 text-start font-medium">Input</th><th class="py-3 pe-4 text-start font-medium">Default</th><th class="py-3 text-start font-medium">Values</th></tr></thead>
           <tbody>
+              <tr class="border-t border-hairline"><td class="py-3 pe-4 align-top font-mono text-xs">attributes</td><td class="py-3 pe-4 align-top font-mono text-xs">{}</td><td class="py-3 align-top text-xs text-ink-2">Native HTML attributes; class:, data: and aria: merge with defaults</td></tr>
+              <tr class="border-t border-hairline"><td class="py-3 pe-4 align-top font-mono text-xs">block</td><td class="py-3 pe-4 align-top font-mono text-xs">Captured block</td><td class="py-3 align-top text-xs text-ink-2">Captured Rails ERB content</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="flex min-w-0 flex-col gap-4">
+      <h3 id="ui_pill" class="scroll-mt-28 font-mono text-sm font-medium">ui_pill</h3>
+      <pre class="overflow-x-auto rounded-2xl bg-paper-2 p-4 font-mono text-xs text-ink-2"><code>ui_pill(label = nil, active: false, ghost: false, size: :base, href: nil, **attributes, &amp;block)</code></pre>
+      <div class="overflow-x-auto">
+        <table class="w-full min-w-80 text-start text-sm">
+          <thead><tr class="text-xs text-ink-3"><th class="py-3 pe-4 text-start font-medium">Input</th><th class="py-3 pe-4 text-start font-medium">Default</th><th class="py-3 text-start font-medium">Values</th></tr></thead>
+          <tbody>
+              <tr class="border-t border-hairline"><td class="py-3 pe-4 align-top font-mono text-xs">label</td><td class="py-3 pe-4 align-top font-mono text-xs">nil</td><td class="py-3 align-top text-xs text-ink-2">Accessible name, visible where applicable</td></tr>
               <tr class="border-t border-hairline"><td class="py-3 pe-4 align-top font-mono text-xs">active</td><td class="py-3 pe-4 align-top font-mono text-xs">false</td><td class="py-3 align-top text-xs text-ink-2">true · false</td></tr>
               <tr class="border-t border-hairline"><td class="py-3 pe-4 align-top font-mono text-xs">ghost</td><td class="py-3 pe-4 align-top font-mono text-xs">false</td><td class="py-3 align-top text-xs text-ink-2">true · false</td></tr>
               <tr class="border-t border-hairline"><td class="py-3 pe-4 align-top font-mono text-xs">size</td><td class="py-3 pe-4 align-top font-mono text-xs">:base</td><td class="py-3 align-top text-xs text-ink-2">:sm · :base · :lg · :nav</td></tr>
-              <tr class="border-t border-hairline"><td class="py-3 pe-4 align-top font-mono text-xs">extra</td><td class="py-3 pe-4 align-top font-mono text-xs">nil</td><td class="py-3 align-top text-xs text-ink-2">Additional Tailwind classes</td></tr>
+              <tr class="border-t border-hairline"><td class="py-3 pe-4 align-top font-mono text-xs">href</td><td class="py-3 pe-4 align-top font-mono text-xs">nil</td><td class="py-3 align-top text-xs text-ink-2">—</td></tr>
+              <tr class="border-t border-hairline"><td class="py-3 pe-4 align-top font-mono text-xs">attributes</td><td class="py-3 pe-4 align-top font-mono text-xs">{}</td><td class="py-3 align-top text-xs text-ink-2">Native HTML attributes; class:, data: and aria: merge with defaults</td></tr>
+              <tr class="border-t border-hairline"><td class="py-3 pe-4 align-top font-mono text-xs">block</td><td class="py-3 pe-4 align-top font-mono text-xs">Captured block</td><td class="py-3 align-top text-xs text-ink-2">Captured Rails ERB content</td></tr>
           </tbody>
         </table>
       </div>
     </div>
-    <div class="flex min-w-0 flex-col gap-4">
-      <h3 id="pill_row_class" class="scroll-mt-28 font-mono text-sm font-medium">pill_row_class</h3>
-      <pre class="overflow-x-auto rounded-2xl bg-paper-2 p-4 font-mono text-xs text-ink-2"><code>pill_row_class(extra: nil)</code></pre>
-      <div class="overflow-x-auto">
-        <table class="w-full min-w-80 text-start text-sm">
-          <thead><tr class="text-xs text-ink-3"><th class="py-3 pe-4 text-start font-medium">Parameter</th><th class="py-3 pe-4 text-start font-medium">Default</th><th class="py-3 text-start font-medium">Values</th></tr></thead>
-          <tbody>
-              <tr class="border-t border-hairline"><td class="py-3 pe-4 align-top font-mono text-xs">extra</td><td class="py-3 pe-4 align-top font-mono text-xs">nil</td><td class="py-3 align-top text-xs text-ink-2">Additional Tailwind classes</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+  <div class="flex flex-col gap-3 rounded-2xl bg-paper-2 p-5 text-sm text-ink-2">
+    <h3 class="font-semibold text-ink">Styling and extension</h3>
+    <p>Use <code>class:</code> to merge utilities, native attributes for application behavior, and <a href="/tokens.html" class="underline underline-offset-2">theme tokens</a> for the shared palette. For custom markup, the <a href="https://github.com/lostcoords/ui#advanced-style-composition" class="underline underline-offset-2">advanced class helpers</a> expose the same styles, including glass surfaces and class merging.</p>
+    <p><a href="/api.json" class="underline underline-offset-2">API JSON</a> · <a href="/llms.txt" class="underline underline-offset-2">LLM reference</a></p>
+  </div>
 </section>
 
     </div>
@@ -450,12 +352,9 @@ export default class extends Controller {
   <aside class="sticky top-20 hidden h-[calc(100dvh-5rem)] w-40 shrink-0 overflow-y-auto py-12 text-xs xl:block">
     <p class="pb-4 font-medium">On this page</p>
     <nav class="flex flex-col items-start gap-3 text-ink-3" aria-label="On this page">
-        <a class="hover:text-ink" href="#example-0">Default</a>
-        <a class="hover:text-ink" href="#example-1">Example 2</a>
-        <a class="hover:text-ink" href="#example-2">Example 3</a>
-        <a class="hover:text-ink" href="#example-3">Disabled</a>
-        <a class="hover:text-ink" href="#example-4">Toggle buttons</a>
-        <a class="hover:text-ink" href="#example-5">Navigation</a>
+        <a class="hover:text-ink" href="#example-0">Filters</a>
+        <a class="hover:text-ink" href="#example-1">Navigation</a>
+        <a class="hover:text-ink" href="#example-2">Disabled and ghost</a>
       <a class="pt-2 hover:text-ink" href="#api">API reference</a>
     </nav>
   </aside>

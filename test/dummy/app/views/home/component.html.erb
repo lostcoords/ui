@@ -10,7 +10,7 @@
           <div class="flex gap-1">
             <% [ [ position - 1, "Previous", "arrow-left" ], [ position + 1, "Next", "arrow-right" ] ].each do |index, label, icon| %>
               <% if index >= 0 && index < @sections.size %>
-                <a class="<%= icon_button_class(size: :sm) %>" href="/components/<%= @sections[index].id %>.html" aria-label="<%= label %> component: <%= @sections[index].title %>"><%= heroicon icon, options: { "aria-hidden": true } %></a>
+                <%= ui_button_link_to "/components/#{@sections[index].id}.html", variant: :ghost, size: :sm, aria: { label: "#{label} component: #{@sections[index].title}" } do %><%= heroicon icon, options: { "aria-hidden": true } %><% end %>
               <% end %>
             <% end %>
           </div>

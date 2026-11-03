@@ -1,0 +1,923 @@
+# lostcoords-ui
+
+Rails rendering helpers with semantic HTML, native attributes and browser interactions.
+
+Install and styling: https://github.com/lostcoords/ui
+Theme tokens: https://ui.lostcoords.com/tokens.html
+API JSON: https://ui.lostcoords.com/api.json
+
+Use class: to merge Tailwind utilities, data: and aria: for native attributes. Block helpers capture Rails ERB.
+ui_button_to keeps Rails form, method and CSRF semantics. Each host application's lockfile pins its version.
+
+## ui_button
+
+```ruby
+ui_button(content = nil, variant: :primary, size: :base, **attributes, &block)
+```
+
+Default: https://ui.lostcoords.com/components/button.html
+
+```erb
+<%= ui_button "Create project" %>
+```
+
+Variants: https://ui.lostcoords.com/components/button.html
+
+```erb
+<%= ui_button "Primary" %>
+<%= ui_button "Secondary", variant: :secondary %>
+<%= ui_button "Ghost", variant: :ghost %>
+<%= ui_button "Delete", variant: :destructive %>
+```
+
+Sizes: https://ui.lostcoords.com/components/button.html
+
+```erb
+<%= ui_button "Small", size: :sm %>
+<%= ui_button "Default" %>
+<%= ui_button "Large", size: :lg %>
+```
+
+With an icon: https://ui.lostcoords.com/components/button.html
+
+```erb
+<%= ui_button do %>
+  <%= heroicon "plus", options: { "aria-hidden": true } %>
+  Create project
+<% end %>
+```
+
+Loading: https://ui.lostcoords.com/components/button.html
+
+```erb
+<%= ui_button disabled: true, aria: { busy: true } do %>
+  <%= ui_spinner size: :sm, label: "Saving" %>
+  Saving…
+<% end %>
+```
+
+Disabled: https://ui.lostcoords.com/components/button.html
+
+```erb
+<%= ui_button "Unavailable", disabled: true %>
+```
+
+Empty state: https://ui.lostcoords.com/components/empty_state.html
+
+```erb
+<%= ui_form_card padding: :empty, class: "w-full" do %>
+  <%= ui_empty_state do %>
+    <%= ui_medallion icon: "folder-plus" %>
+    <h3 class="font-semibold">No projects yet</h3>
+    <p class="text-sm text-ink-2">Create a project to get started.</p>
+    <%= ui_button "Create project" %>
+  <% end %>
+<% end %>
+```
+
+Form actions: https://ui.lostcoords.com/components/field.html
+
+```erb
+<%= ui_form_actions do %>
+  <%= ui_button "Cancel", variant: :ghost %>
+  <%= ui_button "Save changes", type: :submit %>
+<% end %>
+```
+
+Form values and reset: https://ui.lostcoords.com/components/segmented.html
+
+```erb
+<form class="flex flex-col items-center gap-4">
+  <%= ui_segmented label: "Billing", name: "billing", value: "monthly" do %>
+    <%= ui_segmented_tab "Monthly", value: "monthly", selected: true %>
+    <%= ui_segmented_tab "Annual", value: "annual" %>
+    <%= ui_segmented_tab "Custom", value: "custom", disabled: true %>
+  <% end %>
+  <%= ui_button "Reset", type: :reset, variant: :ghost, size: :sm %>
+</form>
+```
+
+Modal: https://ui.lostcoords.com/components/dialog.html
+
+```erb
+<%= ui_dialog id: "my-component-dialog", title: "Create project", trigger: "New project" do %>
+  <form method="dialog" class="flex flex-col gap-5">
+  <%= ui_field label: "Project name", id: "my-component-dialog-name" do |field| %>
+    <%= ui_input name: "project[name]", **field %>
+  <% end %>
+  <%= ui_form_actions do %>
+    <%= ui_button "Create project", type: :submit %>
+  <% end %>
+  </form>
+<% end %>
+```
+
+## ui_button_link_to
+
+```ruby
+ui_button_link_to(content = nil, url = nil, variant: :primary, size: :base, **attributes, &block)
+```
+
+As a link: https://ui.lostcoords.com/components/button.html
+
+```erb
+<%= ui_button_link_to "Browse components", "/components/button.html", variant: :secondary %>
+```
+
+## ui_button_to
+
+```ruby
+ui_button_to(content = nil, url = nil, variant: :primary, size: :base, **attributes, &block)
+```
+
+HTTP actions: https://ui.lostcoords.com/components/button.html
+
+```erb
+<%= ui_button_to "Archive project", "/projects/42", method: :delete, variant: :destructive, form: { data: { turbo_confirm: "Archive this project?" } } %>
+```
+
+## ui_icon_button
+
+```ruby
+ui_icon_button(label, icon:, size: :base, shape: :circle, **attributes)
+```
+
+Shapes and sizes: https://ui.lostcoords.com/components/icon_button.html
+
+```erb
+<%= ui_icon_button "Add project", icon: "plus" %>
+<%= ui_icon_button "Settings", icon: "cog-6-tooth", shape: :square %>
+<%= ui_icon_button "Search", icon: "magnifying-glass", size: :sm %>
+<%= ui_icon_button "Close", icon: "x-mark", size: :lg %>
+```
+
+## ui_badge
+
+```ruby
+ui_badge(content = nil, tone: :neutral, **attributes, &block)
+```
+
+Tones: https://ui.lostcoords.com/components/badge.html
+
+```erb
+<%= ui_badge "Draft" %>
+<%= ui_badge "Published", tone: :info %>
+```
+
+## ui_status_pill
+
+```ruby
+ui_status_pill(content = nil, tone: :accent, **attributes, &block)
+```
+
+Status: https://ui.lostcoords.com/components/badge.html
+
+```erb
+<%= ui_status_pill "On track" %>
+```
+
+## ui_eyebrow
+
+```ruby
+ui_eyebrow(content = nil, **attributes, &block)
+```
+
+Eyebrow: https://ui.lostcoords.com/components/badge.html
+
+```erb
+<%= ui_eyebrow "Workspace" %>
+```
+
+## ui_icon_badge
+
+```ruby
+ui_icon_badge(icon:, size: :base, **attributes)
+```
+
+Icon badge: https://ui.lostcoords.com/components/icon_badge.html
+
+```erb
+<%= ui_icon_badge icon: "folder" %>
+<%= ui_icon_badge icon: "document-text", size: :lg %>
+```
+
+## ui_medallion
+
+```ruby
+ui_medallion(icon:, size: :sm, tone: :accent, **attributes)
+```
+
+Tones and sizes: https://ui.lostcoords.com/components/medallion.html
+
+```erb
+<%= ui_medallion icon: "sparkles", tone: :accent %>
+<%= ui_medallion icon: "user-plus", tone: :neutral, size: :lg %>
+```
+
+Empty state: https://ui.lostcoords.com/components/empty_state.html
+
+```erb
+<%= ui_form_card padding: :empty, class: "w-full" do %>
+  <%= ui_empty_state do %>
+    <%= ui_medallion icon: "folder-plus" %>
+    <h3 class="font-semibold">No projects yet</h3>
+    <p class="text-sm text-ink-2">Create a project to get started.</p>
+    <%= ui_button "Create project" %>
+  <% end %>
+<% end %>
+```
+
+## ui_avatar
+
+```ruby
+ui_avatar(content = nil, src: nil, alt: nil, size: :base, ink: false, linked: false, **attributes, &block)
+```
+
+Initials and images: https://ui.lostcoords.com/components/avatar.html
+
+```erb
+<%= ui_avatar "AL", aria: { label: "Alex Lee" } %>
+<%= ui_avatar "SK", size: :lg, ink: true, aria: { label: "Sam Kim" } %>
+```
+
+A group of people: https://ui.lostcoords.com/components/avatar_stack.html
+
+```erb
+<%= ui_avatar_stack aria: { label: "Alex, Sam and Jamie" } do %>
+  <%= ui_avatar "AL" %>
+  <%= ui_avatar "SK" %>
+  <%= ui_avatar "JR" %>
+<% end %>
+```
+
+## ui_avatar_stack
+
+```ruby
+ui_avatar_stack(compact: false, **attributes, &block)
+```
+
+A group of people: https://ui.lostcoords.com/components/avatar_stack.html
+
+```erb
+<%= ui_avatar_stack aria: { label: "Alex, Sam and Jamie" } do %>
+  <%= ui_avatar "AL" %>
+  <%= ui_avatar "SK" %>
+  <%= ui_avatar "JR" %>
+<% end %>
+```
+
+## ui_card
+
+```ruby
+ui_card(href: nil, interactive: false, dense: false, **attributes, &block)
+```
+
+Default: https://ui.lostcoords.com/components/card.html
+
+```erb
+<%= ui_card class: "w-full" do %>
+  <h3 class="font-semibold">Project notes</h3>
+  <p class="text-sm text-ink-2">Keep related content together.</p>
+<% end %>
+```
+
+Dense: https://ui.lostcoords.com/components/card.html
+
+```erb
+<%= ui_card dense: true, class: "w-full" do %>
+  <p class="text-sm">A compact summary.</p>
+<% end %>
+```
+
+Linked card: https://ui.lostcoords.com/components/card.html
+
+```erb
+<%= ui_card href: "/components/card.html", class: "w-full" do %>
+  <h3 class="font-semibold">Design system</h3>
+  <p class="text-sm text-ink-2">Open the project.</p>
+<% end %>
+```
+
+## ui_card_surface
+
+```ruby
+ui_card_surface(**attributes, &block)
+```
+
+Surface: https://ui.lostcoords.com/components/card.html
+
+```erb
+<%= ui_card_surface class: "w-full p-5" do %>
+  <p class="text-sm">A surface with custom spacing.</p>
+<% end %>
+```
+
+## ui_form_card
+
+```ruby
+ui_form_card(padding: :default, **attributes, &block)
+```
+
+Form card: https://ui.lostcoords.com/components/card.html
+
+```erb
+<%= ui_form_card class: "w-full" do %>
+  <%= ui_field label: "Project name", id: "my-component-name" do |field| %>
+    <%= ui_input name: "project[name]", value: "Design system", **field %>
+  <% end %>
+<% end %>
+```
+
+Empty state: https://ui.lostcoords.com/components/empty_state.html
+
+```erb
+<%= ui_form_card padding: :empty, class: "w-full" do %>
+  <%= ui_empty_state do %>
+    <%= ui_medallion icon: "folder-plus" %>
+    <h3 class="font-semibold">No projects yet</h3>
+    <p class="text-sm text-ink-2">Create a project to get started.</p>
+    <%= ui_button "Create project" %>
+  <% end %>
+<% end %>
+```
+
+## ui_empty_state
+
+```ruby
+ui_empty_state(**attributes, &block)
+```
+
+Empty state: https://ui.lostcoords.com/components/empty_state.html
+
+```erb
+<%= ui_form_card padding: :empty, class: "w-full" do %>
+  <%= ui_empty_state do %>
+    <%= ui_medallion icon: "folder-plus" %>
+    <h3 class="font-semibold">No projects yet</h3>
+    <p class="text-sm text-ink-2">Create a project to get started.</p>
+    <%= ui_button "Create project" %>
+  <% end %>
+<% end %>
+```
+
+## ui_spinner
+
+```ruby
+ui_spinner(size: :base, label: "Loading…", **attributes)
+```
+
+Loading: https://ui.lostcoords.com/components/button.html
+
+```erb
+<%= ui_button disabled: true, aria: { busy: true } do %>
+  <%= ui_spinner size: :sm, label: "Saving" %>
+  Saving…
+<% end %>
+```
+
+Sizes and labels: https://ui.lostcoords.com/components/spinner.html
+
+```erb
+<%= ui_spinner size: :sm %>
+<%= ui_spinner label: "Loading projects" %>
+<%= ui_spinner size: :lg %>
+```
+
+## ui_skeleton
+
+```ruby
+ui_skeleton(**attributes)
+```
+
+Placeholder: https://ui.lostcoords.com/components/skeleton.html
+
+```erb
+<div class="flex w-full flex-col gap-3" aria-label="Loading content" aria-busy="true">
+  <%= ui_skeleton class: "h-5 w-48" %>
+  <%= ui_skeleton class: "h-4 w-full" %>
+  <%= ui_skeleton class: "h-4 w-3/4" %>
+</div>
+```
+
+## ui_form_alert
+
+```ruby
+ui_form_alert(message, tone: :error, **attributes)
+```
+
+Error: https://ui.lostcoords.com/components/form_alert.html
+
+```erb
+<%= ui_form_alert "That name is already taken." %>
+```
+
+Notice: https://ui.lostcoords.com/components/form_alert.html
+
+```erb
+<%= ui_form_alert "Changes saved.", tone: :notice %>
+```
+
+## ui_input
+
+```ruby
+ui_input(name: nil, value: nil, type: :text, size: :base, **attributes)
+```
+
+Form card: https://ui.lostcoords.com/components/card.html
+
+```erb
+<%= ui_form_card class: "w-full" do %>
+  <%= ui_field label: "Project name", id: "my-component-name" do |field| %>
+    <%= ui_input name: "project[name]", value: "Design system", **field %>
+  <% end %>
+<% end %>
+```
+
+Label and hint: https://ui.lostcoords.com/components/field.html
+
+```erb
+<%= ui_field label: "Project name", id: "my-component-name", hint: "A short, memorable name." do |field| %>
+  <%= ui_input name: "project[name]", **field %>
+<% end %>
+```
+
+Validation: https://ui.lostcoords.com/components/field.html
+
+```erb
+<%= ui_field label: "Email address", id: "my-component-email", error: "Enter a valid email address." do |field| %>
+  <%= ui_input name: "email", type: :email, value: "alex@", **field %>
+<% end %>
+```
+
+Sizes: https://ui.lostcoords.com/components/input.html
+
+```erb
+<%= ui_input name: "title", placeholder: "Small", size: :sm, aria: { label: "Small input" } %>
+<%= ui_input name: "title", placeholder: "Default", aria: { label: "Default input" } %>
+<%= ui_input name: "title", placeholder: "Large", size: :lg, aria: { label: "Large input" } %>
+```
+
+Disabled and read-only: https://ui.lostcoords.com/components/input.html
+
+```erb
+<%= ui_input value: "Read-only value", readonly: true, aria: { label: "Read-only input" } %>
+<%= ui_input placeholder: "Disabled", disabled: true, aria: { label: "Disabled input" } %>
+```
+
+Modal: https://ui.lostcoords.com/components/dialog.html
+
+```erb
+<%= ui_dialog id: "my-component-dialog", title: "Create project", trigger: "New project" do %>
+  <form method="dialog" class="flex flex-col gap-5">
+  <%= ui_field label: "Project name", id: "my-component-dialog-name" do |field| %>
+    <%= ui_input name: "project[name]", **field %>
+  <% end %>
+  <%= ui_form_actions do %>
+    <%= ui_button "Create project", type: :submit %>
+  <% end %>
+  </form>
+<% end %>
+```
+
+Fit to content: https://ui.lostcoords.com/components/sheet.html
+
+```erb
+<%= ui_sheet id: "my-component-sheet", title: "Workspace details", trigger: "Open sheet", detents: "fit" do %>
+  <p class="text-sm text-ink-2">Drag the handle down to dismiss.</p>
+  <%= ui_field label: "Workspace", id: "my-component-workspace" do |field| %>
+    <%= ui_input value: "Design studio", **field %>
+  <% end %>
+<% end %>
+```
+
+## ui_textarea
+
+```ruby
+ui_textarea(content = nil, name: nil, **attributes, &block)
+```
+
+Textarea: https://ui.lostcoords.com/components/textarea.html
+
+```erb
+<%= ui_textarea "A place for your notes.", name: "notes", rows: 4, aria: { label: "Notes" } %>
+```
+
+Multiple heights: https://ui.lostcoords.com/components/sheet.html
+
+```erb
+<%= ui_sheet id: "my-component-sheet", title: "Notes", detents: "medium large" do %>
+  <%= ui_textarea name: "notes", rows: 8, aria: { label: "Notes" }, placeholder: "Write something…" %>
+<% end %>
+```
+
+## ui_select
+
+```ruby
+ui_select(options = nil, name: nil, selected: nil, size: :base, **attributes, &block)
+```
+
+Native select: https://ui.lostcoords.com/components/select.html
+
+```erb
+<%= ui_select [["Design", "design"], ["Engineering", "engineering"]], name: "team", selected: "design", aria: { label: "Team" } %>
+```
+
+## ui_field
+
+```ruby
+ui_field(label:, id:, hint: nil, error: nil, **attributes, &block)
+```
+
+Form card: https://ui.lostcoords.com/components/card.html
+
+```erb
+<%= ui_form_card class: "w-full" do %>
+  <%= ui_field label: "Project name", id: "my-component-name" do |field| %>
+    <%= ui_input name: "project[name]", value: "Design system", **field %>
+  <% end %>
+<% end %>
+```
+
+Label and hint: https://ui.lostcoords.com/components/field.html
+
+```erb
+<%= ui_field label: "Project name", id: "my-component-name", hint: "A short, memorable name." do |field| %>
+  <%= ui_input name: "project[name]", **field %>
+<% end %>
+```
+
+Validation: https://ui.lostcoords.com/components/field.html
+
+```erb
+<%= ui_field label: "Email address", id: "my-component-email", error: "Enter a valid email address." do |field| %>
+  <%= ui_input name: "email", type: :email, value: "alex@", **field %>
+<% end %>
+```
+
+Rails forms: https://ui.lostcoords.com/components/field.html
+
+```erb
+<%= form_with scope: :project, url: "#", class: "w-full max-w-sm" do |form| %>
+  <%= ui_field label: "Project name", id: form.field_id(:name), hint: "Works with Rails form builders." do |field| %>
+    <%= form.text_field :name, **field, class: input_class %>
+  <% end %>
+<% end %>
+```
+
+Modal: https://ui.lostcoords.com/components/dialog.html
+
+```erb
+<%= ui_dialog id: "my-component-dialog", title: "Create project", trigger: "New project" do %>
+  <form method="dialog" class="flex flex-col gap-5">
+  <%= ui_field label: "Project name", id: "my-component-dialog-name" do |field| %>
+    <%= ui_input name: "project[name]", **field %>
+  <% end %>
+  <%= ui_form_actions do %>
+    <%= ui_button "Create project", type: :submit %>
+  <% end %>
+  </form>
+<% end %>
+```
+
+Fit to content: https://ui.lostcoords.com/components/sheet.html
+
+```erb
+<%= ui_sheet id: "my-component-sheet", title: "Workspace details", trigger: "Open sheet", detents: "fit" do %>
+  <p class="text-sm text-ink-2">Drag the handle down to dismiss.</p>
+  <%= ui_field label: "Workspace", id: "my-component-workspace" do |field| %>
+    <%= ui_input value: "Design studio", **field %>
+  <% end %>
+<% end %>
+```
+
+## ui_form_actions
+
+```ruby
+ui_form_actions(**attributes, &block)
+```
+
+Form actions: https://ui.lostcoords.com/components/field.html
+
+```erb
+<%= ui_form_actions do %>
+  <%= ui_button "Cancel", variant: :ghost %>
+  <%= ui_button "Save changes", type: :submit %>
+<% end %>
+```
+
+Modal: https://ui.lostcoords.com/components/dialog.html
+
+```erb
+<%= ui_dialog id: "my-component-dialog", title: "Create project", trigger: "New project" do %>
+  <form method="dialog" class="flex flex-col gap-5">
+  <%= ui_field label: "Project name", id: "my-component-dialog-name" do |field| %>
+    <%= ui_input name: "project[name]", **field %>
+  <% end %>
+  <%= ui_form_actions do %>
+    <%= ui_button "Create project", type: :submit %>
+  <% end %>
+  </form>
+<% end %>
+```
+
+## ui_segmented
+
+```ruby
+ui_segmented(label:, name: nil, value: nil, **attributes, &block)
+```
+
+Mutually exclusive choices: https://ui.lostcoords.com/components/segmented.html
+
+```erb
+<%= ui_segmented label: "View", name: "view", value: "month" do %>
+  <%= ui_segmented_tab "Week", value: "week" %>
+  <%= ui_segmented_tab "Month", value: "month", selected: true %>
+  <%= ui_segmented_tab "Year", value: "year" %>
+<% end %>
+```
+
+Form values and reset: https://ui.lostcoords.com/components/segmented.html
+
+```erb
+<form class="flex flex-col items-center gap-4">
+  <%= ui_segmented label: "Billing", name: "billing", value: "monthly" do %>
+    <%= ui_segmented_tab "Monthly", value: "monthly", selected: true %>
+    <%= ui_segmented_tab "Annual", value: "annual" %>
+    <%= ui_segmented_tab "Custom", value: "custom", disabled: true %>
+  <% end %>
+  <%= ui_button "Reset", type: :reset, variant: :ghost, size: :sm %>
+</form>
+```
+
+## ui_segmented_tab
+
+```ruby
+ui_segmented_tab(label = nil, value: nil, selected: false, **attributes, &block)
+```
+
+Mutually exclusive choices: https://ui.lostcoords.com/components/segmented.html
+
+```erb
+<%= ui_segmented label: "View", name: "view", value: "month" do %>
+  <%= ui_segmented_tab "Week", value: "week" %>
+  <%= ui_segmented_tab "Month", value: "month", selected: true %>
+  <%= ui_segmented_tab "Year", value: "year" %>
+<% end %>
+```
+
+Form values and reset: https://ui.lostcoords.com/components/segmented.html
+
+```erb
+<form class="flex flex-col items-center gap-4">
+  <%= ui_segmented label: "Billing", name: "billing", value: "monthly" do %>
+    <%= ui_segmented_tab "Monthly", value: "monthly", selected: true %>
+    <%= ui_segmented_tab "Annual", value: "annual" %>
+    <%= ui_segmented_tab "Custom", value: "custom", disabled: true %>
+  <% end %>
+  <%= ui_button "Reset", type: :reset, variant: :ghost, size: :sm %>
+</form>
+```
+
+## ui_pill
+
+```ruby
+ui_pill(label = nil, active: false, ghost: false, size: :base, href: nil, **attributes, &block)
+```
+
+Filters: https://ui.lostcoords.com/components/pill.html
+
+```erb
+<%= ui_pill_row role: "group", aria: { label: "Topics" } do %>
+  <%= ui_pill "Design", active: true %>
+  <%= ui_pill "Writing" %>
+  <%= ui_pill "Research" %>
+<% end %>
+```
+
+Navigation: https://ui.lostcoords.com/components/pill.html
+
+```erb
+<%= ui_pill_row do %>
+  <%= ui_pill "All projects", href: "/components/pill.html", active: true, size: :sm %>
+  <%= ui_pill "Archived", href: "/components/badge.html", size: :sm %>
+<% end %>
+```
+
+Disabled and ghost: https://ui.lostcoords.com/components/pill.html
+
+```erb
+<%= ui_pill "Unavailable", disabled: true %>
+<%= ui_pill "Add filter", ghost: true %>
+```
+
+## ui_pill_row
+
+```ruby
+ui_pill_row(**attributes, &block)
+```
+
+Filters: https://ui.lostcoords.com/components/pill.html
+
+```erb
+<%= ui_pill_row role: "group", aria: { label: "Topics" } do %>
+  <%= ui_pill "Design", active: true %>
+  <%= ui_pill "Writing" %>
+  <%= ui_pill "Research" %>
+<% end %>
+```
+
+Navigation: https://ui.lostcoords.com/components/pill.html
+
+```erb
+<%= ui_pill_row do %>
+  <%= ui_pill "All projects", href: "/components/pill.html", active: true, size: :sm %>
+  <%= ui_pill "Archived", href: "/components/badge.html", size: :sm %>
+<% end %>
+```
+
+## ui_dialog
+
+```ruby
+ui_dialog(id:, title:, trigger: "Open dialog", kind: :modal, **attributes, &block)
+```
+
+Modal: https://ui.lostcoords.com/components/dialog.html
+
+```erb
+<%= ui_dialog id: "my-component-dialog", title: "Create project", trigger: "New project" do %>
+  <form method="dialog" class="flex flex-col gap-5">
+  <%= ui_field label: "Project name", id: "my-component-dialog-name" do |field| %>
+    <%= ui_input name: "project[name]", **field %>
+  <% end %>
+  <%= ui_form_actions do %>
+    <%= ui_button "Create project", type: :submit %>
+  <% end %>
+  </form>
+<% end %>
+```
+
+## ui_sheet
+
+```ruby
+ui_sheet(id:, title:, trigger: "Open sheet", detents: "fit", **attributes, &block)
+```
+
+Fit to content: https://ui.lostcoords.com/components/sheet.html
+
+```erb
+<%= ui_sheet id: "my-component-sheet", title: "Workspace details", trigger: "Open sheet", detents: "fit" do %>
+  <p class="text-sm text-ink-2">Drag the handle down to dismiss.</p>
+  <%= ui_field label: "Workspace", id: "my-component-workspace" do |field| %>
+    <%= ui_input value: "Design studio", **field %>
+  <% end %>
+<% end %>
+```
+
+Multiple heights: https://ui.lostcoords.com/components/sheet.html
+
+```erb
+<%= ui_sheet id: "my-component-sheet", title: "Notes", detents: "medium large" do %>
+  <%= ui_textarea name: "notes", rows: 8, aria: { label: "Notes" }, placeholder: "Write something…" %>
+<% end %>
+```
+
+## ui_menu
+
+```ruby
+ui_menu(id:, label: "Actions", align: :end, **attributes, &block)
+```
+
+Actions: https://ui.lostcoords.com/components/menu.html
+
+```erb
+<%= ui_menu id: "my-component-menu", label: "Project actions" do %>
+  <%= ui_menu_option "Edit project", href: "/components/input.html" %>
+  <%= ui_menu_option "Duplicate project" %>
+  <%= ui_menu_option "Archive project", tone: :danger %>
+<% end %>
+```
+
+## ui_popover
+
+```ruby
+ui_popover(id:, label: "Open popover", title: nil, align: :end, **attributes, &block)
+```
+
+Anchored content: https://ui.lostcoords.com/components/popover.html
+
+```erb
+<%= ui_popover id: "my-component-popover", label: "Project details", title: "Design system" do %>
+  <p class="text-sm text-ink-2">Updated a moment ago by Alex.</p>
+<% end %>
+```
+
+## ui_menu_option
+
+```ruby
+ui_menu_option(label = nil, href: nil, tone: :default, **attributes, &block)
+```
+
+Actions: https://ui.lostcoords.com/components/menu.html
+
+```erb
+<%= ui_menu id: "my-component-menu", label: "Project actions" do %>
+  <%= ui_menu_option "Edit project", href: "/components/input.html" %>
+  <%= ui_menu_option "Duplicate project" %>
+  <%= ui_menu_option "Archive project", tone: :danger %>
+<% end %>
+```
+
+## ui_toast
+
+```ruby
+ui_toast(message = nil, tone: :notice, timeout: 4000, **attributes, &block)
+```
+
+Brief feedback: https://ui.lostcoords.com/components/toast.html
+
+```erb
+<%= ui_toast "Project saved.", timeout: 0 %>
+```
+
+## ui_disclosure
+
+```ruby
+ui_disclosure(title:, open: false, **attributes, &block)
+```
+
+Expandable content: https://ui.lostcoords.com/components/disclosure.html
+
+```erb
+<%= ui_disclosure title: "Can I use my own colors?" do %>
+  <p class="text-sm text-ink-2">Yes. Define the theme tokens in your application stylesheet.</p>
+<% end %>
+```
+
+## ui_emoji_picker
+
+```ruby
+ui_emoji_picker(form:, field:, label:, catalog_url:, value: nil, quick: [], recent: [], recent_scope: nil, auto_submit: false, **attributes)
+```
+
+Emoji picker: https://ui.lostcoords.com/components/emoji.html
+
+```erb
+<%= fields_for :project do |form| %>
+  <%= ui_emoji_picker form: form, field: :emoji, value: "✨", quick: %w[🥝 🍣 🍜 ☕], label: "Choose an emoji", catalog_url: "/emoji-catalog.html" %>
+<% end %>
+```
+
+## Advanced styles
+
+Class helpers style custom markup; the application owns its behavior.
+Glass surfaces use glass_class; tw merges utility classes. Read https://github.com/lostcoords/ui#advanced-style-composition.
+
+- `icon_badge_class(size: :base, extra: nil)`
+- `icon_medallion_class(size: :sm, tone: :accent, extra: nil)`
+- `avatar_class(size: :base, ink: false, linked: false, extra: nil)`
+- `avatar_stack_class(compact: false, extra: nil)`
+- `avatar_stack_row_class(extra: nil)`
+- `eyebrow_class(extra: nil)`
+- `badge_class(tone: :neutral, extra: nil)`
+- `status_pill_class(tone: :accent, extra: nil)`
+- `pill_class(active: false, ghost: false, size: :base, extra: nil)`
+- `pill_row_class(extra: nil)`
+- `button_class(variant: :default, size: :base, block: false, extra: nil)`
+- `icon_button_class(shape: :square, size: :base, extra: nil)`
+- `card_class(interactive: false, dense: false, extra: nil)`
+- `card_surface_class(extra: nil)`
+- `form_card_class(padding: :default, extra: nil)`
+- `dialog_class(kind = :modal, extra: nil)`
+- `dialog_surface_class(extra: nil)`
+- `emoji_picker_groups`
+- `emoji_picker_count`
+- `emoji_picker_version`
+- `emoji_picker_search_text(emoji)`
+- `emoji_picker_search_name(emoji)`
+- `emoji_picker_search_labels(emoji)`
+- `emoji_picker_toneable?(emoji)`
+- `spinner_class(size: :base, extra: nil)`
+- `skeleton_class(extra: nil)`
+- `empty_state_class(extra: nil)`
+- `segmented_class(extra: nil)`
+- `segmented_tab_class(active: false, extra: nil)`
+- `input_class(size: :base, extra: nil)`
+- `dropdown_trigger_class(size: :base, extra: nil)`
+- `select_class(size: :base, extra: nil)`
+- `textarea_class(extra: nil)`
+- `field_class(extra: nil)`
+- `field_label_class(extra: nil)`
+- `form_actions_class(extra: nil)`
+- `form_alert_class(extra: nil)`
+- `form_alert_icon(tone: :error)`
+- `glass_class(shape: :bar, thick: false, extra: nil)`
+- `popover_class(align: :end, extra: nil)`
+- `menu_popover_class(align: :end, extra: nil)`
+- `menu_option_class(tone: :default, extra: nil)`
+- `sheet_data(data = {}, detents: "fit")`
+- `sheet_row_class(extra: nil)`
+- `sheet_row_label_class(extra: nil)`
+- `sheet_chip_class(active: false, member: false, extra: nil)`
+- `sheet_datetime_input_class(extra: nil)`
+- `sheet_text_input_class(extra: nil)`
+- `tw(*classes)`

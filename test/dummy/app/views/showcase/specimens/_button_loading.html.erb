@@ -1,1 +1,4 @@
-<button type="button" class="<%= classes[:button] %>" disabled><span class="<%= classes[:spinner] %>" aria-hidden="true"></span>Saving</button>
+<%= ui_button disabled: true, aria: { busy: true } do %>
+  <%= ui_spinner size: :sm, label: "Saving" %>
+  Saving…
+<% end %>
