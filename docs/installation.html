@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="darkreader-lock">
+    <title>LOST COORDS UI</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="A Rails component library. Examples, ERB and API reference.">
+    <link rel="icon" href="data:,">
+    <script>
+      const palette = localStorage.getItem("lostcoords-ui:palette")
+      if (["ivory-blue","coral-green","rose","earth","olive"].includes(palette)) document.documentElement.dataset.palette = palette
+      const theme = localStorage.getItem("lostcoords-ui:theme")
+      if (theme === "dark" || (!theme && matchMedia("(prefers-color-scheme: dark)").matches)) document.documentElement.dataset.theme = "dark"
+    </script>
+    <link rel="stylesheet" href="./assets/tailwind-dcf3171e.css" />
+    <script type="importmap" data-turbo-track="reload">{
+  "imports": {
+    "application": "./assets/application-20c5ac24.js",
+    "@hotwired/stimulus": "./assets/stimulus.min-7ea3d58b.js",
+    "@hotwired/stimulus-loading": "./assets/stimulus-loading-25917588.js",
+    "controllers/confirm_dialog_controller": "./assets/lostcoords/ui/controllers/confirm_dialog_controller-81f2b179.js",
+    "controllers/disclosure_controller": "./assets/lostcoords/ui/controllers/disclosure_controller-312ea742.js",
+    "controllers/emoji_picker_controller": "./assets/lostcoords/ui/controllers/emoji_picker_controller-d5a30f38.js",
+    "controllers/modal_controller": "./assets/lostcoords/ui/controllers/modal_controller-4e6e674a.js",
+    "controllers/row_menu_controller": "./assets/lostcoords/ui/controllers/row_menu_controller-66f3d5ae.js",
+    "controllers/sheet_controller": "./assets/lostcoords/ui/controllers/sheet_controller-435758d0.js",
+    "controllers/toast_controller": "./assets/lostcoords/ui/controllers/toast_controller-d5292929.js",
+    "controllers/ui_popover_controller": "./assets/lostcoords/ui/controllers/ui_popover_controller-02e7a7b9.js",
+    "controllers/ui_selection_controller": "./assets/lostcoords/ui/controllers/ui_selection_controller-70eb14cd.js",
+    "controllers/ui_toggle_controller": "./assets/lostcoords/ui/controllers/ui_toggle_controller-c1f00ec9.js",
+    "helpers/catalog_picker": "./assets/lostcoords/ui/helpers/catalog_picker-f7c87f66.js",
+    "helpers/context_dialog": "./assets/lostcoords/ui/helpers/context_dialog-8d2876da.js",
+    "helpers/dialog": "./assets/lostcoords/ui/helpers/dialog-c1f65b6b.js",
+    "helpers/dismiss_stack": "./assets/lostcoords/ui/helpers/dismiss_stack-826219cd.js",
+    "helpers/floating_panel": "./assets/lostcoords/ui/helpers/floating_panel-af05837d.js",
+    "helpers/menu_keys": "./assets/lostcoords/ui/helpers/menu_keys-3f68efee.js",
+    "helpers/sheet_motion": "./assets/lostcoords/ui/helpers/sheet_motion-8376d4b2.js",
+    "helpers/top_layer": "./assets/lostcoords/ui/helpers/top_layer-ed2ebe60.js",
+    "helpers/viewport": "./assets/lostcoords/ui/helpers/viewport-d4d43aa5.js",
+    "controllers/application": "./assets/controllers/application-2a5be8ca.js",
+    "controllers/block_preview_controller": "./assets/controllers/block_preview_controller-53c37654.js",
+    "controllers/block_stage_controller": "./assets/controllers/block_stage_controller-828c99a5.js",
+    "controllers/blocks_header_controller": "./assets/controllers/blocks_header_controller-e160e4c1.js",
+    "controllers/blocks_mobile_navigation_controller": "./assets/controllers/blocks_mobile_navigation_controller-f3c310d5.js",
+    "controllers/blocks_search_controller": "./assets/controllers/blocks_search_controller-f1fe01ff.js",
+    "controllers/example_controller": "./assets/controllers/example_controller-ad7ef7d5.js",
+    "controllers": "./assets/controllers/index-e1e47e23.js",
+    "controllers/showcase_controller": "./assets/controllers/showcase_controller-b500bb11.js"
+  }
+}</script>
+<link rel="modulepreload" href="./assets/application-20c5ac24.js">
+<link rel="modulepreload" href="./assets/stimulus.min-7ea3d58b.js">
+<link rel="modulepreload" href="./assets/stimulus-loading-25917588.js">
+<link rel="modulepreload" href="./assets/controllers/application-2a5be8ca.js">
+<link rel="modulepreload" href="./assets/controllers/block_preview_controller-53c37654.js">
+<link rel="modulepreload" href="./assets/controllers/block_stage_controller-828c99a5.js">
+<link rel="modulepreload" href="./assets/controllers/blocks_header_controller-e160e4c1.js">
+<link rel="modulepreload" href="./assets/controllers/blocks_mobile_navigation_controller-f3c310d5.js">
+<link rel="modulepreload" href="./assets/controllers/blocks_search_controller-f1fe01ff.js">
+<link rel="modulepreload" href="./assets/controllers/example_controller-ad7ef7d5.js">
+<link rel="modulepreload" href="./assets/controllers/index-e1e47e23.js">
+<link rel="modulepreload" href="./assets/controllers/showcase_controller-b500bb11.js">
+<script type="module">import "application"</script>
+  </head>
+  <body class="antialiased" data-controller="showcase" data-action="submit->showcase#preventExampleSubmit">
+    <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:start-4 focus:z-toast focus:rounded-xl focus:bg-paper focus:p-3">Skip to content</a>
+    <header class="sticky top-0 z-nav bg-paper/90 backdrop-blur-xl">
+      <div class="mx-auto flex h-20 max-w-360 items-center gap-6 px-5 sm:px-8 lg:px-10">
+        <a href="/" class="flex shrink-0 items-center gap-3 font-semibold tracking-tight" aria-label="LOST COORDS UI home">
+          <svg class="size-7" viewBox="0 0 28 28" fill="none" aria-hidden="true"><path d="M7 3v18h18M3 7h18v18M14 9v10M9 14h10" stroke="currentColor" stroke-width="2"/></svg>
+          <span class="text-sm">lostcoords<span class="text-ink-3"> / </span>ui</span>
+        </a>
+        <nav class="hidden items-center gap-6 text-sm sm:flex" aria-label="Main">
+          <a class="text-ink-2 hover:text-ink" href="/installation.html">Docs</a>
+          <a class="text-ink-2 hover:text-ink" href="/blocks.html" >Blocks</a>
+          <a class="text-ink-2 hover:text-ink" href="/theming.html">Theming</a>
+        </nav>
+        <div class="ms-auto flex items-center gap-2">
+          <div class="relative inline-flex" data-controller="ui-popover">
+  <button id="palette-picker-trigger" type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-12 py-2.5 px-5 has-[&gt;[data-icon=inline-start]]:ps-4 has-[&gt;[data-icon=inline-end]]:pe-4 text-base border border-transparent bg-paper-2 text-ink hover:bg-paper-3 active:bg-paper-3" aria-haspopup="dialog" aria-expanded="false" aria-controls="palette-picker" data-ui-popover-target="trigger" data-action="ui-popover#toggle">Palette</button>
+  <div class="glass rounded-3xl [--glass-shadow:var(--glass-rim),var(--shadow-lg)] max-md:[--glass-fill:var(--paper)] dark:max-md:[--glass-fill:var(--paper-3)] row-menu__popover squircle popover-shell hidden absolute top-[calc(100%+--spacing(1))] end-0 overscroll-contain [&amp;_form]:m-0 data-open:flex flex-col gap-4 p-5 z-nav-popover min-w-64 max-w-[calc(100vw-2rem)] transition-none w-80 max-h-[calc(100dvh-7rem)] overflow-y-auto" id="palette-picker" role="dialog" aria-labelledby="palette-picker-title" data-ui-popover-target="popover" tabindex="-1">
+    <h2 id="palette-picker-title" class="font-semibold">Color palette</h2>
+    
+    <p class="text-xs text-ink-3">Preview across every component.</p>
+    <fieldset class="grid grid-cols-2 gap-2">
+      <legend class="sr-only">Choose a palette</legend>
+        <label class="flex cursor-pointer flex-col gap-3 rounded-2xl border border-transparent bg-paper-2 p-3 has-checked:border-accent has-checked:bg-sky-soft">
+          <input type="radio" name="palette" value="original" class="sr-only" data-showcase-target="palette" data-palette-name="Default" data-action="change->showcase#selectPalette" checked>
+          <span class="flex h-7 overflow-hidden rounded-lg" aria-hidden="true">
+              <span class="flex-1" style="background-color: var(--palette-original-1)"></span><span class="flex-1" style="background-color: var(--palette-original-2)"></span><span class="flex-1" style="background-color: var(--palette-original-3)"></span>
+          </span>
+          <span class="flex flex-col gap-1"><span class="text-xs font-semibold">Default</span><span class="text-xs text-ink-3">Library default</span></span>
+        </label>
+        <label class="flex cursor-pointer flex-col gap-3 rounded-2xl border border-transparent bg-paper-2 p-3 has-checked:border-accent has-checked:bg-sky-soft">
+          <input type="radio" name="palette" value="ivory-blue" class="sr-only" data-showcase-target="palette" data-palette-name="Ivory &amp; blue" data-action="change->showcase#selectPalette" >
+          <span class="flex h-7 overflow-hidden rounded-lg" aria-hidden="true">
+              <span class="flex-1" title="Ivory Buff" style="background-color: var(--palette-ivory-blue-1)"></span><span class="flex-1" title="Yellow Ocher" style="background-color: var(--palette-ivory-blue-2)"></span><span class="flex-1" title="Deep Lyons Blue" style="background-color: var(--palette-ivory-blue-3)"></span>
+          </span>
+          <span class="flex flex-col gap-1"><span class="text-xs font-semibold">Ivory &amp; blue</span><span class="text-xs text-ink-3">Wada № 126</span></span>
+        </label>
+        <label class="flex cursor-pointer flex-col gap-3 rounded-2xl border border-transparent bg-paper-2 p-3 has-checked:border-accent has-checked:bg-sky-soft">
+          <input type="radio" name="palette" value="coral-green" class="sr-only" data-showcase-target="palette" data-palette-name="Coral &amp; green" data-action="change->showcase#selectPalette" >
+          <span class="flex h-7 overflow-hidden rounded-lg" aria-hidden="true">
+              <span class="flex-1" title="Grenadine Pink" style="background-color: var(--palette-coral-green-1)"></span><span class="flex-1" title="Naples Yellow" style="background-color: var(--palette-coral-green-2)"></span><span class="flex-1" title="Deep Slate Green" style="background-color: var(--palette-coral-green-3)"></span>
+          </span>
+          <span class="flex flex-col gap-1"><span class="text-xs font-semibold">Coral &amp; green</span><span class="text-xs text-ink-3">Wada № 166</span></span>
+        </label>
+        <label class="flex cursor-pointer flex-col gap-3 rounded-2xl border border-transparent bg-paper-2 p-3 has-checked:border-accent has-checked:bg-sky-soft">
+          <input type="radio" name="palette" value="rose" class="sr-only" data-showcase-target="palette" data-palette-name="Rose &amp; garnet" data-action="change->showcase#selectPalette" >
+          <span class="flex h-7 overflow-hidden rounded-lg" aria-hidden="true">
+              <span class="flex-1" title="Hermosa Pink" style="background-color: var(--palette-rose-1)"></span><span class="flex-1" title="Pansy Purple" style="background-color: var(--palette-rose-2)"></span><span class="flex-1" title="Sudan Brown" style="background-color: var(--palette-rose-3)"></span><span class="flex-1" title="Neutral Gray" style="background-color: var(--palette-rose-4)"></span>
+          </span>
+          <span class="flex flex-col gap-1"><span class="text-xs font-semibold">Rose &amp; garnet</span><span class="text-xs text-ink-3">Wada № 273</span></span>
+        </label>
+        <label class="flex cursor-pointer flex-col gap-3 rounded-2xl border border-transparent bg-paper-2 p-3 has-checked:border-accent has-checked:bg-sky-soft">
+          <input type="radio" name="palette" value="earth" class="sr-only" data-showcase-target="palette" data-palette-name="Earth &amp; ink" data-action="change->showcase#selectPalette" >
+          <span class="flex h-7 overflow-hidden rounded-lg" aria-hidden="true">
+              <span class="flex-1" title="Burnt Sienna" style="background-color: var(--palette-earth-1)"></span><span class="flex-1" title="Ivory Buff" style="background-color: var(--palette-earth-2)"></span><span class="flex-1" title="Deep Grayish Olive" style="background-color: var(--palette-earth-3)"></span><span class="flex-1" title="Vandar Poel&#39;s Blue" style="background-color: var(--palette-earth-4)"></span>
+          </span>
+          <span class="flex flex-col gap-1"><span class="text-xs font-semibold">Earth &amp; ink</span><span class="text-xs text-ink-3">Wada № 343</span></span>
+        </label>
+        <label class="flex cursor-pointer flex-col gap-3 rounded-2xl border border-transparent bg-paper-2 p-3 has-checked:border-accent has-checked:bg-sky-soft">
+          <input type="radio" name="palette" value="olive" class="sr-only" data-showcase-target="palette" data-palette-name="Olive &amp; violet" data-action="change->showcase#selectPalette" >
+          <span class="flex h-7 overflow-hidden rounded-lg" aria-hidden="true">
+              <span class="flex-1" title="Olive Buff" style="background-color: var(--palette-olive-1)"></span><span class="flex-1" title="Cossack Green" style="background-color: var(--palette-olive-2)"></span><span class="flex-1" title="Deep Slate Olive" style="background-color: var(--palette-olive-3)"></span><span class="flex-1" title="Cotinga Purple" style="background-color: var(--palette-olive-4)"></span>
+          </span>
+          <span class="flex flex-col gap-1"><span class="text-xs font-semibold">Olive &amp; violet</span><span class="text-xs text-ink-3">Wada № 348</span></span>
+        </label>
+    </fieldset>
+    <p class="text-xs text-ink-3">Based on Wada Sanzo’s <span lang="ja">配色事典</span>. UI tints adapted for contrast. <a class="underline underline-offset-2 hover:text-ink" href="https://github.com/mattdesl/dictionary-of-colour-combinations">Color data</a> · <a class="underline underline-offset-2 hover:text-ink" href="/wada-license.txt">License</a></p>
+    <span role="status" class="sr-only" data-showcase-target="paletteStatus"></span>
+
+</div></div>
+          <a class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 has-[&gt;[data-icon=inline-start]]:ps-3 has-[&gt;[data-icon=inline-end]]:pe-3 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2)) max-sm:hidden" aria-label="Source on GitHub" href="https://github.com/lostcoords/ui"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"></path>
+</svg>
+</a>
+          <button type="button" class="inline-grid place-items-center shrink-0 border-0 bg-transparent text-ink-3 cursor-pointer no-underline transition-[background-color,color,transform] duration-[140ms] ease-out hover:bg-paper-2 hover:text-ink active:scale-[0.94] disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg]:shrink-0 rounded-full size-11 [&amp;_svg]:size-4" aria-label="Switch color theme" aria-pressed="false" data-action="showcase#toggleTheme" data-showcase-target="theme"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"></path>
+</svg>
+</button>
+        </div>
+      </div>
+    </header>
+    <div class="mx-auto flex max-w-360 gap-10 px-5 sm:px-8 lg:px-10">
+  <aside class="sticky top-20 hidden h-[calc(100dvh-5rem)] w-52 shrink-0 overflow-y-auto py-8 pe-4 lg:block [scrollbar-width:thin]">
+  <nav class="flex flex-col gap-6" aria-label="Documentation">
+  <div class="flex flex-col gap-1">
+    <p class="px-3 text-xs font-medium text-ink-3">Library</p>
+    <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/">Overview</a>
+    <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/installation.html" aria-current=page>Installation</a>
+    <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/theming.html" >Theming</a>
+    <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/blocks.html" >Blocks</a>
+    <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/foundations.html" >Foundations</a>
+  </div>
+  <div class="flex flex-col gap-1">
+    <p class="px-3 pb-1 text-xs font-medium text-ink-3">Components</p>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/button.html" >Button</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/icon_button.html" >Icon button</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/badge.html" >Badge</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/pill.html" >Pill</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/avatar.html" >Avatar</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/avatar_stack.html" >Avatar stack</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/icon_badge.html" >Icon badge</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/medallion.html" >Medallion</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/card.html" >Card</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/empty_state.html" >Empty state</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/field.html" >Field</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/input.html" >Input</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/select.html" >Select</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/textarea.html" >Textarea</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/form_alert.html" >Form alert</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/segmented.html" >Segmented control</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/spinner.html" >Spinner</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/skeleton.html" >Skeleton</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/menu.html" >Menu</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/popover.html" >Popover</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/dialog.html" >Dialog</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/sheet.html" >Sheet</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/toast.html" >Toast</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/disclosure.html" >Disclosure</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/emoji.html" >Emoji picker</a>
+  </div>
+</nav>
+
+</aside>
+
+  <main id="main" class="min-w-0 max-w-4xl flex-1 py-5 lg:py-10">
+    <details class="group/nav relative z-raised rounded-2xl bg-paper-2 lg:hidden">
+  <summary class="flex min-h-12 cursor-pointer list-none items-center justify-between gap-4 px-4 text-sm font-medium [&::-webkit-details-marker]:hidden">Components<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon size-4 transition-transform group-open/nav:rotate-180">
+  <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"></path>
+</svg>
+</summary>
+  <div class="max-h-[60dvh] overflow-y-auto p-3 pt-0"><nav class="flex flex-col gap-6" aria-label="Documentation">
+  <div class="flex flex-col gap-1">
+    <p class="px-3 text-xs font-medium text-ink-3">Library</p>
+    <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/">Overview</a>
+    <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/installation.html" aria-current=page>Installation</a>
+    <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/theming.html" >Theming</a>
+    <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/blocks.html" >Blocks</a>
+    <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/foundations.html" >Foundations</a>
+  </div>
+  <div class="flex flex-col gap-1">
+    <p class="px-3 pb-1 text-xs font-medium text-ink-3">Components</p>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/button.html" >Button</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/icon_button.html" >Icon button</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/badge.html" >Badge</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/pill.html" >Pill</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/avatar.html" >Avatar</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/avatar_stack.html" >Avatar stack</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/icon_badge.html" >Icon badge</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/medallion.html" >Medallion</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/card.html" >Card</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/empty_state.html" >Empty state</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/field.html" >Field</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/input.html" >Input</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/select.html" >Select</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/textarea.html" >Textarea</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/form_alert.html" >Form alert</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/segmented.html" >Segmented control</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/spinner.html" >Spinner</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/skeleton.html" >Skeleton</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/menu.html" >Menu</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/popover.html" >Popover</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/dialog.html" >Dialog</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/sheet.html" >Sheet</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/toast.html" >Toast</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/disclosure.html" >Disclosure</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/emoji.html" >Emoji picker</a>
+  </div>
+</nav>
+</div>
+</details>
+
+    <div class="flex flex-col gap-12 pt-6 lg:pt-0">
+      <header class="flex flex-col gap-4">
+        <h1 class="text-balance text-4xl font-semibold tracking-tight sm:text-5xl">Installation</h1>
+        <p class="text-pretty text-ink-2">Set up the gem once. Then call any component directly from ERB.</p>
+      </header>
+      <section id="requirements" class="flex scroll-mt-28 flex-col gap-4">
+        <h2 class="text-xl font-semibold">Before you start</h2>
+        <p class="text-pretty text-sm text-ink-2">Use Rails 8 or later with Propshaft, importmap, Stimulus and <code>tailwindcss-rails</code> 4.4 or later. Tailwind CSS v4 is required: it compiles the component styles and the utilities in your views. A Rails app created with Tailwind includes this setup.</p>
+      </section>
+      <section id="gem" class="flex scroll-mt-28 flex-col gap-4">
+        <h2 class="text-xl font-semibold">1. Add the gem</h2>
+        <p class="text-sm text-ink-2">Add this to your <code>Gemfile</code>, then run <code>bundle install</code>.</p>
+        <div class="group/source overflow-hidden rounded-2xl bg-paper-2" data-controller="example">
+  <div class="flex min-h-12 items-center justify-between gap-4 px-5">
+    <span class="font-mono text-xs uppercase text-ink-3">ruby</span>
+    <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 has-[&gt;[data-icon=inline-start]]:ps-3 has-[&gt;[data-icon=inline-end]]:pe-3 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2)) min-w-20" data-action="example#copy" data-example-target="copy" aria-label="Copy Gemfile entry">Copy</button>
+  </div>
+  <div class="relative">
+    <pre id="install-gem" class="overflow-x-auto px-5 pb-5 font-mono text-[0.8125rem] text-ink-2 [tab-size:2] " tabindex="0" role="region" aria-label="Gemfile entry" data-example-target="code"><code><span class="text-(--syntax-call)" data-syntax="call">gem</span> <span class="text-(--syntax-string)" data-syntax="string">&quot;</span><span class="text-(--syntax-string)" data-syntax="string">lostcoords-ui</span><span class="text-(--syntax-string)" data-syntax="string">&quot;</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">github:</span> <span class="text-(--syntax-string)" data-syntax="string">&quot;</span><span class="text-(--syntax-string)" data-syntax="string">lostcoords/ui</span><span class="text-(--syntax-string)" data-syntax="string">&quot;</span></code></pre>
+    
+  </div>
+  <span class="sr-only" role="status" data-example-target="status"></span>
+</div>
+
+        <p class="text-pretty text-sm text-ink-2">The engine makes all <code>ui_*</code> helpers available to views. There are no per-component Ruby or JavaScript imports. Commit <code>Gemfile.lock</code> to pin the revision your app uses.</p>
+      </section>
+      <section id="styles" class="flex scroll-mt-28 flex-col gap-4">
+        <h2 class="text-xl font-semibold">2. Add the stylesheet</h2>
+        <p class="text-pretty text-sm text-ink-2">For a new app, save the <a href="/starter.css" download="application.css" class="underline underline-offset-2">starter stylesheet</a> as <code>app/assets/tailwind/application.css</code>. The engine import includes the default light and dark theme.</p>
+        <div class="group/source overflow-hidden rounded-2xl bg-paper-2" data-controller="example">
+  <div class="flex min-h-12 items-center justify-between gap-4 px-5">
+    <span class="font-mono text-xs uppercase text-ink-3">css</span>
+    <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 has-[&gt;[data-icon=inline-start]]:ps-3 has-[&gt;[data-icon=inline-end]]:pe-3 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2)) min-w-20" data-action="example#copy" data-example-target="copy" aria-label="Copy Starter stylesheet">Copy</button>
+  </div>
+  <div class="relative">
+    <pre id="install-starter" class="overflow-x-auto px-5 pb-5 font-mono text-[0.8125rem] text-ink-2 [tab-size:2] " tabindex="0" role="region" aria-label="Starter stylesheet" data-example-target="code"><code><span class="text-(--syntax-keyword)" data-syntax="keyword">@layer</span> theme, base, layout, components, modules, utilities;
+
+<span class="text-(--syntax-keyword)" data-syntax="keyword">@import</span> <span class="text-(--syntax-string)" data-syntax="string">&quot;tailwindcss/theme.css&quot;</span> layer(theme);
+<span class="text-(--syntax-keyword)" data-syntax="keyword">@import</span> <span class="text-(--syntax-string)" data-syntax="string">&quot;tailwindcss/preflight.css&quot;</span> layer(base);
+<span class="text-(--syntax-keyword)" data-syntax="keyword">@import</span> <span class="text-(--syntax-string)" data-syntax="string">&quot;tailwindcss/utilities.css&quot;</span> layer(utilities);
+
+<span class="text-(--syntax-keyword)" data-syntax="keyword">@plugin</span> <span class="text-(--syntax-string)" data-syntax="string">&quot;@tailwindcss/typography&quot;</span>;
+
+<span class="text-(--syntax-keyword)" data-syntax="keyword">@import</span> <span class="text-(--syntax-string)" data-syntax="string">&quot;../builds/tailwind/lostcoords_ui.css&quot;</span>;
+</code></pre>
+    
+  </div>
+  <span class="sr-only" role="status" data-example-target="status"></span>
+</div>
+
+        <p class="text-pretty text-sm text-ink-2">For an existing app, add the starter's layer order and typography plugin if needed. Keep your Tailwind imports and add the engine import:</p>
+        <div class="group/source overflow-hidden rounded-2xl bg-paper-2" data-controller="example">
+  <div class="flex min-h-12 items-center justify-between gap-4 px-5">
+    <span class="font-mono text-xs uppercase text-ink-3">css</span>
+    <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 has-[&gt;[data-icon=inline-start]]:ps-3 has-[&gt;[data-icon=inline-end]]:pe-3 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2)) min-w-20" data-action="example#copy" data-example-target="copy" aria-label="Copy Engine stylesheet import">Copy</button>
+  </div>
+  <div class="relative">
+    <pre id="install-styles" class="overflow-x-auto px-5 pb-5 font-mono text-[0.8125rem] text-ink-2 [tab-size:2] " tabindex="0" role="region" aria-label="Engine stylesheet import" data-example-target="code"><code><span class="text-(--syntax-keyword)" data-syntax="keyword">@import</span> <span class="text-(--syntax-string)" data-syntax="string">&quot;../builds/tailwind/lostcoords_ui.css&quot;</span>;</code></pre>
+    
+  </div>
+  <span class="sr-only" role="status" data-example-target="status"></span>
+</div>
+
+        <p class="text-pretty text-sm text-ink-2">Run <code>bin/rails tailwindcss:build</code>. The build generates that import path from the installed gem. Components work with the defaults immediately. To customize colors or fonts, add overrides after the import using the <a href="/theming.html" class="underline underline-offset-2">theming guide</a>.</p>
+      </section>
+      <section id="javascript" class="flex scroll-mt-28 flex-col gap-4">
+        <h2 class="text-xl font-semibold">3. Load the assets</h2>
+        <p class="text-pretty text-sm text-ink-2">Your layout needs the compiled Tailwind stylesheet and importmap tags. Keep your existing tags if they already load these assets.</p>
+        <div class="group/source overflow-hidden rounded-2xl bg-paper-2" data-controller="example">
+  <div class="flex min-h-12 items-center justify-between gap-4 px-5">
+    <span class="font-mono text-xs uppercase text-ink-3">erb</span>
+    <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 has-[&gt;[data-icon=inline-start]]:ps-3 has-[&gt;[data-icon=inline-end]]:pe-3 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2)) min-w-20" data-action="example#copy" data-example-target="copy" aria-label="Copy Layout asset tags">Copy</button>
+  </div>
+  <div class="relative">
+    <pre id="install-layout" class="overflow-x-auto px-5 pb-5 font-mono text-[0.8125rem] text-ink-2 [tab-size:2] " tabindex="0" role="region" aria-label="Layout asset tags" data-example-target="code"><code><span class="text-(--syntax-keyword)" data-syntax="keyword">&lt;%=</span> <span class="text-(--syntax-call)" data-syntax="call">stylesheet_link_tag</span> <span class="text-(--syntax-string)" data-syntax="string">&quot;</span><span class="text-(--syntax-string)" data-syntax="string">tailwind</span><span class="text-(--syntax-string)" data-syntax="string">&quot;</span>, <span class="text-(--syntax-string)" data-syntax="string">&quot;</span><span class="text-(--syntax-string)" data-syntax="string">data-turbo-track</span><span class="text-(--syntax-symbol)" data-syntax="symbol">&quot;:</span> <span class="text-(--syntax-string)" data-syntax="string">&quot;</span><span class="text-(--syntax-string)" data-syntax="string">reload</span><span class="text-(--syntax-string)" data-syntax="string">&quot;</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">%&gt;</span>
+<span class="text-(--syntax-keyword)" data-syntax="keyword">&lt;%=</span> <span class="text-(--syntax-call)" data-syntax="call">javascript_importmap_tags</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">%&gt;</span></code></pre>
+    
+  </div>
+  <span class="sr-only" role="status" data-example-target="status"></span>
+</div>
+
+        <p class="text-pretty text-sm text-ink-2">The engine adds its Stimulus pins to the importmap. Rails’ standard <code>eagerLoadControllersFrom("controllers", application)</code> registration loads them with your app’s controllers.</p>
+      </section>
+      <section id="first-component" class="flex scroll-mt-28 flex-col gap-4">
+        <h2 class="text-xl font-semibold">4. Use a component</h2>
+        <div class="group/source overflow-hidden rounded-2xl bg-paper-2" data-controller="example">
+  <div class="flex min-h-12 items-center justify-between gap-4 px-5">
+    <span class="font-mono text-xs uppercase text-ink-3">erb</span>
+    <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 has-[&gt;[data-icon=inline-start]]:ps-3 has-[&gt;[data-icon=inline-end]]:pe-3 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2)) min-w-20" data-action="example#copy" data-example-target="copy" aria-label="Copy First component">Copy</button>
+  </div>
+  <div class="relative">
+    <pre id="install-first-component" class="overflow-x-auto px-5 pb-5 font-mono text-[0.8125rem] text-ink-2 [tab-size:2] " tabindex="0" role="region" aria-label="First component" data-example-target="code"><code><span class="text-(--syntax-keyword)" data-syntax="keyword">&lt;%=</span> <span class="text-(--syntax-call)" data-syntax="call">ui_button</span> <span class="text-(--syntax-string)" data-syntax="string">&quot;</span><span class="text-(--syntax-string)" data-syntax="string">Create project</span><span class="text-(--syntax-string)" data-syntax="string">&quot;</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">icon:</span> <span class="text-(--syntax-string)" data-syntax="string">&quot;</span><span class="text-(--syntax-string)" data-syntax="string">plus</span><span class="text-(--syntax-string)" data-syntax="string">&quot;</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">%&gt;</span></code></pre>
+    
+  </div>
+  <span class="sr-only" role="status" data-example-target="status"></span>
+</div>
+
+        <p class="text-pretty text-sm text-ink-2">Helpers render native HTML. Use <code>class:</code> for additional utilities, <code>data:</code> and <code>aria:</code> for attributes, and blocks for custom content. Browse the <a href="/components/button.html" class="underline underline-offset-2">button examples</a> to see variants, sizes, links and Rails forms.</p>
+      </section>
+    </div>
+  </main>
+</div>
+
+    <footer class="mx-auto flex max-w-360 flex-wrap items-center justify-between gap-4 px-5 py-10 text-xs text-ink-3 sm:px-8 lg:px-10">
+      <span>LOST COORDS UI</span><a class="hover:text-ink" href="https://github.com/lostcoords/ui">Source on GitHub ↗</a>
+    </footer>
+  </body>
+</html>

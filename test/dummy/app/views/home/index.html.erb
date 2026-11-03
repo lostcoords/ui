@@ -2,7 +2,7 @@
   <header class="flex flex-col items-start gap-6">
     <h1 class="max-w-3xl text-4xl font-semibold tracking-tight sm:text-6xl">Components for Rails.</h1>
     <p class="max-w-lg text-lg text-ink-2">Render complete components from Ruby. Bring your own palette.</p>
-    <%= ui_button_link_to "/components/button.html" do %>Browse components <%= heroicon "arrow-up-right", options: { "aria-hidden": true } %><% end %>
+    <%= ui_button_link_to "Browse components", "/components/button.html", icon: "arrow-up-right", icon_position: :end %>
   </header>
 
   <div class="grid grid-cols-1 items-start gap-5 md:grid-cols-2 xl:grid-cols-[1.15fr_1fr_0.85fr]">
@@ -37,7 +37,7 @@
         <div class="flex flex-col gap-2"><h2 id="invite-title" class="text-xl font-semibold">Invite a teammate</h2><p class="text-sm text-ink-2">Invite someone to your workspace.</p></div>
         <form class="flex flex-col gap-3" data-action="submit->showcase#save">
           <%= ui_field label: "Email address", id: "invite-email" do |field| %><%= ui_input type: :email, placeholder: "name@example.com", required: true, class: "bg-paper", **field %><% end %>
-          <%= ui_button type: :submit, class: "w-full" do %>Send invitation <%= heroicon "arrow-right", options: { "aria-hidden": true } %><% end %>
+          <%= ui_button "Send invitation", type: :submit, class: "w-full", icon: "arrow-right", icon_position: :end %>
           <p role="status" class="text-sm text-accent" data-save-status hidden>Invitation sent.</p>
         </form>
       <% end %>
@@ -70,5 +70,5 @@
       <% end %>
     </div>
   </div>
-  <div class="flex flex-wrap items-center justify-between gap-4 pt-4 text-sm"><p class="text-ink-3">Build with your own palette and type.</p><a class="font-medium hover:text-accent" href="/tokens.html">Explore the tokens →</a></div>
+  <div class="flex flex-wrap items-center justify-between gap-4 pt-4 text-sm"><p class="text-ink-3">Build with your own palette and type.</p><a class="font-medium hover:text-accent" href="/theming.html">Customize the theme →</a></div>
 </main>

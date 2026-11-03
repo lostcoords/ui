@@ -4,166 +4,24 @@
 @import "tailwindcss/preflight.css" layer(base);
 @import "tailwindcss/utilities.css" layer(utilities) source(none);
 
+@plugin "@tailwindcss/typography";
+
 @source "../../views/**/*.erb";
 @source "../../models/**/*.rb";
 @source "../../helpers/**/*.rb";
 @source "../../javascript/**/*.js";
 
-@theme inline {
-  --color-paper: var(--paper);
-  --color-paper-2: var(--paper-2);
-  --color-paper-3: var(--paper-3);
-  --color-ink: var(--ink);
-  --color-ink-2: var(--ink-2);
-  --color-ink-3: var(--ink-3);
-  --color-ink-on-accent: var(--ink-on-accent);
-  --color-hairline: var(--hairline);
-
-  --color-sky: var(--sky);
-  --color-sky-deep: var(--sky-deep);
-  --color-sky-soft: var(--sky-soft);
-  --color-accent: var(--accent);
-  --color-leaf: var(--leaf);
-  --color-leaf-soft: var(--leaf-soft);
-  --color-gold: var(--gold);
-  --color-gold-soft: var(--gold-soft);
-  --color-berry: var(--berry);
-  --color-berry-soft: var(--berry-soft);
-  --color-danger: var(--danger);
-  --color-danger-soft: var(--danger-soft);
-
-  --font-display: var(--f-display);
-  --font-body: var(--f-body);
-  --font-mono: var(--f-mono);
-}
-
-@theme {
-  --text-xs--line-height: initial;
-  --text-sm--line-height: initial;
-  --text-base--line-height: initial;
-  --text-lg--line-height: initial;
-  --text-xl--line-height: initial;
-  --text-2xl--line-height: initial;
-
-  --z-index-above: 1;
-  --z-index-raised: 2;
-  --z-index-art: 3;
-
-  --z-index-sticky-action: 10;
-  --z-index-float: 10;
-
-  --z-index-nav: 20;
-  --z-index-nav-popover: 30;
-  --z-index-popover: 30;
-  --z-index-mobile-nav: 40;
-  --z-index-mobile-action: 50;
-  --z-index-prompt: 51;
-
-  --z-index-overlay: 60;
-  --z-index-overlay-panel: 61;
-  --z-index-toast: 70;
-
-  --ease-out: cubic-bezier(0.3, 0, 0, 1);
-  --ease-out-long: cubic-bezier(0.2, 0.7, 0, 1);
-  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-sheet: cubic-bezier(0.32, 0.72, 0, 1);
-
-  --sheet-duration: 500ms;
-
-  --sheet-offscreen: calc(100% + 2rem);
-  --ease-out-overshoot-subtle: cubic-bezier(0.25, 1.25, 0.5, 1);
-  --ease-spring: cubic-bezier(0.34, 1.45, 0.64, 1);
-  --color-scrim-dock: rgb(10 14 24 / 0.22);
-}
-
-@custom-variant dark (&:where(html[data-theme="dark"], html[data-theme="dark"] *));
 @custom-variant jp (&:where(html:lang(ja), html:lang(ja) *));
 
-@theme {
-  --animate-alert-in: alert-in 360ms var(--ease-out-expo) both;
-
-  @keyframes alert-in {
-    from { opacity: 0; transform: translateY(-0.25rem); }
-  }
-}
-
-
 :root {
-  --lch-sky:      55.6% 0.176 256.6;
-  --lch-sky-deep: 51.5% 0.169 259.2;
-  --lch-leaf:     58.6% 0.089 144.3;
-  --lch-gold:     73.8% 0.130 86;
-  --lch-berry:    63.5% 0.151 41.4;
-
-  --paper:    oklch(100% 0 0deg);
-  --paper-2:  oklch(97.6% 0.003 264.5deg);
-  --paper-3:  oklch(95.2% 0.006 264.5deg);
-  --ink:      oklch(23.1% 0.010 268.2deg);
-  --ink-2:    oklch(39.4% 0.012 267deg);
-  --ink-3:    oklch(52.0% 0.014 267deg);
-  --ink-on-accent: #fff;
-  --hairline: oklch(93.1% 0.006 264.5deg);
-
-  --scrim: color-mix(in oklab, var(--ink) 55%, transparent);
-  --scrim-soft: color-mix(in oklab, var(--ink) 12%, transparent);
-
-  --scrim-sheet: rgb(0 0 0 / 0.28);
-
-  --sky:      oklch(var(--lch-sky));
-  --sky-deep: oklch(var(--lch-sky-deep));
-  --sky-soft: oklch(95.2% 0.023 258.4deg);
-  --accent:   var(--sky-deep);
-
-  --leaf:       oklch(var(--lch-leaf));
-  --leaf-soft:  oklch(95.0% 0.015 136deg);
-  --gold:       oklch(var(--lch-gold));
-  --gold-soft:  oklch(95.5% 0.040 88deg);
-  --berry:      oklch(var(--lch-berry));
-  --berry-soft: oklch(95.4% 0.020 58deg);
-  --danger:     var(--berry);
-  --danger-soft: var(--berry-soft);
-
+  --syntax-keyword: #793d91;
+  --syntax-string: #80521c;
+  --syntax-symbol: #1a617b;
+  --syntax-call: #315b9a;
+  --syntax-tag: #216958;
+  --syntax-comment: #5a6070;
   --f-display: "Manrope", ui-sans-serif, system-ui, sans-serif;
-  --f-body:    "Manrope", ui-sans-serif, system-ui, sans-serif;
-  --f-japanese: "Hiragino Sans", "Yu Gothic", "YuGothic", "Meiryo", ui-sans-serif, system-ui, sans-serif;
-  --f-mono:    ui-monospace, "SFMono-Regular", "SF Mono", menlo, consolas, monospace;
-
-  --shadow-sm: 0 1px 2px rgb(16 24 40 / 0.05);
-  --shadow:
-    0 1px 3px rgb(16 24 40 / 0.05),
-    0 8px 24px -8px rgb(16 24 40 / 0.09);
-  --shadow-lg:
-    0 1px 3px rgb(16 24 40 / 0.06),
-    0 24px 48px -12px rgb(16 24 40 / 0.18);
-
-  --glass-fill: color-mix(in oklab, var(--paper) 74%, transparent);
-  --glass-edge: rgb(255 255 255 / 0.4);
-  --glass-bar-edge: var(--glass-edge);
-  --glass-rim:
-    inset 0 1px 0 rgb(255 255 255 / 0.6),
-    inset 0 0 0 1px rgb(255 255 255 / 0.22);
-  --glass-shadow: var(--glass-rim), var(--shadow);
-
-  --glass-hud-fill:
-    linear-gradient(rgb(255 255 255 / 0.6), rgb(255 255 255 / 0) 60%),
-    color-mix(in oklab, var(--paper) 82%, transparent);
-  --glass-hud-ink: var(--ink);
-  --glass-hud-solid: var(--paper);
-  --glass-hud-shadow:
-    inset 0 0 0 1px rgb(16 24 40 / 0.08),
-    0 1px 2px rgb(16 24 40 / 0.06),
-    0 6px 16px -6px rgb(16 24 40 / 0.16);
-
-  --pill-rim: linear-gradient(135deg, #fff 0%, #dcdce0 30%, #f7f7f8 55%, #c9c9ce 100%);
-  --pill-surface: linear-gradient(#fff, #f1f1f4);
-  --pill-light: inset 0 1px 0 #fff, inset 0 -1px 1px rgb(0 0 0 / 0.06);
-  --pill-depth: 0 1px 1px rgb(0 0 0 / 0.08), 0 8px 18px -6px rgb(0 0 0 / 0.18);
-
-  --focus-halo-color: color-mix(in oklab, var(--sky) 50%, transparent);
-  --focus-halo: 0 0 0 calc(var(--spacing) * 0.5) var(--focus-halo-color);
-
-  color-scheme: light;
-
+  --f-body: "Manrope", ui-sans-serif, system-ui, sans-serif;
   --palette-original-1: oklch(var(--lch-sky));
   --palette-original-2: white;
   --palette-original-3: oklch(23.1% 0.010 268.2deg);
@@ -193,57 +51,13 @@ html:lang(ja) {
 }
 
 html[data-theme="dark"] {
-  color-scheme: dark;
-
-  --paper: oklch(20.5% 0.002 75deg);
-  --paper-2: oklch(24.2% 0.003 75deg);
-  --paper-3: oklch(28.4% 0.004 75deg);
-  --ink: oklch(91.5% 0.006 85deg);
-  --ink-2: color-mix(in oklab, var(--ink) 76%, var(--paper));
-  --ink-3: color-mix(in oklab, var(--ink) 68%, var(--paper));
-  --hairline: color-mix(in oklab, var(--ink) 16%, transparent);
-
-  --scrim: rgb(0 0 0 / 0.6);
-  --scrim-soft: rgb(0 0 0 / 0.32);
-
-  --ink-on-accent: var(--paper);
-  --sky: oklch(65.5% 0.150 255deg);
-  --sky-deep: oklch(61.5% 0.155 257deg);
-  --sky-soft: color-mix(in oklab, var(--sky) 18%, var(--paper));
-  --accent: var(--sky);
-
-  --leaf-soft: color-mix(in oklab, var(--leaf) 16%, var(--paper));
-  --gold-soft: color-mix(in oklab, var(--gold) 16%, var(--paper));
-  --berry-soft: color-mix(in oklab, var(--berry) 16%, var(--paper));
-
-  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.2);
-  --shadow:
-    0 1px 2px rgb(0 0 0 / 0.16),
-    0 8px 24px -8px rgb(0 0 0 / 0.32);
-  --shadow-lg:
-    0 1px 3px rgb(0 0 0 / 0.2),
-    0 24px 48px -12px rgb(0 0 0 / 0.55);
-
-  --glass-fill: color-mix(in oklab, var(--paper) 80%, transparent);
-  --glass-edge: transparent;
-  --glass-rim: 0 0 #0000;
-  --glass-bar-edge: rgb(255 255 255 / 0.06);
-  --glass-shadow: 0 1px 3px rgb(0 0 0 / 0.04), 0 4px 12px rgb(0 0 0 / 0.03);
-  --glass-hud-fill:
-    linear-gradient(rgb(255 255 255 / 0.06), rgb(255 255 255 / 0) 60%),
-    color-mix(in oklab, var(--paper-3) 90%, transparent);
-  --glass-hud-solid: var(--paper-3);
-  --glass-hud-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 0.1),
-    inset 0 0 0 1px rgb(255 255 255 / 0.1),
-    0 8px 20px -8px rgb(0 0 0 / 0.6);
-
-  --pill-rim: linear-gradient(135deg, rgb(255 255 255 / 0.22) 0%, rgb(255 255 255 / 0.06) 30%, rgb(255 255 255 / 0.12) 55%, rgb(0 0 0 / 0.3) 100%);
-  --pill-surface: linear-gradient(var(--paper-3), var(--paper-2));
-  --pill-light: inset 0 1px 0 rgb(255 255 255 / 0.08), inset 0 -1px 1px rgb(0 0 0 / 0.2);
-  --pill-depth: 0 1px 1px rgb(0 0 0 / 0.3), 0 8px 18px -6px rgb(0 0 0 / 0.5);
+  --syntax-keyword: #d1a7eb;
+  --syntax-string: #e7be8b;
+  --syntax-symbol: #91c6df;
+  --syntax-call: #a6c6ff;
+  --syntax-tag: #93d3bc;
+  --syntax-comment: #a6adbb;
 }
-
 
 :root[data-palette="ivory-blue"] {
   --palette-paper: var(--palette-ivory-blue-1);
@@ -312,43 +126,6 @@ html[data-theme="dark"] {
   --ink-on-accent: var(--paper);
   --sky-soft: color-mix(in oklab, var(--sky) 18%, var(--paper));
   --accent: var(--sky);
-}
-
-@layer base {
-  body {
-    background-color: var(--paper);
-    color: var(--ink);
-    font-family: var(--f-body);
-    line-height: 1.5;
-  }
-
-  :is(h1, h2, h3, h4, h5) {
-    font-family: var(--f-display);
-    line-height: 1.2;
-    color: var(--ink);
-  }
-
-  button { cursor: pointer; background: none; }
-
-  dialog { background: transparent; color: inherit; }
-
-  :where([popover]) { color: inherit; }
-
-  :is(a, button, input, textarea, select, summary, [tabindex]):focus-visible,
-  label:has(input.sr-only:focus-visible) {
-    outline: calc(var(--spacing) * 0.5) solid var(--focus-halo-color);
-    outline-offset: 0;
-  }
-
-  dialog:focus-visible { outline: none; }
-
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-    }
-  }
 }
 
 @import "../builds/tailwind/lostcoords_ui.css";

@@ -5,13 +5,13 @@ module Lostcoords::Ui
       "whitespace-nowrap no-underline cursor-pointer " \
       "transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out " \
       "hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none " \
-      "[&_svg]:size-[1.1em] [&_svg]:shrink-0"
+      "[&_svg]:block [&_svg:not([class*='size-'])]:size-[1.1em] [&_svg]:shrink-0"
 
     BUTTON_SIZES = {
-      sm: "#{TailwindHelper::CONTROL_SIZES[:sm]} px-4 text-sm",
-      base: "#{TailwindHelper::CONTROL_SIZES[:base]} px-5 text-base",
-      lg: "#{TailwindHelper::CONTROL_SIZES[:lg]} px-7 text-base",
-      nav: "#{TailwindHelper::CONTROL_SIZES[:sm]} px-4 text-base"
+      sm: "#{TailwindHelper::CONTROL_SIZES[:sm]} px-4 has-[>[data-icon=inline-start]]:ps-3 has-[>[data-icon=inline-end]]:pe-3 text-sm",
+      base: "#{TailwindHelper::CONTROL_SIZES[:base]} px-5 has-[>[data-icon=inline-start]]:ps-4 has-[>[data-icon=inline-end]]:pe-4 text-base",
+      lg: "#{TailwindHelper::CONTROL_SIZES[:lg]} px-7 has-[>[data-icon=inline-start]]:ps-6 has-[>[data-icon=inline-end]]:pe-6 text-base",
+      nav: "#{TailwindHelper::CONTROL_SIZES[:sm]} px-4 has-[>[data-icon=inline-start]]:ps-3 has-[>[data-icon=inline-end]]:pe-3 text-base"
     }.freeze
 
     BUTTON_VARIANTS = {

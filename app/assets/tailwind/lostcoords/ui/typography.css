@@ -1,0 +1,61 @@
+@layer components {
+  :where(.ui-heading) {
+    font-family: var(--font-display, var(--font-body, inherit));
+    font-weight: var(--ui-heading-weight, 700);
+    letter-spacing: var(--ui-heading-tracking, -0.025em);
+    overflow-wrap: anywhere;
+    text-wrap: balance;
+  }
+
+  :where(.ui-heading-page) {
+    font-size: var(--ui-heading-page-size, 1.875rem);
+    line-height: var(--ui-heading-page-line-height, 2.25rem);
+  }
+
+  :where(.ui-heading-section) {
+    font-size: var(--ui-heading-section-size, 1.25rem);
+    line-height: var(--ui-heading-section-line-height, 1.5rem);
+  }
+
+  :where(.ui-heading-card) {
+    font-size: var(--ui-heading-card-size, 1.125rem);
+    line-height: var(--ui-heading-card-line-height, 1.5rem);
+  }
+
+  :where(.ui-heading:lang(ja)) {
+    letter-spacing: var(--ui-heading-ja-tracking, 0);
+    line-break: strict;
+  }
+
+  :where(.ui-text) {
+    font-family: var(--font-body, inherit);
+    font-weight: var(--ui-text-weight, 400);
+    letter-spacing: var(--ui-text-tracking, normal);
+    overflow-wrap: anywhere;
+  }
+
+  :where(.ui-text-body) {
+    font-size: var(--ui-text-body-size, 1rem);
+    line-height: var(--ui-text-body-line-height, 1.5rem);
+  }
+
+  :where(.ui-text-small) {
+    font-size: var(--ui-text-small-size, 0.875rem);
+    line-height: var(--ui-text-small-line-height, 1.25rem);
+  }
+
+  :where(.ui-text-caption) {
+    font-size: var(--ui-text-caption-size, 0.75rem);
+    line-height: var(--ui-text-caption-line-height, 1rem);
+  }
+
+  :where(.ui-text:lang(ja)) {
+    line-break: strict;
+  }
+
+  @supports (word-break: auto-phrase) {
+    :where(.ui-heading:lang(ja)) {
+      word-break: auto-phrase;
+    }
+  }
+}

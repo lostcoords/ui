@@ -10,6 +10,12 @@ module ShowcaseHelper
     example.source.gsub("EXAMPLE_ID", id)
   end
 
+  def highlight_source(source, language: :erb)
+    safe_join(SourceCode.tokens(source, language: language).map do |type, text|
+      type ? tag.span(text, class: SourceCode::STYLES.fetch(type), data: { syntax: type }) : text
+    end)
+  end
+
   def showcase_parameters(component)
     node = Prism.parse("def #{component.signature}; end").value.statements.body.first.parameters
     return [] unless node
@@ -27,16 +33,16 @@ module ShowcaseHelper
   def showcase_choices(component, parameter)
     ui = Lostcoords::Ui
     choices = {
-      ui_button: { variant: ui::PrimitivesHelper::BUTTON_STYLES.keys, size: ui::ButtonHelper::BUTTON_SIZES.keys },
-      ui_button_link_to: { variant: ui::PrimitivesHelper::BUTTON_STYLES.keys, size: ui::ButtonHelper::BUTTON_SIZES.keys },
-      ui_button_to: { variant: ui::PrimitivesHelper::BUTTON_STYLES.keys, size: ui::ButtonHelper::BUTTON_SIZES.keys },
+      ui_button: { variant: ui::PrimitivesHelper::BUTTON_STYLES.keys, size: ui::TailwindHelper::CONTROL_SIZES.keys },
+      ui_button_link_to: { variant: ui::PrimitivesHelper::BUTTON_STYLES.keys, size: ui::TailwindHelper::CONTROL_SIZES.keys },
+      ui_button_to: { variant: ui::PrimitivesHelper::BUTTON_STYLES.keys, size: ui::TailwindHelper::CONTROL_SIZES.keys },
       ui_icon_button: { shape: ui::ButtonHelper::ICON_BUTTON_SHAPES.keys, size: ui::ButtonHelper::ICON_BUTTON_SIZES.keys },
       ui_badge: { tone: ui::BadgeHelper::BADGE_TONES.keys },
       ui_status_pill: { tone: ui::BadgeHelper::STATUS_PILL_TONES.keys },
       ui_avatar: { size: ui::BadgeHelper::AVATAR_SIZES.keys },
       ui_icon_badge: { size: ui::BadgeHelper::ICON_BADGE_SIZES.keys },
       ui_medallion: { size: ui::BadgeHelper::ICON_MEDALLION_SIZES.keys, tone: ui::BadgeHelper::ICON_MEDALLION_TONES.keys },
-      ui_pill: { size: ui::ButtonHelper::BUTTON_SIZES.keys },
+      ui_pill: { size: ui::TailwindHelper::CONTROL_SIZES.keys },
       ui_input: { size: ui::TailwindHelper::CONTROL_SIZES.keys, type: ui::StructuresHelper::INPUT_TYPES },
       ui_select: { size: ui::TailwindHelper::CONTROL_SIZES.keys },
       ui_form_card: { padding: ui::CardHelper::FORM_CARD_PADDINGS.keys },
@@ -48,6 +54,8 @@ module ShowcaseHelper
       ui_menu_option: { tone: ui::MenuHelper::MENU_OPTION_TONES.keys }
     }.dig(component.name, parameter)
     return choices.map { |key| ":#{key}" }.join(" · ") if choices
+    return ":start · :end" if parameter == :icon_position
+    return "Heroicon name; spacing is handled automatically" if parameter == :icon
     return "Native HTML attributes; class:, data: and aria: merge with defaults" if %i[attrs attributes].include?(parameter)
     return "Captured Rails ERB content" if parameter == :block
     return "fit · medium large · large" if parameter == :detents

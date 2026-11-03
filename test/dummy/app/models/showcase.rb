@@ -1,6 +1,12 @@
 module Showcase
   Example = Data.define(:specimen, :title, :stage) do
     def source = File.read(File.expand_path("../views/showcase/specimens/_#{specimen}.html.erb", __dir__)).strip
+    def note
+      return unless specimen == :button_custom_icon
+
+      'For custom SVGs and spinners, use data-icon="inline-start" or data-icon="inline-end". The button reduces padding on that edge for optical balance. The icon: option sets this automatically.'
+    end
+
     def builders = source.scan(/\bui_\w+/).map(&:to_sym).uniq
   end
 
@@ -10,11 +16,20 @@ module Showcase
 
   def self.sections
     [
+      Section.new(:foundations, "Foundations", "Typography, spacing and reading rhythm shared by every app.", [
+        Example.new(:typography, "Text styles", :page),
+        Example.new(:typography_japanese, "Japanese text", :page),
+        Example.new(:layout, "Page rhythm", :page),
+        Example.new(:layout_responsive, "Responsive containers", :page),
+        Example.new(:reading, "Reading content", :page),
+        Example.new(:reading_japanese, "Japanese reading", :page)
+      ]),
       Section.new(:button, "Button", "Actions, links and native Rails forms.", [
         Example.new(:button, "Default", :card),
         Example.new(:button_options, "Variants", :card),
         Example.new(:button_sizes, "Sizes", :card),
         Example.new(:button_with_icon, "With an icon", :card),
+        Example.new(:button_custom_icon, "Custom icons and content", :card),
         Example.new(:button_loading, "Loading", :card),
         Example.new(:button_disabled, "Disabled", :card),
         Example.new(:button_link, "As a link", :card),

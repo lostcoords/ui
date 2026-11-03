@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="darkreader-lock">
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <title><%= @block.title %> · Block preview</title>
+    <link rel="icon" href="data:,">
+    <%= stylesheet_link_tag "tailwind", "blocks/#{@block.id}" %>
+    <%= javascript_importmap_tags %>
+  </head>
+  <body class="antialiased" data-controller="block-preview">
+    <%= yield %>
+  </body>
+</html>

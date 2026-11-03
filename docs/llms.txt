@@ -2,17 +2,324 @@
 
 Rails rendering helpers with semantic HTML, native attributes and browser interactions.
 
-Install and styling: https://github.com/lostcoords/ui
-Theme tokens: https://ui.lostcoords.com/tokens.html
+Install and styling: https://ui.lostcoords.com/installation.html
+Theming: https://ui.lostcoords.com/theming.html
 API JSON: https://ui.lostcoords.com/api.json
 
-Use class: to merge Tailwind utilities, data: and aria: for native attributes. Block helpers capture Rails ERB.
+Tailwind CSS v4 is required. Install the gem once; the Rails engine exposes all ui_* helpers without per-component imports.
+The engine includes a default light and dark theme. Override CSS variables only as needed. Use class: to merge Tailwind utilities, data: and aria: for native attributes. Block helpers capture Rails ERB.
 ui_button_to keeps Rails form, method and CSRF semantics. Each host application's lockfile pins its version.
+
+## ui_stack
+
+```ruby
+ui_stack(gap: :content, **attributes, &block)
+```
+
+Page rhythm: https://ui.lostcoords.com/components/foundations.html
+
+```erb
+<%= ui_stack gap: :section, class: "w-full max-w-xl" do %>
+  <%= ui_section title: "Recent expenses", actions: capture { ui_button("Add expense", icon: "plus", size: :sm) } do %>
+    <%= ui_card do %>
+      <%= ui_inline class: "flex-nowrap justify-between" do %>
+        <%= ui_text "Dinner with friends" %>
+        <%= ui_text "¥8,400", class: "shrink-0 tabular-nums" %>
+      <% end %>
+    <% end %>
+    <%= ui_card do %>
+      <%= ui_text "Train tickets" %>
+    <% end %>
+  <% end %>
+  <%= ui_section title: "Members" do %>
+    <%= ui_card do %>
+      <%= ui_inline do %>
+        <%= ui_avatar "AK", class: "bg-sky" %>
+        <%= ui_stack gap: :tight do %>
+          <%= ui_text "Alex Kim" %>
+          <%= ui_text "Joined today", size: :small, tone: :muted %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
+```
+
+Responsive containers: https://ui.lostcoords.com/components/foundations.html
+
+```erb
+<%= ui_container do %>
+  <%= ui_stack gap: :section do %>
+    <%= ui_heading "Plan your next trip", level: 2, size: :page %>
+    <div class="grid min-w-0 gap-8 md:grid-cols-2">
+      <%= ui_section title: "Travel details", level: 3 do %>
+        <%= ui_card do %>
+          <%= ui_stack do %>
+            <%= ui_text "Kyoto weekend", size: :body %>
+            <%= ui_text "Keep shared costs and travel notes together.", size: :small, tone: :muted %>
+            <%= ui_inline do %>
+              <%= ui_button "Invite friends", size: :sm %>
+              <%= ui_button "View itinerary", variant: :ghost, size: :sm %>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+      <%= ui_section title: "Shared costs", level: 3 do %>
+        <%= ui_card do %>
+          <%= ui_text "No expenses yet", size: :body %>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>
+```
+
+## ui_inline
+
+```ruby
+ui_inline(gap: :related, **attributes, &block)
+```
+
+Page rhythm: https://ui.lostcoords.com/components/foundations.html
+
+```erb
+<%= ui_stack gap: :section, class: "w-full max-w-xl" do %>
+  <%= ui_section title: "Recent expenses", actions: capture { ui_button("Add expense", icon: "plus", size: :sm) } do %>
+    <%= ui_card do %>
+      <%= ui_inline class: "flex-nowrap justify-between" do %>
+        <%= ui_text "Dinner with friends" %>
+        <%= ui_text "¥8,400", class: "shrink-0 tabular-nums" %>
+      <% end %>
+    <% end %>
+    <%= ui_card do %>
+      <%= ui_text "Train tickets" %>
+    <% end %>
+  <% end %>
+  <%= ui_section title: "Members" do %>
+    <%= ui_card do %>
+      <%= ui_inline do %>
+        <%= ui_avatar "AK", class: "bg-sky" %>
+        <%= ui_stack gap: :tight do %>
+          <%= ui_text "Alex Kim" %>
+          <%= ui_text "Joined today", size: :small, tone: :muted %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
+```
+
+Responsive containers: https://ui.lostcoords.com/components/foundations.html
+
+```erb
+<%= ui_container do %>
+  <%= ui_stack gap: :section do %>
+    <%= ui_heading "Plan your next trip", level: 2, size: :page %>
+    <div class="grid min-w-0 gap-8 md:grid-cols-2">
+      <%= ui_section title: "Travel details", level: 3 do %>
+        <%= ui_card do %>
+          <%= ui_stack do %>
+            <%= ui_text "Kyoto weekend", size: :body %>
+            <%= ui_text "Keep shared costs and travel notes together.", size: :small, tone: :muted %>
+            <%= ui_inline do %>
+              <%= ui_button "Invite friends", size: :sm %>
+              <%= ui_button "View itinerary", variant: :ghost, size: :sm %>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+      <%= ui_section title: "Shared costs", level: 3 do %>
+        <%= ui_card do %>
+          <%= ui_text "No expenses yet", size: :body %>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>
+```
+
+## ui_container
+
+```ruby
+ui_container(size: :page, **attributes, &block)
+```
+
+Responsive containers: https://ui.lostcoords.com/components/foundations.html
+
+```erb
+<%= ui_container do %>
+  <%= ui_stack gap: :section do %>
+    <%= ui_heading "Plan your next trip", level: 2, size: :page %>
+    <div class="grid min-w-0 gap-8 md:grid-cols-2">
+      <%= ui_section title: "Travel details", level: 3 do %>
+        <%= ui_card do %>
+          <%= ui_stack do %>
+            <%= ui_text "Kyoto weekend", size: :body %>
+            <%= ui_text "Keep shared costs and travel notes together.", size: :small, tone: :muted %>
+            <%= ui_inline do %>
+              <%= ui_button "Invite friends", size: :sm %>
+              <%= ui_button "View itinerary", variant: :ghost, size: :sm %>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+      <%= ui_section title: "Shared costs", level: 3 do %>
+        <%= ui_card do %>
+          <%= ui_text "No expenses yet", size: :body %>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>
+```
+
+## ui_section
+
+```ruby
+ui_section(title:, level: 2, actions: nil, **attributes, &block)
+```
+
+Page rhythm: https://ui.lostcoords.com/components/foundations.html
+
+```erb
+<%= ui_stack gap: :section, class: "w-full max-w-xl" do %>
+  <%= ui_section title: "Recent expenses", actions: capture { ui_button("Add expense", icon: "plus", size: :sm) } do %>
+    <%= ui_card do %>
+      <%= ui_inline class: "flex-nowrap justify-between" do %>
+        <%= ui_text "Dinner with friends" %>
+        <%= ui_text "¥8,400", class: "shrink-0 tabular-nums" %>
+      <% end %>
+    <% end %>
+    <%= ui_card do %>
+      <%= ui_text "Train tickets" %>
+    <% end %>
+  <% end %>
+  <%= ui_section title: "Members" do %>
+    <%= ui_card do %>
+      <%= ui_inline do %>
+        <%= ui_avatar "AK", class: "bg-sky" %>
+        <%= ui_stack gap: :tight do %>
+          <%= ui_text "Alex Kim" %>
+          <%= ui_text "Joined today", size: :small, tone: :muted %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
+```
+
+Responsive containers: https://ui.lostcoords.com/components/foundations.html
+
+```erb
+<%= ui_container do %>
+  <%= ui_stack gap: :section do %>
+    <%= ui_heading "Plan your next trip", level: 2, size: :page %>
+    <div class="grid min-w-0 gap-8 md:grid-cols-2">
+      <%= ui_section title: "Travel details", level: 3 do %>
+        <%= ui_card do %>
+          <%= ui_stack do %>
+            <%= ui_text "Kyoto weekend", size: :body %>
+            <%= ui_text "Keep shared costs and travel notes together.", size: :small, tone: :muted %>
+            <%= ui_inline do %>
+              <%= ui_button "Invite friends", size: :sm %>
+              <%= ui_button "View itinerary", variant: :ghost, size: :sm %>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+      <%= ui_section title: "Shared costs", level: 3 do %>
+        <%= ui_card do %>
+          <%= ui_text "No expenses yet", size: :body %>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>
+```
 
 ## ui_button
 
 ```ruby
-ui_button(content = nil, variant: :primary, size: :base, **attributes, &block)
+ui_button(content = nil, variant: :primary, size: :base, icon: nil, icon_position: :start, **attributes, &block)
+```
+
+Page rhythm: https://ui.lostcoords.com/components/foundations.html
+
+```erb
+<%= ui_stack gap: :section, class: "w-full max-w-xl" do %>
+  <%= ui_section title: "Recent expenses", actions: capture { ui_button("Add expense", icon: "plus", size: :sm) } do %>
+    <%= ui_card do %>
+      <%= ui_inline class: "flex-nowrap justify-between" do %>
+        <%= ui_text "Dinner with friends" %>
+        <%= ui_text "¥8,400", class: "shrink-0 tabular-nums" %>
+      <% end %>
+    <% end %>
+    <%= ui_card do %>
+      <%= ui_text "Train tickets" %>
+    <% end %>
+  <% end %>
+  <%= ui_section title: "Members" do %>
+    <%= ui_card do %>
+      <%= ui_inline do %>
+        <%= ui_avatar "AK", class: "bg-sky" %>
+        <%= ui_stack gap: :tight do %>
+          <%= ui_text "Alex Kim" %>
+          <%= ui_text "Joined today", size: :small, tone: :muted %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
+```
+
+Responsive containers: https://ui.lostcoords.com/components/foundations.html
+
+```erb
+<%= ui_container do %>
+  <%= ui_stack gap: :section do %>
+    <%= ui_heading "Plan your next trip", level: 2, size: :page %>
+    <div class="grid min-w-0 gap-8 md:grid-cols-2">
+      <%= ui_section title: "Travel details", level: 3 do %>
+        <%= ui_card do %>
+          <%= ui_stack do %>
+            <%= ui_text "Kyoto weekend", size: :body %>
+            <%= ui_text "Keep shared costs and travel notes together.", size: :small, tone: :muted %>
+            <%= ui_inline do %>
+              <%= ui_button "Invite friends", size: :sm %>
+              <%= ui_button "View itinerary", variant: :ghost, size: :sm %>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+      <%= ui_section title: "Shared costs", level: 3 do %>
+        <%= ui_card do %>
+          <%= ui_text "No expenses yet", size: :body %>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>
+```
+
+Reading content: https://ui.lostcoords.com/components/foundations.html
+
+```erb
+<%= ui_prose do %>
+  <h2>Make room for the trip</h2>
+  <p>A shared plan is easier to follow when each idea has room to breathe. Keep the essentials close and give a new topic a little more space.</p>
+  <p>Start with <strong>one clear decision</strong>, then <a href="#reading-next">choose what comes next</a>.</p>
+  <ul>
+    <li>Choose a place to stay.</li>
+    <li>Set aside time for a slow morning.</li>
+    <li>Leave an afternoon open.</li>
+  </ul>
+  <blockquote><p>The best part of a plan is the space it leaves for a surprise.</p></blockquote>
+  <h3 id="reading-next">Ready to begin?</h3>
+  <p>Buttons and other app controls can opt out of reading styles.</p>
+  <div class="not-prose mt-5">
+    <%= ui_button "Create a plan" %>
+  </div>
+<% end %>
 ```
 
 Default: https://ui.lostcoords.com/components/button.html
@@ -41,9 +348,25 @@ Sizes: https://ui.lostcoords.com/components/button.html
 With an icon: https://ui.lostcoords.com/components/button.html
 
 ```erb
-<%= ui_button do %>
-  <%= heroicon "plus", options: { "aria-hidden": true } %>
-  Create project
+<%= ui_button "Create project", icon: "plus" %>
+<%= ui_button "Continue", icon: "arrow-right", icon_position: :end, variant: :secondary %>
+```
+
+Custom icons and content: https://ui.lostcoords.com/components/button.html
+
+```erb
+<%= ui_button variant: :secondary do %>
+  <%= heroicon "arrow-down-tray", options: {
+    "aria-hidden": true,
+    "data-icon": "inline-start"
+  } %>
+  Download report
+<% end %>
+
+<%= ui_button disabled: true, aria: { busy: true } do %>
+  <%= ui_spinner size: :sm, label: nil,
+      data: { icon: "inline-start" } %>
+  Loading report…
 <% end %>
 ```
 
@@ -51,7 +374,7 @@ Loading: https://ui.lostcoords.com/components/button.html
 
 ```erb
 <%= ui_button disabled: true, aria: { busy: true } do %>
-  <%= ui_spinner size: :sm, label: "Saving" %>
+  <%= ui_spinner size: :sm, label: nil, data: { icon: "inline-start" } %>
   Saving…
 <% end %>
 ```
@@ -115,7 +438,7 @@ Modal: https://ui.lostcoords.com/components/dialog.html
 ## ui_button_link_to
 
 ```ruby
-ui_button_link_to(content = nil, url = nil, variant: :primary, size: :base, **attributes, &block)
+ui_button_link_to(content = nil, url = nil, variant: :primary, size: :base, icon: nil, icon_position: :start, **attributes, &block)
 ```
 
 As a link: https://ui.lostcoords.com/components/button.html
@@ -127,7 +450,7 @@ As a link: https://ui.lostcoords.com/components/button.html
 ## ui_button_to
 
 ```ruby
-ui_button_to(content = nil, url = nil, variant: :primary, size: :base, **attributes, &block)
+ui_button_to(content = nil, url = nil, variant: :primary, size: :base, icon: nil, icon_position: :start, **attributes, &block)
 ```
 
 HTTP actions: https://ui.lostcoords.com/components/button.html
@@ -233,6 +556,35 @@ Empty state: https://ui.lostcoords.com/components/empty_state.html
 ui_avatar(content = nil, src: nil, alt: nil, size: :base, ink: false, linked: false, **attributes, &block)
 ```
 
+Page rhythm: https://ui.lostcoords.com/components/foundations.html
+
+```erb
+<%= ui_stack gap: :section, class: "w-full max-w-xl" do %>
+  <%= ui_section title: "Recent expenses", actions: capture { ui_button("Add expense", icon: "plus", size: :sm) } do %>
+    <%= ui_card do %>
+      <%= ui_inline class: "flex-nowrap justify-between" do %>
+        <%= ui_text "Dinner with friends" %>
+        <%= ui_text "¥8,400", class: "shrink-0 tabular-nums" %>
+      <% end %>
+    <% end %>
+    <%= ui_card do %>
+      <%= ui_text "Train tickets" %>
+    <% end %>
+  <% end %>
+  <%= ui_section title: "Members" do %>
+    <%= ui_card do %>
+      <%= ui_inline do %>
+        <%= ui_avatar "AK", class: "bg-sky" %>
+        <%= ui_stack gap: :tight do %>
+          <%= ui_text "Alex Kim" %>
+          <%= ui_text "Joined today", size: :small, tone: :muted %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
+```
+
 Initials and images: https://ui.lostcoords.com/components/avatar.html
 
 ```erb
@@ -270,6 +622,64 @@ A group of people: https://ui.lostcoords.com/components/avatar_stack.html
 
 ```ruby
 ui_card(href: nil, interactive: false, dense: false, **attributes, &block)
+```
+
+Page rhythm: https://ui.lostcoords.com/components/foundations.html
+
+```erb
+<%= ui_stack gap: :section, class: "w-full max-w-xl" do %>
+  <%= ui_section title: "Recent expenses", actions: capture { ui_button("Add expense", icon: "plus", size: :sm) } do %>
+    <%= ui_card do %>
+      <%= ui_inline class: "flex-nowrap justify-between" do %>
+        <%= ui_text "Dinner with friends" %>
+        <%= ui_text "¥8,400", class: "shrink-0 tabular-nums" %>
+      <% end %>
+    <% end %>
+    <%= ui_card do %>
+      <%= ui_text "Train tickets" %>
+    <% end %>
+  <% end %>
+  <%= ui_section title: "Members" do %>
+    <%= ui_card do %>
+      <%= ui_inline do %>
+        <%= ui_avatar "AK", class: "bg-sky" %>
+        <%= ui_stack gap: :tight do %>
+          <%= ui_text "Alex Kim" %>
+          <%= ui_text "Joined today", size: :small, tone: :muted %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
+```
+
+Responsive containers: https://ui.lostcoords.com/components/foundations.html
+
+```erb
+<%= ui_container do %>
+  <%= ui_stack gap: :section do %>
+    <%= ui_heading "Plan your next trip", level: 2, size: :page %>
+    <div class="grid min-w-0 gap-8 md:grid-cols-2">
+      <%= ui_section title: "Travel details", level: 3 do %>
+        <%= ui_card do %>
+          <%= ui_stack do %>
+            <%= ui_text "Kyoto weekend", size: :body %>
+            <%= ui_text "Keep shared costs and travel notes together.", size: :small, tone: :muted %>
+            <%= ui_inline do %>
+              <%= ui_button "Invite friends", size: :sm %>
+              <%= ui_button "View itinerary", variant: :ghost, size: :sm %>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+      <%= ui_section title: "Shared costs", level: 3 do %>
+        <%= ui_card do %>
+          <%= ui_text "No expenses yet", size: :body %>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>
 ```
 
 Default: https://ui.lostcoords.com/components/card.html
@@ -366,11 +776,29 @@ Empty state: https://ui.lostcoords.com/components/empty_state.html
 ui_spinner(size: :base, label: "Loading…", **attributes)
 ```
 
+Custom icons and content: https://ui.lostcoords.com/components/button.html
+
+```erb
+<%= ui_button variant: :secondary do %>
+  <%= heroicon "arrow-down-tray", options: {
+    "aria-hidden": true,
+    "data-icon": "inline-start"
+  } %>
+  Download report
+<% end %>
+
+<%= ui_button disabled: true, aria: { busy: true } do %>
+  <%= ui_spinner size: :sm, label: nil,
+      data: { icon: "inline-start" } %>
+  Loading report…
+<% end %>
+```
+
 Loading: https://ui.lostcoords.com/components/button.html
 
 ```erb
 <%= ui_button disabled: true, aria: { busy: true } do %>
-  <%= ui_spinner size: :sm, label: "Saving" %>
+  <%= ui_spinner size: :sm, label: nil, data: { icon: "inline-start" } %>
   Saving…
 <% end %>
 ```
@@ -415,6 +843,50 @@ Notice: https://ui.lostcoords.com/components/form_alert.html
 
 ```erb
 <%= ui_form_alert "Changes saved.", tone: :notice %>
+```
+
+## ui_prose
+
+```ruby
+ui_prose(**attributes, &block)
+```
+
+Reading content: https://ui.lostcoords.com/components/foundations.html
+
+```erb
+<%= ui_prose do %>
+  <h2>Make room for the trip</h2>
+  <p>A shared plan is easier to follow when each idea has room to breathe. Keep the essentials close and give a new topic a little more space.</p>
+  <p>Start with <strong>one clear decision</strong>, then <a href="#reading-next">choose what comes next</a>.</p>
+  <ul>
+    <li>Choose a place to stay.</li>
+    <li>Set aside time for a slow morning.</li>
+    <li>Leave an afternoon open.</li>
+  </ul>
+  <blockquote><p>The best part of a plan is the space it leaves for a surprise.</p></blockquote>
+  <h3 id="reading-next">Ready to begin?</h3>
+  <p>Buttons and other app controls can opt out of reading styles.</p>
+  <div class="not-prose mt-5">
+    <%= ui_button "Create a plan" %>
+  </div>
+<% end %>
+```
+
+Japanese reading: https://ui.lostcoords.com/components/foundations.html
+
+```erb
+<%= ui_prose lang: "ja" do %>
+  <h2>旅の計画に、少しの余白を。</h2>
+  <p>みんなで予定を考えるときは、大切なことから順番に決めていきましょう。読みやすい行間と段落の間隔が、長い文章をたどる手助けになります。</p>
+  <h3>最初に決めておきたいこと</h3>
+  <ul>
+    <li>集合する場所と時間</li>
+    <li>みんなで分ける費用</li>
+    <li>自由に過ごす時間</li>
+  </ul>
+  <p>予定が変わったら、<a href="#reading-japanese-note">グループにひとこと</a>。少しの共有で、旅がもっと気軽になります。</p>
+  <blockquote id="reading-japanese-note"><p>何もしない時間も、旅の楽しみのひとつです。</p></blockquote>
+<% end %>
 ```
 
 ## ui_input
@@ -849,7 +1321,7 @@ Expandable content: https://ui.lostcoords.com/components/disclosure.html
 
 ```erb
 <%= ui_disclosure title: "Can I use my own colors?" do %>
-  <p class="text-sm text-ink-2">Yes. Define the theme tokens in your application stylesheet.</p>
+  <p class="text-sm text-ink-2">Yes. Override the default theme values in your application stylesheet.</p>
 <% end %>
 ```
 
@@ -865,6 +1337,968 @@ Emoji picker: https://ui.lostcoords.com/components/emoji.html
 <%= fields_for :project do |form| %>
   <%= ui_emoji_picker form: form, field: :emoji, value: "✨", quick: %w[🥝 🍣 🍜 ☕], label: "Choose an emoji", catalog_url: "/emoji-catalog.html" %>
 <% end %>
+```
+
+## ui_heading
+
+```ruby
+ui_heading(content = nil, level: 2, size: :section, **attributes, &block)
+```
+
+Text styles: https://ui.lostcoords.com/components/foundations.html
+
+```erb
+<div class="grid gap-5">
+  <%= ui_heading "Weekend in Kyoto", level: 2, size: :page %>
+  <%= ui_heading "Shared expenses", level: 3, size: :section %>
+  <%= ui_heading "Dinner with friends", level: 4, size: :card %>
+  <%= ui_text "Keep the details together so everyone can see what they owe." %>
+  <%= ui_text "Add a receipt or a short note for your group.", size: :small, tone: :muted %>
+  <%= ui_text "Updated a few minutes ago", size: :caption, tone: :subtle %>
+</div>
+```
+
+Japanese text: https://ui.lostcoords.com/components/foundations.html
+
+```erb
+<div lang="ja" class="grid max-w-sm gap-4">
+  <%= ui_heading "京都で過ごす週末、みんなの旅の記録", level: 3, size: :page %>
+  <%= ui_text "宿泊費や食事代をまとめて記録。誰がいくら支払ったか、グループのみんなで確認できます。" %>
+  <%= ui_text "レシートやメモを追加して、旅の思い出も一緒に残しましょう。", size: :small, tone: :muted %>
+  <%= ui_text "最終更新：数分前", size: :caption, tone: :subtle %>
+</div>
+```
+
+Responsive containers: https://ui.lostcoords.com/components/foundations.html
+
+```erb
+<%= ui_container do %>
+  <%= ui_stack gap: :section do %>
+    <%= ui_heading "Plan your next trip", level: 2, size: :page %>
+    <div class="grid min-w-0 gap-8 md:grid-cols-2">
+      <%= ui_section title: "Travel details", level: 3 do %>
+        <%= ui_card do %>
+          <%= ui_stack do %>
+            <%= ui_text "Kyoto weekend", size: :body %>
+            <%= ui_text "Keep shared costs and travel notes together.", size: :small, tone: :muted %>
+            <%= ui_inline do %>
+              <%= ui_button "Invite friends", size: :sm %>
+              <%= ui_button "View itinerary", variant: :ghost, size: :sm %>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+      <%= ui_section title: "Shared costs", level: 3 do %>
+        <%= ui_card do %>
+          <%= ui_text "No expenses yet", size: :body %>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>
+```
+
+## ui_text
+
+```ruby
+ui_text(content = nil, size: :body, tone: :default, **attributes, &block)
+```
+
+Text styles: https://ui.lostcoords.com/components/foundations.html
+
+```erb
+<div class="grid gap-5">
+  <%= ui_heading "Weekend in Kyoto", level: 2, size: :page %>
+  <%= ui_heading "Shared expenses", level: 3, size: :section %>
+  <%= ui_heading "Dinner with friends", level: 4, size: :card %>
+  <%= ui_text "Keep the details together so everyone can see what they owe." %>
+  <%= ui_text "Add a receipt or a short note for your group.", size: :small, tone: :muted %>
+  <%= ui_text "Updated a few minutes ago", size: :caption, tone: :subtle %>
+</div>
+```
+
+Japanese text: https://ui.lostcoords.com/components/foundations.html
+
+```erb
+<div lang="ja" class="grid max-w-sm gap-4">
+  <%= ui_heading "京都で過ごす週末、みんなの旅の記録", level: 3, size: :page %>
+  <%= ui_text "宿泊費や食事代をまとめて記録。誰がいくら支払ったか、グループのみんなで確認できます。" %>
+  <%= ui_text "レシートやメモを追加して、旅の思い出も一緒に残しましょう。", size: :small, tone: :muted %>
+  <%= ui_text "最終更新：数分前", size: :caption, tone: :subtle %>
+</div>
+```
+
+Page rhythm: https://ui.lostcoords.com/components/foundations.html
+
+```erb
+<%= ui_stack gap: :section, class: "w-full max-w-xl" do %>
+  <%= ui_section title: "Recent expenses", actions: capture { ui_button("Add expense", icon: "plus", size: :sm) } do %>
+    <%= ui_card do %>
+      <%= ui_inline class: "flex-nowrap justify-between" do %>
+        <%= ui_text "Dinner with friends" %>
+        <%= ui_text "¥8,400", class: "shrink-0 tabular-nums" %>
+      <% end %>
+    <% end %>
+    <%= ui_card do %>
+      <%= ui_text "Train tickets" %>
+    <% end %>
+  <% end %>
+  <%= ui_section title: "Members" do %>
+    <%= ui_card do %>
+      <%= ui_inline do %>
+        <%= ui_avatar "AK", class: "bg-sky" %>
+        <%= ui_stack gap: :tight do %>
+          <%= ui_text "Alex Kim" %>
+          <%= ui_text "Joined today", size: :small, tone: :muted %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
+```
+
+Responsive containers: https://ui.lostcoords.com/components/foundations.html
+
+```erb
+<%= ui_container do %>
+  <%= ui_stack gap: :section do %>
+    <%= ui_heading "Plan your next trip", level: 2, size: :page %>
+    <div class="grid min-w-0 gap-8 md:grid-cols-2">
+      <%= ui_section title: "Travel details", level: 3 do %>
+        <%= ui_card do %>
+          <%= ui_stack do %>
+            <%= ui_text "Kyoto weekend", size: :body %>
+            <%= ui_text "Keep shared costs and travel notes together.", size: :small, tone: :muted %>
+            <%= ui_inline do %>
+              <%= ui_button "Invite friends", size: :sm %>
+              <%= ui_button "View itinerary", variant: :ghost, size: :sm %>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+      <%= ui_section title: "Shared costs", level: 3 do %>
+        <%= ui_card do %>
+          <%= ui_text "No expenses yet", size: :body %>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>
+```
+
+## Blocks
+
+Docs-only composition examples: https://ui.lostcoords.com/blocks.html
+Copy and adapt the example files. Blocks are not importable library components.
+
+### Application header
+
+A glass header with navigation, an account menu and room for your brand.
+https://ui.lostcoords.com/blocks/application_header.html
+
+Replace the sample brand, links and account actions with your application's content.
+
+Keep navigation destinations as links and account actions in the menu. The header's layout and scroll behavior live in the example files.
+
+app/views/shared/_application_header.html.erb
+
+```erb
+<div class="header-example min-h-screen" data-controller="blocks-header" data-action="scroll@window->blocks-header#scroll">
+  <header class="header-example__header sticky top-0 z-nav px-3 pt-3 pb-4 sm:px-6">
+    <div class="header-example__bar relative isolate mx-auto flex max-w-5xl items-center gap-2 px-3 py-2">
+      <span class="header-example__glass <%= glass_class(extra: "absolute inset-0 -z-10 pointer-events-none") %>" aria-hidden="true"></span>
+      <a href="#overview" class="flex min-h-11 items-center gap-2.5 pe-4 font-semibold tracking-tight" aria-label="Studio home">
+        <span class="grid size-8 place-items-center rounded-xl bg-ink text-paper"><%= heroicon "square-3-stack-3d", options: { class: "size-4.5", "aria-hidden": true } %></span>
+        Studio
+      </a>
+      <nav class="hidden items-center gap-1 sm:flex" aria-label="Workspace">
+        <% [ [ "Overview", "overview" ], [ "Projects", "projects" ], [ "People", "people" ] ].each do |label, id| %>
+          <%= ui_button_link_to label, "##{id}", variant: :ghost, size: :sm %>
+        <% end %>
+      </nav>
+      <div class="ms-auto flex items-center gap-2">
+        <span class="hidden sm:inline-flex"><%= ui_badge "Personal workspace" %></span>
+        <div class="relative" data-controller="row-menu">
+          <button class="<%= icon_button_class(shape: :circle, size: :sm) %>" type="button" aria-label="Account menu" aria-haspopup="menu" aria-expanded="false" aria-controls="header-account-menu" data-row-menu-target="trigger" data-action="row-menu#toggle">
+            <%= ui_avatar "AL", size: :sm, class: "bg-sky-soft text-sky-deep" %>
+          </button>
+          <div id="header-account-menu" class="<%= menu_popover_class %>" role="menu" aria-label="Account" data-row-menu-target="popover">
+            <%= ui_menu_option "Alex Lee · Personal workspace", href: "#people" %>
+            <%= ui_menu_option "Workspace overview", href: "#overview" %>
+            <%= ui_menu_option "See projects", href: "#projects" %>
+          </div>
+        </div>
+        <div class="relative sm:hidden" data-controller="row-menu">
+          <%= ui_icon_button "Workspace menu", icon: "bars-3", size: :sm, aria: { haspopup: "menu", expanded: false, controls: "header-workspace-menu" }, data: { row_menu_target: "trigger", action: "row-menu#toggle" } %>
+          <div id="header-workspace-menu" class="<%= menu_popover_class %>" role="menu" aria-label="Workspace" data-row-menu-target="popover">
+            <%= ui_menu_option "Overview", href: "#overview" %>
+            <%= ui_menu_option "Projects", href: "#projects" %>
+            <%= ui_menu_option "People", href: "#people" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="mx-auto flex max-w-4xl flex-col gap-12 px-5 pt-8 pb-16 sm:px-8 sm:pt-12">
+    <section id="overview" class="flex scroll-mt-28 flex-col gap-6">
+      <div class="flex flex-col gap-3">
+        <%= ui_eyebrow "Your workspace, at a glance" %>
+        <h1 class="text-4xl font-semibold tracking-tight sm:text-5xl">Room for good work.</h1>
+        <p class="max-w-lg text-ink-2">A little space for your projects, your people, and whatever comes next.</p>
+      </div>
+      <div class="grid gap-4 sm:grid-cols-3">
+        <% [ [ "Projects in motion", "06", "rectangle-stack" ], [ "Your collaborators", "12", "users" ], [ "This week’s milestones", "03", "flag" ] ].each do |label, number, icon| %>
+          <%= ui_card class: "flex flex-col gap-6" do %>
+            <div class="flex items-center justify-between gap-3"><span class="text-sm text-ink-2"><%= label %></span><%= heroicon icon, options: { class: "size-5 shrink-0 text-ink-3", "aria-hidden": true } %></div>
+            <p class="text-4xl font-semibold tracking-tight tabular-nums"><%= number %></p>
+          <% end %>
+        <% end %>
+      </div>
+    </section>
+
+    <section id="projects" class="flex scroll-mt-28 flex-col gap-4">
+      <div class="flex min-h-11 items-center justify-between gap-3"><h2 class="text-xl font-semibold">In the studio</h2><%= ui_badge "3 featured" %></div>
+      <% [ [ "Brand refresh", "A fresh look for a familiar idea.", "swatch", :accent, "In progress" ], [ "Summer collection", "Objects made for everyday moments.", "sun", :neutral, "Taking shape" ], [ "Field notes", "Small observations, collected together.", "book-open", :accent, "Ready to share" ] ].each do |title, description, icon, tone, status| %>
+        <%= ui_card class: "flex items-center gap-4" do %>
+          <%= ui_medallion icon: icon, tone: tone, size: :sm %>
+          <div class="flex min-w-0 flex-1 flex-col gap-1"><h3 class="font-semibold"><%= title %></h3><p class="text-sm text-ink-2"><%= description %></p></div>
+          <span class="hidden text-xs text-ink-3 sm:block"><%= status %></span>
+        <% end %>
+      <% end %>
+    </section>
+
+    <section id="people" class="flex scroll-mt-28 flex-col gap-4">
+      <h2 class="text-xl font-semibold">Good company</h2>
+      <%= ui_card class: "flex flex-col gap-5" do %>
+        <% [ [ "AL", "Alex Lee", "Designer" ], [ "SK", "Sam Kim", "Writer" ], [ "JR", "Jamie Reed", "Maker" ] ].each do |initials, name, role| %>
+          <div class="flex items-center gap-3"><%= ui_avatar initials, class: "bg-paper text-ink-2" %><div class="flex-1"><p class="text-sm font-semibold"><%= name %></p><p class="text-sm text-ink-3"><%= role %></p></div><%= ui_status_pill "Available" %></div>
+        <% end %>
+      <% end %>
+    </section>
+  </main>
+</div>
+```
+
+app/assets/stylesheets/application_header.css
+
+```css
+.header-example__glass {
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+
+.header-example[data-scrolled] .header-example__glass {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header-example__glass {
+    transition: none;
+  }
+}
+```
+
+app/javascript/controllers/blocks_header_controller.js
+
+```javascript
+import { Controller } from "@hotwired/stimulus"
+
+export default class extends Controller {
+  connect() {
+    this.scroll()
+  }
+
+  scroll() {
+    this.element.toggleAttribute("data-scrolled", window.scrollY > 8)
+  }
+}
+```
+
+### Mobile navigation
+
+A floating navigation pill and an expanding stack of quick actions.
+https://ui.lostcoords.com/blocks/mobile_navigation.html
+
+Choose a small set of primary destinations and replace the sample quick actions.
+
+Copy the bottom spacing and safe-area rules with the controls, so page content remains reachable. Test keyboard visibility on a real phone.
+
+app/views/shared/_mobile_navigation.html.erb
+
+```erb
+<div class="mobile-example min-h-screen" data-controller="blocks-mobile-navigation" data-action="resize@window->blocks-mobile-navigation#keyboard focusin@document->blocks-mobile-navigation#keyboard focusout@document->blocks-mobile-navigation#keyboard">
+  <header class="mx-auto flex max-w-2xl items-center justify-between gap-4 px-5 pt-7 pb-6 sm:px-8">
+    <a href="#projects" class="flex min-h-11 items-center gap-2 font-semibold" data-action="blocks-mobile-navigation#home"><%= heroicon "square-3-stack-3d", options: { class: "size-5", "aria-hidden": true } %> Studio</a>
+    <%= ui_avatar "AL", class: "bg-sky-soft text-sky-deep", aria: { label: "Alex Lee" } %>
+  </header>
+
+  <nav class="mobile-example__tabs" aria-label="Studio sections">
+    <div class="<%= glass_class(thick: true, extra: "relative isolate grid grid-flow-col auto-cols-fr gap-1 p-1") %>">
+      <span class="mobile-example__indicator" data-blocks-mobile-navigation-target="indicator" aria-hidden="true"></span>
+      <% [ [ "Projects", "projects", "rectangle-stack" ], [ "Notes", "notes", "document-text" ], [ "People", "people", "users" ] ].each do |label, id, icon| %>
+        <a href="#<%= id %>" class="mobile-example__tab" <%= 'aria-current=page' if id == "projects" %> data-blocks-mobile-navigation-target="link" data-action="blocks-mobile-navigation#select">
+          <%= heroicon icon, options: { class: "size-5", "aria-hidden": true } %><span><%= label %></span>
+        </a>
+      <% end %>
+    </div>
+  </nav>
+
+  <main class="mobile-example__main mx-auto flex max-w-2xl flex-col gap-7 px-5 pt-3 sm:px-8">
+    <div class="flex flex-col gap-2"><%= ui_eyebrow "A space to make things" %><h1 class="text-4xl font-semibold tracking-tight">Your little studio.</h1><p class="text-ink-2">A few good ideas, and room for a few more.</p></div>
+    <p class="text-sm text-ink-2" role="status" aria-live="polite" data-blocks-mobile-navigation-target="status"></p>
+
+    <section id="projects" class="flex flex-col gap-4" data-blocks-mobile-navigation-target="panel">
+      <div class="flex min-h-11 items-center justify-between gap-3"><h2 class="text-xl font-semibold">On your desk</h2><%= ui_badge "This week" %></div>
+      <div class="flex flex-col gap-4" data-blocks-mobile-navigation-target="projects">
+        <% [ [ "Brand refresh", "Finding a fresh perspective.", "swatch", :accent, "In progress" ], [ "Field notes", "Small observations, collected.", "book-open", :leaf, "Taking shape" ], [ "Summer collection", "Objects for everyday moments.", "sun", :neutral, "Just getting started" ] ].each do |title, description, icon, tone, status| %>
+          <%= ui_card class: "flex flex-col gap-5" do %>
+            <div class="flex items-center justify-between gap-3"><%= ui_medallion icon: icon, size: :lg, tone: tone %><%= ui_badge status %></div>
+            <div class="flex flex-col gap-1"><h3 class="text-lg font-semibold"><%= title %></h3><p class="text-sm text-ink-2"><%= description %></p></div>
+            <div class="flex items-center gap-2 text-sm text-ink-3"><%= ui_avatar "AL", size: :sm, class: "bg-paper text-ink-2" %><span>You and your collaborators</span></div>
+          <% end %>
+        <% end %>
+      </div>
+    </section>
+
+    <section id="notes" class="flex flex-col gap-4" data-blocks-mobile-navigation-target="panel" hidden>
+      <h2 class="text-xl font-semibold">Notes to self</h2>
+      <div class="flex flex-col gap-4" data-blocks-mobile-navigation-target="notes">
+        <%= ui_card class: "flex flex-col gap-3" do %><%= ui_eyebrow "A thought for today" %><h3 class="text-lg font-semibold">Leave a little room.</h3><p class="text-sm text-ink-2">The best ideas sometimes arrive between the things you planned.</p><% end %>
+      </div>
+      <%= ui_field label: "Capture a thought", id: "studio-thought", hint: "A small idea is a good place to start." do |field| %><%= ui_textarea name: "thought", placeholder: "What’s on your mind?", rows: 4, **field %><% end %>
+    </section>
+
+    <section id="people" class="flex flex-col gap-4" data-blocks-mobile-navigation-target="panel" hidden>
+      <h2 class="text-xl font-semibold">Good company</h2>
+      <%= ui_card class: "flex flex-col gap-5" do %>
+        <% [ [ "AL", "Alex Lee", "Designer" ], [ "SK", "Sam Kim", "Writer" ], [ "JR", "Jamie Reed", "Maker" ] ].each do |initials, name, role| %>
+          <div class="flex items-center gap-3"><%= ui_avatar initials, class: "bg-paper text-ink-2" %><div class="flex-1"><h3 class="text-sm font-semibold"><%= name %></h3><p class="text-sm text-ink-3"><%= role %></p></div><%= ui_status_pill "Available" %></div>
+        <% end %>
+      <% end %>
+    </section>
+  </main>
+
+  <div class="mobile-example__dock" data-controller="row-menu" data-row-menu-lift-value="false">
+    <button type="button" class="mobile-example__trigger <%= glass_class(shape: :disc, thick: true) %>" aria-label="Create something" aria-haspopup="menu" aria-expanded="false" aria-controls="studio-create-menu" data-row-menu-target="trigger" data-action="row-menu#toggle">
+      <%= heroicon "plus", options: { class: "size-7", "aria-hidden": true } %>
+    </button>
+    <div id="studio-create-menu" class="mobile-example__actions" role="menu" aria-label="Create something" data-row-menu-target="popover">
+      <button type="button" class="mobile-example__scrim" aria-label="Close create menu" tabindex="-1" data-action="row-menu#close"></button>
+      <% [ [ "New project", "rectangle-stack", "projects" ], [ "Add a note", "pencil-square", "notes" ] ].each_with_index do |(label, icon, destination), index| %>
+        <button type="button" role="menuitem" class="mobile-example__action <%= glass_class(shape: :disc, thick: true) %>" style="--action-index: <%= index + 1 %>" data-action="blocks-mobile-navigation#add row-menu#close" data-blocks-mobile-navigation-destination-param="<%= destination %>">
+          <span class="mobile-example__action-label"><%= label %></span><%= heroicon icon, options: { class: "size-6", "aria-hidden": true } %>
+        </button>
+      <% end %>
+    </div>
+  </div>
+
+  <template data-blocks-mobile-navigation-target="draft">
+    <%= ui_card class: "flex flex-col gap-3" do %><%= ui_badge "Draft" %><h3 class="text-lg font-semibold" data-draft-title></h3><p class="text-sm text-ink-2">A fresh start. Make it your own.</p><% end %>
+  </template>
+</div>
+```
+
+app/assets/stylesheets/mobile_navigation.css
+
+```css
+.mobile-example {
+  --dock-gap: max(1rem, env(safe-area-inset-right, 0px));
+  --dock-bottom: max(0.75rem, env(safe-area-inset-bottom, 0px));
+  --dock-size: 4rem;
+}
+
+.mobile-example__main {
+  padding-block-end: calc(var(--dock-bottom) + var(--dock-size) + 2rem);
+}
+
+.mobile-example__tabs {
+  position: fixed;
+  z-index: 20;
+  inset-inline: max(1rem, env(safe-area-inset-left, 0px)) calc(var(--dock-gap) + var(--dock-size) + 0.75rem);
+  bottom: var(--dock-bottom);
+}
+
+.mobile-example__tab {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  min-height: 3.5rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  border-radius: 999px;
+  color: var(--ink-2);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.mobile-example__tab[aria-current="page"] {
+  color: var(--accent);
+}
+
+.mobile-example__indicator {
+  position: absolute;
+  z-index: -1;
+  inset-block: 0.25rem;
+  inset-inline-start: 0;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--ink) 7%, transparent);
+  transition: translate 380ms var(--ease-sheet, ease), width 380ms var(--ease-sheet, ease);
+}
+
+.mobile-example__dock {
+  position: fixed;
+  z-index: 30;
+  inset-inline-end: var(--dock-gap);
+  bottom: var(--dock-bottom);
+}
+
+.mobile-example__trigger,
+.mobile-example__action {
+  display: grid;
+  width: var(--dock-size);
+  height: var(--dock-size);
+  place-items: center;
+  padding: 0;
+  color: var(--accent);
+  cursor: pointer;
+}
+
+.mobile-example__trigger {
+  position: relative;
+  z-index: 2;
+}
+
+.mobile-example__trigger svg {
+  transition: rotate 300ms var(--ease-sheet, ease);
+}
+
+.mobile-example__trigger[aria-expanded="true"] svg {
+  rotate: 135deg;
+}
+
+.mobile-example__actions {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.mobile-example__actions[data-open] {
+  visibility: visible;
+}
+
+.mobile-example__scrim {
+  position: fixed;
+  inset: 0;
+  border: 0;
+  background: color-mix(in oklab, var(--ink) 18%, transparent);
+  opacity: 0;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  transition: opacity 220ms ease;
+}
+
+.mobile-example__actions[data-open] .mobile-example__scrim {
+  pointer-events: auto;
+  opacity: 1;
+}
+
+.mobile-example__action {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  width: 3.5rem;
+  height: 3.5rem;
+  margin: 0.25rem;
+  color: var(--ink);
+  opacity: 0;
+  transform: scale(0.4);
+  transition: transform 300ms ease, opacity 150ms ease;
+}
+
+.mobile-example__actions[data-open] .mobile-example__action {
+  pointer-events: auto;
+  opacity: 1;
+  transform: translateY(calc(var(--action-index) * -4.5rem)) scale(1);
+  transition: transform 420ms cubic-bezier(0.34, 1.45, 0.64, 1), opacity 160ms ease;
+  transition-delay: calc((var(--action-index) - 1) * 40ms);
+}
+
+.mobile-example__action-label {
+  position: absolute;
+  inset-inline-end: calc(100% + 0.75rem);
+  width: max-content;
+  max-width: calc(100vw - 7rem);
+  padding: 0.5rem 0.875rem;
+  border-radius: 999px;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+  color: var(--ink);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.mobile-example[data-keyboard] .mobile-example__tabs,
+.mobile-example[data-keyboard] .mobile-example__dock {
+  display: none;
+}
+
+@media (width >= 40rem) {
+  .mobile-example__tabs {
+    position: relative;
+    inset: auto;
+    width: max-content;
+    margin-inline: auto;
+    margin-block-end: 1.5rem;
+  }
+
+  .mobile-example__tab {
+    min-width: 7rem;
+    min-height: 2.75rem;
+    flex-direction: row;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-example__indicator,
+  .mobile-example__trigger svg,
+  .mobile-example__scrim,
+  .mobile-example__action,
+  .mobile-example__actions[data-open] .mobile-example__action {
+    transition: none;
+  }
+}
+```
+
+app/javascript/controllers/blocks_mobile_navigation_controller.js
+
+```javascript
+import { Controller } from "@hotwired/stimulus"
+
+export default class extends Controller {
+  static targets = ["link", "panel", "indicator", "status", "projects", "notes", "draft"]
+
+  connect() {
+    this.resizeObserver = new ResizeObserver(() => this.placeIndicator())
+    this.linkTargets.forEach((link) => this.resizeObserver.observe(link))
+    this.onViewportResize = () => this.keyboard()
+    window.visualViewport?.addEventListener("resize", this.onViewportResize)
+    this.placeIndicator()
+  }
+
+  disconnect() {
+    this.resizeObserver.disconnect()
+    window.visualViewport?.removeEventListener("resize", this.onViewportResize)
+  }
+
+  select(event) {
+    event.preventDefault()
+    this.show(event.currentTarget.hash.slice(1))
+  }
+
+  home(event) {
+    event.preventDefault()
+    this.show("projects")
+  }
+
+  show(id) {
+    for (const link of this.linkTargets) {
+      if (link.hash === `#${id}`) link.setAttribute("aria-current", "page")
+      else link.removeAttribute("aria-current")
+    }
+    for (const panel of this.panelTargets) panel.hidden = panel.id !== id
+    this.placeIndicator()
+  }
+
+  placeIndicator() {
+    const active = this.linkTargets.find((link) => link.getAttribute("aria-current") === "page")
+    this.indicatorTarget.style.translate = `${active.offsetLeft}px 0`
+    this.indicatorTarget.style.width = `${active.offsetWidth}px`
+  }
+
+  add({ params: { destination } }) {
+    const draft = this.draftTarget.content.cloneNode(true)
+    const title = destination === "projects" ? "Untitled project" : "A new thought"
+    draft.querySelector("[data-draft-title]").textContent = title
+    const list = destination === "projects" ? this.projectsTarget : this.notesTarget
+    list.prepend(draft)
+    this.show(destination)
+    this.statusTarget.textContent = `${title} added. Your next idea starts here.`
+  }
+
+  keyboard() {
+    const typing = document.activeElement?.matches("input, textarea, [contenteditable=true]")
+    const inset = window.innerHeight - (window.visualViewport?.height ?? window.innerHeight)
+    this.element.toggleAttribute("data-keyboard", typing && inset > 150)
+  }
+}
+```
+
+### Global search
+
+A search trigger that expands into a focused overlay with grouped results.
+https://ui.lostcoords.com/blocks/global_search.html
+
+This example filters sample results in the browser so it also works on the static documentation site.
+
+Replace the sample results with your own data or a Turbo Frame endpoint. Keep permissions, ranking and fetching in your application.
+
+app/views/shared/_global_search.html.erb
+
+```erb
+<%
+  collections = {
+    "Projects" => [
+      { title: "Fieldwork", detail: "A quieter identity for an outdoor journal.", icon: "sun", meta: "Brand identity", words: "brand identity outdoor journal fieldwork" },
+      { title: "Sunday House", detail: "A welcoming home for a neighborhood bakery.", icon: "home", meta: "Website", words: "website bakery sunday house" },
+      { title: "Open Water", detail: "A new chapter for an independent publisher.", icon: "book-open", meta: "Editorial", words: "editorial publishing open water" }
+    ],
+    "People" => [
+      { title: "Alex Lee", detail: "Alex leads brand design and the Fieldwork project.", icon: "user", meta: "Designer", words: "alex lee designer fieldwork" },
+      { title: "Sam Kim", detail: "Sam brings our websites and digital products to life.", icon: "user", meta: "Developer", words: "sam kim developer website" }
+    ],
+    "Notes" => [
+      { title: "A few good references", detail: "Our shared collection of typography, color, and things worth keeping.", icon: "document-text", meta: "Updated today", words: "notes references typography color inspiration" }
+    ]
+  }
+%>
+<div class="search-example min-h-screen" data-controller="blocks-search" data-action="turbo:before-cache@document->blocks-search#reset">
+  <header class="px-5 pt-5 sm:px-8">
+    <div class="relative mx-auto flex max-w-5xl items-center justify-between gap-4">
+      <span class="flex items-center gap-2.5 font-semibold tracking-tight"><%= ui_icon_badge icon: "sparkles" %> Studio</span>
+      <button type="button" class="search-example__trigger flex min-h-11 items-center gap-3 rounded-full bg-paper-2 px-3.5 text-ink-3 hover:bg-paper-3 hover:text-ink" data-blocks-search-target="trigger" data-action="blocks-search#open" aria-label="Search workspace" aria-haspopup="dialog" aria-keyshortcuts="Meta+K Control+K">
+        <%= heroicon "magnifying-glass", options: { class: "size-5 shrink-0", "aria-hidden": true } %>
+        <span class="hidden flex-1 text-start text-sm sm:block">Search anything…</span>
+        <kbd class="hidden text-xs sm:block" data-blocks-search-target="shortcut" aria-hidden="true">⌘ K</kbd>
+      </button>
+      <%= ui_avatar "AL", size: :sm, class: "bg-sky-soft text-accent", aria: { label: "Alex Lee" } %>
+    </div>
+  </header>
+
+  <main id="main" class="mx-auto flex max-w-5xl flex-col gap-8 px-5 py-12 sm:px-8 sm:py-16">
+    <div class="flex flex-col items-start gap-3">
+      <%= ui_eyebrow "YOUR WORKSPACE" %>
+      <h1 class="text-3xl font-semibold tracking-tight sm:text-4xl">Room for good work.</h1>
+      <p class="max-w-lg text-ink-2">Projects, people, and ideas. All in one place.</p>
+    </div>
+    <section class="flex flex-col gap-3" aria-labelledby="search-projects-heading">
+      <div class="flex items-center justify-between gap-3"><h2 id="search-projects-heading" class="font-semibold">On the desk</h2><%= ui_badge "3 projects" %></div>
+      <div class="grid gap-4 sm:grid-cols-3">
+        <% collections.fetch("Projects").each do |item| %>
+          <%= ui_card class: "flex flex-col items-start gap-5" do %>
+            <%= ui_medallion icon: item[:icon], size: :lg %>
+            <div class="flex flex-col gap-1"><h3 class="font-semibold"><%= item[:title] %></h3><p class="text-sm text-ink-3"><%= item[:meta] %></p></div>
+            <%= ui_button "Explore", variant: :ghost, size: :sm, icon: "arrow-up-right", icon_position: :end, data: { action: "blocks-search#explore", title: item[:title], detail: item[:detail] } %>
+          <% end %>
+        <% end %>
+      </div>
+    </section>
+    <%= ui_card class: "flex flex-col gap-3", aria: { labelledby: "search-selection-heading" } do %>
+      <%= ui_eyebrow "A LITTLE LESS LOOKING" %>
+      <h2 id="search-selection-heading" class="text-xl font-semibold" data-blocks-search-target="selectionTitle">Find your next thought.</h2>
+      <p class="max-w-xl text-sm text-ink-2" data-blocks-search-target="selectionDetail">Open search and try “Fieldwork”, “Alex”, or “references”. Use the arrow keys to move through results.</p>
+    <% end %>
+    <p class="sr-only" role="status" data-blocks-search-target="selectionStatus"></p>
+  </main>
+
+  <dialog class="search-example__dialog" aria-label="Search workspace" data-blocks-search-target="dialog" data-action="close->blocks-search#closed keydown->blocks-search#navigate click->blocks-search#dismiss">
+    <div class="search-example__stack" data-search-dismiss>
+      <div class="flex shrink-0 items-center gap-3">
+        <label class="<%= glass_class(extra: "flex min-h-14 min-w-0 flex-1 cursor-text items-center gap-3 ps-5 pe-2 sm:min-h-16") %>" data-blocks-search-target="bar">
+          <%= heroicon "magnifying-glass", options: { class: "size-6 shrink-0 text-ink-3", "aria-hidden": true } %>
+          <input type="search" class="search-example__input min-w-0 flex-1 self-stretch border-0 bg-transparent text-base text-ink placeholder:text-ink-3" aria-label="Search projects, people, and notes" placeholder="Search anything…" autocomplete="off" enterkeyhint="search" data-blocks-search-target="input" data-action="input->blocks-search#filter compositionend->blocks-search#filter">
+          <%= ui_icon_button "Clear search", icon: "x-circle", size: :sm, hidden: true, data: { blocks_search_target: "clear", action: "blocks-search#clear" } %>
+          <kbd class="hidden rounded-lg bg-paper-2 px-2 py-1 text-xs text-ink-3 sm:block" aria-hidden="true">esc</kbd>
+        </label>
+        <%= ui_button "Cancel", variant: :ghost, size: :sm, data: { action: "blocks-search#close" } %>
+      </div>
+      <div class="<%= glass_class(shape: :panel, extra: "search-example__results min-h-0 overflow-y-auto overscroll-contain p-2") %>" data-blocks-search-target="results">
+        <p class="px-3 pb-2 pt-3 text-xs text-ink-3" data-blocks-search-target="summary" role="status">Start with something recent</p>
+        <% collections.each do |name, items| %>
+          <section class="py-2" aria-label="<%= name %>" data-blocks-search-target="group">
+            <h2 class="px-3 pb-2 font-mono text-xs font-medium uppercase tracking-widest text-ink-3"><%= name %></h2>
+            <% items.each do |item| %>
+              <button type="button" class="search-example__result flex min-h-16 w-full items-center gap-3 rounded-2xl px-3 py-2 text-start" data-blocks-search-target="result" data-action="blocks-search#select" data-title="<%= item[:title] %>" data-detail="<%= item[:detail] %>" data-search="<%= item[:words] %>">
+                <%= ui_icon_badge icon: item[:icon] %>
+                <span class="flex min-w-0 flex-1 flex-col gap-0.5"><span class="truncate text-sm font-semibold"><%= item[:title] %></span><span class="text-xs text-ink-3"><%= item[:meta] %></span></span>
+                <%= heroicon "arrow-up-left", options: { class: "size-4 shrink-0 text-ink-3", "aria-hidden": true } %>
+              </button>
+            <% end %>
+          </section>
+        <% end %>
+        <div class="px-5 py-10 text-center" data-blocks-search-target="empty" hidden>
+          <p class="font-semibold">Nothing here just yet.</p><p class="pt-2 text-sm text-ink-3">Try a project, a person, or a different word.</p>
+        </div>
+      </div>
+    </div>
+  </dialog>
+</div>
+```
+
+app/assets/stylesheets/global_search.css
+
+```css
+.search-example__trigger {
+  cursor: pointer;
+  transition: background-color 160ms, color 160ms;
+}
+
+.search-example__dialog {
+  position: fixed;
+  inset: 0;
+  inline-size: 100%;
+  max-inline-size: none;
+  block-size: 100%;
+  max-block-size: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  background: transparent;
+  color: var(--ink);
+}
+
+.search-example__dialog::backdrop {
+  background: color-mix(in oklab, var(--paper) 45%, transparent);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  backdrop-filter: blur(16px) saturate(140%);
+}
+
+.search-example__stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  inline-size: min(42rem, calc(100% - 1.5rem));
+  block-size: 100%;
+  margin-inline: auto;
+  padding-block: max(0.75rem, env(safe-area-inset-top)) max(0.75rem, env(safe-area-inset-bottom));
+}
+
+.search-example__results {
+  --glass-fill: color-mix(in oklab, var(--paper) 88%, transparent);
+}
+
+.search-example__input::-webkit-search-cancel-button {
+  /* stylelint-disable-next-line property-no-vendor-prefix -- The clear button has an accessible label. */
+  -webkit-appearance: none;
+}
+
+.search-example__result {
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.search-example__result:is(:hover, :focus-visible) {
+  background: color-mix(in oklab, var(--ink) 6%, transparent);
+}
+
+.search-example [hidden] {
+  display: none;
+}
+
+@media (width >= 40rem) {
+  .search-example__trigger {
+    inline-size: 21rem;
+  }
+
+  .search-example__stack {
+    padding-block-start: 12vh;
+  }
+
+  .search-example__results {
+    max-block-size: 65dvh;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .search-example__dialog::backdrop {
+    background: var(--paper);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+```
+
+app/javascript/controllers/blocks_search_controller.js
+
+```javascript
+import { Controller } from "@hotwired/stimulus"
+import { registerDialog } from "helpers/dialog"
+import { prefersReducedMotion } from "helpers/viewport"
+
+export default class extends Controller {
+  static targets = [
+    "dialog",
+    "trigger",
+    "input",
+    "bar",
+    "results",
+    "result",
+    "group",
+    "empty",
+    "clear",
+    "summary",
+    "shortcut",
+    "selectionTitle",
+    "selectionDetail",
+    "selectionStatus",
+  ]
+
+  connect() {
+    this.animations = []
+    this.onShortcut = (event) => {
+      if (event.isComposing || !(event.metaKey || event.ctrlKey) || event.key.toLowerCase() !== "k")
+        return
+      if (document.querySelector("dialog[open]") && !this.dialogTarget.open) return
+      event.preventDefault()
+      this.open()
+    }
+    document.addEventListener("keydown", this.onShortcut)
+    this.shortcutTarget.textContent = /Mac|iPhone|iPad/.test(navigator.platform) ? "⌘ K" : "Ctrl K"
+  }
+
+  disconnect() {
+    document.removeEventListener("keydown", this.onShortcut)
+    this.returnFocus = null
+    this.reset()
+  }
+
+  open() {
+    if (this.closing) return
+    if (this.dialogTarget.open) return this.inputTarget.focus()
+    this.returnFocus =
+      document.activeElement === document.body ? this.triggerTarget : document.activeElement
+    this.filter()
+    this.dialogTarget.showModal()
+    this.unregisterDialog = registerDialog(this.dialogTarget, { close: () => this.close() })
+    this.inputTarget.focus({ preventScroll: true })
+    this.animate()
+  }
+
+  close() {
+    if (!this.dialogTarget.open || this.closing) return
+    this.closing = true
+    this.animate({ reverse: true })
+    Promise.allSettled(this.animations.map((animation) => animation.finished)).then(() =>
+      this.reset(),
+    )
+  }
+
+  reset() {
+    this.animations.forEach((animation) => animation.cancel())
+    this.animations = []
+    this.dialogTarget.close()
+    this.unregisterDialog?.()
+    this.unregisterDialog = null
+    this.closing = false
+  }
+
+  closed() {
+    this.reset()
+    this.returnFocus?.focus({ preventScroll: true })
+    this.returnFocus = null
+  }
+
+  dismiss(event) {
+    if (event.target.hasAttribute("data-search-dismiss")) this.close()
+  }
+
+  clear() {
+    this.inputTarget.value = ""
+    this.filter()
+    this.inputTarget.focus()
+  }
+
+  filter(event) {
+    if (event?.isComposing) return
+    const query = this.inputTarget.value.normalize("NFKC").trim().toLowerCase()
+    const words = query.split(/\s+/).filter(Boolean)
+    let count = 0
+    for (const result of this.resultTargets) {
+      result.hidden = !words.every((word) => result.dataset.search.includes(word))
+      if (!result.hidden) count++
+    }
+    for (const group of this.groupTargets) {
+      group.hidden = !group.querySelector("[data-blocks-search-target=result]:not([hidden])")
+    }
+    this.clearTarget.hidden = !this.inputTarget.value
+    this.emptyTarget.hidden = count > 0
+    this.summaryTarget.textContent = query
+      ? `${count} ${count === 1 ? "result" : "results"} for “${this.inputTarget.value.trim()}”`
+      : "Start with something recent"
+  }
+
+  navigate(event) {
+    if (event.isComposing || event.keyCode === 229) return
+    const results = this.resultTargets.filter((result) => !result.hidden)
+    const items = [this.inputTarget, ...results]
+    const index = items.indexOf(document.activeElement)
+    if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+      event.preventDefault()
+      const step = event.key === "ArrowDown" ? 1 : -1
+      items[Math.min(Math.max(index + step, 0), items.length - 1)].focus()
+    } else if (event.key === "Enter" && document.activeElement === this.inputTarget) {
+      event.preventDefault()
+      results[0]?.click()
+    }
+  }
+
+  select(event) {
+    this.showSelection(event.currentTarget.dataset)
+    this.close()
+  }
+
+  explore(event) {
+    this.showSelection(event.currentTarget.dataset)
+  }
+
+  showSelection({ title, detail }) {
+    this.selectionTitleTarget.textContent = title
+    this.selectionDetailTarget.textContent = detail
+    this.selectionStatusTarget.textContent = `Opened ${title}.`
+  }
+
+  animate({ reverse = false } = {}) {
+    this.animations.forEach((animation) => animation.cancel())
+    this.animations = []
+    if (prefersReducedMotion()) return
+    const from = this.triggerTarget.getBoundingClientRect()
+    const to = this.barTarget.getBoundingClientRect()
+    const insetY = Math.max((to.height - from.height) / 2, 0)
+    const shiftY = from.top + from.height / 2 - (to.top + to.height / 2)
+    const timing = {
+      duration: reverse ? 200 : 360,
+      easing: "cubic-bezier(0.16, 1, 0.3, 1)",
+      direction: reverse ? "reverse" : "normal",
+      fill: "both",
+    }
+    this.animations = [
+      this.barTarget.animate(
+        [
+          {
+            clipPath: `inset(${insetY}px ${to.right - from.right}px ${insetY}px ${from.left - to.left}px round 999px)`,
+            translate: `0 ${shiftY}px`,
+          },
+          { clipPath: "inset(-1rem round 999px)", translate: "0 0" },
+        ],
+        timing,
+      ),
+      this.resultsTarget.animate(
+        [
+          { opacity: 0, translate: "0 -0.5rem" },
+          { opacity: 1, translate: "0 0" },
+        ],
+        timing,
+      ),
+    ]
+  }
+}
 ```
 
 ## Advanced styles
@@ -911,9 +2345,14 @@ Glass surfaces use glass_class; tw merges utility classes. Read https://github.c
 - `form_alert_class(extra: nil)`
 - `form_alert_icon(tone: :error)`
 - `glass_class(shape: :bar, thick: false, extra: nil)`
+- `stack_class(gap: :content, extra: nil)`
+- `inline_class(gap: :related, extra: nil)`
+- `container_class(size: :page, extra: nil)`
+- `section_header_class(extra: nil)`
 - `popover_class(align: :end, extra: nil)`
 - `menu_popover_class(align: :end, extra: nil)`
 - `menu_option_class(tone: :default, extra: nil)`
+- `prose_class(extra: nil)`
 - `sheet_data(data = {}, detents: "fit")`
 - `sheet_row_class(extra: nil)`
 - `sheet_row_label_class(extra: nil)`
@@ -921,3 +2360,5 @@ Glass surfaces use glass_class; tw merges utility classes. Read https://github.c
 - `sheet_datetime_input_class(extra: nil)`
 - `sheet_text_input_class(extra: nil)`
 - `tw(*classes)`
+- `heading_class(size: :section, extra: nil)`
+- `text_class(size: :body, tone: :default, extra: nil)`

@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="darkreader-lock">
-    <title><%= @section ? "#{@section.title} · " : "" %>LOST COORDS UI</title>
+    <title><%= @section ? "#{@section.title} · " : (@block ? "#{@block.title} · " : (controller_name == "blocks" ? "Blocks · " : "")) %>LOST COORDS UI</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="description" content="A Rails component library. Examples, ERB and API reference.">
     <link rel="icon" href="data:,">
@@ -16,7 +16,7 @@
     <%= stylesheet_link_tag "tailwind" %>
     <%= javascript_importmap_tags %>
   </head>
-  <body data-controller="showcase">
+  <body class="antialiased" data-controller="showcase" data-action="submit->showcase#preventExampleSubmit">
     <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:start-4 focus:z-toast focus:rounded-xl focus:bg-paper focus:p-3">Skip to content</a>
     <header class="sticky top-0 z-nav bg-paper/90 backdrop-blur-xl">
       <div class="mx-auto flex h-20 max-w-360 items-center gap-6 px-5 sm:px-8 lg:px-10">
@@ -25,8 +25,9 @@
           <span class="text-sm">lostcoords<span class="text-ink-3"> / </span>ui</span>
         </a>
         <nav class="hidden items-center gap-6 text-sm sm:flex" aria-label="Main">
-          <a class="text-ink-2 hover:text-ink" href="/components/button.html">Components</a>
-          <a class="text-ink-2 hover:text-ink" href="/tokens.html">Tokens</a>
+          <a class="text-ink-2 hover:text-ink" href="/installation.html">Docs</a>
+          <a class="text-ink-2 hover:text-ink" href="/blocks.html" <%= 'aria-current=page' if controller_name == "blocks" %>>Blocks</a>
+          <a class="text-ink-2 hover:text-ink" href="/theming.html">Theming</a>
         </nav>
         <div class="ms-auto flex items-center gap-2">
           <%= render "showcase/palette_picker" %>

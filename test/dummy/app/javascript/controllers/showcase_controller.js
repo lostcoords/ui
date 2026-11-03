@@ -24,6 +24,11 @@ export default class extends Controller {
     this.media.removeEventListener("change", this.onSystemTheme)
   }
 
+  preventExampleSubmit(event) {
+    if (event.target.closest("[data-example-preview]") && event.target.method !== "dialog")
+      event.preventDefault()
+  }
+
   toggleTheme() {
     const theme = document.documentElement.dataset.theme === "dark" ? "light" : "dark"
     localStorage.setItem(THEME_KEY, theme)

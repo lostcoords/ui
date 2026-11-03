@@ -13,7 +13,7 @@
       const theme = localStorage.getItem("lostcoords-ui:theme")
       if (theme === "dark" || (!theme && matchMedia("(prefers-color-scheme: dark)").matches)) document.documentElement.dataset.theme = "dark"
     </script>
-    <link rel="stylesheet" href="../assets/tailwind-8d727083.css" />
+    <link rel="stylesheet" href="../assets/tailwind-dcf3171e.css" />
     <script type="importmap" data-turbo-track="reload">{
   "imports": {
     "application": "../assets/application-20c5ac24.js",
@@ -39,21 +39,31 @@
     "helpers/top_layer": "../assets/lostcoords/ui/helpers/top_layer-ed2ebe60.js",
     "helpers/viewport": "../assets/lostcoords/ui/helpers/viewport-d4d43aa5.js",
     "controllers/application": "../assets/controllers/application-2a5be8ca.js",
-    "controllers/example_controller": "../assets/controllers/example_controller-72f8521b.js",
+    "controllers/block_preview_controller": "../assets/controllers/block_preview_controller-53c37654.js",
+    "controllers/block_stage_controller": "../assets/controllers/block_stage_controller-828c99a5.js",
+    "controllers/blocks_header_controller": "../assets/controllers/blocks_header_controller-e160e4c1.js",
+    "controllers/blocks_mobile_navigation_controller": "../assets/controllers/blocks_mobile_navigation_controller-f3c310d5.js",
+    "controllers/blocks_search_controller": "../assets/controllers/blocks_search_controller-f1fe01ff.js",
+    "controllers/example_controller": "../assets/controllers/example_controller-ad7ef7d5.js",
     "controllers": "../assets/controllers/index-e1e47e23.js",
-    "controllers/showcase_controller": "../assets/controllers/showcase_controller-da515a08.js"
+    "controllers/showcase_controller": "../assets/controllers/showcase_controller-b500bb11.js"
   }
 }</script>
 <link rel="modulepreload" href="../assets/application-20c5ac24.js">
 <link rel="modulepreload" href="../assets/stimulus.min-7ea3d58b.js">
 <link rel="modulepreload" href="../assets/stimulus-loading-25917588.js">
 <link rel="modulepreload" href="../assets/controllers/application-2a5be8ca.js">
-<link rel="modulepreload" href="../assets/controllers/example_controller-72f8521b.js">
+<link rel="modulepreload" href="../assets/controllers/block_preview_controller-53c37654.js">
+<link rel="modulepreload" href="../assets/controllers/block_stage_controller-828c99a5.js">
+<link rel="modulepreload" href="../assets/controllers/blocks_header_controller-e160e4c1.js">
+<link rel="modulepreload" href="../assets/controllers/blocks_mobile_navigation_controller-f3c310d5.js">
+<link rel="modulepreload" href="../assets/controllers/blocks_search_controller-f1fe01ff.js">
+<link rel="modulepreload" href="../assets/controllers/example_controller-ad7ef7d5.js">
 <link rel="modulepreload" href="../assets/controllers/index-e1e47e23.js">
-<link rel="modulepreload" href="../assets/controllers/showcase_controller-da515a08.js">
+<link rel="modulepreload" href="../assets/controllers/showcase_controller-b500bb11.js">
 <script type="module">import "application"</script>
   </head>
-  <body data-controller="showcase">
+  <body class="antialiased" data-controller="showcase" data-action="submit->showcase#preventExampleSubmit">
     <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:start-4 focus:z-toast focus:rounded-xl focus:bg-paper focus:p-3">Skip to content</a>
     <header class="sticky top-0 z-nav bg-paper/90 backdrop-blur-xl">
       <div class="mx-auto flex h-20 max-w-360 items-center gap-6 px-5 sm:px-8 lg:px-10">
@@ -62,12 +72,13 @@
           <span class="text-sm">lostcoords<span class="text-ink-3"> / </span>ui</span>
         </a>
         <nav class="hidden items-center gap-6 text-sm sm:flex" aria-label="Main">
-          <a class="text-ink-2 hover:text-ink" href="/components/button.html">Components</a>
-          <a class="text-ink-2 hover:text-ink" href="/tokens.html">Tokens</a>
+          <a class="text-ink-2 hover:text-ink" href="/installation.html">Docs</a>
+          <a class="text-ink-2 hover:text-ink" href="/blocks.html" >Blocks</a>
+          <a class="text-ink-2 hover:text-ink" href="/theming.html">Theming</a>
         </nav>
         <div class="ms-auto flex items-center gap-2">
           <div class="relative inline-flex" data-controller="ui-popover">
-  <button id="palette-picker-trigger" type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-12 py-2.5 px-5 text-base border border-transparent bg-paper-2 text-ink hover:bg-paper-3 active:bg-paper-3" aria-haspopup="dialog" aria-expanded="false" aria-controls="palette-picker" data-ui-popover-target="trigger" data-action="ui-popover#toggle">Palette</button>
+  <button id="palette-picker-trigger" type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-12 py-2.5 px-5 has-[&gt;[data-icon=inline-start]]:ps-4 has-[&gt;[data-icon=inline-end]]:pe-4 text-base border border-transparent bg-paper-2 text-ink hover:bg-paper-3 active:bg-paper-3" aria-haspopup="dialog" aria-expanded="false" aria-controls="palette-picker" data-ui-popover-target="trigger" data-action="ui-popover#toggle">Palette</button>
   <div class="glass rounded-3xl [--glass-shadow:var(--glass-rim),var(--shadow-lg)] max-md:[--glass-fill:var(--paper)] dark:max-md:[--glass-fill:var(--paper-3)] row-menu__popover squircle popover-shell hidden absolute top-[calc(100%+--spacing(1))] end-0 overscroll-contain [&amp;_form]:m-0 data-open:flex flex-col gap-4 p-5 z-nav-popover min-w-64 max-w-[calc(100vw-2rem)] transition-none w-80 max-h-[calc(100dvh-7rem)] overflow-y-auto" id="palette-picker" role="dialog" aria-labelledby="palette-picker-title" data-ui-popover-target="popover" tabindex="-1">
     <h2 id="palette-picker-title" class="font-semibold">Color palette</h2>
     
@@ -121,7 +132,7 @@
     <span role="status" class="sr-only" data-showcase-target="paletteStatus"></span>
 
 </div></div>
-          <a class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2)) max-sm:hidden" aria-label="Source on GitHub" href="https://github.com/lostcoords/ui"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon">
+          <a class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 has-[&gt;[data-icon=inline-start]]:ps-3 has-[&gt;[data-icon=inline-end]]:pe-3 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2)) max-sm:hidden" aria-label="Source on GitHub" href="https://github.com/lostcoords/ui"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon">
   <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"></path>
 </svg>
 </a>
@@ -138,7 +149,10 @@
   <div class="flex flex-col gap-1">
     <p class="px-3 text-xs font-medium text-ink-3">Library</p>
     <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/">Overview</a>
-    <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/tokens.html" >Tokens</a>
+    <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/installation.html" >Installation</a>
+    <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/theming.html" >Theming</a>
+    <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/blocks.html" >Blocks</a>
+    <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/foundations.html" >Foundations</a>
   </div>
   <div class="flex flex-col gap-1">
     <p class="px-3 pb-1 text-xs font-medium text-ink-3">Components</p>
@@ -182,7 +196,10 @@
   <div class="flex flex-col gap-1">
     <p class="px-3 text-xs font-medium text-ink-3">Library</p>
     <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/">Overview</a>
-    <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/tokens.html" >Tokens</a>
+    <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/installation.html" >Installation</a>
+    <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/theming.html" >Theming</a>
+    <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/blocks.html" >Blocks</a>
+    <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/foundations.html" >Foundations</a>
   </div>
   <div class="flex flex-col gap-1">
     <p class="px-3 pb-1 text-xs font-medium text-ink-3">Components</p>
@@ -221,21 +238,41 @@
         <div class="flex items-center justify-between gap-4">
           <p class="text-xs text-ink-3">Components <span class="px-2" aria-hidden="true">/</span> Emoji picker</p>
           <div class="flex gap-1">
-                <a class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2))" aria-label="Previous component: Disclosure" href="/components/disclosure.html"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon">
+                <a class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 has-[&gt;[data-icon=inline-start]]:ps-3 has-[&gt;[data-icon=inline-end]]:pe-3 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2))" aria-label="Previous component: Disclosure" href="/components/disclosure.html"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon">
   <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"></path>
 </svg>
 </a>
           </div>
         </div>
-        <h1 class="text-4xl font-semibold tracking-tight sm:text-5xl">Emoji picker</h1>
-        <p class="text-base text-ink-2">Search, categories and skin tones.</p>
+        <h1 class="text-balance text-4xl font-semibold tracking-tight sm:text-5xl">Emoji picker</h1>
+        <p class="text-pretty text-base text-ink-2">Search, categories and skin tones.</p>
       </header>
-      <div class="flex flex-col gap-12">
-          <section id="example-0" class="flex min-w-0 scroll-mt-28 flex-col gap-4" data-controller="example" data-action="submit->example#preventSubmit">
-  <h2 class="text-lg font-semibold tracking-tight"><a href="#example-0">Emoji picker</a></h2>
-  <div class="overflow-hidden rounded-3xl bg-paper-2">
-    <div class="flex min-h-40 flex-wrap items-center justify-center gap-4 p-6 sm:p-10 ">
       
+      <section id="usage" class="flex scroll-mt-28 flex-col gap-4">
+        <h2 class="text-xl font-semibold tracking-tight">Usage</h2>
+        <p class="text-pretty text-sm text-ink-2">After the <a href="/installation.html" class="underline underline-offset-2">one-time setup</a>, call the helper directly from ERB. No component import is needed.</p>
+        <div class="group/source overflow-hidden rounded-2xl bg-paper-2" data-controller="example">
+  <div class="flex min-h-12 items-center justify-between gap-4 px-5">
+    <span class="font-mono text-xs uppercase text-ink-3">erb</span>
+    <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 has-[&gt;[data-icon=inline-start]]:ps-3 has-[&gt;[data-icon=inline-end]]:pe-3 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2)) min-w-20" data-action="example#copy" data-example-target="copy" aria-label="Copy Emoji picker usage">Copy</button>
+  </div>
+  <div class="relative">
+    <pre id="usage-code" class="overflow-x-auto px-5 pb-5 font-mono text-[0.8125rem] text-ink-2 [tab-size:2] " tabindex="0" role="region" aria-label="Emoji picker usage" data-example-target="code"><code><span class="text-(--syntax-keyword)" data-syntax="keyword">&lt;%=</span> <span class="text-(--syntax-call)" data-syntax="call">fields_for</span> <span class="text-(--syntax-symbol)" data-syntax="symbol">:</span><span class="text-(--syntax-call)" data-syntax="call">project</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">do</span> |<span class="text-(--syntax-call)" data-syntax="call">form</span>| <span class="text-(--syntax-keyword)" data-syntax="keyword">%&gt;</span>
+  <span class="text-(--syntax-keyword)" data-syntax="keyword">&lt;%=</span> <span class="text-(--syntax-call)" data-syntax="call">ui_emoji_picker</span> <span class="text-(--syntax-symbol)" data-syntax="symbol">form:</span> <span class="text-(--syntax-call)" data-syntax="call">form</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">field:</span> <span class="text-(--syntax-symbol)" data-syntax="symbol">:</span><span class="text-(--syntax-call)" data-syntax="call">emoji</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">value:</span> <span class="text-(--syntax-string)" data-syntax="string">&quot;</span><span class="text-(--syntax-string)" data-syntax="string">✨</span><span class="text-(--syntax-string)" data-syntax="string">&quot;</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">quick:</span> %w[<span class="text-(--syntax-string)" data-syntax="string">🥝</span> <span class="text-(--syntax-string)" data-syntax="string">🍣</span> <span class="text-(--syntax-string)" data-syntax="string">🍜</span> <span class="text-(--syntax-string)" data-syntax="string">☕</span><span class="text-(--syntax-string)" data-syntax="string">]</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">label:</span> <span class="text-(--syntax-string)" data-syntax="string">&quot;</span><span class="text-(--syntax-string)" data-syntax="string">Choose an emoji</span><span class="text-(--syntax-string)" data-syntax="string">&quot;</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">catalog_url:</span> <span class="text-(--syntax-string)" data-syntax="string">&quot;</span><span class="text-(--syntax-string)" data-syntax="string">/emoji-catalog.html</span><span class="text-(--syntax-string)" data-syntax="string">&quot;</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">%&gt;</span>
+<span class="text-(--syntax-keyword)" data-syntax="keyword">&lt;%</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">end</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">%&gt;</span></code></pre>
+    
+  </div>
+  <span class="sr-only" role="status" data-example-target="status"></span>
+</div>
+
+      </section>
+      <div id="examples" class="flex scroll-mt-28 flex-col gap-8">
+        <h2 class="text-2xl font-semibold tracking-tight">Examples</h2>
+          <section id="example-0" class="flex min-w-0 scroll-mt-28 flex-col gap-4">
+  <h2 class="group/heading text-xl font-semibold tracking-tight"><a href="#example-0" class="inline-flex items-center gap-2">Emoji picker<span class="text-ink-3 opacity-0 transition-opacity group-hover/heading:opacity-100 group-has-focus-visible/heading:opacity-100" aria-hidden="true">#</span></a></h2>
+  
+  <div class="flex min-h-48 flex-wrap items-center justify-center gap-4 rounded-2xl p-6 sm:p-10 bg-paper-2" data-example-preview>
+    
   
 <div class="emoji-picker" data-controller="emoji-picker" data-emoji-picker-auto-submit-value="false" data-emoji-picker-catalog-url-value="/emoji-catalog.html">
   <input value="✨" data-emoji-picker-target="input" type="hidden" name="project[emoji]" id="project_emoji" />
@@ -489,19 +526,21 @@
   </div>
 </div>
 
-    </div>
-    <div class="flex min-h-12 items-center justify-between gap-4 bg-paper-2 px-4">
-      <button type="button" class="flex min-h-11 items-center gap-2 font-mono text-xs text-ink-2 hover:text-ink" aria-expanded="false" aria-controls="example-0-code" data-action="example#toggle" data-example-target="toggle"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon size-4">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"></path>
-</svg>
- View code</button>
-      <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2))" data-action="example#copy" data-example-target="copy" aria-label="Copy Emoji picker code">Copy</button>
-    </div>
-    <pre id="example-0-code" class="max-h-120 overflow-auto bg-paper-3 p-5 font-mono text-xs text-ink-2" data-example-target="code" hidden><code>&lt;%= fields_for :project do |form| %&gt;
-  &lt;%= ui_emoji_picker form: form, field: :emoji, value: &quot;✨&quot;, quick: %w[🥝 🍣 🍜 ☕], label: &quot;Choose an emoji&quot;, catalog_url: &quot;/emoji-catalog.html&quot; %&gt;
-&lt;% end %&gt;</code></pre>
+  </div>
+  <div class="group/source overflow-hidden rounded-2xl bg-paper-2" data-controller="example">
+  <div class="flex min-h-12 items-center justify-between gap-4 px-5">
+    <span class="font-mono text-xs uppercase text-ink-3">erb</span>
+    <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 has-[&gt;[data-icon=inline-start]]:ps-3 has-[&gt;[data-icon=inline-end]]:pe-3 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2)) min-w-20" data-action="example#copy" data-example-target="copy" aria-label="Copy Emoji picker code">Copy</button>
+  </div>
+  <div class="relative">
+    <pre id="example-0-code" class="overflow-x-auto px-5 pb-5 font-mono text-[0.8125rem] text-ink-2 [tab-size:2] " tabindex="0" role="region" aria-label="Emoji picker code" data-example-target="code"><code><span class="text-(--syntax-keyword)" data-syntax="keyword">&lt;%=</span> <span class="text-(--syntax-call)" data-syntax="call">fields_for</span> <span class="text-(--syntax-symbol)" data-syntax="symbol">:</span><span class="text-(--syntax-call)" data-syntax="call">project</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">do</span> |<span class="text-(--syntax-call)" data-syntax="call">form</span>| <span class="text-(--syntax-keyword)" data-syntax="keyword">%&gt;</span>
+  <span class="text-(--syntax-keyword)" data-syntax="keyword">&lt;%=</span> <span class="text-(--syntax-call)" data-syntax="call">ui_emoji_picker</span> <span class="text-(--syntax-symbol)" data-syntax="symbol">form:</span> <span class="text-(--syntax-call)" data-syntax="call">form</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">field:</span> <span class="text-(--syntax-symbol)" data-syntax="symbol">:</span><span class="text-(--syntax-call)" data-syntax="call">emoji</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">value:</span> <span class="text-(--syntax-string)" data-syntax="string">&quot;</span><span class="text-(--syntax-string)" data-syntax="string">✨</span><span class="text-(--syntax-string)" data-syntax="string">&quot;</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">quick:</span> %w[<span class="text-(--syntax-string)" data-syntax="string">🥝</span> <span class="text-(--syntax-string)" data-syntax="string">🍣</span> <span class="text-(--syntax-string)" data-syntax="string">🍜</span> <span class="text-(--syntax-string)" data-syntax="string">☕</span><span class="text-(--syntax-string)" data-syntax="string">]</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">label:</span> <span class="text-(--syntax-string)" data-syntax="string">&quot;</span><span class="text-(--syntax-string)" data-syntax="string">Choose an emoji</span><span class="text-(--syntax-string)" data-syntax="string">&quot;</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">catalog_url:</span> <span class="text-(--syntax-string)" data-syntax="string">&quot;</span><span class="text-(--syntax-string)" data-syntax="string">/emoji-catalog.html</span><span class="text-(--syntax-string)" data-syntax="string">&quot;</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">%&gt;</span>
+<span class="text-(--syntax-keyword)" data-syntax="keyword">&lt;%</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">end</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">%&gt;</span></code></pre>
+    
   </div>
   <span class="sr-only" role="status" data-example-target="status"></span>
+</div>
+
 </section>
 
       </div>
@@ -510,7 +549,7 @@
   <p class="text-sm text-ink-2">Helpers render semantic HTML and include their interaction wiring. Pass native attributes through <code>class:</code>, <code>data:</code>, <code>aria:</code> and the usual Rails options. Blocks use captured ERB content.</p>
     <div class="flex min-w-0 flex-col gap-4">
       <h3 id="ui_emoji_picker" class="scroll-mt-28 font-mono text-sm font-medium">ui_emoji_picker</h3>
-      <pre class="overflow-x-auto rounded-2xl bg-paper-2 p-4 font-mono text-xs text-ink-2"><code>ui_emoji_picker(form:, field:, label:, catalog_url:, value: nil, quick: [], recent: [], recent_scope: nil, auto_submit: false, **attributes)</code></pre>
+      <pre class="overflow-x-auto rounded-2xl bg-paper-2 p-4 font-mono text-xs text-ink-2"><code><span class="text-(--syntax-call)" data-syntax="call">ui_emoji_picker</span>(<span class="text-(--syntax-symbol)" data-syntax="symbol">form:</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">field:</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">label:</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">catalog_url:</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">value:</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">nil</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">quick:</span> [], <span class="text-(--syntax-symbol)" data-syntax="symbol">recent:</span> [], <span class="text-(--syntax-symbol)" data-syntax="symbol">recent_scope:</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">nil</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">auto_submit:</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">false</span>, **<span class="text-(--syntax-call)" data-syntax="call">attributes</span>)</code></pre>
       <div class="overflow-x-auto">
         <table class="w-full min-w-80 text-start text-sm">
           <thead><tr class="text-xs text-ink-3"><th class="py-3 pe-4 text-start font-medium">Input</th><th class="py-3 pe-4 text-start font-medium">Default</th><th class="py-3 text-start font-medium">Values</th></tr></thead>
@@ -531,7 +570,7 @@
     </div>
   <div class="flex flex-col gap-3 rounded-2xl bg-paper-2 p-5 text-sm text-ink-2">
     <h3 class="font-semibold text-ink">Styling and extension</h3>
-    <p>Use <code>class:</code> to merge utilities, native attributes for application behavior, and <a href="/tokens.html" class="underline underline-offset-2">theme tokens</a> for the shared palette. For custom markup, the <a href="https://github.com/lostcoords/ui#advanced-style-composition" class="underline underline-offset-2">advanced class helpers</a> expose the same styles, including glass surfaces and class merging.</p>
+    <p>Use <code>class:</code> to merge utilities, native attributes for application behavior, and <a href="/theming.html" class="underline underline-offset-2">theming guide</a> for the shared palette. For custom markup, the <a href="https://github.com/lostcoords/ui#advanced-style-composition" class="underline underline-offset-2">advanced class helpers</a> expose the same styles, including glass surfaces and class merging.</p>
     <p><a href="/api.json" class="underline underline-offset-2">API JSON</a> · <a href="/llms.txt" class="underline underline-offset-2">LLM reference</a></p>
   </div>
 </section>
@@ -541,7 +580,9 @@
   <aside class="sticky top-20 hidden h-[calc(100dvh-5rem)] w-40 shrink-0 overflow-y-auto py-12 text-xs xl:block">
     <p class="pb-4 font-medium">On this page</p>
     <nav class="flex flex-col items-start gap-3 text-ink-3" aria-label="On this page">
-        <a class="hover:text-ink" href="#example-0">Emoji picker</a>
+      <a class="hover:text-ink" href="#usage">Usage</a>
+      <a class="hover:text-ink" href="#examples">Examples</a>
+        <a class="ps-3 hover:text-ink" href="#example-0">Emoji picker</a>
       <a class="pt-2 hover:text-ink" href="#api">API reference</a>
     </nav>
   </aside>

@@ -13,7 +13,15 @@ class HomeController < ApplicationController
     raise ActionController::RoutingError, "Not found" unless @section
   end
 
-  def tokens
+  def installation
+    @sections = Showcase.sections
+  end
+
+  def starter
+    render plain: DocsInstallation.stylesheet, content_type: "text/css"
+  end
+
+  def theming
     @sections = Showcase.sections
   end
 

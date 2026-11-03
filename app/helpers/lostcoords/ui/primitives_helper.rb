@@ -7,11 +7,11 @@ module Lostcoords::Ui
       destructive: :danger
     }.freeze
 
-    def ui_button(content = nil, variant: :primary, size: :base, **attributes, &block)
-      tag.button(content, **ui_button_attributes(variant, size, { type: "button" }, attributes), &block)
+    def ui_button(content = nil, variant: :primary, size: :base, icon: nil, icon_position: :start, **attributes, &block)
+      tag.button(ui_button_content(content, icon, icon_position, &block), **ui_button_attributes(variant, size, { type: "button" }, attributes))
     end
 
-    def ui_button_link_to(content = nil, url = nil, variant: :primary, size: :base, **attributes, &block)
+    def ui_button_link_to(content = nil, url = nil, variant: :primary, size: :base, icon: nil, icon_position: :start, **attributes, &block)
       attributes = ui_button_attributes(variant, size, {}, attributes)
       raise ArgumentError, "Links cannot be disabled; use ui_button for a disabled control" if attributes[:disabled]
 
@@ -20,16 +20,16 @@ module Lostcoords::Ui
         content = capture(&block)
       end
 
-      link_to(content, url, attributes)
+      link_to(ui_button_content(content, icon, icon_position), url, attributes)
     end
 
-    def ui_button_to(content = nil, url = nil, variant: :primary, size: :base, **attributes, &block)
+    def ui_button_to(content = nil, url = nil, variant: :primary, size: :base, icon: nil, icon_position: :start, **attributes, &block)
       if block
         url ||= content
         content = capture(&block)
       end
 
-      button_to(content, url, ui_button_attributes(variant, size, {}, attributes))
+      button_to(ui_button_content(content, icon, icon_position), url, ui_button_attributes(variant, size, {}, attributes))
     end
 
     def ui_icon_button(label, icon:, size: :base, shape: :circle, **attributes)
@@ -134,6 +134,15 @@ module Lostcoords::Ui
     end
 
     private
+      def ui_button_content(content, icon, position, &block)
+        position = ui_option!(:icon_position, position, %i[start end])
+        content = capture(&block) if block
+        return content unless icon
+
+        glyph = heroicon(icon, options: { "aria-hidden": true, "data-icon": "inline-#{position}" })
+        safe_join(position == :start ? [ glyph, content ] : [ content, glyph ])
+      end
+
       def ui_button_attributes(variant, size, defaults, attributes)
         variant = ui_option!(:variant, variant, BUTTON_STYLES.keys)
         size = ui_option!(:size, size, %i[sm base lg])

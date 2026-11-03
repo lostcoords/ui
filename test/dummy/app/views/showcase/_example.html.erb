@@ -1,14 +1,8 @@
-<section id="<%= id %>" class="flex min-w-0 scroll-mt-28 flex-col gap-4" data-controller="example" data-action="submit->example#preventSubmit">
-  <h2 class="text-lg font-semibold tracking-tight"><a href="#<%= id %>"><%= title %></a></h2>
-  <div class="overflow-hidden rounded-3xl bg-paper-2">
-    <div class="flex min-h-40 flex-wrap items-center justify-center gap-4 p-6 sm:p-10 <%= 'bg-paper' if example.stage == :page %>">
-      <%= render inline: showcase_source(example, id:) %>
-    </div>
-    <div class="flex min-h-12 items-center justify-between gap-4 bg-paper-2 px-4">
-      <button type="button" class="flex min-h-11 items-center gap-2 font-mono text-xs text-ink-2 hover:text-ink" aria-expanded="false" aria-controls="<%= id %>-code" data-action="example#toggle" data-example-target="toggle"><%= heroicon "code-bracket", options: { class: "size-4", "aria-hidden": true } %> View code</button>
-      <%= ui_button "Copy", variant: :ghost, size: :sm, data: { action: "example#copy", example_target: "copy" }, aria: { label: "Copy #{title} code" } %>
-    </div>
-    <pre id="<%= id %>-code" class="max-h-120 overflow-auto bg-paper-3 p-5 font-mono text-xs text-ink-2" data-example-target="code" hidden><code><%= showcase_source(example, id:) %></code></pre>
+<section id="<%= id %>" class="flex min-w-0 scroll-mt-28 flex-col gap-4">
+  <h2 class="group/heading text-xl font-semibold tracking-tight"><a href="#<%= id %>" class="inline-flex items-center gap-2"><%= title %><span class="text-ink-3 opacity-0 transition-opacity group-hover/heading:opacity-100 group-has-focus-visible/heading:opacity-100" aria-hidden="true">#</span></a></h2>
+  <% if example.note %><p class="text-pretty text-sm text-ink-2"><%= example.note %></p><% end %>
+  <div class="flex min-h-48 flex-wrap items-center justify-center gap-4 rounded-2xl p-6 sm:p-10 <%= example.stage == :page ? 'bg-paper' : 'bg-paper-2' %>" data-example-preview>
+    <%= render inline: showcase_source(example, id:) %>
   </div>
-  <span class="sr-only" role="status" data-example-target="status"></span>
+  <%= render "showcase/source_code", source: showcase_source(example, id:), id: "#{id}-code", label: "#{title} code" %>
 </section>

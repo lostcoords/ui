@@ -1,0 +1,24 @@
+<%= ui_container do %>
+  <%= ui_stack gap: :section do %>
+    <%= ui_heading "Plan your next trip", level: 2, size: :page %>
+    <div class="grid min-w-0 gap-8 md:grid-cols-2">
+      <%= ui_section title: "Travel details", level: 3 do %>
+        <%= ui_card do %>
+          <%= ui_stack do %>
+            <%= ui_text "Kyoto weekend", size: :body %>
+            <%= ui_text "Keep shared costs and travel notes together.", size: :small, tone: :muted %>
+            <%= ui_inline do %>
+              <%= ui_button "Invite friends", size: :sm %>
+              <%= ui_button "View itinerary", variant: :ghost, size: :sm %>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+      <%= ui_section title: "Shared costs", level: 3 do %>
+        <%= ui_card do %>
+          <%= ui_text "No expenses yet", size: :body %>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

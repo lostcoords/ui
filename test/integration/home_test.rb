@@ -47,6 +47,35 @@ class HomeTest < ActionDispatch::IntegrationTest
     Lostcoords::Ui::Components.all.each { |component| assert_includes response.body, component.signature }
   end
 
+  test "installation provides a complete starter stylesheet and explains Rails loading" do
+    get "/installation.html"
+
+    assert_response :success
+    assert_includes response.body, "Gemfile.lock"
+    assert_includes response.body, "javascript_importmap_tags"
+
+    get "/starter.css"
+
+    assert_response :success
+    assert_equal "text/css", response.media_type
+    refute_includes response.body, ":root"
+    assert_includes response.body, '@import "../builds/tailwind/lostcoords_ui.css"'
+    refute_includes response.body, "--palette-"
+    refute_includes response.body, "--syntax-"
+  end
+
+  test "the old tokens URL serves the theming guide" do
+    get "/theming.html"
+
+    assert_response :success
+    guide = response.body
+
+    get "/tokens.html"
+
+    assert_response :success
+    assert_equal guide, response.body
+  end
+
   test "a component that does not exist returns not found" do
     get component_path(component: "missing", format: :html)
 

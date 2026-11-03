@@ -1,4 +1,6 @@
 require "test_helper"
+require "lostcoords/ui/components"
+require "lostcoords/ui/tokens"
 require "open3"
 require "json"
 require "tmpdir"
@@ -14,8 +16,14 @@ class StaticExportTest < ActiveSupport::TestCase
       reference = JSON.parse(File.read(File.join(directory, "api.json")))
       assert_equal Lostcoords::Ui::Components.all.size, reference.fetch("components").size
       assert_includes File.read(File.join(directory, "llms.txt")), "ui_button_to"
+      installation = Nokogiri::HTML(File.read(File.join(directory, "installation.html")))
+      assert_includes installation.text, "app/assets/tailwind/application.css"
+      assert_includes File.read(File.join(directory, "starter.css")), '@import "../builds/tailwind/lostcoords_ui.css"'
+      theming = Nokogiri::HTML(File.read(File.join(directory, "theming.html")))
+      assert_equal "Theming", theming.at_css("h1").text
       pages = Dir["#{directory}/**/*.html"]
-      assert_equal Showcase.sections.size + 3, pages.size
+      assert_equal Showcase.sections.size + 6 + DocsBlocks.all.size * 2, pages.size
+      assert_equal DocsBlocks.all.size, reference.fetch("blocks").size
 
       Dir.mktmpdir do |second|
         _, error, status = Open3.capture3({ "RAILS_ENV" => "development" }, "bin/rails", "lostcoords:ui:showcase[#{second}]", chdir: root)
@@ -37,7 +45,7 @@ class StaticExportTest < ActiveSupport::TestCase
             assert File.file?(File.expand_path(path, File.dirname(page))), "Missing module: #{path} in #{page}"
           end
         end
-        document.css("a[href], link[href], script[src]").each do |node|
+        document.css("a[href], link[href], script[src], iframe[src]").each do |node|
           path = URI.parse(node["href"] || node["src"])
           next if path.scheme || path.host || path.path.empty?
 

@@ -4,7 +4,7 @@
   <% showcase_builders(section).each do |component| %>
     <div class="flex min-w-0 flex-col gap-4">
       <h3 id="<%= component.name %>" class="scroll-mt-28 font-mono text-sm font-medium"><%= component.name %></h3>
-      <pre class="overflow-x-auto rounded-2xl bg-paper-2 p-4 font-mono text-xs text-ink-2"><code><%= component.signature %></code></pre>
+      <pre class="overflow-x-auto rounded-2xl bg-paper-2 p-4 font-mono text-xs text-ink-2"><code><%= highlight_source(component.signature, language: :ruby) %></code></pre>
       <div class="overflow-x-auto">
         <table class="w-full min-w-80 text-start text-sm">
           <thead><tr class="text-xs text-ink-3"><th class="py-3 pe-4 text-start font-medium">Input</th><th class="py-3 pe-4 text-start font-medium">Default</th><th class="py-3 text-start font-medium">Values</th></tr></thead>
@@ -19,7 +19,7 @@
   <% end %>
   <div class="flex flex-col gap-3 rounded-2xl bg-paper-2 p-5 text-sm text-ink-2">
     <h3 class="font-semibold text-ink">Styling and extension</h3>
-    <p>Use <code>class:</code> to merge utilities, native attributes for application behavior, and <a href="/tokens.html" class="underline underline-offset-2">theme tokens</a> for the shared palette. For custom markup, the <a href="https://github.com/lostcoords/ui#advanced-style-composition" class="underline underline-offset-2">advanced class helpers</a> expose the same styles, including glass surfaces and class merging.</p>
+    <p>Use <code>class:</code> to merge utilities, native attributes for application behavior, and <a href="/theming.html" class="underline underline-offset-2">theming guide</a> for the shared palette. For custom markup, the <a href="https://github.com/lostcoords/ui#advanced-style-composition" class="underline underline-offset-2">advanced class helpers</a> expose the same styles, including glass surfaces and class merging.</p>
     <p><a href="/api.json" class="underline underline-offset-2">API JSON</a> · <a href="/llms.txt" class="underline underline-offset-2">LLM reference</a></p>
   </div>
 </section>

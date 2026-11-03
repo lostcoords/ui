@@ -26,11 +26,11 @@ module Lostcoords::Ui
       "focus:shadow-(--focus-halo) " \
       "aria-invalid:border-berry aria-invalid:shadow-[0_0_0_3px_color-mix(in_oklab,var(--berry)_16%,transparent)]"
 
-    FIELD_BASE = "min-w-0 mb-5 last:mb-0 has-aria-invalid:[&>label]:text-berry"
+    FIELD_BASE = "ui-field grid min-w-0 gap-2 has-aria-invalid:[&>label]:text-berry"
 
     FIELD_LABEL_BASE =
       "block font-body text-sm font-semibold text-ink-3 " \
-      "mb-2.5 transition-colors duration-[120ms] ease-out"
+      "transition-colors duration-[120ms] ease-out"
 
     FORM_ACTIONS_BASE = "flex flex-wrap items-center justify-end gap-2"
 

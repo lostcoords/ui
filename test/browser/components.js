@@ -15,7 +15,58 @@ async function _verifyComponents(page) {
   }
 
   await visit("button")
-  const form = page.locator('[data-controller="example"] form').first()
+  const contrast = await page.evaluate(() => {
+    const root = document.documentElement
+    const theme = root.getAttribute("data-theme")
+    const palette = root.getAttribute("data-palette")
+    const panel = document.querySelector('[data-controller="example"]')
+    const canvas = document.createElement("canvas")
+    canvas.width = canvas.height = 1
+    const context = canvas.getContext("2d", { willReadFrequently: true })
+    const luminance = (color) => {
+      context.fillStyle = color
+      context.fillRect(0, 0, 1, 1)
+      return [...context.getImageData(0, 0, 1, 1).data]
+        .slice(0, 3)
+        .map((value) => {
+          const channel = value / 255
+          return channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4
+        })
+        .reduce((sum, value, index) => sum + value * [0.2126, 0.7152, 0.0722][index], 0)
+    }
+    const colors = [...getComputedStyle(root)].filter((name) => name.startsWith("--syntax-"))
+    const palettes = [...document.querySelectorAll('input[name="palette"]')].map(
+      (input) => input.value,
+    )
+    let minimum = Infinity
+    for (const mode of ["light", "dark"]) {
+      if (mode === "dark") root.dataset.theme = "dark"
+      else delete root.dataset.theme
+      for (const choice of palettes) {
+        if (choice === "original") delete root.dataset.palette
+        else root.dataset.palette = choice
+        const background = luminance(getComputedStyle(panel).backgroundColor)
+        for (const color of colors) {
+          const foreground = luminance(getComputedStyle(root).getPropertyValue(color))
+          minimum = Math.min(
+            minimum,
+            (Math.max(background, foreground) + 0.05) / (Math.min(background, foreground) + 0.05),
+          )
+        }
+      }
+    }
+    if (theme) root.setAttribute("data-theme", theme)
+    else root.removeAttribute("data-theme")
+    if (palette) root.setAttribute("data-palette", palette)
+    else root.removeAttribute("data-palette")
+    return { minimum, colors: colors.length }
+  })
+  verify(
+    contrast.colors > 0 && contrast.minimum >= 4.5,
+    "Syntax colors meet AA contrast in every palette and theme",
+  )
+
+  const form = page.locator("[data-example-preview] form").first()
   await form.locator("button").click()
   verify(page.url().endsWith("button.html"), "Example forms stay on the docs page")
   verify(
@@ -23,9 +74,54 @@ async function _verifyComponents(page) {
     "Copied examples use the render API",
   )
 
+  const iconSpacing = await page
+    .locator('[data-example-preview] button:has(>svg[data-icon="inline-start"])')
+    .first()
+    .evaluate((button) => {
+      const svg = button.querySelector("svg").getBoundingClientRect()
+      const rect = button.getBoundingClientRect()
+      const style = getComputedStyle(button)
+      const start = parseFloat(style.paddingInlineStart)
+      const end = parseFloat(style.paddingInlineEnd)
+      const centered = Math.abs(svg.y + svg.height / 2 - rect.y - rect.height / 2) < 1
+      button.dir = "rtl"
+      const rtl = parseFloat(getComputedStyle(button).paddingRight) === start
+      button.removeAttribute("dir")
+      return { optical: start < end, centered, rtl }
+    })
+  verify(iconSpacing.optical, "Leading icons reduce padding at the inline start")
+  verify(iconSpacing.centered, "Button icons remain vertically centered")
+  verify(iconSpacing.rtl, "Icon padding follows the writing direction")
+  const endSpacing = await page
+    .locator('[data-example-preview] button:has(>svg[data-icon="inline-end"])')
+    .first()
+    .evaluate((button) => {
+      const style = getComputedStyle(button)
+      return parseFloat(style.paddingInlineEnd) < parseFloat(style.paddingInlineStart)
+    })
+  verify(endSpacing, "Trailing icons reduce padding at the inline end")
+
+  const shortCode = page.locator("#usage-code")
+  verify(await shortCode.isVisible(), "Usage code is visible by default")
+  verify((await shortCode.locator("[data-syntax]").count()) > 0, "ERB code is syntax highlighted")
+  const fullCode = page.locator('[data-example-target="toggle"]').first()
+  const longCode = page.locator(`#${await fullCode.getAttribute("aria-controls")}`)
+  const collapsedHeight = await longCode.evaluate((node) => node.clientHeight)
+  await fullCode.click()
+  verify(
+    (await fullCode.getAttribute("aria-expanded")) === "true",
+    "Long examples expand without changing their source",
+  )
+  verify(
+    (await longCode.evaluate((node) => node.clientHeight)) > collapsedHeight,
+    "Expanded code reveals the clipped lines",
+  )
+  await fullCode.click()
+  verify((await fullCode.getAttribute("aria-expanded")) === "false", "Long examples collapse again")
+
   await visit("segmented")
   const selected = page
-    .locator('[data-controller="example"]')
+    .locator('main section[id^="example-"]')
     .first()
     .locator('[data-ui-selection-target="option"][aria-pressed="true"]')
   await selected.focus()
@@ -146,6 +242,7 @@ async function _verifyComponents(page) {
   )
   await page.keyboard.press("Escape")
   const wasDark = (await page.locator("html").getAttribute("data-theme")) === "dark"
+  await page.bringToFront()
   await page.getByRole("button", { name: /Switch to (light|dark) theme/ }).click()
   verify(
     ((await page.locator("html").getAttribute("data-theme")) === "dark") !== wasDark,

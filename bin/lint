@@ -48,9 +48,9 @@ run_javascript() {
 run_css() {
   echo "== Linting CSS =="
   if [[ "$fix" == true ]]; then
-    npx --no-install stylelint --fix 'app/assets/tailwind/**/*.css' 'test/dummy/app/assets/tailwind/**/*.css'
+    npx --no-install stylelint --fix 'app/assets/tailwind/**/*.css' 'test/dummy/app/assets/tailwind/**/*.css' 'test/dummy/app/assets/stylesheets/**/*.css'
   else
-    npx --no-install stylelint 'app/assets/tailwind/**/*.css' 'test/dummy/app/assets/tailwind/**/*.css'
+    npx --no-install stylelint 'app/assets/tailwind/**/*.css' 'test/dummy/app/assets/tailwind/**/*.css' 'test/dummy/app/assets/stylesheets/**/*.css'
   fi
 }
 
@@ -74,7 +74,7 @@ const checks = [
   { feature: "relative oklch()", pattern: /\boklch\s*\(\s*from\b/ },
 ];
 
-const roots = ["app/assets/tailwind", "test/dummy/app/assets/tailwind"];
+const roots = ["app/assets/tailwind", "test/dummy/app/assets/tailwind", "test/dummy/app/assets/stylesheets"];
 const violations = [];
 
 for (const root of roots) {

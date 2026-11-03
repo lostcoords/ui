@@ -23,6 +23,21 @@ module Lostcoords::Ui
       assert_equal "hint", button["aria-describedby"]
     end
 
+    test "button icons are decorative and their position sets the optical spacing contract" do
+      button = fragment(@view.ui_button("Create", icon: "plus")).at_css("button")
+      assert_equal "inline-start", button.at_css("svg")["data-icon"]
+      assert_equal "true", button.at_css("svg")["aria-hidden"]
+      assert_equal "svg", button.element_children.first.name
+      assert_equal "Create", button.text.strip
+
+      link = fragment(@view.ui_button_link_to("Next", "/next", icon: "arrow-right", icon_position: :end)).at_css("a")
+      assert_equal "inline-end", link.element_children.last["data-icon"]
+      assert_equal "/next", link["href"]
+      html = @view.ui_button(icon: "plus") { @view.tag.strong("Create") }
+      assert_equal "Create", fragment(html).at_css("button strong").text
+      assert_raises(ArgumentError) { @view.ui_button("Create", icon: "plus", icon_position: :left) }
+    end
+
     test "button blocks preserve markup and explicit submit type" do
       html = @view.ui_button(type: "submit") { @view.tag.strong("Save") }
       assert_equal "Save", fragment(html).at_css('button[type="submit"] strong').text

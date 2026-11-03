@@ -7,24 +7,14 @@ export default class extends Controller {
     clearTimeout(this.copyTimer)
   }
 
-  preventSubmit(event) {
-    if (event.target.method !== "dialog") event.preventDefault()
-  }
-
   toggle() {
-    this.codeTarget.hidden = !this.codeTarget.hidden
-    this.toggleTarget.setAttribute("aria-expanded", String(!this.codeTarget.hidden))
+    const expanded = this.element.toggleAttribute("data-expanded")
+    this.toggleTarget.setAttribute("aria-expanded", String(expanded))
+    this.toggleTarget.textContent = expanded ? "Show less code" : "Show all code"
   }
 
   copy() {
     this.copyText(this.codeTarget.textContent, this.copyTarget)
-  }
-
-  copyBehavior({ currentTarget }) {
-    this.copyText(
-      currentTarget.closest("details").querySelector("pre code").textContent,
-      currentTarget,
-    )
   }
 
   async copyText(text, button) {
@@ -39,8 +29,11 @@ export default class extends Controller {
         button.textContent = "Copy"
       }, 2000)
     } catch {
-      this.codeTarget.hidden = false
-      this.toggleTarget.setAttribute("aria-expanded", "true")
+      this.element.toggleAttribute("data-expanded", true)
+      if (this.hasToggleTarget) {
+        this.toggleTarget.setAttribute("aria-expanded", "true")
+        this.toggleTarget.textContent = "Show less code"
+      }
       this.statusTarget.textContent = "Select the code to copy it."
     }
   }

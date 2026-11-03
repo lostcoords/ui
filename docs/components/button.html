@@ -13,7 +13,7 @@
       const theme = localStorage.getItem("lostcoords-ui:theme")
       if (theme === "dark" || (!theme && matchMedia("(prefers-color-scheme: dark)").matches)) document.documentElement.dataset.theme = "dark"
     </script>
-    <link rel="stylesheet" href="../assets/tailwind-8d727083.css" />
+    <link rel="stylesheet" href="../assets/tailwind-dcf3171e.css" />
     <script type="importmap" data-turbo-track="reload">{
   "imports": {
     "application": "../assets/application-20c5ac24.js",
@@ -39,21 +39,31 @@
     "helpers/top_layer": "../assets/lostcoords/ui/helpers/top_layer-ed2ebe60.js",
     "helpers/viewport": "../assets/lostcoords/ui/helpers/viewport-d4d43aa5.js",
     "controllers/application": "../assets/controllers/application-2a5be8ca.js",
-    "controllers/example_controller": "../assets/controllers/example_controller-72f8521b.js",
+    "controllers/block_preview_controller": "../assets/controllers/block_preview_controller-53c37654.js",
+    "controllers/block_stage_controller": "../assets/controllers/block_stage_controller-828c99a5.js",
+    "controllers/blocks_header_controller": "../assets/controllers/blocks_header_controller-e160e4c1.js",
+    "controllers/blocks_mobile_navigation_controller": "../assets/controllers/blocks_mobile_navigation_controller-f3c310d5.js",
+    "controllers/blocks_search_controller": "../assets/controllers/blocks_search_controller-f1fe01ff.js",
+    "controllers/example_controller": "../assets/controllers/example_controller-ad7ef7d5.js",
     "controllers": "../assets/controllers/index-e1e47e23.js",
-    "controllers/showcase_controller": "../assets/controllers/showcase_controller-da515a08.js"
+    "controllers/showcase_controller": "../assets/controllers/showcase_controller-b500bb11.js"
   }
 }</script>
 <link rel="modulepreload" href="../assets/application-20c5ac24.js">
 <link rel="modulepreload" href="../assets/stimulus.min-7ea3d58b.js">
 <link rel="modulepreload" href="../assets/stimulus-loading-25917588.js">
 <link rel="modulepreload" href="../assets/controllers/application-2a5be8ca.js">
-<link rel="modulepreload" href="../assets/controllers/example_controller-72f8521b.js">
+<link rel="modulepreload" href="../assets/controllers/block_preview_controller-53c37654.js">
+<link rel="modulepreload" href="../assets/controllers/block_stage_controller-828c99a5.js">
+<link rel="modulepreload" href="../assets/controllers/blocks_header_controller-e160e4c1.js">
+<link rel="modulepreload" href="../assets/controllers/blocks_mobile_navigation_controller-f3c310d5.js">
+<link rel="modulepreload" href="../assets/controllers/blocks_search_controller-f1fe01ff.js">
+<link rel="modulepreload" href="../assets/controllers/example_controller-ad7ef7d5.js">
 <link rel="modulepreload" href="../assets/controllers/index-e1e47e23.js">
-<link rel="modulepreload" href="../assets/controllers/showcase_controller-da515a08.js">
+<link rel="modulepreload" href="../assets/controllers/showcase_controller-b500bb11.js">
 <script type="module">import "application"</script>
   </head>
-  <body data-controller="showcase">
+  <body class="antialiased" data-controller="showcase" data-action="submit->showcase#preventExampleSubmit">
     <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:start-4 focus:z-toast focus:rounded-xl focus:bg-paper focus:p-3">Skip to content</a>
     <header class="sticky top-0 z-nav bg-paper/90 backdrop-blur-xl">
       <div class="mx-auto flex h-20 max-w-360 items-center gap-6 px-5 sm:px-8 lg:px-10">
@@ -62,12 +72,13 @@
           <span class="text-sm">lostcoords<span class="text-ink-3"> / </span>ui</span>
         </a>
         <nav class="hidden items-center gap-6 text-sm sm:flex" aria-label="Main">
-          <a class="text-ink-2 hover:text-ink" href="/components/button.html">Components</a>
-          <a class="text-ink-2 hover:text-ink" href="/tokens.html">Tokens</a>
+          <a class="text-ink-2 hover:text-ink" href="/installation.html">Docs</a>
+          <a class="text-ink-2 hover:text-ink" href="/blocks.html" >Blocks</a>
+          <a class="text-ink-2 hover:text-ink" href="/theming.html">Theming</a>
         </nav>
         <div class="ms-auto flex items-center gap-2">
           <div class="relative inline-flex" data-controller="ui-popover">
-  <button id="palette-picker-trigger" type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-12 py-2.5 px-5 text-base border border-transparent bg-paper-2 text-ink hover:bg-paper-3 active:bg-paper-3" aria-haspopup="dialog" aria-expanded="false" aria-controls="palette-picker" data-ui-popover-target="trigger" data-action="ui-popover#toggle">Palette</button>
+  <button id="palette-picker-trigger" type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-12 py-2.5 px-5 has-[&gt;[data-icon=inline-start]]:ps-4 has-[&gt;[data-icon=inline-end]]:pe-4 text-base border border-transparent bg-paper-2 text-ink hover:bg-paper-3 active:bg-paper-3" aria-haspopup="dialog" aria-expanded="false" aria-controls="palette-picker" data-ui-popover-target="trigger" data-action="ui-popover#toggle">Palette</button>
   <div class="glass rounded-3xl [--glass-shadow:var(--glass-rim),var(--shadow-lg)] max-md:[--glass-fill:var(--paper)] dark:max-md:[--glass-fill:var(--paper-3)] row-menu__popover squircle popover-shell hidden absolute top-[calc(100%+--spacing(1))] end-0 overscroll-contain [&amp;_form]:m-0 data-open:flex flex-col gap-4 p-5 z-nav-popover min-w-64 max-w-[calc(100vw-2rem)] transition-none w-80 max-h-[calc(100dvh-7rem)] overflow-y-auto" id="palette-picker" role="dialog" aria-labelledby="palette-picker-title" data-ui-popover-target="popover" tabindex="-1">
     <h2 id="palette-picker-title" class="font-semibold">Color palette</h2>
     
@@ -121,7 +132,7 @@
     <span role="status" class="sr-only" data-showcase-target="paletteStatus"></span>
 
 </div></div>
-          <a class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2)) max-sm:hidden" aria-label="Source on GitHub" href="https://github.com/lostcoords/ui"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon">
+          <a class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 has-[&gt;[data-icon=inline-start]]:ps-3 has-[&gt;[data-icon=inline-end]]:pe-3 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2)) max-sm:hidden" aria-label="Source on GitHub" href="https://github.com/lostcoords/ui"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon">
   <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"></path>
 </svg>
 </a>
@@ -138,7 +149,10 @@
   <div class="flex flex-col gap-1">
     <p class="px-3 text-xs font-medium text-ink-3">Library</p>
     <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/">Overview</a>
-    <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/tokens.html" >Tokens</a>
+    <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/installation.html" >Installation</a>
+    <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/theming.html" >Theming</a>
+    <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/blocks.html" >Blocks</a>
+    <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/foundations.html" >Foundations</a>
   </div>
   <div class="flex flex-col gap-1">
     <p class="px-3 pb-1 text-xs font-medium text-ink-3">Components</p>
@@ -182,7 +196,10 @@
   <div class="flex flex-col gap-1">
     <p class="px-3 text-xs font-medium text-ink-3">Library</p>
     <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/">Overview</a>
-    <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/tokens.html" >Tokens</a>
+    <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/installation.html" >Installation</a>
+    <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/theming.html" >Theming</a>
+    <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/blocks.html" >Blocks</a>
+    <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/foundations.html" >Foundations</a>
   </div>
   <div class="flex flex-col gap-1">
     <p class="px-3 pb-1 text-xs font-medium text-ink-3">Components</p>
@@ -221,183 +238,263 @@
         <div class="flex items-center justify-between gap-4">
           <p class="text-xs text-ink-3">Components <span class="px-2" aria-hidden="true">/</span> Button</p>
           <div class="flex gap-1">
-                <a class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2))" aria-label="Next component: Icon button" href="/components/icon_button.html"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon">
+                <a class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 has-[&gt;[data-icon=inline-start]]:ps-3 has-[&gt;[data-icon=inline-end]]:pe-3 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2))" aria-label="Previous component: Foundations" href="/components/foundations.html"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"></path>
+</svg>
+</a>
+                <a class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 has-[&gt;[data-icon=inline-start]]:ps-3 has-[&gt;[data-icon=inline-end]]:pe-3 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2))" aria-label="Next component: Icon button" href="/components/icon_button.html"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon">
   <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"></path>
 </svg>
 </a>
           </div>
         </div>
-        <h1 class="text-4xl font-semibold tracking-tight sm:text-5xl">Button</h1>
-        <p class="text-base text-ink-2">Actions, links and native Rails forms.</p>
+        <h1 class="text-balance text-4xl font-semibold tracking-tight sm:text-5xl">Button</h1>
+        <p class="text-pretty text-base text-ink-2">Actions, links and native Rails forms.</p>
       </header>
-      <div class="flex flex-col gap-12">
-          <section id="example-0" class="flex min-w-0 scroll-mt-28 flex-col gap-4" data-controller="example" data-action="submit->example#preventSubmit">
-  <h2 class="text-lg font-semibold tracking-tight"><a href="#example-0">Default</a></h2>
-  <div class="overflow-hidden rounded-3xl bg-paper-2">
-    <div class="flex min-h-40 flex-wrap items-center justify-center gap-4 p-6 sm:p-10 ">
-      <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-12 py-2.5 px-5 text-base border border-transparent bg-sky text-ink-on-accent hover:bg-sky-deep active:bg-sky-deep">Create project</button>
-    </div>
-    <div class="flex min-h-12 items-center justify-between gap-4 bg-paper-2 px-4">
-      <button type="button" class="flex min-h-11 items-center gap-2 font-mono text-xs text-ink-2 hover:text-ink" aria-expanded="false" aria-controls="example-0-code" data-action="example#toggle" data-example-target="toggle"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon size-4">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"></path>
-</svg>
- View code</button>
-      <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2))" data-action="example#copy" data-example-target="copy" aria-label="Copy Default code">Copy</button>
-    </div>
-    <pre id="example-0-code" class="max-h-120 overflow-auto bg-paper-3 p-5 font-mono text-xs text-ink-2" data-example-target="code" hidden><code>&lt;%= ui_button &quot;Create project&quot; %&gt;</code></pre>
+      
+      <section id="usage" class="flex scroll-mt-28 flex-col gap-4">
+        <h2 class="text-xl font-semibold tracking-tight">Usage</h2>
+        <p class="text-pretty text-sm text-ink-2">After the <a href="/installation.html" class="underline underline-offset-2">one-time setup</a>, call the helper directly from ERB. No component import is needed.</p>
+        <div class="group/source overflow-hidden rounded-2xl bg-paper-2" data-controller="example">
+  <div class="flex min-h-12 items-center justify-between gap-4 px-5">
+    <span class="font-mono text-xs uppercase text-ink-3">erb</span>
+    <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 has-[&gt;[data-icon=inline-start]]:ps-3 has-[&gt;[data-icon=inline-end]]:pe-3 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2)) min-w-20" data-action="example#copy" data-example-target="copy" aria-label="Copy Button usage">Copy</button>
+  </div>
+  <div class="relative">
+    <pre id="usage-code" class="overflow-x-auto px-5 pb-5 font-mono text-[0.8125rem] text-ink-2 [tab-size:2] " tabindex="0" role="region" aria-label="Button usage" data-example-target="code"><code><span class="text-(--syntax-keyword)" data-syntax="keyword">&lt;%=</span> <span class="text-(--syntax-call)" data-syntax="call">ui_button</span> <span class="text-(--syntax-string)" data-syntax="string">&quot;</span><span class="text-(--syntax-string)" data-syntax="string">Create project</span><span class="text-(--syntax-string)" data-syntax="string">&quot;</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">%&gt;</span></code></pre>
+    
   </div>
   <span class="sr-only" role="status" data-example-target="status"></span>
-</section>
+</div>
 
-          <section id="example-1" class="flex min-w-0 scroll-mt-28 flex-col gap-4" data-controller="example" data-action="submit->example#preventSubmit">
-  <h2 class="text-lg font-semibold tracking-tight"><a href="#example-1">Variants</a></h2>
-  <div class="overflow-hidden rounded-3xl bg-paper-2">
-    <div class="flex min-h-40 flex-wrap items-center justify-center gap-4 p-6 sm:p-10 ">
-      <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-12 py-2.5 px-5 text-base border border-transparent bg-sky text-ink-on-accent hover:bg-sky-deep active:bg-sky-deep">Primary</button>
-<button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-12 py-2.5 px-5 text-base border border-transparent bg-paper-2 text-ink hover:bg-paper-3 active:bg-paper-3">Secondary</button>
-<button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-12 py-2.5 px-5 text-base border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2))">Ghost</button>
-<button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-12 py-2.5 px-5 text-base border border-transparent bg-transparent text-berry hover:bg-berry/8 active:bg-berry/8">Delete</button>
-    </div>
-    <div class="flex min-h-12 items-center justify-between gap-4 bg-paper-2 px-4">
-      <button type="button" class="flex min-h-11 items-center gap-2 font-mono text-xs text-ink-2 hover:text-ink" aria-expanded="false" aria-controls="example-1-code" data-action="example#toggle" data-example-target="toggle"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon size-4">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"></path>
-</svg>
- View code</button>
-      <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2))" data-action="example#copy" data-example-target="copy" aria-label="Copy Variants code">Copy</button>
-    </div>
-    <pre id="example-1-code" class="max-h-120 overflow-auto bg-paper-3 p-5 font-mono text-xs text-ink-2" data-example-target="code" hidden><code>&lt;%= ui_button &quot;Primary&quot; %&gt;
-&lt;%= ui_button &quot;Secondary&quot;, variant: :secondary %&gt;
-&lt;%= ui_button &quot;Ghost&quot;, variant: :ghost %&gt;
-&lt;%= ui_button &quot;Delete&quot;, variant: :destructive %&gt;</code></pre>
+      </section>
+      <div id="examples" class="flex scroll-mt-28 flex-col gap-8">
+        <h2 class="text-2xl font-semibold tracking-tight">Examples</h2>
+          <section id="example-0" class="flex min-w-0 scroll-mt-28 flex-col gap-4">
+  <h2 class="group/heading text-xl font-semibold tracking-tight"><a href="#example-0" class="inline-flex items-center gap-2">Default<span class="text-ink-3 opacity-0 transition-opacity group-hover/heading:opacity-100 group-has-focus-visible/heading:opacity-100" aria-hidden="true">#</span></a></h2>
+  
+  <div class="flex min-h-48 flex-wrap items-center justify-center gap-4 rounded-2xl p-6 sm:p-10 bg-paper-2" data-example-preview>
+    <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-12 py-2.5 px-5 has-[&gt;[data-icon=inline-start]]:ps-4 has-[&gt;[data-icon=inline-end]]:pe-4 text-base border border-transparent bg-sky text-ink-on-accent hover:bg-sky-deep active:bg-sky-deep">Create project</button>
+  </div>
+  <div class="group/source overflow-hidden rounded-2xl bg-paper-2" data-controller="example">
+  <div class="flex min-h-12 items-center justify-between gap-4 px-5">
+    <span class="font-mono text-xs uppercase text-ink-3">erb</span>
+    <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 has-[&gt;[data-icon=inline-start]]:ps-3 has-[&gt;[data-icon=inline-end]]:pe-3 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2)) min-w-20" data-action="example#copy" data-example-target="copy" aria-label="Copy Default code">Copy</button>
+  </div>
+  <div class="relative">
+    <pre id="example-0-code" class="overflow-x-auto px-5 pb-5 font-mono text-[0.8125rem] text-ink-2 [tab-size:2] " tabindex="0" role="region" aria-label="Default code" data-example-target="code"><code><span class="text-(--syntax-keyword)" data-syntax="keyword">&lt;%=</span> <span class="text-(--syntax-call)" data-syntax="call">ui_button</span> <span class="text-(--syntax-string)" data-syntax="string">&quot;</span><span class="text-(--syntax-string)" data-syntax="string">Create project</span><span class="text-(--syntax-string)" data-syntax="string">&quot;</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">%&gt;</span></code></pre>
+    
   </div>
   <span class="sr-only" role="status" data-example-target="status"></span>
+</div>
+
 </section>
 
-          <section id="example-2" class="flex min-w-0 scroll-mt-28 flex-col gap-4" data-controller="example" data-action="submit->example#preventSubmit">
-  <h2 class="text-lg font-semibold tracking-tight"><a href="#example-2">Sizes</a></h2>
-  <div class="overflow-hidden rounded-3xl bg-paper-2">
-    <div class="flex min-h-40 flex-wrap items-center justify-center gap-4 p-6 sm:p-10 ">
-      <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm border border-transparent bg-sky text-ink-on-accent hover:bg-sky-deep active:bg-sky-deep">Small</button>
-<button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-12 py-2.5 px-5 text-base border border-transparent bg-sky text-ink-on-accent hover:bg-sky-deep active:bg-sky-deep">Default</button>
-<button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-14 py-3.5 px-7 text-base border border-transparent bg-sky text-ink-on-accent hover:bg-sky-deep active:bg-sky-deep">Large</button>
-    </div>
-    <div class="flex min-h-12 items-center justify-between gap-4 bg-paper-2 px-4">
-      <button type="button" class="flex min-h-11 items-center gap-2 font-mono text-xs text-ink-2 hover:text-ink" aria-expanded="false" aria-controls="example-2-code" data-action="example#toggle" data-example-target="toggle"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon size-4">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"></path>
-</svg>
- View code</button>
-      <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2))" data-action="example#copy" data-example-target="copy" aria-label="Copy Sizes code">Copy</button>
-    </div>
-    <pre id="example-2-code" class="max-h-120 overflow-auto bg-paper-3 p-5 font-mono text-xs text-ink-2" data-example-target="code" hidden><code>&lt;%= ui_button &quot;Small&quot;, size: :sm %&gt;
-&lt;%= ui_button &quot;Default&quot; %&gt;
-&lt;%= ui_button &quot;Large&quot;, size: :lg %&gt;</code></pre>
+          <section id="example-1" class="flex min-w-0 scroll-mt-28 flex-col gap-4">
+  <h2 class="group/heading text-xl font-semibold tracking-tight"><a href="#example-1" class="inline-flex items-center gap-2">Variants<span class="text-ink-3 opacity-0 transition-opacity group-hover/heading:opacity-100 group-has-focus-visible/heading:opacity-100" aria-hidden="true">#</span></a></h2>
+  
+  <div class="flex min-h-48 flex-wrap items-center justify-center gap-4 rounded-2xl p-6 sm:p-10 bg-paper-2" data-example-preview>
+    <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-12 py-2.5 px-5 has-[&gt;[data-icon=inline-start]]:ps-4 has-[&gt;[data-icon=inline-end]]:pe-4 text-base border border-transparent bg-sky text-ink-on-accent hover:bg-sky-deep active:bg-sky-deep">Primary</button>
+<button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-12 py-2.5 px-5 has-[&gt;[data-icon=inline-start]]:ps-4 has-[&gt;[data-icon=inline-end]]:pe-4 text-base border border-transparent bg-paper-2 text-ink hover:bg-paper-3 active:bg-paper-3">Secondary</button>
+<button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-12 py-2.5 px-5 has-[&gt;[data-icon=inline-start]]:ps-4 has-[&gt;[data-icon=inline-end]]:pe-4 text-base border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2))">Ghost</button>
+<button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-12 py-2.5 px-5 has-[&gt;[data-icon=inline-start]]:ps-4 has-[&gt;[data-icon=inline-end]]:pe-4 text-base border border-transparent bg-transparent text-berry hover:bg-berry/8 active:bg-berry/8">Delete</button>
+  </div>
+  <div class="group/source overflow-hidden rounded-2xl bg-paper-2" data-controller="example">
+  <div class="flex min-h-12 items-center justify-between gap-4 px-5">
+    <span class="font-mono text-xs uppercase text-ink-3">erb</span>
+    <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 has-[&gt;[data-icon=inline-start]]:ps-3 has-[&gt;[data-icon=inline-end]]:pe-3 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2)) min-w-20" data-action="example#copy" data-example-target="copy" aria-label="Copy Variants code">Copy</button>
+  </div>
+  <div class="relative">
+    <pre id="example-1-code" class="overflow-x-auto px-5 pb-5 font-mono text-[0.8125rem] text-ink-2 [tab-size:2] " tabindex="0" role="region" aria-label="Variants code" data-example-target="code"><code><span class="text-(--syntax-keyword)" data-syntax="keyword">&lt;%=</span> <span class="text-(--syntax-call)" data-syntax="call">ui_button</span> <span class="text-(--syntax-string)" data-syntax="string">&quot;</span><span class="text-(--syntax-string)" data-syntax="string">Primary</span><span class="text-(--syntax-string)" data-syntax="string">&quot;</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">%&gt;</span>
+<span class="text-(--syntax-keyword)" data-syntax="keyword">&lt;%=</span> <span class="text-(--syntax-call)" data-syntax="call">ui_button</span> <span class="text-(--syntax-string)" data-syntax="string">&quot;</span><span class="text-(--syntax-string)" data-syntax="string">Secondary</span><span class="text-(--syntax-string)" data-syntax="string">&quot;</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">variant:</span> <span class="text-(--syntax-symbol)" data-syntax="symbol">:</span><span class="text-(--syntax-call)" data-syntax="call">secondary</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">%&gt;</span>
+<span class="text-(--syntax-keyword)" data-syntax="keyword">&lt;%=</span> <span class="text-(--syntax-call)" data-syntax="call">ui_button</span> <span class="text-(--syntax-string)" data-syntax="string">&quot;</span><span class="text-(--syntax-string)" data-syntax="string">Ghost</span><span class="text-(--syntax-string)" data-syntax="string">&quot;</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">variant:</span> <span class="text-(--syntax-symbol)" data-syntax="symbol">:</span><span class="text-(--syntax-call)" data-syntax="call">ghost</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">%&gt;</span>
+<span class="text-(--syntax-keyword)" data-syntax="keyword">&lt;%=</span> <span class="text-(--syntax-call)" data-syntax="call">ui_button</span> <span class="text-(--syntax-string)" data-syntax="string">&quot;</span><span class="text-(--syntax-string)" data-syntax="string">Delete</span><span class="text-(--syntax-string)" data-syntax="string">&quot;</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">variant:</span> <span class="text-(--syntax-symbol)" data-syntax="symbol">:</span><span class="text-(--syntax-call)" data-syntax="call">destructive</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">%&gt;</span></code></pre>
+    
   </div>
   <span class="sr-only" role="status" data-example-target="status"></span>
+</div>
+
 </section>
 
-          <section id="example-3" class="flex min-w-0 scroll-mt-28 flex-col gap-4" data-controller="example" data-action="submit->example#preventSubmit">
-  <h2 class="text-lg font-semibold tracking-tight"><a href="#example-3">With an icon</a></h2>
-  <div class="overflow-hidden rounded-3xl bg-paper-2">
-    <div class="flex min-h-40 flex-wrap items-center justify-center gap-4 p-6 sm:p-10 ">
-      <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-12 py-2.5 px-5 text-base border border-transparent bg-sky text-ink-on-accent hover:bg-sky-deep active:bg-sky-deep">
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon">
+          <section id="example-2" class="flex min-w-0 scroll-mt-28 flex-col gap-4">
+  <h2 class="group/heading text-xl font-semibold tracking-tight"><a href="#example-2" class="inline-flex items-center gap-2">Sizes<span class="text-ink-3 opacity-0 transition-opacity group-hover/heading:opacity-100 group-has-focus-visible/heading:opacity-100" aria-hidden="true">#</span></a></h2>
+  
+  <div class="flex min-h-48 flex-wrap items-center justify-center gap-4 rounded-2xl p-6 sm:p-10 bg-paper-2" data-example-preview>
+    <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 has-[&gt;[data-icon=inline-start]]:ps-3 has-[&gt;[data-icon=inline-end]]:pe-3 text-sm border border-transparent bg-sky text-ink-on-accent hover:bg-sky-deep active:bg-sky-deep">Small</button>
+<button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-12 py-2.5 px-5 has-[&gt;[data-icon=inline-start]]:ps-4 has-[&gt;[data-icon=inline-end]]:pe-4 text-base border border-transparent bg-sky text-ink-on-accent hover:bg-sky-deep active:bg-sky-deep">Default</button>
+<button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-14 py-3.5 px-7 has-[&gt;[data-icon=inline-start]]:ps-6 has-[&gt;[data-icon=inline-end]]:pe-6 text-base border border-transparent bg-sky text-ink-on-accent hover:bg-sky-deep active:bg-sky-deep">Large</button>
+  </div>
+  <div class="group/source overflow-hidden rounded-2xl bg-paper-2" data-controller="example">
+  <div class="flex min-h-12 items-center justify-between gap-4 px-5">
+    <span class="font-mono text-xs uppercase text-ink-3">erb</span>
+    <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 has-[&gt;[data-icon=inline-start]]:ps-3 has-[&gt;[data-icon=inline-end]]:pe-3 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2)) min-w-20" data-action="example#copy" data-example-target="copy" aria-label="Copy Sizes code">Copy</button>
+  </div>
+  <div class="relative">
+    <pre id="example-2-code" class="overflow-x-auto px-5 pb-5 font-mono text-[0.8125rem] text-ink-2 [tab-size:2] " tabindex="0" role="region" aria-label="Sizes code" data-example-target="code"><code><span class="text-(--syntax-keyword)" data-syntax="keyword">&lt;%=</span> <span class="text-(--syntax-call)" data-syntax="call">ui_button</span> <span class="text-(--syntax-string)" data-syntax="string">&quot;</span><span class="text-(--syntax-string)" data-syntax="string">Small</span><span class="text-(--syntax-string)" data-syntax="string">&quot;</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">size:</span> <span class="text-(--syntax-symbol)" data-syntax="symbol">:</span><span class="text-(--syntax-call)" data-syntax="call">sm</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">%&gt;</span>
+<span class="text-(--syntax-keyword)" data-syntax="keyword">&lt;%=</span> <span class="text-(--syntax-call)" data-syntax="call">ui_button</span> <span class="text-(--syntax-string)" data-syntax="string">&quot;</span><span class="text-(--syntax-string)" data-syntax="string">Default</span><span class="text-(--syntax-string)" data-syntax="string">&quot;</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">%&gt;</span>
+<span class="text-(--syntax-keyword)" data-syntax="keyword">&lt;%=</span> <span class="text-(--syntax-call)" data-syntax="call">ui_button</span> <span class="text-(--syntax-string)" data-syntax="string">&quot;</span><span class="text-(--syntax-string)" data-syntax="string">Large</span><span class="text-(--syntax-string)" data-syntax="string">&quot;</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">size:</span> <span class="text-(--syntax-symbol)" data-syntax="symbol">:</span><span class="text-(--syntax-call)" data-syntax="call">lg</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">%&gt;</span></code></pre>
+    
+  </div>
+  <span class="sr-only" role="status" data-example-target="status"></span>
+</div>
+
+</section>
+
+          <section id="example-3" class="flex min-w-0 scroll-mt-28 flex-col gap-4">
+  <h2 class="group/heading text-xl font-semibold tracking-tight"><a href="#example-3" class="inline-flex items-center gap-2">With an icon<span class="text-ink-3 opacity-0 transition-opacity group-hover/heading:opacity-100 group-has-focus-visible/heading:opacity-100" aria-hidden="true">#</span></a></h2>
+  
+  <div class="flex min-h-48 flex-wrap items-center justify-center gap-4 rounded-2xl p-6 sm:p-10 bg-paper-2" data-example-preview>
+    <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-12 py-2.5 px-5 has-[&gt;[data-icon=inline-start]]:ps-4 has-[&gt;[data-icon=inline-end]]:pe-4 text-base border border-transparent bg-sky text-ink-on-accent hover:bg-sky-deep active:bg-sky-deep"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" data-icon="inline-start" class="heroicon">
   <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
 </svg>
-
-  Create project
-</button>
-    </div>
-    <div class="flex min-h-12 items-center justify-between gap-4 bg-paper-2 px-4">
-      <button type="button" class="flex min-h-11 items-center gap-2 font-mono text-xs text-ink-2 hover:text-ink" aria-expanded="false" aria-controls="example-3-code" data-action="example#toggle" data-example-target="toggle"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon size-4">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"></path>
+Create project</button>
+<button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-12 py-2.5 px-5 has-[&gt;[data-icon=inline-start]]:ps-4 has-[&gt;[data-icon=inline-end]]:pe-4 text-base border border-transparent bg-paper-2 text-ink hover:bg-paper-3 active:bg-paper-3">Continue<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" data-icon="inline-end" class="heroicon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"></path>
 </svg>
- View code</button>
-      <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2))" data-action="example#copy" data-example-target="copy" aria-label="Copy With an icon code">Copy</button>
-    </div>
-    <pre id="example-3-code" class="max-h-120 overflow-auto bg-paper-3 p-5 font-mono text-xs text-ink-2" data-example-target="code" hidden><code>&lt;%= ui_button do %&gt;
-  &lt;%= heroicon &quot;plus&quot;, options: { &quot;aria-hidden&quot;: true } %&gt;
-  Create project
-&lt;% end %&gt;</code></pre>
+</button>
+  </div>
+  <div class="group/source overflow-hidden rounded-2xl bg-paper-2" data-controller="example">
+  <div class="flex min-h-12 items-center justify-between gap-4 px-5">
+    <span class="font-mono text-xs uppercase text-ink-3">erb</span>
+    <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 has-[&gt;[data-icon=inline-start]]:ps-3 has-[&gt;[data-icon=inline-end]]:pe-3 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2)) min-w-20" data-action="example#copy" data-example-target="copy" aria-label="Copy With an icon code">Copy</button>
+  </div>
+  <div class="relative">
+    <pre id="example-3-code" class="overflow-x-auto px-5 pb-5 font-mono text-[0.8125rem] text-ink-2 [tab-size:2] " tabindex="0" role="region" aria-label="With an icon code" data-example-target="code"><code><span class="text-(--syntax-keyword)" data-syntax="keyword">&lt;%=</span> <span class="text-(--syntax-call)" data-syntax="call">ui_button</span> <span class="text-(--syntax-string)" data-syntax="string">&quot;</span><span class="text-(--syntax-string)" data-syntax="string">Create project</span><span class="text-(--syntax-string)" data-syntax="string">&quot;</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">icon:</span> <span class="text-(--syntax-string)" data-syntax="string">&quot;</span><span class="text-(--syntax-string)" data-syntax="string">plus</span><span class="text-(--syntax-string)" data-syntax="string">&quot;</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">%&gt;</span>
+<span class="text-(--syntax-keyword)" data-syntax="keyword">&lt;%=</span> <span class="text-(--syntax-call)" data-syntax="call">ui_button</span> <span class="text-(--syntax-string)" data-syntax="string">&quot;</span><span class="text-(--syntax-string)" data-syntax="string">Continue</span><span class="text-(--syntax-string)" data-syntax="string">&quot;</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">icon:</span> <span class="text-(--syntax-string)" data-syntax="string">&quot;</span><span class="text-(--syntax-string)" data-syntax="string">arrow-right</span><span class="text-(--syntax-string)" data-syntax="string">&quot;</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">icon_position:</span> <span class="text-(--syntax-symbol)" data-syntax="symbol">:</span><span class="text-(--syntax-keyword)" data-syntax="keyword">end</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">variant:</span> <span class="text-(--syntax-symbol)" data-syntax="symbol">:</span><span class="text-(--syntax-call)" data-syntax="call">secondary</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">%&gt;</span></code></pre>
+    
   </div>
   <span class="sr-only" role="status" data-example-target="status"></span>
+</div>
+
 </section>
 
-          <section id="example-4" class="flex min-w-0 scroll-mt-28 flex-col gap-4" data-controller="example" data-action="submit->example#preventSubmit">
-  <h2 class="text-lg font-semibold tracking-tight"><a href="#example-4">Loading</a></h2>
-  <div class="overflow-hidden rounded-3xl bg-paper-2">
-    <div class="flex min-h-40 flex-wrap items-center justify-center gap-4 p-6 sm:p-10 ">
-      <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-12 py-2.5 px-5 text-base border border-transparent bg-sky text-ink-on-accent hover:bg-sky-deep active:bg-sky-deep" disabled="disabled" aria-busy="true">
-  <span class="inline-block rounded-full border-current border-t-transparent animate-spin size-4 border-2" role="status"><span class="sr-only">Saving</span></span>
+          <section id="example-4" class="flex min-w-0 scroll-mt-28 flex-col gap-4">
+  <h2 class="group/heading text-xl font-semibold tracking-tight"><a href="#example-4" class="inline-flex items-center gap-2">Custom icons and content<span class="text-ink-3 opacity-0 transition-opacity group-hover/heading:opacity-100 group-has-focus-visible/heading:opacity-100" aria-hidden="true">#</span></a></h2>
+  <p class="text-pretty text-sm text-ink-2">For custom SVGs and spinners, use data-icon=&quot;inline-start&quot; or data-icon=&quot;inline-end&quot;. The button reduces padding on that edge for optical balance. The icon: option sets this automatically.</p>
+  <div class="flex min-h-48 flex-wrap items-center justify-center gap-4 rounded-2xl p-6 sm:p-10 bg-paper-2" data-example-preview>
+    <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-12 py-2.5 px-5 has-[&gt;[data-icon=inline-start]]:ps-4 has-[&gt;[data-icon=inline-end]]:pe-4 text-base border border-transparent bg-paper-2 text-ink hover:bg-paper-3 active:bg-paper-3">
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" data-icon="inline-start" class="heroicon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"></path>
+</svg>
+
+  Download report
+</button>
+<button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-12 py-2.5 px-5 has-[&gt;[data-icon=inline-start]]:ps-4 has-[&gt;[data-icon=inline-end]]:pe-4 text-base border border-transparent bg-sky text-ink-on-accent hover:bg-sky-deep active:bg-sky-deep" disabled="disabled" aria-busy="true">
+  <span class="inline-block rounded-full border-current border-t-transparent animate-spin size-4 border-2" aria-hidden="true" data-icon="inline-start"></span>
+  Loading report…
+</button>
+  </div>
+  <div class="group/source overflow-hidden rounded-2xl bg-paper-2" data-controller="example">
+  <div class="flex min-h-12 items-center justify-between gap-4 px-5">
+    <span class="font-mono text-xs uppercase text-ink-3">erb</span>
+    <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 has-[&gt;[data-icon=inline-start]]:ps-3 has-[&gt;[data-icon=inline-end]]:pe-3 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2)) min-w-20" data-action="example#copy" data-example-target="copy" aria-label="Copy Custom icons and content code">Copy</button>
+  </div>
+  <div class="relative">
+    <pre id="example-4-code" class="overflow-x-auto px-5 pb-5 font-mono text-[0.8125rem] text-ink-2 [tab-size:2] max-h-60 overflow-y-hidden group-data-expanded/source:max-h-none" tabindex="0" role="region" aria-label="Custom icons and content code" data-example-target="code"><code><span class="text-(--syntax-keyword)" data-syntax="keyword">&lt;%=</span> <span class="text-(--syntax-call)" data-syntax="call">ui_button</span> <span class="text-(--syntax-symbol)" data-syntax="symbol">variant:</span> <span class="text-(--syntax-symbol)" data-syntax="symbol">:</span><span class="text-(--syntax-call)" data-syntax="call">secondary</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">do</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">%&gt;</span>
+  <span class="text-(--syntax-keyword)" data-syntax="keyword">&lt;%=</span> <span class="text-(--syntax-call)" data-syntax="call">heroicon</span> <span class="text-(--syntax-string)" data-syntax="string">&quot;</span><span class="text-(--syntax-string)" data-syntax="string">arrow-down-tray</span><span class="text-(--syntax-string)" data-syntax="string">&quot;</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">options:</span> {
+    <span class="text-(--syntax-string)" data-syntax="string">&quot;</span><span class="text-(--syntax-string)" data-syntax="string">aria-hidden</span><span class="text-(--syntax-symbol)" data-syntax="symbol">&quot;:</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">true</span>,
+    <span class="text-(--syntax-string)" data-syntax="string">&quot;</span><span class="text-(--syntax-string)" data-syntax="string">data-icon</span><span class="text-(--syntax-symbol)" data-syntax="symbol">&quot;:</span> <span class="text-(--syntax-string)" data-syntax="string">&quot;</span><span class="text-(--syntax-string)" data-syntax="string">inline-start</span><span class="text-(--syntax-string)" data-syntax="string">&quot;</span>
+  } <span class="text-(--syntax-keyword)" data-syntax="keyword">%&gt;</span>
+  Download report
+<span class="text-(--syntax-keyword)" data-syntax="keyword">&lt;%</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">end</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">%&gt;</span>
+
+<span class="text-(--syntax-keyword)" data-syntax="keyword">&lt;%=</span> <span class="text-(--syntax-call)" data-syntax="call">ui_button</span> <span class="text-(--syntax-symbol)" data-syntax="symbol">disabled:</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">true</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">aria:</span> { <span class="text-(--syntax-symbol)" data-syntax="symbol">busy:</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">true</span> } <span class="text-(--syntax-keyword)" data-syntax="keyword">do</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">%&gt;</span>
+  <span class="text-(--syntax-keyword)" data-syntax="keyword">&lt;%=</span> <span class="text-(--syntax-call)" data-syntax="call">ui_spinner</span> <span class="text-(--syntax-symbol)" data-syntax="symbol">size:</span> <span class="text-(--syntax-symbol)" data-syntax="symbol">:</span><span class="text-(--syntax-call)" data-syntax="call">sm</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">label:</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">nil</span>,
+      <span class="text-(--syntax-symbol)" data-syntax="symbol">data:</span> { <span class="text-(--syntax-symbol)" data-syntax="symbol">icon:</span> <span class="text-(--syntax-string)" data-syntax="string">&quot;</span><span class="text-(--syntax-string)" data-syntax="string">inline-start</span><span class="text-(--syntax-string)" data-syntax="string">&quot;</span> } <span class="text-(--syntax-keyword)" data-syntax="keyword">%&gt;</span>
+  Loading report…
+<span class="text-(--syntax-keyword)" data-syntax="keyword">&lt;%</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">end</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">%&gt;</span></code></pre>
+    <div class="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-linear-to-t from-paper-2 to-transparent group-data-expanded/source:hidden" aria-hidden="true"></div>
+  </div>
+    <button type="button" class="inline-flex items-center justify-center gap-2 font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 has-[&gt;[data-icon=inline-start]]:ps-3 has-[&gt;[data-icon=inline-end]]:pe-3 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2)) w-full rounded-none" aria-expanded="false" aria-controls="example-4-code" data-action="example#toggle" data-example-target="toggle">Show all code</button>
+  <span class="sr-only" role="status" data-example-target="status"></span>
+</div>
+
+</section>
+
+          <section id="example-5" class="flex min-w-0 scroll-mt-28 flex-col gap-4">
+  <h2 class="group/heading text-xl font-semibold tracking-tight"><a href="#example-5" class="inline-flex items-center gap-2">Loading<span class="text-ink-3 opacity-0 transition-opacity group-hover/heading:opacity-100 group-has-focus-visible/heading:opacity-100" aria-hidden="true">#</span></a></h2>
+  
+  <div class="flex min-h-48 flex-wrap items-center justify-center gap-4 rounded-2xl p-6 sm:p-10 bg-paper-2" data-example-preview>
+    <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-12 py-2.5 px-5 has-[&gt;[data-icon=inline-start]]:ps-4 has-[&gt;[data-icon=inline-end]]:pe-4 text-base border border-transparent bg-sky text-ink-on-accent hover:bg-sky-deep active:bg-sky-deep" disabled="disabled" aria-busy="true">
+  <span class="inline-block rounded-full border-current border-t-transparent animate-spin size-4 border-2" aria-hidden="true" data-icon="inline-start"></span>
   Saving…
 </button>
-    </div>
-    <div class="flex min-h-12 items-center justify-between gap-4 bg-paper-2 px-4">
-      <button type="button" class="flex min-h-11 items-center gap-2 font-mono text-xs text-ink-2 hover:text-ink" aria-expanded="false" aria-controls="example-4-code" data-action="example#toggle" data-example-target="toggle"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon size-4">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"></path>
-</svg>
- View code</button>
-      <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2))" data-action="example#copy" data-example-target="copy" aria-label="Copy Loading code">Copy</button>
-    </div>
-    <pre id="example-4-code" class="max-h-120 overflow-auto bg-paper-3 p-5 font-mono text-xs text-ink-2" data-example-target="code" hidden><code>&lt;%= ui_button disabled: true, aria: { busy: true } do %&gt;
-  &lt;%= ui_spinner size: :sm, label: &quot;Saving&quot; %&gt;
+  </div>
+  <div class="group/source overflow-hidden rounded-2xl bg-paper-2" data-controller="example">
+  <div class="flex min-h-12 items-center justify-between gap-4 px-5">
+    <span class="font-mono text-xs uppercase text-ink-3">erb</span>
+    <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 has-[&gt;[data-icon=inline-start]]:ps-3 has-[&gt;[data-icon=inline-end]]:pe-3 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2)) min-w-20" data-action="example#copy" data-example-target="copy" aria-label="Copy Loading code">Copy</button>
+  </div>
+  <div class="relative">
+    <pre id="example-5-code" class="overflow-x-auto px-5 pb-5 font-mono text-[0.8125rem] text-ink-2 [tab-size:2] " tabindex="0" role="region" aria-label="Loading code" data-example-target="code"><code><span class="text-(--syntax-keyword)" data-syntax="keyword">&lt;%=</span> <span class="text-(--syntax-call)" data-syntax="call">ui_button</span> <span class="text-(--syntax-symbol)" data-syntax="symbol">disabled:</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">true</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">aria:</span> { <span class="text-(--syntax-symbol)" data-syntax="symbol">busy:</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">true</span> } <span class="text-(--syntax-keyword)" data-syntax="keyword">do</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">%&gt;</span>
+  <span class="text-(--syntax-keyword)" data-syntax="keyword">&lt;%=</span> <span class="text-(--syntax-call)" data-syntax="call">ui_spinner</span> <span class="text-(--syntax-symbol)" data-syntax="symbol">size:</span> <span class="text-(--syntax-symbol)" data-syntax="symbol">:</span><span class="text-(--syntax-call)" data-syntax="call">sm</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">label:</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">nil</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">data:</span> { <span class="text-(--syntax-symbol)" data-syntax="symbol">icon:</span> <span class="text-(--syntax-string)" data-syntax="string">&quot;</span><span class="text-(--syntax-string)" data-syntax="string">inline-start</span><span class="text-(--syntax-string)" data-syntax="string">&quot;</span> } <span class="text-(--syntax-keyword)" data-syntax="keyword">%&gt;</span>
   Saving…
-&lt;% end %&gt;</code></pre>
+<span class="text-(--syntax-keyword)" data-syntax="keyword">&lt;%</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">end</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">%&gt;</span></code></pre>
+    
   </div>
   <span class="sr-only" role="status" data-example-target="status"></span>
+</div>
+
 </section>
 
-          <section id="example-5" class="flex min-w-0 scroll-mt-28 flex-col gap-4" data-controller="example" data-action="submit->example#preventSubmit">
-  <h2 class="text-lg font-semibold tracking-tight"><a href="#example-5">Disabled</a></h2>
-  <div class="overflow-hidden rounded-3xl bg-paper-2">
-    <div class="flex min-h-40 flex-wrap items-center justify-center gap-4 p-6 sm:p-10 ">
-      <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-12 py-2.5 px-5 text-base border border-transparent bg-sky text-ink-on-accent hover:bg-sky-deep active:bg-sky-deep" disabled="disabled">Unavailable</button>
-    </div>
-    <div class="flex min-h-12 items-center justify-between gap-4 bg-paper-2 px-4">
-      <button type="button" class="flex min-h-11 items-center gap-2 font-mono text-xs text-ink-2 hover:text-ink" aria-expanded="false" aria-controls="example-5-code" data-action="example#toggle" data-example-target="toggle"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon size-4">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"></path>
-</svg>
- View code</button>
-      <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2))" data-action="example#copy" data-example-target="copy" aria-label="Copy Disabled code">Copy</button>
-    </div>
-    <pre id="example-5-code" class="max-h-120 overflow-auto bg-paper-3 p-5 font-mono text-xs text-ink-2" data-example-target="code" hidden><code>&lt;%= ui_button &quot;Unavailable&quot;, disabled: true %&gt;</code></pre>
+          <section id="example-6" class="flex min-w-0 scroll-mt-28 flex-col gap-4">
+  <h2 class="group/heading text-xl font-semibold tracking-tight"><a href="#example-6" class="inline-flex items-center gap-2">Disabled<span class="text-ink-3 opacity-0 transition-opacity group-hover/heading:opacity-100 group-has-focus-visible/heading:opacity-100" aria-hidden="true">#</span></a></h2>
+  
+  <div class="flex min-h-48 flex-wrap items-center justify-center gap-4 rounded-2xl p-6 sm:p-10 bg-paper-2" data-example-preview>
+    <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-12 py-2.5 px-5 has-[&gt;[data-icon=inline-start]]:ps-4 has-[&gt;[data-icon=inline-end]]:pe-4 text-base border border-transparent bg-sky text-ink-on-accent hover:bg-sky-deep active:bg-sky-deep" disabled="disabled">Unavailable</button>
+  </div>
+  <div class="group/source overflow-hidden rounded-2xl bg-paper-2" data-controller="example">
+  <div class="flex min-h-12 items-center justify-between gap-4 px-5">
+    <span class="font-mono text-xs uppercase text-ink-3">erb</span>
+    <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 has-[&gt;[data-icon=inline-start]]:ps-3 has-[&gt;[data-icon=inline-end]]:pe-3 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2)) min-w-20" data-action="example#copy" data-example-target="copy" aria-label="Copy Disabled code">Copy</button>
+  </div>
+  <div class="relative">
+    <pre id="example-6-code" class="overflow-x-auto px-5 pb-5 font-mono text-[0.8125rem] text-ink-2 [tab-size:2] " tabindex="0" role="region" aria-label="Disabled code" data-example-target="code"><code><span class="text-(--syntax-keyword)" data-syntax="keyword">&lt;%=</span> <span class="text-(--syntax-call)" data-syntax="call">ui_button</span> <span class="text-(--syntax-string)" data-syntax="string">&quot;</span><span class="text-(--syntax-string)" data-syntax="string">Unavailable</span><span class="text-(--syntax-string)" data-syntax="string">&quot;</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">disabled:</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">true</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">%&gt;</span></code></pre>
+    
   </div>
   <span class="sr-only" role="status" data-example-target="status"></span>
+</div>
+
 </section>
 
-          <section id="example-6" class="flex min-w-0 scroll-mt-28 flex-col gap-4" data-controller="example" data-action="submit->example#preventSubmit">
-  <h2 class="text-lg font-semibold tracking-tight"><a href="#example-6">As a link</a></h2>
-  <div class="overflow-hidden rounded-3xl bg-paper-2">
-    <div class="flex min-h-40 flex-wrap items-center justify-center gap-4 p-6 sm:p-10 ">
-      <a class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-12 py-2.5 px-5 text-base border border-transparent bg-paper-2 text-ink hover:bg-paper-3 active:bg-paper-3" href="/components/button.html">Browse components</a>
-    </div>
-    <div class="flex min-h-12 items-center justify-between gap-4 bg-paper-2 px-4">
-      <button type="button" class="flex min-h-11 items-center gap-2 font-mono text-xs text-ink-2 hover:text-ink" aria-expanded="false" aria-controls="example-6-code" data-action="example#toggle" data-example-target="toggle"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon size-4">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"></path>
-</svg>
- View code</button>
-      <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2))" data-action="example#copy" data-example-target="copy" aria-label="Copy As a link code">Copy</button>
-    </div>
-    <pre id="example-6-code" class="max-h-120 overflow-auto bg-paper-3 p-5 font-mono text-xs text-ink-2" data-example-target="code" hidden><code>&lt;%= ui_button_link_to &quot;Browse components&quot;, &quot;/components/button.html&quot;, variant: :secondary %&gt;</code></pre>
+          <section id="example-7" class="flex min-w-0 scroll-mt-28 flex-col gap-4">
+  <h2 class="group/heading text-xl font-semibold tracking-tight"><a href="#example-7" class="inline-flex items-center gap-2">As a link<span class="text-ink-3 opacity-0 transition-opacity group-hover/heading:opacity-100 group-has-focus-visible/heading:opacity-100" aria-hidden="true">#</span></a></h2>
+  
+  <div class="flex min-h-48 flex-wrap items-center justify-center gap-4 rounded-2xl p-6 sm:p-10 bg-paper-2" data-example-preview>
+    <a class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-12 py-2.5 px-5 has-[&gt;[data-icon=inline-start]]:ps-4 has-[&gt;[data-icon=inline-end]]:pe-4 text-base border border-transparent bg-paper-2 text-ink hover:bg-paper-3 active:bg-paper-3" href="/components/button.html">Browse components</a>
+  </div>
+  <div class="group/source overflow-hidden rounded-2xl bg-paper-2" data-controller="example">
+  <div class="flex min-h-12 items-center justify-between gap-4 px-5">
+    <span class="font-mono text-xs uppercase text-ink-3">erb</span>
+    <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 has-[&gt;[data-icon=inline-start]]:ps-3 has-[&gt;[data-icon=inline-end]]:pe-3 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2)) min-w-20" data-action="example#copy" data-example-target="copy" aria-label="Copy As a link code">Copy</button>
+  </div>
+  <div class="relative">
+    <pre id="example-7-code" class="overflow-x-auto px-5 pb-5 font-mono text-[0.8125rem] text-ink-2 [tab-size:2] " tabindex="0" role="region" aria-label="As a link code" data-example-target="code"><code><span class="text-(--syntax-keyword)" data-syntax="keyword">&lt;%=</span> <span class="text-(--syntax-call)" data-syntax="call">ui_button_link_to</span> <span class="text-(--syntax-string)" data-syntax="string">&quot;</span><span class="text-(--syntax-string)" data-syntax="string">Browse components</span><span class="text-(--syntax-string)" data-syntax="string">&quot;</span>, <span class="text-(--syntax-string)" data-syntax="string">&quot;</span><span class="text-(--syntax-string)" data-syntax="string">/components/button.html</span><span class="text-(--syntax-string)" data-syntax="string">&quot;</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">variant:</span> <span class="text-(--syntax-symbol)" data-syntax="symbol">:</span><span class="text-(--syntax-call)" data-syntax="call">secondary</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">%&gt;</span></code></pre>
+    
   </div>
   <span class="sr-only" role="status" data-example-target="status"></span>
+</div>
+
 </section>
 
-          <section id="example-7" class="flex min-w-0 scroll-mt-28 flex-col gap-4" data-controller="example" data-action="submit->example#preventSubmit">
-  <h2 class="text-lg font-semibold tracking-tight"><a href="#example-7">HTTP actions</a></h2>
-  <div class="overflow-hidden rounded-3xl bg-paper-2">
-    <div class="flex min-h-40 flex-wrap items-center justify-center gap-4 p-6 sm:p-10 ">
-      <form data-turbo-confirm="Archive this project?" class="button_to" method="post" action="/projects/42"><input type="hidden" name="_method" value="delete" /><button class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-12 py-2.5 px-5 text-base border border-transparent bg-transparent text-berry hover:bg-berry/8 active:bg-berry/8" type="submit">Archive project</button></form>
-    </div>
-    <div class="flex min-h-12 items-center justify-between gap-4 bg-paper-2 px-4">
-      <button type="button" class="flex min-h-11 items-center gap-2 font-mono text-xs text-ink-2 hover:text-ink" aria-expanded="false" aria-controls="example-7-code" data-action="example#toggle" data-example-target="toggle"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon size-4">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"></path>
-</svg>
- View code</button>
-      <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2))" data-action="example#copy" data-example-target="copy" aria-label="Copy HTTP actions code">Copy</button>
-    </div>
-    <pre id="example-7-code" class="max-h-120 overflow-auto bg-paper-3 p-5 font-mono text-xs text-ink-2" data-example-target="code" hidden><code>&lt;%= ui_button_to &quot;Archive project&quot;, &quot;/projects/42&quot;, method: :delete, variant: :destructive, form: { data: { turbo_confirm: &quot;Archive this project?&quot; } } %&gt;</code></pre>
+          <section id="example-8" class="flex min-w-0 scroll-mt-28 flex-col gap-4">
+  <h2 class="group/heading text-xl font-semibold tracking-tight"><a href="#example-8" class="inline-flex items-center gap-2">HTTP actions<span class="text-ink-3 opacity-0 transition-opacity group-hover/heading:opacity-100 group-has-focus-visible/heading:opacity-100" aria-hidden="true">#</span></a></h2>
+  
+  <div class="flex min-h-48 flex-wrap items-center justify-center gap-4 rounded-2xl p-6 sm:p-10 bg-paper-2" data-example-preview>
+    <form data-turbo-confirm="Archive this project?" class="button_to" method="post" action="/projects/42"><input type="hidden" name="_method" value="delete" /><button class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-12 py-2.5 px-5 has-[&gt;[data-icon=inline-start]]:ps-4 has-[&gt;[data-icon=inline-end]]:pe-4 text-base border border-transparent bg-transparent text-berry hover:bg-berry/8 active:bg-berry/8" type="submit">Archive project</button></form>
+  </div>
+  <div class="group/source overflow-hidden rounded-2xl bg-paper-2" data-controller="example">
+  <div class="flex min-h-12 items-center justify-between gap-4 px-5">
+    <span class="font-mono text-xs uppercase text-ink-3">erb</span>
+    <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 has-[&gt;[data-icon=inline-start]]:ps-3 has-[&gt;[data-icon=inline-end]]:pe-3 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2)) min-w-20" data-action="example#copy" data-example-target="copy" aria-label="Copy HTTP actions code">Copy</button>
+  </div>
+  <div class="relative">
+    <pre id="example-8-code" class="overflow-x-auto px-5 pb-5 font-mono text-[0.8125rem] text-ink-2 [tab-size:2] " tabindex="0" role="region" aria-label="HTTP actions code" data-example-target="code"><code><span class="text-(--syntax-keyword)" data-syntax="keyword">&lt;%=</span> <span class="text-(--syntax-call)" data-syntax="call">ui_button_to</span> <span class="text-(--syntax-string)" data-syntax="string">&quot;</span><span class="text-(--syntax-string)" data-syntax="string">Archive project</span><span class="text-(--syntax-string)" data-syntax="string">&quot;</span>, <span class="text-(--syntax-string)" data-syntax="string">&quot;</span><span class="text-(--syntax-string)" data-syntax="string">/projects/42</span><span class="text-(--syntax-string)" data-syntax="string">&quot;</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">method:</span> <span class="text-(--syntax-symbol)" data-syntax="symbol">:</span><span class="text-(--syntax-call)" data-syntax="call">delete</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">variant:</span> <span class="text-(--syntax-symbol)" data-syntax="symbol">:</span><span class="text-(--syntax-call)" data-syntax="call">destructive</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">form:</span> { <span class="text-(--syntax-symbol)" data-syntax="symbol">data:</span> { <span class="text-(--syntax-symbol)" data-syntax="symbol">turbo_confirm:</span> <span class="text-(--syntax-string)" data-syntax="string">&quot;</span><span class="text-(--syntax-string)" data-syntax="string">Archive this project?</span><span class="text-(--syntax-string)" data-syntax="string">&quot;</span> } } <span class="text-(--syntax-keyword)" data-syntax="keyword">%&gt;</span></code></pre>
+    
   </div>
   <span class="sr-only" role="status" data-example-target="status"></span>
+</div>
+
 </section>
 
       </div>
@@ -406,14 +503,16 @@
   <p class="text-sm text-ink-2">Helpers render semantic HTML and include their interaction wiring. Pass native attributes through <code>class:</code>, <code>data:</code>, <code>aria:</code> and the usual Rails options. Blocks use captured ERB content.</p>
     <div class="flex min-w-0 flex-col gap-4">
       <h3 id="ui_button" class="scroll-mt-28 font-mono text-sm font-medium">ui_button</h3>
-      <pre class="overflow-x-auto rounded-2xl bg-paper-2 p-4 font-mono text-xs text-ink-2"><code>ui_button(content = nil, variant: :primary, size: :base, **attributes, &amp;block)</code></pre>
+      <pre class="overflow-x-auto rounded-2xl bg-paper-2 p-4 font-mono text-xs text-ink-2"><code><span class="text-(--syntax-call)" data-syntax="call">ui_button</span>(<span class="text-(--syntax-call)" data-syntax="call">content</span> = <span class="text-(--syntax-keyword)" data-syntax="keyword">nil</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">variant:</span> <span class="text-(--syntax-symbol)" data-syntax="symbol">:</span><span class="text-(--syntax-call)" data-syntax="call">primary</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">size:</span> <span class="text-(--syntax-symbol)" data-syntax="symbol">:</span><span class="text-(--syntax-call)" data-syntax="call">base</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">icon:</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">nil</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">icon_position:</span> <span class="text-(--syntax-symbol)" data-syntax="symbol">:</span><span class="text-(--syntax-call)" data-syntax="call">start</span>, **<span class="text-(--syntax-call)" data-syntax="call">attributes</span>, &amp;<span class="text-(--syntax-call)" data-syntax="call">block</span>)</code></pre>
       <div class="overflow-x-auto">
         <table class="w-full min-w-80 text-start text-sm">
           <thead><tr class="text-xs text-ink-3"><th class="py-3 pe-4 text-start font-medium">Input</th><th class="py-3 pe-4 text-start font-medium">Default</th><th class="py-3 text-start font-medium">Values</th></tr></thead>
           <tbody>
               <tr class="border-t border-hairline"><td class="py-3 pe-4 align-top font-mono text-xs">content</td><td class="py-3 pe-4 align-top font-mono text-xs">nil</td><td class="py-3 align-top text-xs text-ink-2">—</td></tr>
               <tr class="border-t border-hairline"><td class="py-3 pe-4 align-top font-mono text-xs">variant</td><td class="py-3 pe-4 align-top font-mono text-xs">:primary</td><td class="py-3 align-top text-xs text-ink-2">:primary · :secondary · :ghost · :destructive</td></tr>
-              <tr class="border-t border-hairline"><td class="py-3 pe-4 align-top font-mono text-xs">size</td><td class="py-3 pe-4 align-top font-mono text-xs">:base</td><td class="py-3 align-top text-xs text-ink-2">:sm · :base · :lg · :nav</td></tr>
+              <tr class="border-t border-hairline"><td class="py-3 pe-4 align-top font-mono text-xs">size</td><td class="py-3 pe-4 align-top font-mono text-xs">:base</td><td class="py-3 align-top text-xs text-ink-2">:sm · :base · :lg</td></tr>
+              <tr class="border-t border-hairline"><td class="py-3 pe-4 align-top font-mono text-xs">icon</td><td class="py-3 pe-4 align-top font-mono text-xs">nil</td><td class="py-3 align-top text-xs text-ink-2">Heroicon name; spacing is handled automatically</td></tr>
+              <tr class="border-t border-hairline"><td class="py-3 pe-4 align-top font-mono text-xs">icon_position</td><td class="py-3 pe-4 align-top font-mono text-xs">:start</td><td class="py-3 align-top text-xs text-ink-2">:start · :end</td></tr>
               <tr class="border-t border-hairline"><td class="py-3 pe-4 align-top font-mono text-xs">attributes</td><td class="py-3 pe-4 align-top font-mono text-xs">{}</td><td class="py-3 align-top text-xs text-ink-2">Native HTML attributes; class:, data: and aria: merge with defaults</td></tr>
               <tr class="border-t border-hairline"><td class="py-3 pe-4 align-top font-mono text-xs">block</td><td class="py-3 pe-4 align-top font-mono text-xs">Captured block</td><td class="py-3 align-top text-xs text-ink-2">Captured Rails ERB content</td></tr>
           </tbody>
@@ -422,7 +521,7 @@
     </div>
     <div class="flex min-w-0 flex-col gap-4">
       <h3 id="ui_spinner" class="scroll-mt-28 font-mono text-sm font-medium">ui_spinner</h3>
-      <pre class="overflow-x-auto rounded-2xl bg-paper-2 p-4 font-mono text-xs text-ink-2"><code>ui_spinner(size: :base, label: &quot;Loading…&quot;, **attributes)</code></pre>
+      <pre class="overflow-x-auto rounded-2xl bg-paper-2 p-4 font-mono text-xs text-ink-2"><code><span class="text-(--syntax-call)" data-syntax="call">ui_spinner</span>(<span class="text-(--syntax-symbol)" data-syntax="symbol">size:</span> <span class="text-(--syntax-symbol)" data-syntax="symbol">:</span><span class="text-(--syntax-call)" data-syntax="call">base</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">label:</span> <span class="text-(--syntax-string)" data-syntax="string">&quot;</span><span class="text-(--syntax-string)" data-syntax="string">Loading…</span><span class="text-(--syntax-string)" data-syntax="string">&quot;</span>, **<span class="text-(--syntax-call)" data-syntax="call">attributes</span>)</code></pre>
       <div class="overflow-x-auto">
         <table class="w-full min-w-80 text-start text-sm">
           <thead><tr class="text-xs text-ink-3"><th class="py-3 pe-4 text-start font-medium">Input</th><th class="py-3 pe-4 text-start font-medium">Default</th><th class="py-3 text-start font-medium">Values</th></tr></thead>
@@ -436,7 +535,7 @@
     </div>
     <div class="flex min-w-0 flex-col gap-4">
       <h3 id="ui_button_link_to" class="scroll-mt-28 font-mono text-sm font-medium">ui_button_link_to</h3>
-      <pre class="overflow-x-auto rounded-2xl bg-paper-2 p-4 font-mono text-xs text-ink-2"><code>ui_button_link_to(content = nil, url = nil, variant: :primary, size: :base, **attributes, &amp;block)</code></pre>
+      <pre class="overflow-x-auto rounded-2xl bg-paper-2 p-4 font-mono text-xs text-ink-2"><code><span class="text-(--syntax-call)" data-syntax="call">ui_button_link_to</span>(<span class="text-(--syntax-call)" data-syntax="call">content</span> = <span class="text-(--syntax-keyword)" data-syntax="keyword">nil</span>, <span class="text-(--syntax-call)" data-syntax="call">url</span> = <span class="text-(--syntax-keyword)" data-syntax="keyword">nil</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">variant:</span> <span class="text-(--syntax-symbol)" data-syntax="symbol">:</span><span class="text-(--syntax-call)" data-syntax="call">primary</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">size:</span> <span class="text-(--syntax-symbol)" data-syntax="symbol">:</span><span class="text-(--syntax-call)" data-syntax="call">base</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">icon:</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">nil</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">icon_position:</span> <span class="text-(--syntax-symbol)" data-syntax="symbol">:</span><span class="text-(--syntax-call)" data-syntax="call">start</span>, **<span class="text-(--syntax-call)" data-syntax="call">attributes</span>, &amp;<span class="text-(--syntax-call)" data-syntax="call">block</span>)</code></pre>
       <div class="overflow-x-auto">
         <table class="w-full min-w-80 text-start text-sm">
           <thead><tr class="text-xs text-ink-3"><th class="py-3 pe-4 text-start font-medium">Input</th><th class="py-3 pe-4 text-start font-medium">Default</th><th class="py-3 text-start font-medium">Values</th></tr></thead>
@@ -444,7 +543,9 @@
               <tr class="border-t border-hairline"><td class="py-3 pe-4 align-top font-mono text-xs">content</td><td class="py-3 pe-4 align-top font-mono text-xs">nil</td><td class="py-3 align-top text-xs text-ink-2">—</td></tr>
               <tr class="border-t border-hairline"><td class="py-3 pe-4 align-top font-mono text-xs">url</td><td class="py-3 pe-4 align-top font-mono text-xs">nil</td><td class="py-3 align-top text-xs text-ink-2">—</td></tr>
               <tr class="border-t border-hairline"><td class="py-3 pe-4 align-top font-mono text-xs">variant</td><td class="py-3 pe-4 align-top font-mono text-xs">:primary</td><td class="py-3 align-top text-xs text-ink-2">:primary · :secondary · :ghost · :destructive</td></tr>
-              <tr class="border-t border-hairline"><td class="py-3 pe-4 align-top font-mono text-xs">size</td><td class="py-3 pe-4 align-top font-mono text-xs">:base</td><td class="py-3 align-top text-xs text-ink-2">:sm · :base · :lg · :nav</td></tr>
+              <tr class="border-t border-hairline"><td class="py-3 pe-4 align-top font-mono text-xs">size</td><td class="py-3 pe-4 align-top font-mono text-xs">:base</td><td class="py-3 align-top text-xs text-ink-2">:sm · :base · :lg</td></tr>
+              <tr class="border-t border-hairline"><td class="py-3 pe-4 align-top font-mono text-xs">icon</td><td class="py-3 pe-4 align-top font-mono text-xs">nil</td><td class="py-3 align-top text-xs text-ink-2">Heroicon name; spacing is handled automatically</td></tr>
+              <tr class="border-t border-hairline"><td class="py-3 pe-4 align-top font-mono text-xs">icon_position</td><td class="py-3 pe-4 align-top font-mono text-xs">:start</td><td class="py-3 align-top text-xs text-ink-2">:start · :end</td></tr>
               <tr class="border-t border-hairline"><td class="py-3 pe-4 align-top font-mono text-xs">attributes</td><td class="py-3 pe-4 align-top font-mono text-xs">{}</td><td class="py-3 align-top text-xs text-ink-2">Native HTML attributes; class:, data: and aria: merge with defaults</td></tr>
               <tr class="border-t border-hairline"><td class="py-3 pe-4 align-top font-mono text-xs">block</td><td class="py-3 pe-4 align-top font-mono text-xs">Captured block</td><td class="py-3 align-top text-xs text-ink-2">Captured Rails ERB content</td></tr>
           </tbody>
@@ -453,7 +554,7 @@
     </div>
     <div class="flex min-w-0 flex-col gap-4">
       <h3 id="ui_button_to" class="scroll-mt-28 font-mono text-sm font-medium">ui_button_to</h3>
-      <pre class="overflow-x-auto rounded-2xl bg-paper-2 p-4 font-mono text-xs text-ink-2"><code>ui_button_to(content = nil, url = nil, variant: :primary, size: :base, **attributes, &amp;block)</code></pre>
+      <pre class="overflow-x-auto rounded-2xl bg-paper-2 p-4 font-mono text-xs text-ink-2"><code><span class="text-(--syntax-call)" data-syntax="call">ui_button_to</span>(<span class="text-(--syntax-call)" data-syntax="call">content</span> = <span class="text-(--syntax-keyword)" data-syntax="keyword">nil</span>, <span class="text-(--syntax-call)" data-syntax="call">url</span> = <span class="text-(--syntax-keyword)" data-syntax="keyword">nil</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">variant:</span> <span class="text-(--syntax-symbol)" data-syntax="symbol">:</span><span class="text-(--syntax-call)" data-syntax="call">primary</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">size:</span> <span class="text-(--syntax-symbol)" data-syntax="symbol">:</span><span class="text-(--syntax-call)" data-syntax="call">base</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">icon:</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">nil</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">icon_position:</span> <span class="text-(--syntax-symbol)" data-syntax="symbol">:</span><span class="text-(--syntax-call)" data-syntax="call">start</span>, **<span class="text-(--syntax-call)" data-syntax="call">attributes</span>, &amp;<span class="text-(--syntax-call)" data-syntax="call">block</span>)</code></pre>
       <div class="overflow-x-auto">
         <table class="w-full min-w-80 text-start text-sm">
           <thead><tr class="text-xs text-ink-3"><th class="py-3 pe-4 text-start font-medium">Input</th><th class="py-3 pe-4 text-start font-medium">Default</th><th class="py-3 text-start font-medium">Values</th></tr></thead>
@@ -461,7 +562,9 @@
               <tr class="border-t border-hairline"><td class="py-3 pe-4 align-top font-mono text-xs">content</td><td class="py-3 pe-4 align-top font-mono text-xs">nil</td><td class="py-3 align-top text-xs text-ink-2">—</td></tr>
               <tr class="border-t border-hairline"><td class="py-3 pe-4 align-top font-mono text-xs">url</td><td class="py-3 pe-4 align-top font-mono text-xs">nil</td><td class="py-3 align-top text-xs text-ink-2">—</td></tr>
               <tr class="border-t border-hairline"><td class="py-3 pe-4 align-top font-mono text-xs">variant</td><td class="py-3 pe-4 align-top font-mono text-xs">:primary</td><td class="py-3 align-top text-xs text-ink-2">:primary · :secondary · :ghost · :destructive</td></tr>
-              <tr class="border-t border-hairline"><td class="py-3 pe-4 align-top font-mono text-xs">size</td><td class="py-3 pe-4 align-top font-mono text-xs">:base</td><td class="py-3 align-top text-xs text-ink-2">:sm · :base · :lg · :nav</td></tr>
+              <tr class="border-t border-hairline"><td class="py-3 pe-4 align-top font-mono text-xs">size</td><td class="py-3 pe-4 align-top font-mono text-xs">:base</td><td class="py-3 align-top text-xs text-ink-2">:sm · :base · :lg</td></tr>
+              <tr class="border-t border-hairline"><td class="py-3 pe-4 align-top font-mono text-xs">icon</td><td class="py-3 pe-4 align-top font-mono text-xs">nil</td><td class="py-3 align-top text-xs text-ink-2">Heroicon name; spacing is handled automatically</td></tr>
+              <tr class="border-t border-hairline"><td class="py-3 pe-4 align-top font-mono text-xs">icon_position</td><td class="py-3 pe-4 align-top font-mono text-xs">:start</td><td class="py-3 align-top text-xs text-ink-2">:start · :end</td></tr>
               <tr class="border-t border-hairline"><td class="py-3 pe-4 align-top font-mono text-xs">attributes</td><td class="py-3 pe-4 align-top font-mono text-xs">{}</td><td class="py-3 align-top text-xs text-ink-2">Native HTML attributes; class:, data: and aria: merge with defaults</td></tr>
               <tr class="border-t border-hairline"><td class="py-3 pe-4 align-top font-mono text-xs">block</td><td class="py-3 pe-4 align-top font-mono text-xs">Captured block</td><td class="py-3 align-top text-xs text-ink-2">Captured Rails ERB content</td></tr>
           </tbody>
@@ -470,7 +573,7 @@
     </div>
   <div class="flex flex-col gap-3 rounded-2xl bg-paper-2 p-5 text-sm text-ink-2">
     <h3 class="font-semibold text-ink">Styling and extension</h3>
-    <p>Use <code>class:</code> to merge utilities, native attributes for application behavior, and <a href="/tokens.html" class="underline underline-offset-2">theme tokens</a> for the shared palette. For custom markup, the <a href="https://github.com/lostcoords/ui#advanced-style-composition" class="underline underline-offset-2">advanced class helpers</a> expose the same styles, including glass surfaces and class merging.</p>
+    <p>Use <code>class:</code> to merge utilities, native attributes for application behavior, and <a href="/theming.html" class="underline underline-offset-2">theming guide</a> for the shared palette. For custom markup, the <a href="https://github.com/lostcoords/ui#advanced-style-composition" class="underline underline-offset-2">advanced class helpers</a> expose the same styles, including glass surfaces and class merging.</p>
     <p><a href="/api.json" class="underline underline-offset-2">API JSON</a> · <a href="/llms.txt" class="underline underline-offset-2">LLM reference</a></p>
   </div>
 </section>
@@ -480,14 +583,17 @@
   <aside class="sticky top-20 hidden h-[calc(100dvh-5rem)] w-40 shrink-0 overflow-y-auto py-12 text-xs xl:block">
     <p class="pb-4 font-medium">On this page</p>
     <nav class="flex flex-col items-start gap-3 text-ink-3" aria-label="On this page">
-        <a class="hover:text-ink" href="#example-0">Default</a>
-        <a class="hover:text-ink" href="#example-1">Variants</a>
-        <a class="hover:text-ink" href="#example-2">Sizes</a>
-        <a class="hover:text-ink" href="#example-3">With an icon</a>
-        <a class="hover:text-ink" href="#example-4">Loading</a>
-        <a class="hover:text-ink" href="#example-5">Disabled</a>
-        <a class="hover:text-ink" href="#example-6">As a link</a>
-        <a class="hover:text-ink" href="#example-7">HTTP actions</a>
+      <a class="hover:text-ink" href="#usage">Usage</a>
+      <a class="hover:text-ink" href="#examples">Examples</a>
+        <a class="ps-3 hover:text-ink" href="#example-0">Default</a>
+        <a class="ps-3 hover:text-ink" href="#example-1">Variants</a>
+        <a class="ps-3 hover:text-ink" href="#example-2">Sizes</a>
+        <a class="ps-3 hover:text-ink" href="#example-3">With an icon</a>
+        <a class="ps-3 hover:text-ink" href="#example-4">Custom icons and content</a>
+        <a class="ps-3 hover:text-ink" href="#example-5">Loading</a>
+        <a class="ps-3 hover:text-ink" href="#example-6">Disabled</a>
+        <a class="ps-3 hover:text-ink" href="#example-7">As a link</a>
+        <a class="ps-3 hover:text-ink" href="#example-8">HTTP actions</a>
       <a class="pt-2 hover:text-ink" href="#api">API reference</a>
     </nav>
   </aside>

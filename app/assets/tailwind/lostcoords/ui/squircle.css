@@ -1,20 +1,22 @@
 /* WebKit ignores corner-shape and keeps plain rounded corners. A squircle reads
    tighter than a circular arc of the same radius, so the 12/16/24 tiers grow. */
-@supports (corner-shape: squircle) {
-  body {
-    --radius-xl: 1.125rem;
-    --radius-2xl: 1.5rem;
-    --radius-3xl: 2rem;
+@layer theme {
+  @supports (corner-shape: squircle) {
+    body {
+      --radius-xl: 1.125rem;
+      --radius-2xl: 1.5rem;
+      --radius-3xl: 2rem;
 
-    & :is(
-      [class*="rounded-xl"], [class*="rounded-2xl"], [class*="rounded-3xl"],
-      [class*="rounded-t-"], [class*="rounded-b-"],
-      [class*="rounded-ss-"], [class*="rounded-se-"],
-      [class*="rounded-es-"], [class*="rounded-ee-"],
-      [class*="[&_button]:rounded-xl"] button,
-      [class*="before:rounded-xl"]::before
-    ):not([class*="rounded-full"]) {
-      corner-shape: squircle;
+      & :is(
+        [class*="rounded-xl"], [class*="rounded-2xl"], [class*="rounded-3xl"],
+        [class*="rounded-t-"], [class*="rounded-b-"],
+        [class*="rounded-ss-"], [class*="rounded-se-"],
+        [class*="rounded-es-"], [class*="rounded-ee-"],
+        [class*="[&_button]:rounded-xl"] button,
+        [class*="before:rounded-xl"]::before
+      ):not([class*="rounded-full"]) {
+        corner-shape: squircle;
+      }
     }
   }
 }
