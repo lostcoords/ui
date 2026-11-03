@@ -1,0 +1,26 @@
+<div class="relative" data-controller="palette-picker">
+  <button type="button" class="<%= button_class(variant: :secondary, size: :sm) %>" aria-haspopup="dialog" aria-expanded="false" aria-controls="palette-picker" aria-label="Color palette: Default" data-palette-picker-target="trigger" data-showcase-target="paletteTrigger" data-action="palette-picker#toggle">
+    <span class="flex gap-0.5" aria-hidden="true"><span class="size-2.5 rounded-full bg-sky"></span><span class="size-2.5 rounded-full bg-ink"></span></span>Palette
+  </button>
+  <div id="palette-picker" class="<%= popover_class(extra: "transition-none data-open:flex w-80 max-h-[calc(100dvh-7rem)] max-w-[calc(100vw-2rem)] flex-col gap-4 overflow-y-auto p-4") %>" data-palette-picker-target="popover" role="dialog" aria-labelledby="palette-title">
+    <div class="flex flex-col gap-1"><h2 id="palette-title" class="text-sm font-semibold">Color palette</h2><p class="text-xs text-ink-3">Preview across every component.</p></div>
+    <fieldset class="grid grid-cols-2 gap-2">
+      <legend class="sr-only">Choose a palette</legend>
+      <% DocsPalette::ALL.each do |palette| %>
+        <label class="flex cursor-pointer flex-col gap-3 rounded-2xl border border-transparent bg-paper-2 p-3 has-checked:border-accent has-checked:bg-sky-soft">
+          <input type="radio" name="palette" value="<%= palette.id %>" class="sr-only" data-showcase-target="palette" data-palette-name="<%= palette.name %>" data-action="change->showcase#selectPalette" <%= "checked" if palette.id == "original" %>>
+          <span class="flex h-7 overflow-hidden rounded-lg" aria-hidden="true">
+            <% if palette.id == "original" %>
+              <% 3.times do |index| %><span class="flex-1" style="background-color: var(--palette-original-<%= index + 1 %>)"></span><% end %>
+            <% else %>
+              <% palette.colors.each_with_index do |color, index| %><span class="flex-1" title="<%= color %>" style="background-color: var(--palette-<%= palette.id %>-<%= index + 1 %>)"></span><% end %>
+            <% end %>
+          </span>
+          <span class="flex flex-col gap-1"><span class="text-xs font-semibold"><%= palette.name %></span><span class="text-xs text-ink-3"><%= palette.number ? "Wada № #{palette.number}" : "Library default" %></span></span>
+        </label>
+      <% end %>
+    </fieldset>
+    <p class="text-xs text-ink-3">Based on Wada Sanzo’s <span lang="ja">配色事典</span>. UI tints adapted for contrast. <a class="underline underline-offset-2 hover:text-ink" href="https://github.com/mattdesl/dictionary-of-colour-combinations">Color data</a> · <a class="underline underline-offset-2 hover:text-ink" href="/wada-license.txt">License</a></p>
+    <span role="status" class="sr-only" data-showcase-target="paletteStatus"></span>
+  </div>
+</div>

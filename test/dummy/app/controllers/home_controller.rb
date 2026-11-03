@@ -16,6 +16,10 @@ class HomeController < ApplicationController
     @sections = Showcase.sections
   end
 
+  def palette_license
+    render plain: Rails.root.join("vendor/wada/LICENSE.txt").read
+  end
+
   def emoji_catalog
     render partial: "lostcoords/ui/components/emoji_picker_grid"
   end

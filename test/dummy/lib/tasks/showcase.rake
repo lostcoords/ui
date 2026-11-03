@@ -31,6 +31,7 @@ namespace :lostcoords do
         target.write(html.gsub(%r{/assets/[^"'\s)]+}) { |path| "#{prefix}#{path.delete_prefix("/")}" })
       end
 
+      dir.join("wada-license.txt").write(fetch.("/wada-license.txt"))
       dir.join("CNAME").write("ui.lostcoords.com\n")
 
       puts "Wrote #{pages.size} pages and #{assets.size} assets to #{dir}"

@@ -35,4 +35,11 @@ class HomeTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_includes response.body, %(data-emoji="🥝")
   end
+  test "the palette attribution is available in the live preview" do
+    get "/wada-license.txt"
+
+    assert_response :success
+    assert_equal "text/plain", response.media_type
+    assert_includes response.body, "Copyright (c) 2020 Matt DesLauriers"
+  end
 end

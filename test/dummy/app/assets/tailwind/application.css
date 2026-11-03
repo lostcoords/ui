@@ -87,9 +87,10 @@
   }
 }
 
+
 :root {
-  --lch-sky:      67.2% 0.176 256.6;
-  --lch-sky-deep: 55.6% 0.169 259.2;
+  --lch-sky:      55.6% 0.176 256.6;
+  --lch-sky-deep: 51.5% 0.169 259.2;
   --lch-leaf:     58.6% 0.089 144.3;
   --lch-gold:     73.8% 0.130 86;
   --lch-berry:    63.5% 0.151 41.4;
@@ -99,7 +100,7 @@
   --paper-3:  oklch(95.2% 0.006 264.5deg);
   --ink:      oklch(23.1% 0.010 268.2deg);
   --ink-2:    oklch(39.4% 0.012 267deg);
-  --ink-3:    oklch(54.0% 0.014 267deg);
+  --ink-3:    oklch(52.0% 0.014 267deg);
   --ink-on-accent: #fff;
   --hairline: oklch(93.1% 0.006 264.5deg);
 
@@ -162,6 +163,28 @@
   --focus-halo: 0 0 0 calc(var(--spacing) * 0.5) var(--focus-halo-color);
 
   color-scheme: light;
+
+  --palette-original-1: oklch(var(--lch-sky));
+  --palette-original-2: white;
+  --palette-original-3: oklch(23.1% 0.010 268.2deg);
+  --palette-ivory-blue-1: #ebd3a2;
+  --palette-ivory-blue-2: #e2b540;
+  --palette-ivory-blue-3: #1c4286;
+  --palette-coral-green-1: #f48067;
+  --palette-coral-green-2: #fbe6a0;
+  --palette-coral-green-3: #112f2c;
+  --palette-rose-1: #f9c1ce;
+  --palette-rose-2: #7d133a;
+  --palette-rose-3: #a36752;
+  --palette-rose-4: #b6bfc1;
+  --palette-earth-1: #ae5224;
+  --palette-earth-2: #ebd3a2;
+  --palette-earth-3: #635a3a;
+  --palette-earth-4: #064f6e;
+  --palette-olive-1: #c1c494;
+  --palette-olive-2: #437742;
+  --palette-olive-3: #253122;
+  --palette-olive-4: #501345;
 }
 
 html:lang(ja) {
@@ -183,8 +206,9 @@ html[data-theme="dark"] {
   --scrim: rgb(0 0 0 / 0.6);
   --scrim-soft: rgb(0 0 0 / 0.32);
 
+  --ink-on-accent: var(--paper);
   --sky: oklch(65.5% 0.150 255deg);
-  --sky-deep: oklch(58.5% 0.155 257deg);
+  --sky-deep: oklch(61.5% 0.155 257deg);
   --sky-soft: color-mix(in oklab, var(--sky) 18%, var(--paper));
   --accent: var(--sky);
 
@@ -218,6 +242,76 @@ html[data-theme="dark"] {
   --pill-surface: linear-gradient(var(--paper-3), var(--paper-2));
   --pill-light: inset 0 1px 0 rgb(255 255 255 / 0.08), inset 0 -1px 1px rgb(0 0 0 / 0.2);
   --pill-depth: 0 1px 1px rgb(0 0 0 / 0.3), 0 8px 18px -6px rgb(0 0 0 / 0.5);
+}
+
+
+:root[data-palette="ivory-blue"] {
+  --palette-paper: var(--palette-ivory-blue-1);
+  --palette-ink: var(--palette-ivory-blue-3);
+  --palette-primary: var(--palette-ivory-blue-3);
+  --palette-primary-dark: var(--palette-ivory-blue-1);
+}
+
+:root[data-palette="coral-green"] {
+  --palette-paper: var(--palette-coral-green-2);
+  --palette-ink: var(--palette-coral-green-3);
+  --palette-primary: var(--palette-coral-green-3);
+  --palette-primary-dark: var(--palette-coral-green-1);
+}
+
+:root[data-palette="rose"] {
+  --palette-paper: var(--palette-rose-1);
+  --palette-ink: var(--palette-rose-2);
+  --palette-primary: var(--palette-rose-2);
+  --palette-primary-dark: var(--palette-rose-1);
+}
+
+:root[data-palette="earth"] {
+  --palette-paper: var(--palette-earth-2);
+  --palette-ink: var(--palette-earth-3);
+  --palette-primary: var(--palette-earth-4);
+  --palette-primary-dark: var(--palette-earth-2);
+}
+
+:root[data-palette="olive"] {
+  --palette-paper: var(--palette-olive-1);
+  --palette-ink: var(--palette-olive-3);
+  --palette-primary: var(--palette-olive-4);
+  --palette-primary-dark: var(--palette-olive-1);
+}
+
+:root[data-palette] {
+  --paper: color-mix(in oklab, var(--palette-paper) 24%, white);
+  --paper-2: color-mix(in oklab, var(--palette-paper) 45%, white);
+  --paper-3: color-mix(in oklab, var(--palette-paper) 64%, white);
+  --ink: color-mix(in oklab, var(--palette-ink) 78%, black);
+  --ink-2: color-mix(in oklab, var(--ink) 85%, var(--paper));
+  --ink-3: color-mix(in oklab, var(--ink) 78%, var(--paper));
+  --ink-on-accent: white;
+  --sky: color-mix(in oklab, var(--palette-primary) 85%, black);
+  --sky-deep: color-mix(in oklab, var(--palette-primary) 70%, black);
+  --sky-soft: color-mix(in oklab, var(--sky) 12%, var(--paper));
+  --accent: var(--sky);
+  --hairline: color-mix(in oklab, var(--ink) 12%, var(--paper));
+  --glass-fill: color-mix(in oklab, var(--paper) 88%, transparent);
+  --glass-hud-solid: var(--paper);
+  --glass-hud-fill: var(--paper);
+  --pill-surface: linear-gradient(var(--paper), var(--paper-3));
+  --pill-rim: linear-gradient(var(--paper), var(--paper-3));
+}
+
+:root[data-palette][data-theme="dark"] {
+  --paper: color-mix(in oklab, var(--palette-ink) 25%, oklch(19% 0.004 90deg));
+  --paper-2: color-mix(in oklab, var(--palette-ink) 35%, oklch(24% 0.006 90deg));
+  --paper-3: color-mix(in oklab, var(--palette-ink) 45%, oklch(29% 0.008 90deg));
+  --ink: color-mix(in oklab, var(--palette-paper) 85%, white);
+  --ink-2: color-mix(in oklab, var(--ink) 85%, var(--paper));
+  --ink-3: color-mix(in oklab, var(--ink) 78%, var(--paper));
+  --sky: var(--palette-primary-dark);
+  --sky-deep: color-mix(in oklab, var(--sky) 85%, white);
+  --ink-on-accent: var(--paper);
+  --sky-soft: color-mix(in oklab, var(--sky) 18%, var(--paper));
+  --accent: var(--sky);
 }
 
 @layer base {

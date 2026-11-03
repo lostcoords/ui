@@ -8,6 +8,8 @@
     <meta name="description" content="A Rails component library. Examples, ERB and API reference.">
     <link rel="icon" href="data:,">
     <script>
+      const palette = localStorage.getItem("lostcoords-ui:palette")
+      if (<%= raw DocsPalette::ALL.reject { |palette| palette.id == "original" }.map(&:id).to_json %>.includes(palette)) document.documentElement.dataset.palette = palette
       const theme = localStorage.getItem("lostcoords-ui:theme")
       if (theme === "dark" || (!theme && matchMedia("(prefers-color-scheme: dark)").matches)) document.documentElement.dataset.theme = "dark"
     </script>
@@ -27,7 +29,8 @@
           <a class="text-ink-2 hover:text-ink" href="/tokens.html">Tokens</a>
         </nav>
         <div class="ms-auto flex items-center gap-2">
-          <a href="https://github.com/lostcoords/ui" class="<%= icon_button_class(size: :sm) %>" aria-label="Source on GitHub"><%= heroicon "code-bracket", options: { "aria-hidden": true } %></a>
+          <%= render "showcase/palette_picker" %>
+          <a href="https://github.com/lostcoords/ui" class="<%= icon_button_class(size: :sm, extra: "max-sm:hidden") %>" aria-label="Source on GitHub"><%= heroicon "code-bracket", options: { "aria-hidden": true } %></a>
           <button type="button" class="<%= icon_button_class(size: :sm) %>" data-action="showcase#toggleTheme" aria-label="Switch color theme" aria-pressed="false" data-showcase-target="theme"><span class="dark:hidden"><%= heroicon "moon", options: { "aria-hidden": true } %></span><span class="hidden dark:inline"><%= heroicon "sun", options: { "aria-hidden": true } %></span></button>
         </div>
       </div>

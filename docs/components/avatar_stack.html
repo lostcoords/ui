@@ -8,10 +8,12 @@
     <meta name="description" content="A Rails component library. Examples, ERB and API reference.">
     <link rel="icon" href="data:,">
     <script>
+      const palette = localStorage.getItem("lostcoords-ui:palette")
+      if (["ivory-blue","coral-green","rose","earth","olive"].includes(palette)) document.documentElement.dataset.palette = palette
       const theme = localStorage.getItem("lostcoords-ui:theme")
       if (theme === "dark" || (!theme && matchMedia("(prefers-color-scheme: dark)").matches)) document.documentElement.dataset.theme = "dark"
     </script>
-    <link rel="stylesheet" href="../assets/tailwind-4b1fb047.css" />
+    <link rel="stylesheet" href="../assets/tailwind-18dee66c.css" />
     <script type="importmap" data-turbo-track="reload">{
   "imports": {
     "application": "../assets/application-20c5ac24.js",
@@ -37,7 +39,8 @@
     "controllers/demo_controller": "../assets/controllers/demo_controller-4466c193.js",
     "controllers/example_controller": "../assets/controllers/example_controller-71d4d7e0.js",
     "controllers": "../assets/controllers/index-e1e47e23.js",
-    "controllers/showcase_controller": "../assets/controllers/showcase_controller-82d9707e.js"
+    "controllers/palette_picker_controller": "../assets/controllers/palette_picker_controller-cc118fcf.js",
+    "controllers/showcase_controller": "../assets/controllers/showcase_controller-04d58c1d.js"
   }
 }</script>
 <link rel="modulepreload" href="../assets/application-20c5ac24.js">
@@ -47,7 +50,8 @@
 <link rel="modulepreload" href="../assets/controllers/demo_controller-4466c193.js">
 <link rel="modulepreload" href="../assets/controllers/example_controller-71d4d7e0.js">
 <link rel="modulepreload" href="../assets/controllers/index-e1e47e23.js">
-<link rel="modulepreload" href="../assets/controllers/showcase_controller-82d9707e.js">
+<link rel="modulepreload" href="../assets/controllers/palette_picker_controller-cc118fcf.js">
+<link rel="modulepreload" href="../assets/controllers/showcase_controller-04d58c1d.js">
 <script type="module">import "application"</script>
   </head>
   <body data-controller="showcase">
@@ -63,7 +67,63 @@
           <a class="text-ink-2 hover:text-ink" href="/tokens.html">Tokens</a>
         </nav>
         <div class="ms-auto flex items-center gap-2">
-          <a href="https://github.com/lostcoords/ui" class="inline-grid place-items-center shrink-0 border-0 bg-transparent text-ink-3 cursor-pointer no-underline transition-[background-color,color,transform] duration-[140ms] ease-out hover:bg-paper-2 hover:text-ink active:scale-[0.94] disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg]:shrink-0 rounded-xl size-11 [&amp;_svg]:size-4" aria-label="Source on GitHub"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon">
+          <div class="relative" data-controller="palette-picker">
+  <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm border border-transparent bg-paper-2 text-ink hover:bg-paper-3 active:bg-paper-3" aria-haspopup="dialog" aria-expanded="false" aria-controls="palette-picker" aria-label="Color palette: Default" data-palette-picker-target="trigger" data-showcase-target="paletteTrigger" data-action="palette-picker#toggle">
+    <span class="flex gap-0.5" aria-hidden="true"><span class="size-2.5 rounded-full bg-sky"></span><span class="size-2.5 rounded-full bg-ink"></span></span>Palette
+  </button>
+  <div id="palette-picker" class="glass rounded-3xl [--glass-shadow:var(--glass-rim),var(--shadow-lg)] max-md:[--glass-fill:var(--paper)] dark:max-md:[--glass-fill:var(--paper-3)] row-menu__popover squircle popover-shell hidden absolute top-[calc(100%+--spacing(1))] end-0 overscroll-contain [&amp;_form]:m-0 transition-none data-open:flex w-80 max-h-[calc(100dvh-7rem)] max-w-[calc(100vw-2rem)] flex-col gap-4 overflow-y-auto p-4" data-palette-picker-target="popover" role="dialog" aria-labelledby="palette-title">
+    <div class="flex flex-col gap-1"><h2 id="palette-title" class="text-sm font-semibold">Color palette</h2><p class="text-xs text-ink-3">Preview across every component.</p></div>
+    <fieldset class="grid grid-cols-2 gap-2">
+      <legend class="sr-only">Choose a palette</legend>
+        <label class="flex cursor-pointer flex-col gap-3 rounded-2xl border border-transparent bg-paper-2 p-3 has-checked:border-accent has-checked:bg-sky-soft">
+          <input type="radio" name="palette" value="original" class="sr-only" data-showcase-target="palette" data-palette-name="Default" data-action="change->showcase#selectPalette" checked>
+          <span class="flex h-7 overflow-hidden rounded-lg" aria-hidden="true">
+              <span class="flex-1" style="background-color: var(--palette-original-1)"></span><span class="flex-1" style="background-color: var(--palette-original-2)"></span><span class="flex-1" style="background-color: var(--palette-original-3)"></span>
+          </span>
+          <span class="flex flex-col gap-1"><span class="text-xs font-semibold">Default</span><span class="text-xs text-ink-3">Library default</span></span>
+        </label>
+        <label class="flex cursor-pointer flex-col gap-3 rounded-2xl border border-transparent bg-paper-2 p-3 has-checked:border-accent has-checked:bg-sky-soft">
+          <input type="radio" name="palette" value="ivory-blue" class="sr-only" data-showcase-target="palette" data-palette-name="Ivory &amp; blue" data-action="change->showcase#selectPalette" >
+          <span class="flex h-7 overflow-hidden rounded-lg" aria-hidden="true">
+              <span class="flex-1" title="Ivory Buff" style="background-color: var(--palette-ivory-blue-1)"></span><span class="flex-1" title="Yellow Ocher" style="background-color: var(--palette-ivory-blue-2)"></span><span class="flex-1" title="Deep Lyons Blue" style="background-color: var(--palette-ivory-blue-3)"></span>
+          </span>
+          <span class="flex flex-col gap-1"><span class="text-xs font-semibold">Ivory &amp; blue</span><span class="text-xs text-ink-3">Wada № 126</span></span>
+        </label>
+        <label class="flex cursor-pointer flex-col gap-3 rounded-2xl border border-transparent bg-paper-2 p-3 has-checked:border-accent has-checked:bg-sky-soft">
+          <input type="radio" name="palette" value="coral-green" class="sr-only" data-showcase-target="palette" data-palette-name="Coral &amp; green" data-action="change->showcase#selectPalette" >
+          <span class="flex h-7 overflow-hidden rounded-lg" aria-hidden="true">
+              <span class="flex-1" title="Grenadine Pink" style="background-color: var(--palette-coral-green-1)"></span><span class="flex-1" title="Naples Yellow" style="background-color: var(--palette-coral-green-2)"></span><span class="flex-1" title="Deep Slate Green" style="background-color: var(--palette-coral-green-3)"></span>
+          </span>
+          <span class="flex flex-col gap-1"><span class="text-xs font-semibold">Coral &amp; green</span><span class="text-xs text-ink-3">Wada № 166</span></span>
+        </label>
+        <label class="flex cursor-pointer flex-col gap-3 rounded-2xl border border-transparent bg-paper-2 p-3 has-checked:border-accent has-checked:bg-sky-soft">
+          <input type="radio" name="palette" value="rose" class="sr-only" data-showcase-target="palette" data-palette-name="Rose &amp; garnet" data-action="change->showcase#selectPalette" >
+          <span class="flex h-7 overflow-hidden rounded-lg" aria-hidden="true">
+              <span class="flex-1" title="Hermosa Pink" style="background-color: var(--palette-rose-1)"></span><span class="flex-1" title="Pansy Purple" style="background-color: var(--palette-rose-2)"></span><span class="flex-1" title="Sudan Brown" style="background-color: var(--palette-rose-3)"></span><span class="flex-1" title="Neutral Gray" style="background-color: var(--palette-rose-4)"></span>
+          </span>
+          <span class="flex flex-col gap-1"><span class="text-xs font-semibold">Rose &amp; garnet</span><span class="text-xs text-ink-3">Wada № 273</span></span>
+        </label>
+        <label class="flex cursor-pointer flex-col gap-3 rounded-2xl border border-transparent bg-paper-2 p-3 has-checked:border-accent has-checked:bg-sky-soft">
+          <input type="radio" name="palette" value="earth" class="sr-only" data-showcase-target="palette" data-palette-name="Earth &amp; ink" data-action="change->showcase#selectPalette" >
+          <span class="flex h-7 overflow-hidden rounded-lg" aria-hidden="true">
+              <span class="flex-1" title="Burnt Sienna" style="background-color: var(--palette-earth-1)"></span><span class="flex-1" title="Ivory Buff" style="background-color: var(--palette-earth-2)"></span><span class="flex-1" title="Deep Grayish Olive" style="background-color: var(--palette-earth-3)"></span><span class="flex-1" title="Vandar Poel&#39;s Blue" style="background-color: var(--palette-earth-4)"></span>
+          </span>
+          <span class="flex flex-col gap-1"><span class="text-xs font-semibold">Earth &amp; ink</span><span class="text-xs text-ink-3">Wada № 343</span></span>
+        </label>
+        <label class="flex cursor-pointer flex-col gap-3 rounded-2xl border border-transparent bg-paper-2 p-3 has-checked:border-accent has-checked:bg-sky-soft">
+          <input type="radio" name="palette" value="olive" class="sr-only" data-showcase-target="palette" data-palette-name="Olive &amp; violet" data-action="change->showcase#selectPalette" >
+          <span class="flex h-7 overflow-hidden rounded-lg" aria-hidden="true">
+              <span class="flex-1" title="Olive Buff" style="background-color: var(--palette-olive-1)"></span><span class="flex-1" title="Cossack Green" style="background-color: var(--palette-olive-2)"></span><span class="flex-1" title="Deep Slate Olive" style="background-color: var(--palette-olive-3)"></span><span class="flex-1" title="Cotinga Purple" style="background-color: var(--palette-olive-4)"></span>
+          </span>
+          <span class="flex flex-col gap-1"><span class="text-xs font-semibold">Olive &amp; violet</span><span class="text-xs text-ink-3">Wada № 348</span></span>
+        </label>
+    </fieldset>
+    <p class="text-xs text-ink-3">Based on Wada Sanzo’s <span lang="ja">配色事典</span>. UI tints adapted for contrast. <a class="underline underline-offset-2 hover:text-ink" href="https://github.com/mattdesl/dictionary-of-colour-combinations">Color data</a> · <a class="underline underline-offset-2 hover:text-ink" href="/wada-license.txt">License</a></p>
+    <span role="status" class="sr-only" data-showcase-target="paletteStatus"></span>
+  </div>
+</div>
+
+          <a href="https://github.com/lostcoords/ui" class="inline-grid place-items-center shrink-0 border-0 bg-transparent text-ink-3 cursor-pointer no-underline transition-[background-color,color,transform] duration-[140ms] ease-out hover:bg-paper-2 hover:text-ink active:scale-[0.94] disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg]:shrink-0 rounded-xl size-11 [&amp;_svg]:size-4 max-sm:hidden" aria-label="Source on GitHub"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon">
   <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"></path>
 </svg>
 </a>
