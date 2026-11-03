@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="darkreader-lock">
+    <title>Avatar · LOST COORDS UI</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="A Rails component library. Examples, ERB and API reference.">
+    <link rel="icon" href="data:,">
+    <script>
+      const theme = localStorage.getItem("lostcoords-ui:theme")
+      if (theme === "dark" || (!theme && matchMedia("(prefers-color-scheme: dark)").matches)) document.documentElement.dataset.theme = "dark"
+    </script>
+    <link rel="stylesheet" href="../assets/tailwind.css" />
+    <script type="importmap" data-turbo-track="reload">{
+  "imports": {
+    "application": "../assets/application.js",
+    "@hotwired/stimulus": "../assets/stimulus.min.js",
+    "@hotwired/stimulus-loading": "../assets/stimulus-loading.js",
+    "controllers/confirm_dialog_controller": "../assets/lostcoords/ui/controllers/confirm_dialog_controller.js",
+    "controllers/disclosure_controller": "../assets/lostcoords/ui/controllers/disclosure_controller.js",
+    "controllers/emoji_picker_controller": "../assets/lostcoords/ui/controllers/emoji_picker_controller.js",
+    "controllers/modal_controller": "../assets/lostcoords/ui/controllers/modal_controller.js",
+    "controllers/row_menu_controller": "../assets/lostcoords/ui/controllers/row_menu_controller.js",
+    "controllers/sheet_controller": "../assets/lostcoords/ui/controllers/sheet_controller.js",
+    "controllers/toast_controller": "../assets/lostcoords/ui/controllers/toast_controller.js",
+    "helpers/catalog_picker": "../assets/lostcoords/ui/helpers/catalog_picker.js",
+    "helpers/context_dialog": "../assets/lostcoords/ui/helpers/context_dialog.js",
+    "helpers/dialog": "../assets/lostcoords/ui/helpers/dialog.js",
+    "helpers/dismiss_stack": "../assets/lostcoords/ui/helpers/dismiss_stack.js",
+    "helpers/floating_panel": "../assets/lostcoords/ui/helpers/floating_panel.js",
+    "helpers/menu_keys": "../assets/lostcoords/ui/helpers/menu_keys.js",
+    "helpers/sheet_motion": "../assets/lostcoords/ui/helpers/sheet_motion.js",
+    "helpers/top_layer": "../assets/lostcoords/ui/helpers/top_layer.js",
+    "helpers/viewport": "../assets/lostcoords/ui/helpers/viewport.js",
+    "controllers/application": "../assets/controllers/application.js",
+    "controllers/demo_controller": "../assets/controllers/demo_controller.js",
+    "controllers/example_controller": "../assets/controllers/example_controller.js",
+    "controllers": "../assets/controllers/index.js",
+    "controllers/showcase_controller": "../assets/controllers/showcase_controller.js"
+  }
+}</script>
+<link rel="modulepreload" href="../assets/application.js">
+<link rel="modulepreload" href="../assets/stimulus.min.js">
+<link rel="modulepreload" href="../assets/stimulus-loading.js">
+<link rel="modulepreload" href="../assets/controllers/application.js">
+<link rel="modulepreload" href="../assets/controllers/demo_controller.js">
+<link rel="modulepreload" href="../assets/controllers/example_controller.js">
+<link rel="modulepreload" href="../assets/controllers/index.js">
+<link rel="modulepreload" href="../assets/controllers/showcase_controller.js">
+<script type="module">import "application"</script>
+  </head>
+  <body data-controller="showcase">
+    <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:start-4 focus:z-toast focus:rounded-xl focus:bg-paper focus:p-3">Skip to content</a>
+    <header class="sticky top-0 z-nav bg-paper/90 backdrop-blur-xl">
+      <div class="mx-auto flex h-20 max-w-360 items-center gap-6 px-5 sm:px-8 lg:px-10">
+        <a href="/" class="flex shrink-0 items-center gap-3 font-semibold tracking-tight" aria-label="LOST COORDS UI home">
+          <svg class="size-7" viewBox="0 0 28 28" fill="none" aria-hidden="true"><path d="M7 3v18h18M3 7h18v18M14 9v10M9 14h10" stroke="currentColor" stroke-width="2"/></svg>
+          <span class="text-sm">lostcoords<span class="text-ink-3"> / </span>ui</span>
+        </a>
+        <nav class="hidden items-center gap-6 text-sm sm:flex" aria-label="Main">
+          <a class="text-ink-2 hover:text-ink" href="/components/button.html">Components</a>
+          <a class="text-ink-2 hover:text-ink" href="/tokens.html">Tokens</a>
+        </nav>
+        <div class="ms-auto flex items-center gap-2">
+          <a href="https://github.com/lostcoords/ui" class="inline-grid place-items-center shrink-0 border-0 bg-transparent text-ink-3 cursor-pointer no-underline transition-[background-color,color,transform] duration-[140ms] ease-out hover:bg-paper-2 hover:text-ink active:scale-[0.94] disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg]:shrink-0 rounded-xl size-11 [&amp;_svg]:size-4" aria-label="Source on GitHub"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"></path>
+</svg>
+</a>
+          <button type="button" class="inline-grid place-items-center shrink-0 border-0 bg-transparent text-ink-3 cursor-pointer no-underline transition-[background-color,color,transform] duration-[140ms] ease-out hover:bg-paper-2 hover:text-ink active:scale-[0.94] disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg]:shrink-0 rounded-xl size-11 [&amp;_svg]:size-4" data-action="showcase#toggleTheme" aria-label="Switch color theme" aria-pressed="false" data-showcase-target="theme"><span class="dark:hidden"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"></path>
+</svg>
+</span><span class="hidden dark:inline"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"></path>
+</svg>
+</span></button>
+        </div>
+      </div>
+    </header>
+    <div class="mx-auto flex max-w-360 gap-10 px-5 sm:px-8 lg:px-10">
+  <aside class="sticky top-20 hidden h-[calc(100dvh-5rem)] w-52 shrink-0 overflow-y-auto py-8 pe-4 lg:block [scrollbar-width:thin]">
+  <nav class="flex flex-col gap-6" aria-label="Documentation">
+  <div class="flex flex-col gap-1">
+    <p class="px-3 text-xs font-medium text-ink-3">Library</p>
+    <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/">Overview</a>
+    <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/tokens.html" >Tokens</a>
+  </div>
+  <div class="flex flex-col gap-1">
+    <p class="px-3 pb-1 text-xs font-medium text-ink-3">Components</p>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/button.html" >Button</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/icon_button.html" >Icon button</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/badge.html" >Badge</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/pill.html" >Pill</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/avatar.html" aria-current=page>Avatar</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/avatar_stack.html" >Avatar stack</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/icon_badge.html" >Icon badge</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/medallion.html" >Medallion</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/card.html" >Card</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/empty_state.html" >Empty state</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/field.html" >Field</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/input.html" >Input</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/select.html" >Select</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/textarea.html" >Textarea</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/form_alert.html" >Form alert</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/segmented.html" >Segmented control</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/spinner.html" >Spinner</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/skeleton.html" >Skeleton</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/menu.html" >Menu</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/popover.html" >Popover</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/dialog.html" >Dialog</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/sheet.html" >Sheet</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/toast.html" >Toast</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/disclosure.html" >Disclosure</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/emoji.html" >Emoji picker</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/glass.html" >Glass</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/merging.html" >Class merging</a>
+  </div>
+</nav>
+
+</aside>
+
+  <main id="main" class="min-w-0 flex-1 py-5 lg:py-10">
+    <details class="group/nav relative z-raised rounded-2xl bg-paper-2 lg:hidden">
+  <summary class="flex min-h-12 cursor-pointer list-none items-center justify-between gap-4 px-4 text-sm font-medium [&::-webkit-details-marker]:hidden">Components<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon size-4 transition-transform group-open/nav:rotate-180">
+  <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"></path>
+</svg>
+</summary>
+  <div class="max-h-[60dvh] overflow-y-auto p-3 pt-0"><nav class="flex flex-col gap-6" aria-label="Documentation">
+  <div class="flex flex-col gap-1">
+    <p class="px-3 text-xs font-medium text-ink-3">Library</p>
+    <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/">Overview</a>
+    <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/tokens.html" >Tokens</a>
+  </div>
+  <div class="flex flex-col gap-1">
+    <p class="px-3 pb-1 text-xs font-medium text-ink-3">Components</p>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/button.html" >Button</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/icon_button.html" >Icon button</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/badge.html" >Badge</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/pill.html" >Pill</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/avatar.html" aria-current=page>Avatar</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/avatar_stack.html" >Avatar stack</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/icon_badge.html" >Icon badge</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/medallion.html" >Medallion</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/card.html" >Card</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/empty_state.html" >Empty state</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/field.html" >Field</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/input.html" >Input</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/select.html" >Select</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/textarea.html" >Textarea</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/form_alert.html" >Form alert</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/segmented.html" >Segmented control</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/spinner.html" >Spinner</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/skeleton.html" >Skeleton</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/menu.html" >Menu</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/popover.html" >Popover</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/dialog.html" >Dialog</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/sheet.html" >Sheet</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/toast.html" >Toast</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/disclosure.html" >Disclosure</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/emoji.html" >Emoji picker</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/glass.html" >Glass</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/merging.html" >Class merging</a>
+  </div>
+</nav>
+</div>
+</details>
+
+    <div class="flex flex-col gap-12 pt-6 lg:pt-0">
+      <header class="flex flex-col gap-4">
+        <div class="flex items-center justify-between gap-4">
+          <p class="text-xs text-ink-3">Components <span class="px-2" aria-hidden="true">/</span> Avatar</p>
+          <div class="flex gap-1">
+                <a class="inline-grid place-items-center shrink-0 border-0 bg-transparent text-ink-3 cursor-pointer no-underline transition-[background-color,color,transform] duration-[140ms] ease-out hover:bg-paper-2 hover:text-ink active:scale-[0.94] disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg]:shrink-0 rounded-xl size-11 [&amp;_svg]:size-4" href="/components/pill.html" aria-label="Previous component: Pill"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"></path>
+</svg>
+</a>
+                <a class="inline-grid place-items-center shrink-0 border-0 bg-transparent text-ink-3 cursor-pointer no-underline transition-[background-color,color,transform] duration-[140ms] ease-out hover:bg-paper-2 hover:text-ink active:scale-[0.94] disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg]:shrink-0 rounded-xl size-11 [&amp;_svg]:size-4" href="/components/avatar_stack.html" aria-label="Next component: Avatar stack"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"></path>
+</svg>
+</a>
+          </div>
+        </div>
+        <h1 class="text-4xl font-semibold tracking-tight sm:text-5xl">Avatar</h1>
+        <p class="text-base text-ink-2">A person, represented by initials or an image.</p>
+      </header>
+      <div class="flex flex-col gap-12">
+          <section id="example-0" class="flex min-w-0 scroll-mt-28 flex-col gap-4" data-controller="example">
+  <h2 class="text-lg font-semibold tracking-tight"><a href="#example-0">Default</a></h2>
+  <div class="overflow-hidden rounded-3xl bg-paper-2">
+    <div class="flex min-h-52 flex-wrap items-center justify-center gap-4 p-6 sm:p-10 ">
+      <span class="avatar grid place-items-center shrink-0 rounded-full font-medium tracking-[var(--avatar-tracking,0.05em)] size-[var(--avatar-size,var(--avatar-size-default,--spacing(8)))] text-[length:var(--avatar-font-size,var(--avatar-font-size-default,0.75rem))] text-[color:var(--avatar-color,var(--ink-on-accent))] border-[length:var(--avatar-border,0px)] border-[color:var(--avatar-cutout,var(--paper))]" style="background-color: var(--sky)">AL</span>
+<span class="avatar grid place-items-center shrink-0 rounded-full font-medium tracking-[var(--avatar-tracking,0.05em)] size-[var(--avatar-size,var(--avatar-size-default,--spacing(8)))] text-[length:var(--avatar-font-size,var(--avatar-font-size-default,0.75rem))] text-[color:var(--avatar-color,var(--ink-on-accent))] border-[length:var(--avatar-border,0px)] border-[color:var(--avatar-cutout,var(--paper))]" style="background-color: var(--sky)">AL</span>
+<span class="avatar grid place-items-center shrink-0 rounded-full font-medium tracking-[var(--avatar-tracking,0.05em)] size-[var(--avatar-size,var(--avatar-size-default,--spacing(8)))] text-[length:var(--avatar-font-size,var(--avatar-font-size-default,0.75rem))] text-[color:var(--avatar-color,var(--ink-on-accent))] border-[length:var(--avatar-border,0px)] border-[color:var(--avatar-cutout,var(--paper))] [--avatar-size-default:--spacing(6.5)] [--avatar-font-size-default:0.625rem]" style="background-color: var(--sky)">AL</span>
+<span class="avatar grid place-items-center shrink-0 rounded-full font-medium tracking-[var(--avatar-tracking,0.05em)] size-[var(--avatar-size,var(--avatar-size-default,--spacing(8)))] text-[length:var(--avatar-font-size,var(--avatar-font-size-default,0.75rem))] text-[color:var(--avatar-color,var(--ink-on-accent))] border-[length:var(--avatar-border,0px)] border-[color:var(--avatar-cutout,var(--paper))] [--avatar-size-default:--spacing(24)] [--avatar-font-size-default:1.25rem]" style="background-color: var(--sky)">AL</span>
+    </div>
+    <div class="flex min-h-12 items-center justify-between gap-4 bg-paper-2 px-4">
+      <button type="button" class="flex min-h-11 items-center gap-2 font-mono text-xs text-ink-2 hover:text-ink" aria-expanded="false" aria-controls="example-0-code" data-action="example#toggle" data-example-target="toggle"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon size-4">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"></path>
+</svg>
+ View code</button>
+      <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2))" data-action="example#copy" data-example-target="copy" aria-label="Copy Default code">Copy</button>
+    </div>
+    <pre id="example-0-code" class="max-h-120 overflow-auto bg-paper-3 p-5 font-mono text-xs text-ink-2" data-example-target="code" hidden><code>&lt;span class=&quot;&lt;%= avatar_class(size: :base) %&gt;&quot; style=&quot;background-color: var(--sky)&quot;&gt;AL&lt;/span&gt;
+&lt;span class=&quot;&lt;%= avatar_class(size: :lg) %&gt;&quot; style=&quot;background-color: var(--sky)&quot;&gt;AL&lt;/span&gt;
+&lt;span class=&quot;&lt;%= avatar_class(size: :sm) %&gt;&quot; style=&quot;background-color: var(--sky)&quot;&gt;AL&lt;/span&gt;
+&lt;span class=&quot;&lt;%= avatar_class(size: :xl) %&gt;&quot; style=&quot;background-color: var(--sky)&quot;&gt;AL&lt;/span&gt;</code></pre>
+  </div>
+  <span class="sr-only" role="status" data-example-target="status"></span>
+</section>
+
+          <section id="example-1" class="flex min-w-0 scroll-mt-28 flex-col gap-4" data-controller="example">
+  <h2 class="text-lg font-semibold tracking-tight"><a href="#example-1">Ink</a></h2>
+  <div class="overflow-hidden rounded-3xl bg-paper-2">
+    <div class="flex min-h-52 flex-wrap items-center justify-center gap-4 p-6 sm:p-10 ">
+      <span class="avatar grid place-items-center shrink-0 rounded-full font-medium tracking-[var(--avatar-tracking,0.05em)] size-[var(--avatar-size,var(--avatar-size-default,--spacing(8)))] text-[length:var(--avatar-font-size,var(--avatar-font-size-default,0.75rem))] text-[color:var(--avatar-color,var(--ink-on-accent))] border-[length:var(--avatar-border,0px)] border-[color:var(--avatar-cutout,var(--paper))] [--avatar-color:var(--ink)]" style="background-color: var(--sky)">AL</span>
+    </div>
+    <div class="flex min-h-12 items-center justify-between gap-4 bg-paper-2 px-4">
+      <button type="button" class="flex min-h-11 items-center gap-2 font-mono text-xs text-ink-2 hover:text-ink" aria-expanded="false" aria-controls="example-1-code" data-action="example#toggle" data-example-target="toggle"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon size-4">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"></path>
+</svg>
+ View code</button>
+      <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2))" data-action="example#copy" data-example-target="copy" aria-label="Copy Ink code">Copy</button>
+    </div>
+    <pre id="example-1-code" class="max-h-120 overflow-auto bg-paper-3 p-5 font-mono text-xs text-ink-2" data-example-target="code" hidden><code>&lt;span class=&quot;&lt;%= avatar_class(ink: true) %&gt;&quot; style=&quot;background-color: var(--sky)&quot;&gt;AL&lt;/span&gt;</code></pre>
+  </div>
+  <span class="sr-only" role="status" data-example-target="status"></span>
+</section>
+
+          <section id="example-2" class="flex min-w-0 scroll-mt-28 flex-col gap-4" data-controller="example">
+  <h2 class="text-lg font-semibold tracking-tight"><a href="#example-2">Linked</a></h2>
+  <div class="overflow-hidden rounded-3xl bg-paper-2">
+    <div class="flex min-h-52 flex-wrap items-center justify-center gap-4 p-6 sm:p-10 ">
+      <span class="avatar grid place-items-center shrink-0 rounded-full font-medium tracking-[var(--avatar-tracking,0.05em)] size-[var(--avatar-size,var(--avatar-size-default,--spacing(8)))] text-[length:var(--avatar-font-size,var(--avatar-font-size-default,0.75rem))] text-[color:var(--avatar-color,var(--ink-on-accent))] border-[length:var(--avatar-border,0px)] border-[color:var(--avatar-cutout,var(--paper))] avatar-ring" style="background-color: var(--sky)">AL</span>
+    </div>
+    <div class="flex min-h-12 items-center justify-between gap-4 bg-paper-2 px-4">
+      <button type="button" class="flex min-h-11 items-center gap-2 font-mono text-xs text-ink-2 hover:text-ink" aria-expanded="false" aria-controls="example-2-code" data-action="example#toggle" data-example-target="toggle"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon size-4">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"></path>
+</svg>
+ View code</button>
+      <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2))" data-action="example#copy" data-example-target="copy" aria-label="Copy Linked code">Copy</button>
+    </div>
+    <pre id="example-2-code" class="max-h-120 overflow-auto bg-paper-3 p-5 font-mono text-xs text-ink-2" data-example-target="code" hidden><code>&lt;span class=&quot;&lt;%= avatar_class(linked: true) %&gt;&quot; style=&quot;background-color: var(--sky)&quot;&gt;AL&lt;/span&gt;</code></pre>
+  </div>
+  <span class="sr-only" role="status" data-example-target="status"></span>
+</section>
+
+          <section id="example-3" class="flex min-w-0 scroll-mt-28 flex-col gap-4" data-controller="example">
+  <h2 class="text-lg font-semibold tracking-tight"><a href="#example-3">Linked with ink</a></h2>
+  <div class="overflow-hidden rounded-3xl bg-paper-2">
+    <div class="flex min-h-52 flex-wrap items-center justify-center gap-4 p-6 sm:p-10 ">
+      <span class="avatar grid place-items-center shrink-0 rounded-full font-medium tracking-[var(--avatar-tracking,0.05em)] size-[var(--avatar-size,var(--avatar-size-default,--spacing(8)))] text-[length:var(--avatar-font-size,var(--avatar-font-size-default,0.75rem))] text-[color:var(--avatar-color,var(--ink-on-accent))] border-[length:var(--avatar-border,0px)] border-[color:var(--avatar-cutout,var(--paper))] [--avatar-color:var(--ink)] avatar-ring" style="background-color: var(--sky)">AL</span>
+    </div>
+    <div class="flex min-h-12 items-center justify-between gap-4 bg-paper-2 px-4">
+      <button type="button" class="flex min-h-11 items-center gap-2 font-mono text-xs text-ink-2 hover:text-ink" aria-expanded="false" aria-controls="example-3-code" data-action="example#toggle" data-example-target="toggle"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon size-4">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"></path>
+</svg>
+ View code</button>
+      <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2))" data-action="example#copy" data-example-target="copy" aria-label="Copy Linked with ink code">Copy</button>
+    </div>
+    <pre id="example-3-code" class="max-h-120 overflow-auto bg-paper-3 p-5 font-mono text-xs text-ink-2" data-example-target="code" hidden><code>&lt;span class=&quot;&lt;%= avatar_class(ink: true, linked: true) %&gt;&quot; style=&quot;background-color: var(--sky)&quot;&gt;AL&lt;/span&gt;</code></pre>
+  </div>
+  <span class="sr-only" role="status" data-example-target="status"></span>
+</section>
+
+      </div>
+      <section id="api" class="flex scroll-mt-28 flex-col gap-8">
+  <h2 class="text-2xl font-semibold tracking-tight">API reference</h2>
+    <div class="flex min-w-0 flex-col gap-4">
+      <h3 id="avatar_class" class="scroll-mt-28 font-mono text-sm font-medium">avatar_class</h3>
+      <pre class="overflow-x-auto rounded-2xl bg-paper-2 p-4 font-mono text-xs text-ink-2"><code>avatar_class(size: :base, ink: false, linked: false, extra: nil)</code></pre>
+      <div class="overflow-x-auto">
+        <table class="w-full min-w-80 text-start text-sm">
+          <thead><tr class="text-xs text-ink-3"><th class="py-3 pe-4 text-start font-medium">Parameter</th><th class="py-3 pe-4 text-start font-medium">Default</th><th class="py-3 text-start font-medium">Values</th></tr></thead>
+          <tbody>
+              <tr class="border-t border-hairline"><td class="py-3 pe-4 align-top font-mono text-xs">size</td><td class="py-3 pe-4 align-top font-mono text-xs">:base</td><td class="py-3 align-top text-xs text-ink-2">:base · :lg · :sm · :xl</td></tr>
+              <tr class="border-t border-hairline"><td class="py-3 pe-4 align-top font-mono text-xs">ink</td><td class="py-3 pe-4 align-top font-mono text-xs">false</td><td class="py-3 align-top text-xs text-ink-2">true · false</td></tr>
+              <tr class="border-t border-hairline"><td class="py-3 pe-4 align-top font-mono text-xs">linked</td><td class="py-3 pe-4 align-top font-mono text-xs">false</td><td class="py-3 align-top text-xs text-ink-2">true · false</td></tr>
+              <tr class="border-t border-hairline"><td class="py-3 pe-4 align-top font-mono text-xs">extra</td><td class="py-3 pe-4 align-top font-mono text-xs">nil</td><td class="py-3 align-top text-xs text-ink-2">Additional Tailwind classes</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+</section>
+
+    </div>
+  </main>
+  <aside class="sticky top-20 hidden h-[calc(100dvh-5rem)] w-40 shrink-0 overflow-y-auto py-12 text-xs xl:block">
+    <p class="pb-4 font-medium">On this page</p>
+    <nav class="flex flex-col items-start gap-3 text-ink-3" aria-label="On this page">
+        <a class="hover:text-ink" href="#example-0">Default</a>
+        <a class="hover:text-ink" href="#example-1">Ink</a>
+        <a class="hover:text-ink" href="#example-2">Linked</a>
+        <a class="hover:text-ink" href="#example-3">Linked with ink</a>
+      <a class="pt-2 hover:text-ink" href="#api">API reference</a>
+    </nav>
+  </aside>
+</div>
+
+    <footer class="mx-auto flex max-w-360 flex-wrap items-center justify-between gap-4 px-5 py-10 text-xs text-ink-3 sm:px-8 lg:px-10">
+      <span>LOST COORDS UI</span><a class="hover:text-ink" href="https://github.com/lostcoords/ui">Source on GitHub ↗</a>
+    </footer>
+  </body>
+</html>

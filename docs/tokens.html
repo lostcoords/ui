@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="darkreader-lock">
+    <title>LOST COORDS UI</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="A Rails component library. Examples, ERB and API reference.">
+    <link rel="icon" href="data:,">
+    <script>
+      const theme = localStorage.getItem("lostcoords-ui:theme")
+      if (theme === "dark" || (!theme && matchMedia("(prefers-color-scheme: dark)").matches)) document.documentElement.dataset.theme = "dark"
+    </script>
+    <link rel="stylesheet" href="./assets/tailwind.css" />
+    <script type="importmap" data-turbo-track="reload">{
+  "imports": {
+    "application": "./assets/application.js",
+    "@hotwired/stimulus": "./assets/stimulus.min.js",
+    "@hotwired/stimulus-loading": "./assets/stimulus-loading.js",
+    "controllers/confirm_dialog_controller": "./assets/lostcoords/ui/controllers/confirm_dialog_controller.js",
+    "controllers/disclosure_controller": "./assets/lostcoords/ui/controllers/disclosure_controller.js",
+    "controllers/emoji_picker_controller": "./assets/lostcoords/ui/controllers/emoji_picker_controller.js",
+    "controllers/modal_controller": "./assets/lostcoords/ui/controllers/modal_controller.js",
+    "controllers/row_menu_controller": "./assets/lostcoords/ui/controllers/row_menu_controller.js",
+    "controllers/sheet_controller": "./assets/lostcoords/ui/controllers/sheet_controller.js",
+    "controllers/toast_controller": "./assets/lostcoords/ui/controllers/toast_controller.js",
+    "helpers/catalog_picker": "./assets/lostcoords/ui/helpers/catalog_picker.js",
+    "helpers/context_dialog": "./assets/lostcoords/ui/helpers/context_dialog.js",
+    "helpers/dialog": "./assets/lostcoords/ui/helpers/dialog.js",
+    "helpers/dismiss_stack": "./assets/lostcoords/ui/helpers/dismiss_stack.js",
+    "helpers/floating_panel": "./assets/lostcoords/ui/helpers/floating_panel.js",
+    "helpers/menu_keys": "./assets/lostcoords/ui/helpers/menu_keys.js",
+    "helpers/sheet_motion": "./assets/lostcoords/ui/helpers/sheet_motion.js",
+    "helpers/top_layer": "./assets/lostcoords/ui/helpers/top_layer.js",
+    "helpers/viewport": "./assets/lostcoords/ui/helpers/viewport.js",
+    "controllers/application": "./assets/controllers/application.js",
+    "controllers/demo_controller": "./assets/controllers/demo_controller.js",
+    "controllers/example_controller": "./assets/controllers/example_controller.js",
+    "controllers": "./assets/controllers/index.js",
+    "controllers/showcase_controller": "./assets/controllers/showcase_controller.js"
+  }
+}</script>
+<link rel="modulepreload" href="./assets/application.js">
+<link rel="modulepreload" href="./assets/stimulus.min.js">
+<link rel="modulepreload" href="./assets/stimulus-loading.js">
+<link rel="modulepreload" href="./assets/controllers/application.js">
+<link rel="modulepreload" href="./assets/controllers/demo_controller.js">
+<link rel="modulepreload" href="./assets/controllers/example_controller.js">
+<link rel="modulepreload" href="./assets/controllers/index.js">
+<link rel="modulepreload" href="./assets/controllers/showcase_controller.js">
+<script type="module">import "application"</script>
+  </head>
+  <body data-controller="showcase">
+    <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:start-4 focus:z-toast focus:rounded-xl focus:bg-paper focus:p-3">Skip to content</a>
+    <header class="sticky top-0 z-nav bg-paper/90 backdrop-blur-xl">
+      <div class="mx-auto flex h-20 max-w-360 items-center gap-6 px-5 sm:px-8 lg:px-10">
+        <a href="/" class="flex shrink-0 items-center gap-3 font-semibold tracking-tight" aria-label="LOST COORDS UI home">
+          <svg class="size-7" viewBox="0 0 28 28" fill="none" aria-hidden="true"><path d="M7 3v18h18M3 7h18v18M14 9v10M9 14h10" stroke="currentColor" stroke-width="2"/></svg>
+          <span class="text-sm">lostcoords<span class="text-ink-3"> / </span>ui</span>
+        </a>
+        <nav class="hidden items-center gap-6 text-sm sm:flex" aria-label="Main">
+          <a class="text-ink-2 hover:text-ink" href="/components/button.html">Components</a>
+          <a class="text-ink-2 hover:text-ink" href="/tokens.html">Tokens</a>
+        </nav>
+        <div class="ms-auto flex items-center gap-2">
+          <a href="https://github.com/lostcoords/ui" class="inline-grid place-items-center shrink-0 border-0 bg-transparent text-ink-3 cursor-pointer no-underline transition-[background-color,color,transform] duration-[140ms] ease-out hover:bg-paper-2 hover:text-ink active:scale-[0.94] disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg]:shrink-0 rounded-xl size-11 [&amp;_svg]:size-4" aria-label="Source on GitHub"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"></path>
+</svg>
+</a>
+          <button type="button" class="inline-grid place-items-center shrink-0 border-0 bg-transparent text-ink-3 cursor-pointer no-underline transition-[background-color,color,transform] duration-[140ms] ease-out hover:bg-paper-2 hover:text-ink active:scale-[0.94] disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg]:shrink-0 rounded-xl size-11 [&amp;_svg]:size-4" data-action="showcase#toggleTheme" aria-label="Switch color theme" aria-pressed="false" data-showcase-target="theme"><span class="dark:hidden"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"></path>
+</svg>
+</span><span class="hidden dark:inline"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"></path>
+</svg>
+</span></button>
+        </div>
+      </div>
+    </header>
+    <div class="mx-auto flex max-w-360 gap-10 px-5 sm:px-8 lg:px-10">
+  <aside class="sticky top-20 hidden h-[calc(100dvh-5rem)] w-52 shrink-0 overflow-y-auto py-8 pe-4 lg:block [scrollbar-width:thin]">
+  <nav class="flex flex-col gap-6" aria-label="Documentation">
+  <div class="flex flex-col gap-1">
+    <p class="px-3 text-xs font-medium text-ink-3">Library</p>
+    <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/">Overview</a>
+    <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/tokens.html" aria-current=page>Tokens</a>
+  </div>
+  <div class="flex flex-col gap-1">
+    <p class="px-3 pb-1 text-xs font-medium text-ink-3">Components</p>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/button.html" >Button</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/icon_button.html" >Icon button</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/badge.html" >Badge</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/pill.html" >Pill</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/avatar.html" >Avatar</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/avatar_stack.html" >Avatar stack</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/icon_badge.html" >Icon badge</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/medallion.html" >Medallion</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/card.html" >Card</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/empty_state.html" >Empty state</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/field.html" >Field</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/input.html" >Input</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/select.html" >Select</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/textarea.html" >Textarea</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/form_alert.html" >Form alert</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/segmented.html" >Segmented control</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/spinner.html" >Spinner</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/skeleton.html" >Skeleton</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/menu.html" >Menu</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/popover.html" >Popover</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/dialog.html" >Dialog</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/sheet.html" >Sheet</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/toast.html" >Toast</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/disclosure.html" >Disclosure</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/emoji.html" >Emoji picker</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/glass.html" >Glass</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/merging.html" >Class merging</a>
+  </div>
+</nav>
+
+</aside>
+
+  <main id="main" class="min-w-0 flex-1 py-5 lg:py-10">
+    <details class="group/nav relative z-raised rounded-2xl bg-paper-2 lg:hidden">
+  <summary class="flex min-h-12 cursor-pointer list-none items-center justify-between gap-4 px-4 text-sm font-medium [&::-webkit-details-marker]:hidden">Components<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon size-4 transition-transform group-open/nav:rotate-180">
+  <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"></path>
+</svg>
+</summary>
+  <div class="max-h-[60dvh] overflow-y-auto p-3 pt-0"><nav class="flex flex-col gap-6" aria-label="Documentation">
+  <div class="flex flex-col gap-1">
+    <p class="px-3 text-xs font-medium text-ink-3">Library</p>
+    <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/">Overview</a>
+    <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/tokens.html" aria-current=page>Tokens</a>
+  </div>
+  <div class="flex flex-col gap-1">
+    <p class="px-3 pb-1 text-xs font-medium text-ink-3">Components</p>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/button.html" >Button</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/icon_button.html" >Icon button</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/badge.html" >Badge</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/pill.html" >Pill</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/avatar.html" >Avatar</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/avatar_stack.html" >Avatar stack</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/icon_badge.html" >Icon badge</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/medallion.html" >Medallion</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/card.html" >Card</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/empty_state.html" >Empty state</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/field.html" >Field</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/input.html" >Input</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/select.html" >Select</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/textarea.html" >Textarea</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/form_alert.html" >Form alert</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/segmented.html" >Segmented control</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/spinner.html" >Spinner</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/skeleton.html" >Skeleton</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/menu.html" >Menu</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/popover.html" >Popover</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/dialog.html" >Dialog</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/sheet.html" >Sheet</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/toast.html" >Toast</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/disclosure.html" >Disclosure</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/emoji.html" >Emoji picker</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/glass.html" >Glass</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/merging.html" >Class merging</a>
+  </div>
+</nav>
+</div>
+</details>
+
+    <div class="flex flex-col gap-8 pt-6 lg:pt-0">
+      <header class="flex flex-col gap-4"><h1 class="text-4xl font-semibold tracking-tight">Tokens</h1><p class="text-ink-2">Define these CSS properties in your app. The components inherit your palette, typography and surfaces.</p></header>
+      <section id="tokens" class="flex scroll-mt-24 flex-col gap-3">
+  <div class="flex flex-col gap-2">
+    <h2 class="text-xl font-semibold">Tokens</h2>
+    <p class="text-sm text-ink-3">The 58 properties in <code class="font-mono">Lostcoords::Ui::TOKENS</code>, with the values this stylesheet gives them.</p>
+  </div>
+  <ul class="squircle bg-paper-2 border border-transparent rounded-3xl p-5 grid grid-cols-[repeat(auto-fill,minmax(min(100%,17rem),1fr))] gap-x-4 gap-y-3">
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--animate-alert-in">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--animate-alert-in</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--berry">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--berry</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--color-accent">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--color-accent</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--color-berry">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--color-berry</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--color-berry-soft">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--color-berry-soft</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--color-danger">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--color-danger</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--color-danger-soft">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--color-danger-soft</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--color-gold">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--color-gold</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--color-gold-soft">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--color-gold-soft</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--color-ink">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--color-ink</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--color-ink-2">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--color-ink-2</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--color-ink-3">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--color-ink-3</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--color-ink-on-accent">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--color-ink-on-accent</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--color-leaf">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--color-leaf</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--color-leaf-soft">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--color-leaf-soft</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--color-paper">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--color-paper</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--color-paper-2">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--color-paper-2</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--color-paper-3">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--color-paper-3</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--color-sky">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--color-sky</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--color-sky-deep">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--color-sky-deep</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--color-sky-soft">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--color-sky-soft</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--ease-out-expo">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--ease-out-expo</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--ease-sheet">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--ease-sheet</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--focus-halo">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--focus-halo</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--font-body">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--font-body</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--glass-bar-edge">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--glass-bar-edge</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--glass-edge">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--glass-edge</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--glass-fill">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--glass-fill</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--glass-hud-fill">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--glass-hud-fill</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--glass-hud-ink">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--glass-hud-ink</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--glass-hud-shadow">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--glass-hud-shadow</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--glass-hud-solid">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--glass-hud-solid</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--glass-rim">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--glass-rim</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--glass-shadow">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--glass-shadow</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--hairline">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--hairline</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--ink">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--ink</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--ink-2">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--ink-2</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--ink-3">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--ink-3</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--ink-on-accent">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--ink-on-accent</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--leaf-soft">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--leaf-soft</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--paper">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--paper</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--paper-2">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--paper-2</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--paper-3">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--paper-3</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--pill-depth">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--pill-depth</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--pill-light">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--pill-light</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--pill-rim">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--pill-rim</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--pill-surface">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--pill-surface</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--scrim">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--scrim</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--scrim-sheet">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--scrim-sheet</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--scrim-soft">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--scrim-soft</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--shadow">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--shadow</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--sheet-duration">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--sheet-duration</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--sheet-offscreen">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--sheet-offscreen</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--sky">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--sky</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--sky-soft">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--sky-soft</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--z-index-art">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--z-index-art</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--z-index-nav-popover">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--z-index-nav-popover</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--z-index-prompt">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--z-index-prompt</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+  </ul>
+</section>
+
+    </div>
+  </main>
+</div>
+
+    <footer class="mx-auto flex max-w-360 flex-wrap items-center justify-between gap-4 px-5 py-10 text-xs text-ink-3 sm:px-8 lg:px-10">
+      <span>LOST COORDS UI</span><a class="hover:text-ink" href="https://github.com/lostcoords/ui">Source on GitHub ↗</a>
+    </footer>
+  </body>
+</html>

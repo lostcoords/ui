@@ -2,17 +2,39 @@
 <html lang="<%= I18n.locale %>">
   <head>
     <meta charset="utf-8">
-    <title>lostcoords-ui</title>
+    <meta name="darkreader-lock">
+    <title><%= @section ? "#{@section.title} · " : "" %>LOST COORDS UI</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="A Rails component library. Examples, ERB and API reference.">
     <link rel="icon" href="data:,">
     <script>
-      if (localStorage.getItem("lostcoords-ui:theme") === "dark") document.documentElement.dataset.theme = "dark"
-      if (new URLSearchParams(location.search).has("frame")) document.documentElement.dataset.frame = ""
+      const theme = localStorage.getItem("lostcoords-ui:theme")
+      if (theme === "dark" || (!theme && matchMedia("(prefers-color-scheme: dark)").matches)) document.documentElement.dataset.theme = "dark"
     </script>
     <%= stylesheet_link_tag "tailwind" %>
     <%= javascript_importmap_tags %>
   </head>
   <body data-controller="showcase">
+    <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:start-4 focus:z-toast focus:rounded-xl focus:bg-paper focus:p-3">Skip to content</a>
+    <header class="sticky top-0 z-nav bg-paper/90 backdrop-blur-xl">
+      <div class="mx-auto flex h-20 max-w-360 items-center gap-6 px-5 sm:px-8 lg:px-10">
+        <a href="/" class="flex shrink-0 items-center gap-3 font-semibold tracking-tight" aria-label="LOST COORDS UI home">
+          <svg class="size-7" viewBox="0 0 28 28" fill="none" aria-hidden="true"><path d="M7 3v18h18M3 7h18v18M14 9v10M9 14h10" stroke="currentColor" stroke-width="2"/></svg>
+          <span class="text-sm">lostcoords<span class="text-ink-3"> / </span>ui</span>
+        </a>
+        <nav class="hidden items-center gap-6 text-sm sm:flex" aria-label="Main">
+          <a class="text-ink-2 hover:text-ink" href="/components/button.html">Components</a>
+          <a class="text-ink-2 hover:text-ink" href="/tokens.html">Tokens</a>
+        </nav>
+        <div class="ms-auto flex items-center gap-2">
+          <a href="https://github.com/lostcoords/ui" class="<%= icon_button_class(size: :sm) %>" aria-label="Source on GitHub"><%= heroicon "code-bracket", options: { "aria-hidden": true } %></a>
+          <button type="button" class="<%= icon_button_class(size: :sm) %>" data-action="showcase#toggleTheme" aria-label="Switch color theme" aria-pressed="false" data-showcase-target="theme"><span class="dark:hidden"><%= heroicon "moon", options: { "aria-hidden": true } %></span><span class="hidden dark:inline"><%= heroicon "sun", options: { "aria-hidden": true } %></span></button>
+        </div>
+      </div>
+    </header>
     <%= yield %>
+    <footer class="mx-auto flex max-w-360 flex-wrap items-center justify-between gap-4 px-5 py-10 text-xs text-ink-3 sm:px-8 lg:px-10">
+      <span>LOST COORDS UI</span><a class="hover:text-ink" href="https://github.com/lostcoords/ui">Source on GitHub ↗</a>
+    </footer>
   </body>
 </html>

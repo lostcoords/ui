@@ -1,0 +1,39 @@
+<section id="api" class="flex scroll-mt-28 flex-col gap-8">
+  <h2 class="text-2xl font-semibold tracking-tight">API reference</h2>
+  <% showcase_builders(section).each do |builder| %>
+    <div class="flex min-w-0 flex-col gap-4">
+      <h3 id="<%= builder.name %>" class="scroll-mt-28 font-mono text-sm font-medium"><%= builder.name %></h3>
+      <pre class="overflow-x-auto rounded-2xl bg-paper-2 p-4 font-mono text-xs text-ink-2"><code><%= builder.signature %></code></pre>
+      <div class="overflow-x-auto">
+        <table class="w-full min-w-80 text-start text-sm">
+          <thead><tr class="text-xs text-ink-3"><th class="py-3 pe-4 text-start font-medium">Parameter</th><th class="py-3 pe-4 text-start font-medium">Default</th><th class="py-3 text-start font-medium">Values</th></tr></thead>
+          <tbody>
+            <% showcase_parameters(builder).each do |name, default| %>
+              <tr class="border-t border-hairline"><td class="py-3 pe-4 align-top font-mono text-xs"><%= name %></td><td class="py-3 pe-4 align-top font-mono text-xs"><%= default %></td><td class="py-3 align-top text-xs text-ink-2"><%= showcase_choices(builder, name) %></td></tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  <% end %>
+  <% partial = { form_alert: "form_alert", spinner: "spinner", skeleton: "skeleton", emoji: "emoji_picker" }[section.id] %>
+  <% if partial %>
+    <div class="flex flex-col gap-4">
+      <h3 class="font-mono text-sm font-medium">render "lostcoords/ui/components/<%= partial %>"</h3>
+      <div class="overflow-x-auto"><table class="w-full min-w-80 text-start text-sm">
+        <thead><tr class="text-xs text-ink-3"><th class="py-3 pe-4 text-start font-medium">Local</th><th class="py-3 text-start font-medium">Default</th></tr></thead>
+        <tbody><% showcase_partial_parameters(partial).each do |name, default| %><tr class="border-t border-hairline"><td class="py-3 pe-4 font-mono text-xs"><%= name %></td><td class="py-3 font-mono text-xs text-ink-2"><%= default %></td></tr><% end %></tbody>
+      </table></div>
+    </div>
+  <% end %>
+  <% options = showcase_controller_options(section) %>
+  <% if options.any? %>
+    <div class="flex min-w-0 flex-col gap-4">
+      <h3 class="font-semibold">Controller options</h3>
+      <div class="overflow-x-auto"><table class="w-full min-w-80 text-start text-sm">
+        <thead><tr class="text-xs text-ink-3"><th class="py-3 pe-4 text-start font-medium">Attribute</th><th class="py-3 pe-4 text-start font-medium">Type</th><th class="py-3 text-start font-medium">Default</th></tr></thead>
+        <tbody><% options.each do |attribute, type, default| %><tr class="border-t border-hairline"><td class="py-3 pe-4 font-mono text-xs"><%= attribute %></td><td class="py-3 pe-4 text-xs text-ink-2"><%= type %></td><td class="py-3 font-mono text-xs text-ink-2"><%= default %></td></tr><% end %></tbody>
+      </table></div>
+    </div>
+  <% end %>
+</section>

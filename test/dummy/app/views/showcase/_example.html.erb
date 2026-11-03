@@ -1,11 +1,21 @@
-<% values = showcase_evaluate(example) %>
-<figure class="flex min-w-0 flex-col gap-2">
-  <div class="<%= example.stage == :page ? "flex min-h-28 flex-col justify-center gap-3" : "flex min-h-28 flex-wrap items-center justify-center gap-3 rounded-3xl bg-paper-2 p-5" %>">
-    <%= render "showcase/specimens/#{example.specimen}", classes: values, id: %>
+<section id="<%= id %>" class="flex min-w-0 scroll-mt-28 flex-col gap-4" data-controller="example">
+  <h2 class="text-lg font-semibold tracking-tight"><a href="#<%= id %>"><%= title %></a></h2>
+  <div class="overflow-hidden rounded-3xl bg-paper-2">
+    <div class="flex min-h-52 flex-wrap items-center justify-center gap-4 p-6 sm:p-10 <%= 'bg-paper' if example.stage == :page %>">
+      <%= render inline: showcase_source(example, id:) %>
+    </div>
+    <div class="flex min-h-12 items-center justify-between gap-4 bg-paper-2 px-4">
+      <button type="button" class="flex min-h-11 items-center gap-2 font-mono text-xs text-ink-2 hover:text-ink" aria-expanded="false" aria-controls="<%= id %>-code" data-action="example#toggle" data-example-target="toggle"><%= heroicon "code-bracket", options: { class: "size-4", "aria-hidden": true } %> View code</button>
+      <button type="button" class="<%= button_class(variant: :ghost, size: :sm) %>" data-action="example#copy" data-example-target="copy" aria-label="Copy <%= title %> code">Copy</button>
+    </div>
+    <pre id="<%= id %>-code" class="max-h-120 overflow-auto bg-paper-3 p-5 font-mono text-xs text-ink-2" data-example-target="code" hidden><code><%= showcase_source(example, id:) %></code></pre>
   </div>
-  <figcaption class="flex flex-col gap-0.5">
-    <% example.calls.each_value do |call| %>
-      <code class="font-mono text-xs break-all text-ink-2"><%= call %></code>
-    <% end %>
-  </figcaption>
-</figure>
+  <span class="sr-only" role="status" data-example-target="status"></span>
+  <% if showcase_source(example, id:).include?('data-controller="demo"') %>
+    <details class="rounded-2xl bg-paper-2">
+      <summary class="flex min-h-12 cursor-pointer items-center px-4 text-xs font-medium text-ink-2">Interaction controller</summary>
+      <div class="flex items-center justify-between gap-3 px-4 pb-3"><code class="font-mono text-xs text-ink-3">app/javascript/controllers/demo_controller.js</code><button class="<%= button_class(variant: :ghost, size: :sm) %>" type="button" data-action="example#copyBehavior">Copy</button></div>
+      <pre class="max-h-96 overflow-auto rounded-b-2xl bg-paper-3 p-5 font-mono text-xs text-ink-2"><code><%= Rails.root.join("app/javascript/controllers/demo_controller.js").read %></code></pre>
+    </details>
+  <% end %>
+</section>

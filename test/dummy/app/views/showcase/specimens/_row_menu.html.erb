@@ -2,6 +2,8 @@
   <button type="button" class="<%= classes[:trigger] %>" aria-haspopup="menu" aria-expanded="false" aria-label="Actions"
     data-row-menu-target="trigger" data-action="row-menu#toggle"><%= heroicon "ellipsis-horizontal", options: { "aria-hidden": "true" } %></button>
   <div class="<%= classes[:popover] %>" role="menu" data-row-menu-target="popover">
-    <%= render "showcase/specimens/menu_options", classes: %>
+    <button type="button" class="<%= classes[:option] %>" role="menuitem"><%= heroicon "pencil-square", options: { class: "size-5", "aria-hidden": "true" } %><span>Edit</span></button>
+<button type="button" class="<%= classes[:option] %>" role="menuitem"><%= heroicon "document-duplicate", options: { class: "size-5", "aria-hidden": "true" } %><span>Duplicate</span></button>
+<button type="button" class="<%= classes[:danger] %>" role="menuitem"><%= heroicon "trash", options: { class: "size-5", "aria-hidden": "true" } %><span>Delete</span></button>
   </div>
 </div>

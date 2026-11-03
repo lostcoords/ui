@@ -1,41 +1,64 @@
-<header class="sticky top-3 z-nav-popover mx-auto mt-3 w-[calc(100%-2rem)] max-w-6xl [html[data-frame]_&]:hidden">
-  <div class="<%= glass_class(shape: :bar, extra: "flex flex-wrap items-center gap-3 px-4 py-2") %>">
-    <p class="font-semibold">lostcoords-ui</p>
-    <div class="<%= pill_row_class(extra: "ms-auto") %>" role="group" aria-label="Theme">
-      <% %w[light dark].each do |theme| %>
-        <button type="button" class="<%= pill_class(size: :sm) %>" aria-pressed="<%= theme == "light" %>"
-          data-showcase-target="theme" data-showcase-theme-param="<%= theme %>" data-action="showcase#setTheme"><%= theme.capitalize %></button>
-      <% end %>
+<main data-controller="demo" id="main" class="mx-auto flex max-w-330 flex-col gap-12 px-5 pb-12 pt-12 sm:px-8 sm:pt-20 lg:px-10">
+  <header class="flex flex-col items-start gap-6">
+    <h1 class="max-w-3xl text-4xl font-semibold tracking-tight sm:text-6xl">Components for Rails.</h1>
+    <p class="max-w-lg text-lg text-ink-2">Reusable views, Ruby helpers and native interactions.</p>
+    <a href="/components/button.html" class="<%= button_class(variant: :accent) %>">Browse components <%= heroicon "arrow-up-right", options: { "aria-hidden": true } %></a>
+  </header>
+
+  <div class="grid grid-cols-1 items-start gap-5 md:grid-cols-2 xl:grid-cols-[1.15fr_1fr_0.85fr]">
+    <div class="flex min-w-0 flex-col gap-5">
+      <section class="<%= card_class(extra: "flex flex-col gap-5") %>" aria-labelledby="workspace-title">
+        <div class="flex items-start justify-between gap-4"><div class="flex flex-col gap-1"><p class="text-xs text-ink-3">Workspace</p><h2 id="workspace-title" class="text-xl font-semibold">Workspace settings</h2></div><span class="<%= icon_medallion_class %>"><%= heroicon "squares-2x2", options: { "aria-hidden": true } %></span></div>
+        <div class="flex items-center gap-3 py-2">
+          <div class="<%= avatar_stack_class %>"><div class="<%= avatar_stack_row_class %>"><% { "AL" => "sky", "SK" => "leaf", "JR" => "berry" }.each do |initials, tone| %><span class="<%= avatar_class %>" style="background-color: var(--<%= tone %>)"><%= initials %></span><% end %></div></div>
+          <p class="text-sm text-ink-2">Alex, Sam and Jamie</p>
+        </div>
+        <form class="flex flex-col gap-5" data-action="submit->showcase#save">
+          <div class="flex flex-col gap-2"><label for="workspace-name" class="text-sm font-medium">Name</label><input id="workspace-name" class="<%= input_class(extra: "bg-paper") %>" value="Design studio" required></div>
+          <div class="flex flex-col gap-2"><label for="workspace-about" class="text-sm font-medium">About</label><textarea id="workspace-about" class="<%= textarea_class(extra: "bg-paper") %>" placeholder="What are you working on?" rows="3"></textarea></div>
+          <div class="flex flex-wrap items-center justify-between gap-3"><span class="<%= badge_class(tone: :neutral) %>">Private workspace</span><button class="<%= button_class(variant: :accent, size: :sm) %>" type="submit">Save changes</button></div>
+          <p role="status" class="text-sm text-accent" data-save-status hidden>Changes saved.</p>
+        </form>
+      </section>
+      <section class="<%= card_class(extra: "flex flex-col gap-5") %>" aria-labelledby="filters-title">
+        <div class="flex items-center justify-between gap-3"><h2 id="filters-title" class="text-sm font-semibold">Topics</h2><%= heroicon "adjustments-horizontal", options: { class: "size-5 text-ink-3", "aria-hidden": true } %></div>
+        <div class="<%= pill_row_class %>" role="group" aria-label="Topics"><% { "Design" => true, "Writing" => false, "Engineering" => false, "Research" => true }.each do |label, active| %><button class="<%= pill_class(size: :sm, extra: "bg-paper") %>" type="button" aria-pressed="<%= active %>" data-action="demo#press"><%= label %></button><% end %></div>
+        <a href="/components/pill.html" class="text-xs text-ink-3 hover:text-ink">Pills ↗</a>
+      </section>
     </div>
-    <div class="<%= pill_row_class(extra: "max-sm:hidden") %>" role="group" aria-label="Width">
-      <% %w[desktop phone].each do |width| %>
-        <button type="button" class="<%= pill_class(size: :sm) %>" aria-pressed="<%= width == "desktop" %>"
-          data-showcase-target="width" data-showcase-width-param="<%= width %>" data-action="showcase#setWidth"><%= width.capitalize %></button>
-      <% end %>
+
+    <div class="flex min-w-0 flex-col gap-5">
+      <section class="<%= card_class(extra: "flex flex-col gap-5") %>" aria-labelledby="invite-title">
+        <span class="<%= icon_medallion_class(tone: :accent, size: :lg) %>"><%= heroicon "user-plus", options: { "aria-hidden": true } %></span>
+        <div class="flex flex-col gap-2"><h2 id="invite-title" class="text-xl font-semibold">Invite a teammate</h2><p class="text-sm text-ink-2">Invite someone to your workspace.</p></div>
+        <form class="flex flex-col gap-3" data-action="submit->showcase#save"><label class="sr-only" for="invite-email">Email address</label><input id="invite-email" type="email" class="<%= input_class(extra: "bg-paper") %>" placeholder="name@example.com" required><button class="<%= button_class(variant: :accent, block: true) %>" type="submit">Send invitation <%= heroicon "arrow-right", options: { "aria-hidden": true } %></button><p role="status" class="text-sm text-accent" data-save-status hidden>Invitation sent.</p></form>
+      </section>
+      <section class="<%= card_class(extra: "flex flex-col gap-5") %>" aria-labelledby="view-title">
+        <h2 id="view-title" class="text-sm font-semibold">Project overview</h2>
+        <div class="<%= segmented_class(extra: "bg-paper w-fit") %>" role="group" aria-label="View"><% { "Week" => false, "Month" => true, "Year" => false }.each do |label, active| %><button type="button" class="<%= segmented_tab_class(extra: "aria-pressed:bg-paper-3") %>" aria-pressed="<%= active %>" data-action="demo#choose"><%= label %></button><% end %></div>
+        <div class="flex items-end justify-between gap-3"><div class="flex flex-col gap-1"><p class="text-xs text-ink-3">Projects completed</p><p class="text-4xl font-semibold tabular-nums">24<span class="text-xl text-ink-3"> / 32</span></p></div><span class="<%= status_pill_class(tone: :accent) %>">On track</span></div>
+        <div class="h-2 overflow-hidden rounded-full bg-paper"><div class="h-full w-3/4 rounded-full bg-sky"></div></div>
+        <a href="/components/segmented.html" class="text-xs text-ink-3 hover:text-ink">Segmented controls ↗</a>
+      </section>
+      <div class="flex items-center justify-center gap-2 px-3 py-5"><%= form_alert_icon(tone: :notice) %><p class="text-sm text-ink-2">All changes saved.</p></div>
+    </div>
+
+    <div class="flex min-w-0 flex-col gap-5 md:col-span-2 md:grid md:grid-cols-2 xl:col-span-1 xl:flex">
+      <section class="<%= card_class(extra: "flex flex-col gap-5") %>" aria-labelledby="people-title">
+        <div class="flex items-center justify-between gap-3"><h2 id="people-title" class="text-sm font-semibold">Team</h2><span class="<%= badge_class %>">3</span></div>
+        <% { "Alex Lee" => [ "AL", "sky", "Owner" ], "Sam Kim" => [ "SK", "leaf", "Editor" ], "Jamie Reed" => [ "JR", "berry", "Editor" ] }.each do |name, (initials, tone, role)| %>
+          <div class="flex items-center gap-3"><span class="<%= avatar_class %>" style="background-color: var(--<%= tone %>)"><%= initials %></span><div class="flex min-w-0 flex-1 flex-col gap-0.5"><p class="truncate text-sm font-medium"><%= name %></p><p class="text-xs text-ink-3"><%= role %></p></div><span class="size-2 rounded-full bg-leaf" role="img" aria-label="Available"></span></div>
+        <% end %>
+        <a href="/components/avatar.html" class="text-xs text-ink-3 hover:text-ink">Avatars ↗</a>
+      </section>
+      <section class="<%= card_class(extra: "flex flex-col items-start gap-5") %>" aria-labelledby="dialog-title">
+        <span class="<%= icon_medallion_class(tone: :neutral) %>"><%= heroicon "rectangle-stack", options: { "aria-hidden": true } %></span>
+        <h2 id="dialog-title" class="text-lg font-semibold">A focused task.</h2>
+        <% dialog_example = @sections.find { |section| section.id == :dialog }.examples.find { |example| example.specimen == :modal_dialog } %>
+        <%= render inline: showcase_source(dialog_example, id: "home-dialog") %>
+        <a href="/components/dialog.html" class="text-xs text-ink-3 hover:text-ink">Dialogs ↗</a>
+      </section>
     </div>
   </div>
-</header>
-
-<main class="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-8 sm:px-6" data-showcase-target="desktop">
-  <div class="flex flex-col gap-3">
-    <p class="<%= eyebrow_class %>">Component library</p>
-    <h1 class="text-3xl font-semibold">Every builder, rendered by the gem</h1>
-    <p class="max-w-prose text-ink-2">Each specimen is the output of the call printed under it. The page is generated from <code class="font-mono text-sm">Showcase.sections</code>, so it changes when the builders do.</p>
-    <nav class="<%= pill_row_class %>" aria-label="Sections">
-      <% @sections.each do |section| %>
-        <a class="<%= pill_class(size: :sm) %>" href="#<%= section.id %>"><%= section.title %></a>
-      <% end %>
-      <a class="<%= pill_class(size: :sm) %>" href="#tokens">Tokens</a>
-    </nav>
-  </div>
-
-  <% @sections.each do |section| %>
-    <%= render "showcase/section", section: %>
-  <% end %>
-
-  <%= render "showcase/tokens" %>
+  <div class="flex flex-wrap items-center justify-between gap-4 pt-4 text-sm"><p class="text-ink-3">Build with your own palette and type.</p><a class="font-medium hover:text-accent" href="/tokens.html">Explore the tokens →</a></div>
 </main>
-
-<div class="flex justify-center px-4 py-8" data-showcase-target="phone" hidden>
-  <iframe class="<%= card_surface_class(extra: "h-211 w-97.5 shadow-(--shadow)") %>" title="The showcase at phone width" data-showcase-target="frame" data-showcase-src="?frame=phone"></iframe>
-</div>

@@ -1,0 +1,13 @@
+<nav class="flex flex-col gap-6" aria-label="Documentation">
+  <div class="flex flex-col gap-1">
+    <p class="px-3 text-xs font-medium text-ink-3">Library</p>
+    <a class="<%= docs_link_class %>" href="/">Overview</a>
+    <a class="<%= docs_link_class %>" href="/tokens.html" <%= 'aria-current=page' if action_name == "tokens" %>>Tokens</a>
+  </div>
+  <div class="flex flex-col gap-1">
+    <p class="px-3 pb-1 text-xs font-medium text-ink-3">Components</p>
+    <% @sections.each do |section| %>
+      <a class="<%= docs_link_class %>" href="/components/<%= section.id %>.html" <%= 'aria-current=page' if @section&.id == section.id %>><%= section.title %></a>
+    <% end %>
+  </div>
+</nav>

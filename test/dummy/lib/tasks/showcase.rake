@@ -12,6 +12,10 @@ namespace :lostcoords do
       undigest = ->(path) { path.sub(/-\h{8}(?=\.\w+\z)/, "") }
 
       pages = { "index.html" => fetch.("/"), "emoji-catalog.html" => fetch.("/emoji-catalog.html") }
+      Showcase.sections.each do |section|
+        pages["components/#{section.id}.html"] = fetch.("/components/#{section.id}.html")
+      end
+      pages["tokens.html"] = fetch.("/tokens.html")
       assets = pages.values.flat_map { |html| html.scan(%r{/assets/[^"'\s)]+}) }.uniq
 
       FileUtils.rm_rf(dir.join("assets"))
@@ -21,7 +25,11 @@ namespace :lostcoords do
         target.binwrite(fetch.(path).sub(%r{^//# sourceMappingURL=.*\n?}, ""))
       end
       pages.each do |name, html|
-        dir.join(name).write(html.gsub(%r{/assets/[^"'\s)]+}) { |path| ".#{undigest.(path)}" })
+        target = dir.join(name)
+        target.dirname.mkpath
+        depth = Pathname(name).each_filename.to_a.length.pred
+        prefix = depth.zero? ? "./" : "../" * depth
+        target.write(html.gsub(%r{/assets/[^"'\s)]+}) { |path| "#{prefix}#{undigest.(path).delete_prefix("/")}" })
       end
 
       dir.join("CNAME").write("ui.lostcoords.com\n")

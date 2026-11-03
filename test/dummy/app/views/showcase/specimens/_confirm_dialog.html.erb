@@ -1,6 +1,14 @@
 <div data-controller="confirm-dialog">
   <button type="button" class="<%= classes[:trigger] %>" data-action="confirm-dialog#open">Open confirm dialog</button>
-  <dialog class="<%= classes[:dialog] %>" aria-labelledby="<%= id %>-title" data-confirm-dialog-target="dialog">
-    <%= render "showcase/specimens/dialog_body", classes:, id:, title: "Delete this expense?", body: "It leaves every balance in the group.", confirm: "Delete", close: "confirm-dialog#close" %>
+  <dialog data-controller="sheet" data-sheet-detents-value="fit" class="<%= classes[:dialog] %>" aria-labelledby="<%= id %>-title" data-confirm-dialog-target="dialog">
+    <div class="flex flex-col gap-4 p-5">
+  <h2 id="<%= id %>-title" class="text-lg font-semibold">Delete this project?</h2>
+  <p class="text-ink-2">This project and its files will be permanently deleted.</p>
+  <div class="<%= classes[:actions] %>">
+    <button type="button" class="<%= classes[:cancel] %>" data-action="confirm-dialog#close">Cancel</button>
+    <button type="button" class="<%= classes[:confirm] %>" data-action="confirm-dialog#close">Delete</button>
+  </div>
+</div>
+
   </dialog>
 </div>
