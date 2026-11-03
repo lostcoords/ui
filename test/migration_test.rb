@@ -62,9 +62,29 @@ class MigrationTest < ActiveSupport::TestCase
     end
   end
 
+  test "generated directories and symlinks are left untouched" do
+    Dir.mktmpdir do |directory|
+      %w[.git .jj .bundle node_modules vendor tmp log storage pkg coverage builds dist].each do |name|
+        Dir.mkdir(File.join(directory, name))
+        File.write(File.join(directory, name, "ignored.rb"), "invalid Ruby !!!")
+      end
+      Dir.mktmpdir do |external|
+        target = File.join(external, "helper.rb")
+        File.write(target, "ui_button 'External'\n")
+        File.symlink(target, File.join(directory, "linked.rb"))
+        File.write(File.join(directory, "helper.rb"), "ui_button 'Save'\n")
+        output, error, status = migrate(directory, "--write")
+        assert status.success?, error
+        assert_includes output, "1 files updated"
+        assert_equal "lc_button 'Save'\n", File.read(File.join(directory, "helper.rb"))
+        assert_equal "ui_button 'External'\n", File.read(target)
+      end
+    end
+  end
+
   private
 
   def migrate(directory, *arguments)
-    Open3.capture3(RbConfig.ruby, Lostcoords::Ui.root.join("script/migrate_helpers.rb").to_s, directory, *arguments)
+    Open3.capture3({ "PATH" => "" }, RbConfig.ruby, Lostcoords::Ui.root.join("script/migrate_helpers.rb").to_s, directory, *arguments)
   end
 end

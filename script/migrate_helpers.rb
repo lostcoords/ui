@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 require "json"
-require "open3"
+require "find"
 require "optparse"
 require "ripper"
 
@@ -81,9 +81,16 @@ module HelperMigration
   end
 
   def self.changes(root)
-    output, error, status = Open3.capture3("rg", "--files", "--hidden", "-0", "-g", "!.git", "-g", "!.jj", chdir: root)
-    abort error unless status.success? || status.exitstatus == 1
-    output.split("\0").sort.filter_map do |relative|
+    files = Find.find(root).filter_map do |path|
+      next if File.symlink?(path)
+      if File.directory?(path)
+        name = File.basename(path)
+        Find.prune if path != root && (name.start_with?(".") || %w[node_modules vendor tmp log storage pkg coverage builds dist].include?(name))
+        next
+      end
+      path.delete_prefix("#{root}/")
+    end
+    files.sort.filter_map do |relative|
       path = File.join(root, relative)
       next if File.symlink?(path) || relative.start_with?("vendor/")
       next if root == LIBRARY && (relative == "README.md" || relative.start_with?("docs/", "plans/"))
