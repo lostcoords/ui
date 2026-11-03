@@ -12,6 +12,17 @@ async function _verifyComponents(page) {
     await page.goto(`${origin}/components/${component}.html`)
     await page.locator('[data-controller~="showcase"]').waitFor()
     await page.locator('#palette-picker-trigger[aria-label^="Color palette:"]').waitFor()
+    await page.waitForFunction(async () => {
+      const { application } = await import("controllers/application")
+      return [...document.querySelectorAll("[data-controller]")].every((element) =>
+        element.dataset.controller
+          .split(/\s+/)
+          .filter(Boolean)
+          .every((identifier) =>
+            application.getControllerForElementAndIdentifier(element, identifier),
+          ),
+      )
+    })
   }
 
   await visit("button")
