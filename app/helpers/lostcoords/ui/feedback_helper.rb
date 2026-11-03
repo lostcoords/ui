@@ -15,16 +15,16 @@ module Lostcoords::Ui
       "flex flex-col items-center text-center " \
       "py-6 px-4 sm:py-12 sm:px-6"
 
-    def spinner_class(size: :base, extra: nil)
-      tw(SPINNER_BASE, SPINNER_SIZES.fetch(size.to_sym, SPINNER_SIZES[:base]), extra)
+    def lc_spinner_class(size: :base, extra: nil)
+      lc_tw(SPINNER_BASE, SPINNER_SIZES.fetch(size.to_sym, SPINNER_SIZES[:base]), extra)
     end
 
-    def skeleton_class(extra: nil)
-      tw(SKELETON_BASE, extra)
+    def lc_skeleton_class(extra: nil)
+      lc_tw(SKELETON_BASE, extra)
     end
 
-    def empty_state_class(extra: nil)
-      tw(EMPTY_STATE_BASE, extra)
+    def lc_empty_state_class(extra: nil)
+      lc_tw(EMPTY_STATE_BASE, extra)
     end
   end
 end

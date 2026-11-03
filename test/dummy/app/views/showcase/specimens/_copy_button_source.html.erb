@@ -1,0 +1,7 @@
+<%= lc_stack gap: :related, class: "w-full max-w-md" do %>
+  <%= lc_field label: "Share link", id: "EXAMPLE_ID-link" do |field| %>
+    <%= lc_input value: "https://ui.lostcoords.com", **field %>
+  <% end %>
+  <%= lc_copy_button "Copy current link", source: "EXAMPLE_ID-link", copied_label: "Link copied", class: "w-full" %>
+  <%= lc_text "Edit the link, then copy it. The button reads the current value each time.", size: :small, tone: :muted %>
+<% end %>

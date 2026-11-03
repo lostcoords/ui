@@ -33,25 +33,26 @@ module ShowcaseHelper
   def showcase_choices(component, parameter)
     ui = Lostcoords::Ui
     choices = {
-      ui_button: { variant: ui::PrimitivesHelper::BUTTON_STYLES.keys, size: ui::TailwindHelper::CONTROL_SIZES.keys },
-      ui_button_link_to: { variant: ui::PrimitivesHelper::BUTTON_STYLES.keys, size: ui::TailwindHelper::CONTROL_SIZES.keys },
-      ui_button_to: { variant: ui::PrimitivesHelper::BUTTON_STYLES.keys, size: ui::TailwindHelper::CONTROL_SIZES.keys },
-      ui_icon_button: { shape: ui::ButtonHelper::ICON_BUTTON_SHAPES.keys, size: ui::ButtonHelper::ICON_BUTTON_SIZES.keys },
-      ui_badge: { tone: ui::BadgeHelper::BADGE_TONES.keys },
-      ui_status_pill: { tone: ui::BadgeHelper::STATUS_PILL_TONES.keys },
-      ui_avatar: { size: ui::BadgeHelper::AVATAR_SIZES.keys },
-      ui_icon_badge: { size: ui::BadgeHelper::ICON_BADGE_SIZES.keys },
-      ui_medallion: { size: ui::BadgeHelper::ICON_MEDALLION_SIZES.keys, tone: ui::BadgeHelper::ICON_MEDALLION_TONES.keys },
-      ui_pill: { size: ui::TailwindHelper::CONTROL_SIZES.keys },
-      ui_input: { size: ui::TailwindHelper::CONTROL_SIZES.keys, type: ui::StructuresHelper::INPUT_TYPES },
-      ui_select: { size: ui::TailwindHelper::CONTROL_SIZES.keys },
-      ui_form_card: { padding: ui::CardHelper::FORM_CARD_PADDINGS.keys },
-      ui_dialog: { kind: ui::DialogHelper::DIALOGS.keys },
-      ui_form_alert: { tone: ui::FormHelper::FORM_ALERT_ICONS.keys },
-      ui_spinner: { size: ui::FeedbackHelper::SPINNER_SIZES.keys },
-      ui_menu: { align: ui::MenuHelper::MENU_POPOVER_ALIGN.keys },
-      ui_popover: { align: ui::MenuHelper::MENU_POPOVER_ALIGN.keys },
-      ui_menu_option: { tone: ui::MenuHelper::MENU_OPTION_TONES.keys }
+      lc_button: { variant: ui::PrimitivesHelper::BUTTON_STYLES.keys, size: ui::TailwindHelper::CONTROL_SIZES.keys },
+      lc_button_link_to: { variant: ui::PrimitivesHelper::BUTTON_STYLES.keys, size: ui::TailwindHelper::CONTROL_SIZES.keys },
+      lc_copy_button: { variant: ui::PrimitivesHelper::BUTTON_STYLES.keys, size: ui::TailwindHelper::CONTROL_SIZES.keys },
+      lc_button_to: { variant: ui::PrimitivesHelper::BUTTON_STYLES.keys, size: ui::TailwindHelper::CONTROL_SIZES.keys },
+      lc_icon_button: { shape: ui::ButtonHelper::ICON_BUTTON_SHAPES.keys, size: ui::ButtonHelper::ICON_BUTTON_SIZES.keys },
+      lc_badge: { tone: ui::BadgeHelper::BADGE_TONES.keys },
+      lc_status_pill: { tone: ui::BadgeHelper::STATUS_PILL_TONES.keys },
+      lc_avatar: { size: ui::BadgeHelper::AVATAR_SIZES.keys },
+      lc_icon_badge: { size: ui::BadgeHelper::ICON_BADGE_SIZES.keys },
+      lc_medallion: { size: ui::BadgeHelper::ICON_MEDALLION_SIZES.keys, tone: ui::BadgeHelper::ICON_MEDALLION_TONES.keys },
+      lc_pill: { size: ui::TailwindHelper::CONTROL_SIZES.keys },
+      lc_input: { size: ui::TailwindHelper::CONTROL_SIZES.keys, type: ui::StructuresHelper::INPUT_TYPES },
+      lc_select: { size: ui::TailwindHelper::CONTROL_SIZES.keys },
+      lc_form_card: { padding: ui::CardHelper::FORM_CARD_PADDINGS.keys },
+      lc_dialog: { kind: ui::DialogHelper::DIALOGS.keys },
+      lc_form_alert: { tone: ui::FormHelper::FORM_ALERT_ICONS.keys },
+      lc_spinner: { size: ui::FeedbackHelper::SPINNER_SIZES.keys },
+      lc_menu: { align: ui::MenuHelper::MENU_POPOVER_ALIGN.keys },
+      lc_popover: { align: ui::MenuHelper::MENU_POPOVER_ALIGN.keys },
+      lc_menu_option: { tone: ui::MenuHelper::MENU_OPTION_TONES.keys }
     }.dig(component.name, parameter)
     return choices.map { |key| ":#{key}" }.join(" · ") if choices
     return ":start · :end" if parameter == :icon_position

@@ -44,50 +44,50 @@ module Lostcoords::Ui
       notice: [ "check-circle", "text-leaf" ]
     }.freeze
 
-    def segmented_class(extra: nil)
-      tw(SEGMENTED_BASE, extra)
+    def lc_segmented_class(extra: nil)
+      lc_tw(SEGMENTED_BASE, extra)
     end
 
-    def segmented_tab_class(active: false, extra: nil)
-      tw(SEGMENTED_TAB_BASE, (SEGMENTED_TAB_ACTIVE if active), extra)
+    def lc_segmented_tab_class(active: false, extra: nil)
+      lc_tw(SEGMENTED_TAB_BASE, (SEGMENTED_TAB_ACTIVE if active), extra)
     end
 
-    def input_class(size: :base, extra: nil)
-      tw(INPUT_BASE, TailwindHelper::CONTROL_SIZES.fetch(size.to_sym, TailwindHelper::CONTROL_SIZES[:base]), extra)
+    def lc_input_class(size: :base, extra: nil)
+      lc_tw(INPUT_BASE, TailwindHelper::CONTROL_SIZES.fetch(size.to_sym, TailwindHelper::CONTROL_SIZES[:base]), extra)
     end
 
-    def dropdown_trigger_class(size: :base, extra: nil)
-      button_class(variant: :secondary, size: size, block: true,
-        extra: tw("justify-start text-start ps-5 pe-4 gap-3 [&_.caret]:ms-auto [&_.caret]:shrink-0", extra))
+    def lc_dropdown_trigger_class(size: :base, extra: nil)
+      lc_button_class(variant: :secondary, size: size, block: true,
+        extra: lc_tw("justify-start text-start ps-5 pe-4 gap-3 [&_.caret]:ms-auto [&_.caret]:shrink-0", extra))
     end
 
-    def select_class(size: :base, extra: nil)
-      tw(input_class(size: size), "select-control rounded-full ps-5 pe-11 cursor-pointer hover:bg-paper-3", extra)
+    def lc_select_class(size: :base, extra: nil)
+      lc_tw(lc_input_class(size: size), "select-control rounded-full ps-5 pe-11 cursor-pointer hover:bg-paper-3", extra)
     end
 
-    def textarea_class(extra: nil)
-      tw(INPUT_BASE, "min-h-28 py-2.5 resize-y", extra)
+    def lc_textarea_class(extra: nil)
+      lc_tw(INPUT_BASE, "min-h-28 py-2.5 resize-y", extra)
     end
 
-    def field_class(extra: nil)
-      tw(FIELD_BASE, extra)
+    def lc_field_class(extra: nil)
+      lc_tw(FIELD_BASE, extra)
     end
 
-    def field_label_class(extra: nil)
-      tw(FIELD_LABEL_BASE, extra)
+    def lc_field_label_class(extra: nil)
+      lc_tw(FIELD_LABEL_BASE, extra)
     end
 
-    def form_actions_class(extra: nil)
-      tw(FORM_ACTIONS_BASE, extra)
+    def lc_form_actions_class(extra: nil)
+      lc_tw(FORM_ACTIONS_BASE, extra)
     end
 
-    def form_alert_class(extra: nil)
-      tw(FORM_ALERT_BASE, extra)
+    def lc_form_alert_class(extra: nil)
+      lc_tw(FORM_ALERT_BASE, extra)
     end
 
-    def form_alert_icon(tone: :error)
+    def lc_form_alert_icon(tone: :error)
       name, color = FORM_ALERT_ICONS.fetch(tone.to_sym, FORM_ALERT_ICONS[:error])
-      heroicon name, variant: :mini, options: { class: tw("size-5 shrink-0", color), "aria-hidden": "true" }
+      lc_icon name, variant: :mini, options: { class: lc_tw("size-5 shrink-0", color), "aria-hidden": "true" }
     end
   end
 end

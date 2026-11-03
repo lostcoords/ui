@@ -3,7 +3,7 @@ require_relative "builders"
 module Lostcoords::Ui
   module Components
     def self.all
-      Builders.definitions.select { |builder| builder.name.to_s.start_with?("ui_") }
+      Builders.definitions.select(&:component?)
     end
 
     def self.markdown

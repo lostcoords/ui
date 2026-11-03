@@ -27,7 +27,7 @@ module DocsReference
   end
 
   def self.text
-    lines = [ "# lostcoords-ui", "", "Rails rendering helpers with semantic HTML, native attributes and browser interactions.", "", "Install and styling: https://ui.lostcoords.com/installation.html", "Theming: https://ui.lostcoords.com/theming.html", "API JSON: https://ui.lostcoords.com/api.json", "", "Tailwind CSS v4 is required. Install the gem once; the Rails engine exposes all ui_* helpers without per-component imports.", "The engine includes a default light and dark theme. Override CSS variables only as needed. Use class: to merge Tailwind utilities, data: and aria: for native attributes. Block helpers capture Rails ERB.", "ui_button_to keeps Rails form, method and CSRF semantics. Each host application's lockfile pins its version.", "" ]
+    lines = [ "# lostcoords-ui", "", "Rails rendering helpers with semantic HTML, native attributes and browser interactions.", "", "Install and styling: https://ui.lostcoords.com/installation.html", "Theming: https://ui.lostcoords.com/theming.html", "API JSON: https://ui.lostcoords.com/api.json", "", "Tailwind CSS v4 is required. Install the gem once; the Rails engine exposes all lc_* helpers without per-component imports.", "The engine includes a default light and dark theme. Override CSS variables only as needed. Use class: to merge Tailwind utilities, data: and aria: for native attributes. Block helpers capture Rails ERB.", "lc_button_to keeps Rails form, method and CSRF semantics. Each host application's lockfile pins its version.", "" ]
     components.each do |component|
       lines += [ "## #{component[:name]}", "", "```ruby", component[:signature], "```", "" ]
       component[:examples].each do |example|
@@ -42,7 +42,7 @@ module DocsReference
         lines += [ file[:path], "", "```#{file[:language]}", file[:source], "```", "" ]
       end
     end
-    lines += [ "## Advanced styles", "", "Class helpers style custom markup; the application owns its behavior.", "Glass surfaces use glass_class; tw merges utility classes. Read https://github.com/lostcoords/ui#advanced-style-composition.", "" ]
+    lines += [ "## Advanced styles", "", "Class helpers style custom markup; the application owns its behavior.", "Glass surfaces use lc_glass_class; lc_tw merges utility classes. Read https://github.com/lostcoords/ui#advanced-style-composition.", "" ]
     lines.concat(Lostcoords::Ui::Builders.all.map { |builder| "- `#{builder.signature}`" })
     lines.join("\n") + "\n"
   end

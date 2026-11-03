@@ -1,10 +1,10 @@
-<%= ui_dialog id: "EXAMPLE_ID-dialog", title: "Create project", trigger: "New project" do %>
+<%= lc_dialog id: "EXAMPLE_ID-dialog", title: "Create project", trigger: "New project" do %>
   <form method="dialog" class="flex flex-col gap-5">
-  <%= ui_field label: "Project name", id: "EXAMPLE_ID-dialog-name" do |field| %>
-    <%= ui_input name: "project[name]", **field %>
+  <%= lc_field label: "Project name", id: "EXAMPLE_ID-dialog-name" do |field| %>
+    <%= lc_input name: "project[name]", **field %>
   <% end %>
-  <%= ui_form_actions do %>
-    <%= ui_button "Create project", type: :submit %>
+  <%= lc_form_actions do %>
+    <%= lc_button "Create project", type: :submit %>
   <% end %>
   </form>
 <% end %>

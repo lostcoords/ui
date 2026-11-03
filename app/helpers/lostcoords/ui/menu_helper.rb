@@ -26,16 +26,16 @@ module Lostcoords::Ui
       danger: "text-danger hover:bg-danger-soft focus-visible:bg-danger-soft"
     }.freeze
 
-    def popover_class(align: :end, extra: nil)
-      glass_class(shape: :menu, extra: tw(POPOVER_BASE, MENU_POPOVER_ALIGN.fetch(align), extra))
+    def lc_popover_class(align: :end, extra: nil)
+      lc_glass_class(shape: :menu, extra: lc_tw(POPOVER_BASE, MENU_POPOVER_ALIGN.fetch(align), extra))
     end
 
-    def menu_popover_class(align: :end, extra: nil)
-      popover_class(align: align, extra: tw(MENU_POPOVER_BASE, extra))
+    def lc_menu_popover_class(align: :end, extra: nil)
+      lc_popover_class(align: align, extra: lc_tw(MENU_POPOVER_BASE, extra))
     end
 
-    def menu_option_class(tone: :default, extra: nil)
-      tw(MENU_OPTION_BASE, MENU_OPTION_TONES.fetch(tone), extra)
+    def lc_menu_option_class(tone: :default, extra: nil)
+      lc_tw(MENU_OPTION_BASE, MENU_OPTION_TONES.fetch(tone), extra)
     end
   end
 end

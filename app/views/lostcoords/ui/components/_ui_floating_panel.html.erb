@@ -1,6 +1,6 @@
 <%# locals: (id:, label:, title:, controller:, role:, attributes:, content:) %>
 <%= tag.div(class: "relative inline-flex", data: { controller: controller }) do %>
-  <%= tag.button label, id: "#{id}-trigger", type: "button", class: button_class(variant: :secondary), aria: { haspopup: role, expanded: false, controls: id }, data: { "#{controller}_target" => "trigger", action: "#{controller}#toggle" } %>
+  <%= tag.button label, id: "#{id}-trigger", type: "button", class: lc_button_class(variant: :secondary), aria: { haspopup: role, expanded: false, controls: id }, data: { "#{controller}_target" => "trigger", action: "#{controller}#toggle" } %>
   <%= tag.div(**attributes) do %>
     <% if title %><h2 id="<%= id %>-title" class="font-semibold"><%= title %></h2><% end %>
     <%= content %>

@@ -1,22 +1,22 @@
-<%= ui_stack gap: :section, class: "w-full max-w-xl" do %>
-  <%= ui_section title: "Recent expenses", actions: capture { ui_button("Add expense", icon: "plus", size: :sm) } do %>
-    <%= ui_card do %>
-      <%= ui_inline class: "flex-nowrap justify-between" do %>
-        <%= ui_text "Dinner with friends" %>
-        <%= ui_text "¥8,400", class: "shrink-0 tabular-nums" %>
+<%= lc_stack gap: :section, class: "w-full max-w-xl" do %>
+  <%= lc_section title: "Recent expenses", actions: capture { lc_button("Add expense", icon: "plus", size: :sm) } do %>
+    <%= lc_card do %>
+      <%= lc_inline class: "flex-nowrap justify-between" do %>
+        <%= lc_text "Dinner with friends" %>
+        <%= lc_text "¥8,400", class: "shrink-0 tabular-nums" %>
       <% end %>
     <% end %>
-    <%= ui_card do %>
-      <%= ui_text "Train tickets" %>
+    <%= lc_card do %>
+      <%= lc_text "Train tickets" %>
     <% end %>
   <% end %>
-  <%= ui_section title: "Members" do %>
-    <%= ui_card do %>
-      <%= ui_inline do %>
-        <%= ui_avatar "AK", class: "bg-sky" %>
-        <%= ui_stack gap: :tight do %>
-          <%= ui_text "Alex Kim" %>
-          <%= ui_text "Joined today", size: :small, tone: :muted %>
+  <%= lc_section title: "Members" do %>
+    <%= lc_card do %>
+      <%= lc_inline do %>
+        <%= lc_avatar "AK", class: "bg-sky" %>
+        <%= lc_stack gap: :tight do %>
+          <%= lc_text "Alex Kim" %>
+          <%= lc_text "Joined today", size: :small, tone: :muted %>
         <% end %>
       <% end %>
     <% end %>

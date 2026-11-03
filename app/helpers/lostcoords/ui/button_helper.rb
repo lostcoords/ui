@@ -3,8 +3,8 @@ module Lostcoords::Ui
     BUTTON_BASE =
       "inline-flex items-center justify-center gap-2 rounded-full font-body font-medium " \
       "whitespace-nowrap no-underline cursor-pointer " \
-      "transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out " \
-      "hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none " \
+      "transition-[background-color,border-color,color,box-shadow,transform,translate,scale,filter] duration-(--ui-motion-control) ease-out " \
+      "motion-safe:hover:-translate-y-px motion-safe:active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none " \
       "[&_svg]:block [&_svg:not([class*='size-'])]:size-[1.1em] [&_svg]:shrink-0"
 
     BUTTON_SIZES = {
@@ -26,8 +26,8 @@ module Lostcoords::Ui
     ICON_BUTTON_BASE =
       "inline-grid place-items-center shrink-0 border-0 bg-transparent " \
       "text-ink-3 cursor-pointer no-underline " \
-      "transition-[background-color,color,transform] duration-[140ms] ease-out " \
-      "hover:bg-paper-2 hover:text-ink active:scale-[0.94] " \
+      "transition-[background-color,color,transform,scale] duration-(--ui-motion-quick) ease-out " \
+      "hover:bg-paper-2 hover:text-ink motion-safe:active:scale-(--ui-press-scale) " \
       "disabled:opacity-40 disabled:pointer-events-none " \
       "[&_svg]:block [&_svg]:shrink-0"
 
@@ -42,18 +42,18 @@ module Lostcoords::Ui
       lg: "size-14 [&_svg]:size-6"
     }.freeze
 
-    def button_class(variant: :default, size: :base, block: false, extra: nil)
-      tw(
+    def lc_button_class(variant: :default, size: :base, block: false, extra: nil)
+      lc_tw(
         BUTTON_BASE,
         BUTTON_SIZES.fetch(size.to_sym, BUTTON_SIZES[:base]),
-        button_variants.fetch(variant.to_sym, button_variants[:default]),
+        lc_button_variants.fetch(variant.to_sym, lc_button_variants[:default]),
         ("w-full" if block),
         extra
       )
     end
 
-    def icon_button_class(shape: :square, size: :base, extra: nil)
-      tw(
+    def lc_icon_button_class(shape: :square, size: :base, extra: nil)
+      lc_tw(
         ICON_BUTTON_BASE,
         ICON_BUTTON_SHAPES.fetch(shape.to_sym, ICON_BUTTON_SHAPES[:square]),
         ICON_BUTTON_SIZES.fetch(size.to_sym, ICON_BUTTON_SIZES[:base]),
@@ -63,7 +63,7 @@ module Lostcoords::Ui
 
     private
 
-    def button_variants
+    def lc_button_variants
       BUTTON_VARIANTS
     end
   end

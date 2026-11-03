@@ -1,16 +1,15 @@
 <%# locals: (source:, id:, language: :erb, label: "Source code") %>
 <% truncated = source.lines.size > 10 %>
-<div class="group/source overflow-hidden rounded-2xl bg-paper-2" data-controller="example">
+<div class="group/source overflow-hidden rounded-2xl bg-paper-2" data-controller="example" data-action="ui-copy:error->example#copyFailed">
   <div class="flex min-h-12 items-center justify-between gap-4 px-5">
     <span class="font-mono text-xs uppercase text-ink-3"><%= language %></span>
-    <%= ui_button "Copy", variant: :ghost, size: :sm, class: "min-w-20", data: { action: "example#copy", example_target: "copy" }, aria: { label: "Copy #{label}" } %>
+    <%= lc_copy_button source: id, variant: :ghost, size: :sm, aria: { label: "Copy #{label}" } %>
   </div>
   <div class="relative">
-    <pre id="<%= id %>" class="overflow-x-auto px-5 pb-5 font-mono text-[0.8125rem] text-ink-2 [tab-size:2] <%= 'max-h-60 overflow-y-hidden group-data-expanded/source:max-h-none' if truncated %>" tabindex="0" role="region" aria-label="<%= label %>" data-example-target="code"><code><%= highlight_source(source, language: language) %></code></pre>
+    <pre id="<%= id %>" class="overflow-x-auto px-5 pb-5 font-mono text-[0.8125rem] text-ink-2 [tab-size:2] <%= 'max-h-60 overflow-y-hidden group-data-expanded/source:max-h-none' if truncated %>" tabindex="0" role="region" aria-label="<%= label %>"><code><%= highlight_source(source, language: language) %></code></pre>
     <% if truncated %><div class="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-linear-to-t from-paper-2 to-transparent group-data-expanded/source:hidden" aria-hidden="true"></div><% end %>
   </div>
   <% if truncated %>
-    <%= ui_button "Show all code", variant: :ghost, size: :sm, class: "w-full rounded-none", aria: { expanded: false, controls: id }, data: { action: "example#toggle", example_target: "toggle" } %>
+    <%= lc_button "Show all code", variant: :ghost, size: :sm, class: "w-full rounded-none", aria: { expanded: false, controls: id }, data: { action: "example#toggle", example_target: "toggle" } %>
   <% end %>
-  <span class="sr-only" role="status" data-example-target="status"></span>
 </div>

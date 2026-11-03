@@ -77,6 +77,11 @@
 
 @layer theme {
   :root {
+    --ui-motion-quick: 140ms;
+    --ui-motion-control: 180ms;
+    --ui-motion-feedback: 160ms;
+    --ui-press-scale: 0.96;
+
     --lch-sky:      55.6% 0.176 256.6;
     --lch-sky-deep: 51.5% 0.169 259.2;
     --lch-leaf:     58.6% 0.089 144.3;

@@ -1,22 +1,22 @@
-<%= ui_container do %>
-  <%= ui_stack gap: :section do %>
-    <%= ui_heading "Plan your next trip", level: 2, size: :page %>
+<%= lc_container do %>
+  <%= lc_stack gap: :section do %>
+    <%= lc_heading "Plan your next trip", level: 2, size: :page %>
     <div class="grid min-w-0 gap-8 md:grid-cols-2">
-      <%= ui_section title: "Travel details", level: 3 do %>
-        <%= ui_card do %>
-          <%= ui_stack do %>
-            <%= ui_text "Kyoto weekend", size: :body %>
-            <%= ui_text "Keep shared costs and travel notes together.", size: :small, tone: :muted %>
-            <%= ui_inline do %>
-              <%= ui_button "Invite friends", size: :sm %>
-              <%= ui_button "View itinerary", variant: :ghost, size: :sm %>
+      <%= lc_section title: "Travel details", level: 3 do %>
+        <%= lc_card do %>
+          <%= lc_stack do %>
+            <%= lc_text "Kyoto weekend", size: :body %>
+            <%= lc_text "Keep shared costs and travel notes together.", size: :small, tone: :muted %>
+            <%= lc_inline do %>
+              <%= lc_button "Invite friends", size: :sm %>
+              <%= lc_button "View itinerary", variant: :ghost, size: :sm %>
             <% end %>
           <% end %>
         <% end %>
       <% end %>
-      <%= ui_section title: "Shared costs", level: 3 do %>
-        <%= ui_card do %>
-          <%= ui_text "No expenses yet", size: :body %>
+      <%= lc_section title: "Shared costs", level: 3 do %>
+        <%= lc_card do %>
+          <%= lc_text "No expenses yet", size: :body %>
         <% end %>
       <% end %>
     </div>

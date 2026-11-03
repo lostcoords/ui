@@ -3,7 +3,7 @@ module DocsInstallation
     <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   ERB
-  FIRST_COMPONENT = '<%= ui_button "Create project", icon: "plus" %>'.freeze
+  FIRST_COMPONENT = '<%= lc_button "Create project", icon: "plus" %>'.freeze
 
   def self.stylesheet
     <<~CSS

@@ -6,11 +6,31 @@ async function _verifyTheming(page, defaultCss, customCss) {
   }
   const origin = await page.evaluate(() => location.origin)
   await page.goto(`${origin}/theming.html`)
-  await page.locator("#defaults .ui-heading").waitFor()
-  const preview = await page
-    .locator("#defaults .ui-heading")
-    .evaluate((el) => el.parentElement.outerHTML)
-  await page.locator("#advanced summary").evaluate((element) => element.click())
+  await page.locator("h1").waitFor()
+  const cardPage = await (
+    await page.request.get(`${origin}/components/card.html`, { ignoreHTTPSErrors: true })
+  ).text()
+  const buttonPage = await (
+    await page.request.get(`${origin}/components/button.html`, { ignoreHTTPSErrors: true })
+  ).text()
+  const preview = await page.evaluate(
+    ({ cardPage, buttonPage }) => {
+      const parser = new DOMParser()
+      const card = parser
+        .parseFromString(cardPage, "text/html")
+        .querySelector("#example-0 [data-example-preview]").firstElementChild
+      const button = parser
+        .parseFromString(buttonPage, "text/html")
+        .querySelector("#example-0 [data-example-preview] button")
+      card.dataset.defaultCard = ""
+      card.append(button)
+      return card.outerHTML
+    },
+    { cardPage, buttonPage },
+  )
+  await page
+    .getByText("All theme variables", { exact: true })
+    .evaluate((element) => element.click())
   for (const width of [1440, 390, 320]) {
     await page.setViewportSize({ width, height: 1000 })
     verify(
@@ -24,7 +44,6 @@ async function _verifyTheming(page, defaultCss, customCss) {
   )
   await page.addStyleTag({ content: defaultCss })
   await page.addStyleTag({ content: "* { transition: none !important; }" })
-  await page.mouse.move(0, 0)
   const values = () =>
     page.evaluate(() => {
       const button = document.querySelector("button")
@@ -34,7 +53,7 @@ async function _verifyTheming(page, defaultCss, customCss) {
         background: getComputedStyle(document.body).backgroundColor,
         primary: style.backgroundColor,
         font: style.fontFamily,
-        radius: getComputedStyle(document.querySelector(".ui-heading").parentElement).borderRadius,
+        radius: getComputedStyle(document.querySelector("[data-default-card]")).borderRadius,
         shadow: root.getPropertyValue("--shadow").trim(),
         duration: root.getPropertyValue("--sheet-duration").trim(),
       }

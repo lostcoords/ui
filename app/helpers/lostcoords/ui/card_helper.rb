@@ -34,8 +34,8 @@ module Lostcoords::Ui
 
     FORM_CARD_EMPTY_CONTENT = "text-center text-ink-3"
 
-    def card_class(interactive: false, dense: false, extra: nil)
-      tw(
+    def lc_card_class(interactive: false, dense: false, extra: nil)
+      lc_tw(
         CARD_BASE,
         CARD_PADDING.fetch(dense ? :dense : :default),
         (HOVER_LIFT if interactive),
@@ -44,12 +44,12 @@ module Lostcoords::Ui
       )
     end
 
-    def card_surface_class(extra: nil)
-      tw(CARD_SURFACE_CHROME, extra)
+    def lc_card_surface_class(extra: nil)
+      lc_tw(CARD_SURFACE_CHROME, extra)
     end
 
-    def form_card_class(padding: :default, extra: nil)
-      tw(
+    def lc_form_card_class(padding: :default, extra: nil)
+      lc_tw(
         FORM_CARD_BASE,
         FORM_CARD_PADDINGS.fetch(padding.to_sym, FORM_CARD_PADDINGS[:default]),
         (FORM_CARD_EMPTY_CONTENT if padding.to_sym == :empty),

@@ -20,7 +20,11 @@ async function _verifyFoundations(page) {
         const stack = preview.firstElementChild
         const section = stack.firstElementChild
         const content = section.lastElementChild
-        const roles = [...document.querySelectorAll("#example-0 .ui-heading, #example-0 .ui-text")]
+        const roles = [
+          ...document.querySelectorAll(
+            "#example-0 [data-example-preview] .ui-heading, #example-0 [data-example-preview] .ui-text",
+          ),
+        ]
         const prose = document.querySelector("#example-4 .ui-prose")
         const paragraphs = [...prose.querySelectorAll(":scope > p")]
         const probe = document.createElement("span")
@@ -45,7 +49,7 @@ async function _verifyFoundations(page) {
           paragraphGap: getComputedStyle(paragraphs[1]).marginBlockStart,
           proseColor: getComputedStyle(paragraphs[0]).color,
           bodyColor,
-          japaneseTracking: style("#example-1 .ui-heading").letterSpacing,
+          japaneseTracking: style("#example-1 [data-example-preview] .ui-heading").letterSpacing,
           japaneseReadingTracking: style("#example-5 .ui-prose h2").letterSpacing,
           buttonSize: style("#example-4 .not-prose button").fontSize,
         }

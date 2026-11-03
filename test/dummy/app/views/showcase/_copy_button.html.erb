@@ -1,0 +1,19 @@
+<%= lc_stack gap: :related do %>
+  <%= lc_text tone: :muted do %>
+    Pass exactly one of <code>value:</code> for supplied text or <code>source:</code> for an element ID.
+    Inputs and textareas copy their current value; other elements copy their text content, including whitespace.
+    Clipboard access requires HTTPS or localhost and browser permission.
+  <% end %>
+  <%= lc_text tone: :muted do %>
+    The button shows confirmation only after copying succeeds. Failure shows a retry state and announces how to copy manually.
+    <code>reset_after:</code> sets the confirmation time in milliseconds (2000 by default).
+    Customize <code>copied_label:</code> and <code>error_label:</code>, or use the included English, Japanese, and Spanish translations.
+    Use <code>aria: { label: "Copy invite link" }</code> for a contextual accessible name, including on icon-only buttons.
+  <% end %>
+  <%= lc_text tone: :muted do %>
+    Listen on an ancestor for bubbling <code>ui-copy:copied</code> (<code>event.detail.text</code>)
+    and <code>ui-copy:error</code> (<code>event.detail.error</code>) events.
+    The button keeps focus and reserves room for every label. Reduced motion changes feedback immediately.
+    See <a href="/components/motion.html" class="underline underline-offset-2">Motion</a> to tune the transition.
+  <% end %>
+<% end %>

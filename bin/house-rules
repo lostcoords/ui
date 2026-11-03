@@ -147,9 +147,9 @@ def ui_builders
 end
 
 # Two builders that return the same classes are one component under two names: one should call the other.
-# `tw` is replaced by a whitespace-normalising join so the script needs no gems.
+# `lc_tw` is replaced by a whitespace-normalising join so the script needs no gems.
 def builder_duplicate_violations(builders)
-  view = Class.new { define_method(:tw) { |*classes| classes.flatten.compact.join(" ").split.join(" ") } }
+  view = Class.new { define_method(:lc_tw) { |*classes| classes.flatten.compact.join(" ").split.join(" ") } }
   view.include(Lostcoords::Ui::RenderAttributesHelper)
   builders.each { |builder| view.include(builder.owner) }
   view = view.new
@@ -200,12 +200,23 @@ def showcase_coverage_violations
   end
 end
 
+def helper_namespace_violations
+  Dir["#{HELPERS}/*_helper.rb"].flat_map do |path|
+    File.readlines(path, chomp: true).each_with_index.filter_map do |line, index|
+      name = line[/^\s*def ([a-z]\w*[!?]?)(?=[(\s]|$)/, 1]
+      next unless name && !name.start_with?("lc_")
+
+      Violation.new(path, index + 1, "`#{name}` must use the lc_ helper namespace")
+    end
+  end
+end
+
 files = tracked_files
 builders = ui_builders
 violations = dependency_violations + stylesheet_import_violations(files) + authored_state_class_violations(files) +
   js_state_class_violations(files) + css_literal_violations(files) + builder_duplicate_violations(builders) +
   orphan_builder_violations(files, builders) + readme_builders_violations +
-  showcase_coverage_violations
+  showcase_coverage_violations + helper_namespace_violations
 
 if violations.any?
   violations.each { |violation| warn "#{violation.path}:#{violation.line}: #{violation.message}" }

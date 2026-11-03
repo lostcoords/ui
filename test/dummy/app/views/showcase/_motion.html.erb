@@ -1,0 +1,34 @@
+<%= lc_stack gap: :section do %>
+  <%= lc_section title: "Feedback follows the action" do %>
+    <%= lc_text tone: :muted do %>
+      Buttons respond to hover and press automatically. Copy buttons transition their label and icon after the clipboard write succeeds.
+      The same button keeps focus and reserves room for every label, so nearby content stays still.
+      Try the controls below with a mouse, keyboard, or touch.
+    <% end %>
+  <% end %>
+  <%= lc_section title: "Share timing across your app" do %>
+    <%= lc_text tone: :muted do %>
+      Override these CSS variables after the engine import, or on a container to tune one area.
+      Feedback duration controls the visual transition. The copy button's <code>reset_after:</code> controls how long confirmation remains visible.
+    <% end %>
+    <dl class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
+      <% [ ["--ui-motion-quick", "140ms · icon controls"], ["--ui-motion-control", "180ms · buttons"], ["--ui-motion-feedback", "160ms · label and icon swaps"], ["--ui-press-scale", "0.96 · pressed icon controls"], ["--ease-out", "Shared control easing"] ].each do |name, description| %>
+        <dt><code><%= name %></code></dt><dd class="text-ink-2"><%= description %></dd>
+      <% end %>
+    </dl>
+  <% end %>
+  <%= lc_section title: "Respect reduced motion" do %>
+    <%= lc_text tone: :muted do %>
+      When the operating system requests reduced motion, controls skip lift and press scaling, and copy feedback changes immediately.
+      Labels, icons, focus, and success announcements still work. Other component animations use the theme's existing reduced-motion handling.
+    <% end %>
+  <% end %>
+  <%= lc_section title: "Connect application actions to real results" do %>
+    <%= lc_text tone: :muted do %>
+      Your application owns saving and submitting. Show loading while work is pending, success after it finishes, and an error when it fails.
+      Compose <code>lc_button</code> with <code>lc_spinner</code> and <code>aria-busy</code> for loading feedback.
+      Keep timings in CSS and expose interaction state through data or ARIA attributes in your own controllers.
+      Blocks reuse the library's controls and supply their application behavior.
+    <% end %>
+  <% end %>
+<% end %>

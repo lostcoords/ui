@@ -81,7 +81,7 @@ async function _verifyComponents(page) {
   await form.locator("button").click()
   verify(page.url().endsWith("button.html"), "Example forms stay on the docs page")
   verify(
-    (await page.locator("pre").allTextContents()).some((source) => source.includes("ui_button_to")),
+    (await page.locator("pre").allTextContents()).some((source) => source.includes("lc_button_to")),
     "Copied examples use the render API",
   )
 

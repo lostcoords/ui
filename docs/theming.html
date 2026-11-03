@@ -13,7 +13,7 @@
       const theme = localStorage.getItem("lostcoords-ui:theme")
       if (theme === "dark" || (!theme && matchMedia("(prefers-color-scheme: dark)").matches)) document.documentElement.dataset.theme = "dark"
     </script>
-    <link rel="stylesheet" href="./assets/tailwind-dcf3171e.css" />
+    <link rel="stylesheet" href="./assets/tailwind-1129cc0c.css" />
     <script type="importmap" data-turbo-track="reload">{
   "imports": {
     "application": "./assets/application-20c5ac24.js",
@@ -26,6 +26,7 @@
     "controllers/row_menu_controller": "./assets/lostcoords/ui/controllers/row_menu_controller-66f3d5ae.js",
     "controllers/sheet_controller": "./assets/lostcoords/ui/controllers/sheet_controller-435758d0.js",
     "controllers/toast_controller": "./assets/lostcoords/ui/controllers/toast_controller-d5292929.js",
+    "controllers/ui_copy_controller": "./assets/lostcoords/ui/controllers/ui_copy_controller-d436312d.js",
     "controllers/ui_popover_controller": "./assets/lostcoords/ui/controllers/ui_popover_controller-02e7a7b9.js",
     "controllers/ui_selection_controller": "./assets/lostcoords/ui/controllers/ui_selection_controller-70eb14cd.js",
     "controllers/ui_toggle_controller": "./assets/lostcoords/ui/controllers/ui_toggle_controller-c1f00ec9.js",
@@ -44,7 +45,7 @@
     "controllers/blocks_header_controller": "./assets/controllers/blocks_header_controller-e160e4c1.js",
     "controllers/blocks_mobile_navigation_controller": "./assets/controllers/blocks_mobile_navigation_controller-f3c310d5.js",
     "controllers/blocks_search_controller": "./assets/controllers/blocks_search_controller-f1fe01ff.js",
-    "controllers/example_controller": "./assets/controllers/example_controller-ad7ef7d5.js",
+    "controllers/example_controller": "./assets/controllers/example_controller-cd4bcc5c.js",
     "controllers": "./assets/controllers/index-e1e47e23.js",
     "controllers/showcase_controller": "./assets/controllers/showcase_controller-b500bb11.js"
   }
@@ -58,7 +59,7 @@
 <link rel="modulepreload" href="./assets/controllers/blocks_header_controller-e160e4c1.js">
 <link rel="modulepreload" href="./assets/controllers/blocks_mobile_navigation_controller-f3c310d5.js">
 <link rel="modulepreload" href="./assets/controllers/blocks_search_controller-f1fe01ff.js">
-<link rel="modulepreload" href="./assets/controllers/example_controller-ad7ef7d5.js">
+<link rel="modulepreload" href="./assets/controllers/example_controller-cd4bcc5c.js">
 <link rel="modulepreload" href="./assets/controllers/index-e1e47e23.js">
 <link rel="modulepreload" href="./assets/controllers/showcase_controller-b500bb11.js">
 <script type="module">import "application"</script>
@@ -78,7 +79,7 @@
         </nav>
         <div class="ms-auto flex items-center gap-2">
           <div class="relative inline-flex" data-controller="ui-popover">
-  <button id="palette-picker-trigger" type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-12 py-2.5 px-5 has-[&gt;[data-icon=inline-start]]:ps-4 has-[&gt;[data-icon=inline-end]]:pe-4 text-base border border-transparent bg-paper-2 text-ink hover:bg-paper-3 active:bg-paper-3" aria-haspopup="dialog" aria-expanded="false" aria-controls="palette-picker" data-ui-popover-target="trigger" data-action="ui-popover#toggle">Palette</button>
+  <button id="palette-picker-trigger" type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform,translate,scale,filter] duration-(--ui-motion-control) ease-out motion-safe:hover:-translate-y-px motion-safe:active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-12 py-2.5 px-5 has-[&gt;[data-icon=inline-start]]:ps-4 has-[&gt;[data-icon=inline-end]]:pe-4 text-base border border-transparent bg-paper-2 text-ink hover:bg-paper-3 active:bg-paper-3" aria-haspopup="dialog" aria-expanded="false" aria-controls="palette-picker" data-ui-popover-target="trigger" data-action="ui-popover#toggle">Palette</button>
   <div class="glass rounded-3xl [--glass-shadow:var(--glass-rim),var(--shadow-lg)] max-md:[--glass-fill:var(--paper)] dark:max-md:[--glass-fill:var(--paper-3)] row-menu__popover squircle popover-shell hidden absolute top-[calc(100%+--spacing(1))] end-0 overscroll-contain [&amp;_form]:m-0 data-open:flex flex-col gap-4 p-5 z-nav-popover min-w-64 max-w-[calc(100vw-2rem)] transition-none w-80 max-h-[calc(100dvh-7rem)] overflow-y-auto" id="palette-picker" role="dialog" aria-labelledby="palette-picker-title" data-ui-popover-target="popover" tabindex="-1">
     <h2 id="palette-picker-title" class="font-semibold">Color palette</h2>
     
@@ -132,14 +133,8 @@
     <span role="status" class="sr-only" data-showcase-target="paletteStatus"></span>
 
 </div></div>
-          <a class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 has-[&gt;[data-icon=inline-start]]:ps-3 has-[&gt;[data-icon=inline-end]]:pe-3 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2)) max-sm:hidden" aria-label="Source on GitHub" href="https://github.com/lostcoords/ui"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"></path>
-</svg>
-</a>
-          <button type="button" class="inline-grid place-items-center shrink-0 border-0 bg-transparent text-ink-3 cursor-pointer no-underline transition-[background-color,color,transform] duration-[140ms] ease-out hover:bg-paper-2 hover:text-ink active:scale-[0.94] disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg]:shrink-0 rounded-full size-11 [&amp;_svg]:size-4" aria-label="Switch color theme" aria-pressed="false" data-action="showcase#toggleTheme" data-showcase-target="theme"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"></path>
-</svg>
-</button>
+          <a class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform,translate,scale,filter] duration-(--ui-motion-control) ease-out motion-safe:hover:-translate-y-px motion-safe:active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 has-[&gt;[data-icon=inline-start]]:ps-3 has-[&gt;[data-icon=inline-end]]:pe-3 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2)) max-sm:hidden" aria-label="Source on GitHub" href="https://github.com/lostcoords/ui"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" class="lc-icon" data-slot="icon" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"/></svg></a>
+          <button type="button" class="inline-grid place-items-center shrink-0 border-0 bg-transparent text-ink-3 cursor-pointer no-underline transition-[background-color,color,transform,scale] duration-(--ui-motion-quick) ease-out hover:bg-paper-2 hover:text-ink motion-safe:active:scale-(--ui-press-scale) disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg]:shrink-0 rounded-full size-11 [&amp;_svg]:size-4" aria-label="Switch color theme" aria-pressed="false" data-action="showcase#toggleTheme" data-showcase-target="theme"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" class="lc-icon" data-slot="icon" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"/></svg></button>
         </div>
       </div>
     </header>
@@ -156,7 +151,9 @@
   </div>
   <div class="flex flex-col gap-1">
     <p class="px-3 pb-1 text-xs font-medium text-ink-3">Components</p>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/motion.html" >Motion</a>
       <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/button.html" >Button</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/copy_button.html" >Copy button</a>
       <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/icon_button.html" >Icon button</a>
       <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/badge.html" >Badge</a>
       <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/pill.html" >Pill</a>
@@ -188,10 +185,7 @@
 
   <main id="main" class="min-w-0 max-w-4xl flex-1 py-5 lg:py-10">
     <details class="group/nav relative z-raised rounded-2xl bg-paper-2 lg:hidden">
-  <summary class="flex min-h-12 cursor-pointer list-none items-center justify-between gap-4 px-4 text-sm font-medium [&::-webkit-details-marker]:hidden">Components<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" class="heroicon size-4 transition-transform group-open/nav:rotate-180">
-  <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"></path>
-</svg>
-</summary>
+  <summary class="flex min-h-12 cursor-pointer list-none items-center justify-between gap-4 px-4 text-sm font-medium [&::-webkit-details-marker]:hidden">Components<svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" class="lc-icon size-4 transition-transform group-open/nav:rotate-180" data-slot="icon" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg></summary>
   <div class="max-h-[60dvh] overflow-y-auto p-3 pt-0"><nav class="flex flex-col gap-6" aria-label="Documentation">
   <div class="flex flex-col gap-1">
     <p class="px-3 text-xs font-medium text-ink-3">Library</p>
@@ -203,7 +197,9 @@
   </div>
   <div class="flex flex-col gap-1">
     <p class="px-3 pb-1 text-xs font-medium text-ink-3">Components</p>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/motion.html" >Motion</a>
       <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/button.html" >Button</a>
+      <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/copy_button.html" >Copy button</a>
       <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/icon_button.html" >Icon button</a>
       <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/badge.html" >Badge</a>
       <a class="flex min-h-11 items-center rounded-xl px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink aria-[current=page]:bg-paper-2 aria-[current=page]:font-semibold aria-[current=page]:text-ink" href="/components/pill.html" >Pill</a>
@@ -233,116 +229,70 @@
 </div>
 </details>
 
-    <div class="flex flex-col gap-12 pt-6 lg:pt-0">
-      <header class="flex flex-col gap-4">
-        <h1 class="text-balance text-4xl font-semibold tracking-tight sm:text-5xl">Theming</h1>
-        <p class="text-pretty text-ink-2">Start with the Lostcoords light and dark theme. Override the values you want to change.</p>
-      </header>
-      <section id="defaults" class="flex scroll-mt-28 flex-col gap-4">
-        <h2 class="text-xl font-semibold">Start with the default theme</h2>
-        <p class="text-pretty text-sm text-ink-2">The engine stylesheet includes colors, system fonts, shadows, glass effects and motion settings. After <a href="/installation.html" class="underline underline-offset-2">installation</a>, every component has a working theme. No token file is required.</p>
-        <div class="squircle bg-paper-2 border border-transparent rounded-3xl p-5 flex flex-col gap-4">
-          <h3 class="ui-heading m-0 text-ink ui-heading-card">Your theme, across every component</h3>
-          <p class="ui-text m-0 ui-text-small text-ink-2">Use the palette picker and theme switch above to preview the same components with different colors.</p>
-          <div class="flex flex-wrap gap-3">
-            <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-12 py-2.5 px-5 has-[&gt;[data-icon=inline-start]]:ps-4 has-[&gt;[data-icon=inline-end]]:pe-4 text-base border border-transparent bg-sky text-ink-on-accent hover:bg-sky-deep active:bg-sky-deep"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" data-icon="inline-start" class="heroicon">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
-</svg>
-Create project</button>
-            <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-12 py-2.5 px-5 has-[&gt;[data-icon=inline-start]]:ps-4 has-[&gt;[data-icon=inline-end]]:pe-4 text-base border border-transparent bg-paper-2 text-ink hover:bg-paper-3 active:bg-paper-3">View projects</button>
-            <span class="inline-flex items-center gap-1 rounded-xl px-2.5 py-1 font-body text-xs font-medium whitespace-nowrap bg-paper-2 text-ink-2">In progress</span>
-          </div>
-</div>      </section>
-      <section id="colors" class="flex scroll-mt-28 flex-col gap-4">
-        <h2 class="text-xl font-semibold">Change your colors</h2>
-        <p class="text-pretty text-sm text-ink-2">A design token is a named CSS value shared by components. Add overrides after the engine import in <code>app/assets/tailwind/application.css</code>. Override only the values you need.</p>
-        <div class="overflow-x-auto">
-          <table class="w-full text-start text-sm">
-            <thead class="text-ink"><tr class="border-b border-hairline"><th class="py-3 pe-5 text-start font-medium">CSS variables</th><th class="py-3 text-start font-medium">Controls</th></tr></thead>
-            <tbody class="divide-y divide-hairline text-ink-2">
-              <tr><td class="py-3 pe-5 font-mono text-xs">--paper, --paper-2, --paper-3</td><td class="py-3">Page backgrounds and layered surfaces</td></tr>
-              <tr><td class="py-3 pe-5 font-mono text-xs">--ink, --ink-2, --ink-3</td><td class="py-3">Primary, secondary and muted text</td></tr>
-              <tr><td class="py-3 pe-5 font-mono text-xs">--sky, --sky-deep, --sky-soft</td><td class="py-3">Primary actions, hover states and subtle highlights</td></tr>
-              <tr><td class="py-3 pe-5 font-mono text-xs">--ink-on-accent</td><td class="py-3">Text on primary actions</td></tr>
-              <tr><td class="py-3 pe-5 font-mono text-xs">--accent</td><td class="py-3">Links and accents. Defaults to the primary hover color.</td></tr>
-              <tr><td class="py-3 pe-5 font-mono text-xs">--hairline</td><td class="py-3">Borders and dividers</td></tr>
-              <tr><td class="py-3 pe-5 font-mono text-xs">--leaf, --gold, --berry</td><td class="py-3">Success, warning and error tones, each with a matching -soft value</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <p class="text-pretty text-sm text-ink-2">For green primary actions, set the three primary colors for both themes. The existing <code>sky</code> names work with any hue.</p>
-        <div class="group/source overflow-hidden rounded-2xl bg-paper-2" data-controller="example">
+    <div class="flex min-w-0 flex-col gap-[var(--ui-space-section,2rem)] pt-6 lg:pt-0">
+      <header class="flex min-w-0 flex-col gap-[var(--ui-space-heading,0.75rem)]">
+        <h1 class="ui-heading m-0 text-ink ui-heading-page">Theming</h1>
+        <p class="ui-text m-0 ui-text-body text-ink-2">
+          The engine includes a complete light and dark theme. After <a href="/installation.html" class="underline underline-offset-2">installation</a>, no token file is required.
+</p>      </header>
+      <section class="flex min-w-0 flex-col gap-[var(--ui-space-heading,0.75rem)]" id="colors"><header class="flex min-w-0 flex-wrap items-center gap-[var(--ui-space-related,0.5rem)] min-h-[var(--ui-section-header-height,2.75rem)] justify-between"><h2 class="ui-heading m-0 text-ink ui-heading-section">Change your colors</h2></header><div class="flex min-w-0 flex-col gap-[var(--ui-space-content,1rem)]">
+        <p class="ui-text m-0 ui-text-small text-ink-2">
+          Add overrides after the engine import in <code>app/assets/tailwind/application.css</code>. This example changes primary actions to green.
+</p>        <div class="group/source overflow-hidden rounded-2xl bg-paper-2" data-controller="example" data-action="ui-copy:error->example#copyFailed">
   <div class="flex min-h-12 items-center justify-between gap-4 px-5">
     <span class="font-mono text-xs uppercase text-ink-3">css</span>
-    <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 has-[&gt;[data-icon=inline-start]]:ps-3 has-[&gt;[data-icon=inline-end]]:pe-3 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2)) min-w-20" data-action="example#copy" data-example-target="copy" aria-label="Copy Primary color overrides">Copy</button>
+    <span class="ui-copy" data-controller="ui-copy" data-state="idle" data-ui-copy-source-value="theme-colors" data-ui-copy-reset-after-value="2000"><button type="button" class="items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform,translate,scale,filter] duration-(--ui-motion-control) ease-out motion-safe:hover:-translate-y-px motion-safe:active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 has-[&gt;[data-icon=inline-start]]:ps-3 has-[&gt;[data-icon=inline-end]]:pe-3 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2)) inline-grid" aria-label="Copy Primary color overrides" data-action="ui-copy#copy" data-ui-copy-target="button"><span class="ui-copy-content" aria-hidden="true" data-copy-state="idle" data-icon="inline-start"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" class="lc-icon" data-slot="icon" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 0 1 1.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 0 0-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 0 1-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H9.75"/></svg><span>Copy</span></span><span class="ui-copy-content" aria-hidden="true" data-copy-state="copied" data-icon="inline-start"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" class="lc-icon" data-slot="icon" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg><span>Copied</span></span><span class="ui-copy-content" aria-hidden="true" data-copy-state="error" data-icon="inline-start"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" class="lc-icon" data-slot="icon" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"/></svg><span>Retry</span></span></button><span class="sr-only" role="status" aria-atomic="true" data-ui-copy-target="status" data-copied="Copied" data-error="Could not copy. Select the text and copy it manually."></span></span>
   </div>
   <div class="relative">
-    <pre id="theme-colors" class="overflow-x-auto px-5 pb-5 font-mono text-[0.8125rem] text-ink-2 [tab-size:2] max-h-60 overflow-y-hidden group-data-expanded/source:max-h-none" tabindex="0" role="region" aria-label="Primary color overrides" data-example-target="code"><code>:root {
+    <pre id="theme-colors" class="overflow-x-auto px-5 pb-5 font-mono text-[0.8125rem] text-ink-2 [tab-size:2] " tabindex="0" role="region" aria-label="Primary color overrides"><code>:root {
   <span class="text-(--syntax-symbol)" data-syntax="symbol">--sky</span>: oklch(<span class="text-(--syntax-symbol)" data-syntax="symbol">52</span>% <span class="text-(--syntax-symbol)" data-syntax="symbol">0.14</span> <span class="text-(--syntax-symbol)" data-syntax="symbol">155</span>);
   <span class="text-(--syntax-symbol)" data-syntax="symbol">--sky-deep</span>: oklch(<span class="text-(--syntax-symbol)" data-syntax="symbol">46</span>% <span class="text-(--syntax-symbol)" data-syntax="symbol">0.14</span> <span class="text-(--syntax-symbol)" data-syntax="symbol">155</span>);
   <span class="text-(--syntax-symbol)" data-syntax="symbol">--sky-soft</span>: oklch(<span class="text-(--syntax-symbol)" data-syntax="symbol">96</span>% <span class="text-(--syntax-symbol)" data-syntax="symbol">0.02</span> <span class="text-(--syntax-symbol)" data-syntax="symbol">155</span>);
 }
-
 html[data-theme=<span class="text-(--syntax-string)" data-syntax="string">&quot;dark&quot;</span>] {
   <span class="text-(--syntax-symbol)" data-syntax="symbol">--sky</span>: oklch(<span class="text-(--syntax-symbol)" data-syntax="symbol">75</span>% <span class="text-(--syntax-symbol)" data-syntax="symbol">0.14</span> <span class="text-(--syntax-symbol)" data-syntax="symbol">155</span>);
   <span class="text-(--syntax-symbol)" data-syntax="symbol">--sky-deep</span>: oklch(<span class="text-(--syntax-symbol)" data-syntax="symbol">70</span>% <span class="text-(--syntax-symbol)" data-syntax="symbol">0.14</span> <span class="text-(--syntax-symbol)" data-syntax="symbol">155</span>);
   <span class="text-(--syntax-symbol)" data-syntax="symbol">--sky-soft</span>: color-mix(in oklab, var(<span class="text-(--syntax-symbol)" data-syntax="symbol">--sky</span>) <span class="text-(--syntax-symbol)" data-syntax="symbol">18</span>%, var(<span class="text-(--syntax-symbol)" data-syntax="symbol">--paper</span>));
 }</code></pre>
-    <div class="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-linear-to-t from-paper-2 to-transparent group-data-expanded/source:hidden" aria-hidden="true"></div>
-  </div>
-    <button type="button" class="inline-flex items-center justify-center gap-2 font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 has-[&gt;[data-icon=inline-start]]:ps-3 has-[&gt;[data-icon=inline-end]]:pe-3 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2)) w-full rounded-none" aria-expanded="false" aria-controls="theme-colors" data-action="example#toggle" data-example-target="toggle">Show all code</button>
-  <span class="sr-only" role="status" data-example-target="status"></span>
-</div>
-
-        <p class="text-pretty text-sm text-ink-2">The theme maps these values to Tailwind utilities such as <code>bg-paper</code>, <code>text-ink</code> and <code>bg-sky</code>. Use the same utilities in your own markup to match the components. When you change a palette, check text and focus contrast in both themes.</p>
-      </section>
-      <section id="dark-mode" class="flex scroll-mt-28 flex-col gap-4">
-        <h2 class="text-xl font-semibold">Switch to dark mode</h2>
-        <p class="text-pretty text-sm text-ink-2">Set <code>data-theme="dark"</code> on <code>&lt;html&gt;</code> to activate the dark palette and Tailwind's <code>dark:</code> variant.</p>
-        <div class="group/source overflow-hidden rounded-2xl bg-paper-2" data-controller="example">
-  <div class="flex min-h-12 items-center justify-between gap-4 px-5">
-    <span class="font-mono text-xs uppercase text-ink-3">html</span>
-    <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 has-[&gt;[data-icon=inline-start]]:ps-3 has-[&gt;[data-icon=inline-end]]:pe-3 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2)) min-w-20" data-action="example#copy" data-example-target="copy" aria-label="Copy Dark theme attribute">Copy</button>
-  </div>
-  <div class="relative">
-    <pre id="theme-dark" class="overflow-x-auto px-5 pb-5 font-mono text-[0.8125rem] text-ink-2 [tab-size:2] " tabindex="0" role="region" aria-label="Dark theme attribute" data-example-target="code"><code>&lt;html lang=&quot;en&quot; data-theme=&quot;dark&quot;&gt;</code></pre>
     
   </div>
-  <span class="sr-only" role="status" data-example-target="status"></span>
 </div>
 
-        <p class="text-pretty text-sm text-ink-2">Remove the attribute, or set it to <code>light</code>, for the light theme. Your app controls the switch, saved preference and system preference. Set the attribute before the first paint to avoid a theme flash.</p>
-      </section>
-      <section id="fonts" class="flex scroll-mt-28 flex-col gap-4">
-        <h2 class="text-xl font-semibold">Choose your fonts</h2>
-        <p class="text-pretty text-sm text-ink-2">The default theme uses system fonts. Load your own font in your app, then override the body and heading families.</p>
-        <div class="group/source overflow-hidden rounded-2xl bg-paper-2" data-controller="example">
+        <p class="ui-text m-0 ui-text-small text-ink-2">
+          Use <code>--paper</code> for backgrounds, <code>--ink</code> for text and <code>--hairline</code> for borders. Matching Tailwind utilities include <code>bg-paper</code> and <code>text-ink</code>.
+</p></div></section>      <section class="flex min-w-0 flex-col gap-[var(--ui-space-heading,0.75rem)]" id="dark-mode"><header class="flex min-w-0 flex-wrap items-center gap-[var(--ui-space-related,0.5rem)] min-h-[var(--ui-section-header-height,2.75rem)] justify-between"><h2 class="ui-heading m-0 text-ink ui-heading-section">Switch themes</h2></header><div class="flex min-w-0 flex-col gap-[var(--ui-space-content,1rem)]">
+        <p class="ui-text m-0 ui-text-small text-ink-2">
+          Set <code>data-theme="dark"</code> on <code>&lt;html&gt;</code> for dark mode and Tailwind's <code>dark:</code> variant. Remove it for light mode. Your app controls the switch and saved preference.
+</p></div></section>      <div class="flex min-w-0 flex-col gap-[var(--ui-space-content,1rem)]" id="advanced">
+        <details class="squircle bg-paper-2 border border-transparent rounded-3xl p-5 disclosure-animated" data-controller="disclosure" data-action="click-&gt;disclosure#toggle">
+  <summary class="cursor-pointer font-semibold">Fonts, corners and shadows</summary>
+  <div class="pt-4">
+          <div class="flex min-w-0 flex-col gap-[var(--ui-space-content,1rem)]">
+            <p class="ui-text m-0 ui-text-small text-ink-2">
+              Load your font, then set the body and heading families. The defaults use system fonts.
+</p>            <div class="group/source overflow-hidden rounded-2xl bg-paper-2" data-controller="example" data-action="ui-copy:error->example#copyFailed">
   <div class="flex min-h-12 items-center justify-between gap-4 px-5">
     <span class="font-mono text-xs uppercase text-ink-3">css</span>
-    <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 has-[&gt;[data-icon=inline-start]]:ps-3 has-[&gt;[data-icon=inline-end]]:pe-3 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2)) min-w-20" data-action="example#copy" data-example-target="copy" aria-label="Copy Font family overrides">Copy</button>
+    <span class="ui-copy" data-controller="ui-copy" data-state="idle" data-ui-copy-source-value="theme-fonts" data-ui-copy-reset-after-value="2000"><button type="button" class="items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform,translate,scale,filter] duration-(--ui-motion-control) ease-out motion-safe:hover:-translate-y-px motion-safe:active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 has-[&gt;[data-icon=inline-start]]:ps-3 has-[&gt;[data-icon=inline-end]]:pe-3 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2)) inline-grid" aria-label="Copy Font family overrides" data-action="ui-copy#copy" data-ui-copy-target="button"><span class="ui-copy-content" aria-hidden="true" data-copy-state="idle" data-icon="inline-start"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" class="lc-icon" data-slot="icon" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 0 1 1.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 0 0-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 0 1-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H9.75"/></svg><span>Copy</span></span><span class="ui-copy-content" aria-hidden="true" data-copy-state="copied" data-icon="inline-start"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" class="lc-icon" data-slot="icon" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg><span>Copied</span></span><span class="ui-copy-content" aria-hidden="true" data-copy-state="error" data-icon="inline-start"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" class="lc-icon" data-slot="icon" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"/></svg><span>Retry</span></span></button><span class="sr-only" role="status" aria-atomic="true" data-ui-copy-target="status" data-copied="Copied" data-error="Could not copy. Select the text and copy it manually."></span></span>
   </div>
   <div class="relative">
-    <pre id="theme-fonts" class="overflow-x-auto px-5 pb-5 font-mono text-[0.8125rem] text-ink-2 [tab-size:2] " tabindex="0" role="region" aria-label="Font family overrides" data-example-target="code"><code>:root {
+    <pre id="theme-fonts" class="overflow-x-auto px-5 pb-5 font-mono text-[0.8125rem] text-ink-2 [tab-size:2] " tabindex="0" role="region" aria-label="Font family overrides"><code>:root {
   <span class="text-(--syntax-symbol)" data-syntax="symbol">--f-body</span>: <span class="text-(--syntax-string)" data-syntax="string">&quot;Inter&quot;</span>, ui-sans-serif, system-ui, sans-serif;
   <span class="text-(--syntax-symbol)" data-syntax="symbol">--f-display</span>: <span class="text-(--syntax-string)" data-syntax="string">&quot;Inter&quot;</span>, ui-sans-serif, system-ui, sans-serif;
 }</code></pre>
     
   </div>
-  <span class="sr-only" role="status" data-example-target="status"></span>
 </div>
 
-        <p class="text-pretty text-sm text-ink-2">Use <code>--f-mono</code> for code. The default theme uses <code>--f-japanese</code> on pages with <code>lang="ja"</code>. If you override the body and heading fonts globally, add your Japanese font overrides under <code>html:lang(ja)</code> too. See <a href="/components/foundations.html" class="underline underline-offset-2">Foundations</a> for text roles and spacing overrides.</p>
-      </section>
-      <section id="shape" class="flex scroll-mt-28 flex-col gap-4">
-        <h2 class="text-xl font-semibold">Adjust corners and shadows</h2>
-        <p class="text-pretty text-sm text-ink-2">Set Tailwind's radius variables on <code>body</code> to adjust rounded controls and cards. Buttons that use <code>rounded-full</code> keep their pill shape. Override <code>--shadow</code> to change the shared surface shadow.</p>
-        <div class="group/source overflow-hidden rounded-2xl bg-paper-2" data-controller="example">
+            <p class="ui-text m-0 ui-text-small text-ink-2">
+              Set radius variables on <code>body</code> for controls and cards. <code>rounded-full</code> buttons keep their pill shape. <code>--shadow</code> controls the shared surface shadow.
+</p>            <div class="group/source overflow-hidden rounded-2xl bg-paper-2" data-controller="example" data-action="ui-copy:error->example#copyFailed">
   <div class="flex min-h-12 items-center justify-between gap-4 px-5">
     <span class="font-mono text-xs uppercase text-ink-3">css</span>
-    <button type="button" class="inline-flex items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 has-[&gt;[data-icon=inline-start]]:ps-3 has-[&gt;[data-icon=inline-end]]:pe-3 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2)) min-w-20" data-action="example#copy" data-example-target="copy" aria-label="Copy Radius and shadow overrides">Copy</button>
+    <span class="ui-copy" data-controller="ui-copy" data-state="idle" data-ui-copy-source-value="theme-shape" data-ui-copy-reset-after-value="2000"><button type="button" class="items-center justify-center gap-2 rounded-full font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform,translate,scale,filter] duration-(--ui-motion-control) ease-out motion-safe:hover:-translate-y-px motion-safe:active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 has-[&gt;[data-icon=inline-start]]:ps-3 has-[&gt;[data-icon=inline-end]]:pe-3 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2)) inline-grid" aria-label="Copy Radius and shadow overrides" data-action="ui-copy#copy" data-ui-copy-target="button"><span class="ui-copy-content" aria-hidden="true" data-copy-state="idle" data-icon="inline-start"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" class="lc-icon" data-slot="icon" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 0 1 1.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 0 0-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 0 1-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H9.75"/></svg><span>Copy</span></span><span class="ui-copy-content" aria-hidden="true" data-copy-state="copied" data-icon="inline-start"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" class="lc-icon" data-slot="icon" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg><span>Copied</span></span><span class="ui-copy-content" aria-hidden="true" data-copy-state="error" data-icon="inline-start"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" class="lc-icon" data-slot="icon" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"/></svg><span>Retry</span></span></button><span class="sr-only" role="status" aria-atomic="true" data-ui-copy-target="status" data-copied="Copied" data-error="Could not copy. Select the text and copy it manually."></span></span>
   </div>
   <div class="relative">
-    <pre id="theme-shape" class="overflow-x-auto px-5 pb-5 font-mono text-[0.8125rem] text-ink-2 [tab-size:2] max-h-60 overflow-y-hidden group-data-expanded/source:max-h-none" tabindex="0" role="region" aria-label="Radius and shadow overrides" data-example-target="code"><code>body {
+    <pre id="theme-shape" class="overflow-x-auto px-5 pb-5 font-mono text-[0.8125rem] text-ink-2 [tab-size:2] max-h-60 overflow-y-hidden group-data-expanded/source:max-h-none" tabindex="0" role="region" aria-label="Radius and shadow overrides"><code>body {
   <span class="text-(--syntax-symbol)" data-syntax="symbol">--radius-xl</span>: <span class="text-(--syntax-symbol)" data-syntax="symbol">0.625rem</span>;
   <span class="text-(--syntax-symbol)" data-syntax="symbol">--radius-3xl</span>: <span class="text-(--syntax-symbol)" data-syntax="symbol">1rem</span>;
 }
@@ -356,21 +306,18 @@ html[data-theme=<span class="text-(--syntax-string)" data-syntax="string">&quot;
 }</code></pre>
     <div class="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-linear-to-t from-paper-2 to-transparent group-data-expanded/source:hidden" aria-hidden="true"></div>
   </div>
-    <button type="button" class="inline-flex items-center justify-center gap-2 font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform] duration-[180ms] ease-out hover:-translate-y-px active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 has-[&gt;[data-icon=inline-start]]:ps-3 has-[&gt;[data-icon=inline-end]]:pe-3 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2)) w-full rounded-none" aria-expanded="false" aria-controls="theme-shape" data-action="example#toggle" data-example-target="toggle">Show all code</button>
-  <span class="sr-only" role="status" data-example-target="status"></span>
+    <button type="button" class="inline-flex items-center justify-center gap-2 font-body font-medium whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform,translate,scale,filter] duration-(--ui-motion-control) ease-out motion-safe:hover:-translate-y-px motion-safe:active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 min-h-11 py-2 px-4 has-[&gt;[data-icon=inline-start]]:ps-3 has-[&gt;[data-icon=inline-end]]:pe-3 text-sm border border-transparent bg-transparent text-ink-2 hover:bg-(--ghost-hover-bg,var(--paper-2)) hover:text-ink active:bg-(--ghost-hover-bg,var(--paper-2)) w-full rounded-none" aria-expanded="false" aria-controls="theme-shape" data-action="example#toggle" data-example-target="toggle">Show all code</button>
 </div>
 
-        <p class="text-pretty text-sm text-ink-2">For one component, use its <code>class:</code> attribute, such as <code>class: "rounded-lg shadow-none"</code>.</p>
-      </section>
-      <section id="advanced" class="flex scroll-mt-28 flex-col gap-4">
-        <h2 class="text-xl font-semibold">Advanced theme values</h2>
-        <p class="text-pretty text-sm text-ink-2">Glass surfaces, pill effects, overlay scrims, animation timing and stacking order have defaults too. Override these only when you need a different treatment. Reduced motion preferences shorten animations automatically.</p>
-        <details class="squircle bg-paper-2 border border-transparent rounded-3xl p-5 disclosure-animated" data-controller="disclosure" data-action="click-&gt;disclosure#toggle">
+            <p class="ui-text m-0 ui-text-small text-ink-2">
+              For one component, use <code>class:</code>. See <a href="/components/foundations.html" class="underline underline-offset-2">Foundations</a> for typography, Japanese text and spacing.
+</p></div></div>
+</details>        <details class="squircle bg-paper-2 border border-transparent rounded-3xl p-5 disclosure-animated" data-controller="disclosure" data-action="click-&gt;disclosure#toggle">
   <summary class="cursor-pointer font-semibold">All theme variables</summary>
   <div class="pt-4">
-          <section id="tokens" class="flex scroll-mt-24 flex-col gap-3">
+          <section id="tokens" class="flex min-w-0 flex-col gap-[var(--ui-space-content,1rem)] scroll-mt-24">
   <div class="flex flex-col gap-2">
-    <h3 class="text-lg font-semibold">Theme variable reference</h3>
+    <h3 class="ui-heading m-0 text-ink ui-heading-card">Theme variable reference</h3>
     <p class="text-sm text-ink-3">These variables have defaults in the engine stylesheet. Values below reflect the current documentation theme. Tailwind may inline aliases or omit unused theme utilities.</p>
   </div>
   <ul class="squircle bg-paper-2 border border-transparent rounded-3xl p-5 grid grid-cols-[repeat(auto-fill,minmax(min(100%,17rem),1fr))] gap-x-4 gap-y-3">
@@ -997,6 +944,34 @@ html[data-theme=<span class="text-(--syntax-string)" data-syntax="string">&quot;
           <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
         </span>
       </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--ui-motion-control">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--ui-motion-control</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--ui-motion-feedback">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--ui-motion-feedback</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--ui-motion-quick">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--ui-motion-quick</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
+      <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--ui-press-scale">
+        <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
+        <span class="flex min-w-0 flex-col">
+          <code class="font-mono text-xs text-ink">--ui-press-scale</code>
+          <code class="font-mono text-xs break-all text-ink-3" data-token-value></code>
+        </span>
+      </li>
       <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="--z-index-above">
         <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>
         <span class="flex min-w-0 flex-col">
@@ -1099,9 +1074,7 @@ html[data-theme=<span class="text-(--syntax-string)" data-syntax="string">&quot;
 </section>
 
 </div>
-</details>      </section>
-    </div>
-  </main>
+</details></div></div>  </main>
 </div>
 
     <footer class="mx-auto flex max-w-360 flex-wrap items-center justify-between gap-4 px-5 py-10 text-xs text-ink-3 sm:px-8 lg:px-10">

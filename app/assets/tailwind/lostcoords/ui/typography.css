@@ -59,3 +59,23 @@
     }
   }
 }
+
+@layer utilities {
+  :where(code):not(:where(pre code)),
+  .ui-prose :where(code):not(:where(pre code)) {
+    font-family: var(--f-mono);
+    font-size: 0.875em;
+    font-weight: inherit;
+    line-height: inherit;
+    color: var(--ink);
+    background-color: var(--paper-3);
+    border-radius: var(--radius-sm);
+    padding: 0.125em 0.375em;
+    overflow-wrap: anywhere;
+
+    &::before,
+    &::after {
+      content: none;
+    }
+  }
+}

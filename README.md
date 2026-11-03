@@ -1,31 +1,53 @@
 # lostcoords-ui
 
-Render complete UI components from Rails ERB. Helpers include semantic HTML, accessible attributes and
-Stimulus wiring. Tailwind v4 supplies the styles; Propshaft and importmap load the browser modules.
+Render complete UI components from Rails or standalone ActionView ERB. Helpers include semantic HTML,
+accessible attributes and Stimulus wiring. Tailwind v4 supplies the styles. Rails integrates Propshaft
+and importmap automatically; standalone applications own their asset build.
 
 ```erb
-<%= ui_button "Save changes", type: :submit, icon: "check" %>
-<%= ui_button_link_to "Projects", projects_path, variant: :secondary %>
+<%= lc_button "Save changes", type: :submit, icon: "check" %>
+<%= lc_button_link_to "Projects", projects_path, variant: :secondary %>
 
-<%= ui_card do %>
-  <%= ui_field label: "Project name", id: "project-name" do |field| %>
-    <%= ui_input name: "project[name]", **field %>
+<%= lc_card do %>
+  <%= lc_field label: "Project name", id: "project-name" do |field| %>
+    <%= lc_input name: "project[name]", **field %>
   <% end %>
 <% end %>
 ```
 
-The Rails adapter is available today. Tokens, semantic HTML and data/ARIA behavior form the shared
-foundation; future framework adapters can reuse that foundation. Each host application's lockfile pins
-its gem revision, so publishing a library update does not upgrade consumers.
+The supported stack is ActionView, ERB, Tailwind and Stimulus. Each host application's lockfile pins
+its gem version, so publishing a library update does not upgrade consumers.
 
 ## Install
 
 ```ruby
-gem "lostcoords-ui", github: "lostcoords/ui"
+gem "lostcoords-ui", "~> 0.4.0"
 ```
 
 The engine adds its rendering helpers to host views, its JavaScript to the asset paths and its pins to
 the importmap. Translations live under `lostcoords.ui.*`.
+
+### Standalone ActionView
+
+```ruby
+require "lostcoords/ui/action_view"
+
+class ViewContext < ActionView::Base
+  include Lostcoords::Ui::Helpers
+end
+
+view = ViewContext.with_empty_template_cache.with_view_paths(Lostcoords::Ui.view_paths)
+view.lc_button("Save", icon: "check")
+```
+
+For an existing view context, include the helpers and append `Lostcoords::Ui.view_paths` to its
+lookup paths after application paths. The loader registers the library's translations without changing
+the default locale. If the host has its own locale handling, override private `lc_locale` in the view
+context; components do not call the host's `t` helper.
+
+Standalone applications compile Tailwind and register Stimulus controllers through their own asset
+pipeline. `Lostcoords::Ui.root` locates the gem's source assets. Rails applications receive automatic
+registration; use `require "lostcoords/ui/rails"` explicitly if Rails loads after the components.
 
 ### Stylesheet
 
@@ -96,24 +118,68 @@ in its code panel. The API reference reads signatures from the helper definition
 include those signatures and the runnable examples.
 
 Buttons use `primary`, `secondary`, `ghost` or `destructive`, with `sm`, `base` or `lg` sizes.
-`ui_button_to` preserves Rails' form, HTTP method and CSRF behavior. Block helpers capture ERB content.
+`lc_button_to` preserves Rails' form, HTTP method and CSRF behavior. Block helpers capture ERB content.
 Use `icon: "plus"` for a leading Heroicon or `icon_position: :end` for a trailing one. Custom icons and
 spinners use `data-icon="inline-start"` or `data-icon="inline-end"`; buttons adjust that edge's padding.
 
 ```erb
-<%= ui_button_to "Archive", project_path(@project), method: :delete, variant: :destructive %>
-<%= ui_icon_button "Settings", icon: "cog-6-tooth" %>
+<%= lc_button_to "Archive", project_path(@project), method: :delete, variant: :destructive %>
+<%= lc_icon_button "Settings", icon: "cog-6-tooth" %>
 
-<%= ui_button class: "w-full", data: { action: "editor#save" }, aria: { busy: true } do %>
-  <%= ui_spinner size: :sm %>
+<%= lc_button class: "w-full", data: { action: "editor#save" }, aria: { busy: true } do %>
+  <%= lc_spinner size: :sm %>
   Saving…
 <% end %>
 ```
 
 Use native attributes for application behavior, `class:` to merge additional Tailwind utilities, and
-theme tokens to restyle the library. `ui_field` yields the input's `id` and validation attributes so
-labels, hints and errors stay connected. Linked cards use `ui_card(href: ...)`; cards containing
+theme tokens to restyle the library. `lc_field` yields the input's `id` and validation attributes so
+labels, hints and errors stay connected. Linked cards use `lc_card(href: ...)`; cards containing
 buttons or fields remain ordinary containers.
+
+## Copy feedback and motion
+
+```erb
+<%= lc_copy_button value: "https://example.com/invite" %>
+<%= lc_copy_button "Copy invite link", value: invite_url, copied_label: "Link copied" %>
+<%= lc_copy_button "Copy link", value: invite_url, icon_only: true, variant: :ghost %>
+<%= lc_copy_button "Copy code", source: "code-snippet", reset_after: 2500 %>
+```
+
+Pass exactly one of `value:` (literal text) or `source:` (an element ID). The source is read at click time:
+inputs and textareas use their current value; other elements use their text content. Text is copied as supplied,
+including whitespace. Clipboard access requires HTTPS or localhost and browser permission.
+
+After a successful copy, the button transitions to a check and "Copied", then resets after `reset_after:`
+milliseconds (2000 by default). Failure shows a retry icon and label with an accessible explanation.
+The button reserves space for all labels, preserves focus, and announces the outcome through a live region.
+Default labels are translated in English, Japanese and Spanish. Use `label` (the first argument),
+`copied_label:` and `error_label:` to customize visible text, and `aria: { label: ... }` for a contextual name.
+Normal button variants, sizes, classes, disabled state and attributes are supported.
+
+The component emits bubbling `ui-copy:copied` (`detail.text`) and `ui-copy:error` (`detail.error`) events
+from its wrapper. Listen on an ancestor to connect application behavior. The documentation uses the error
+event to reveal clipped source code for manual copying.
+
+Buttons include hover and press feedback. Override `--ui-motion-quick` (140ms), `--ui-motion-control` (180ms),
+`--ui-motion-feedback` (160ms), `--ui-press-scale` (0.96) and `--ease-out` in your theme or on a container.
+Reduced motion removes control movement and makes copy feedback immediate. Your application owns the
+pending, success and failure states of network actions such as saving a form.
+
+[Try the copy button](https://ui.lostcoords.com/components/copy_button.html) ·
+[Motion reference](https://ui.lostcoords.com/components/motion.html)
+
+### Icons
+
+`lc_icon` renders Heroicons v2.2.0 SVGs. Variants are `outline` (the default), `solid`, `mini` and `micro`.
+Pass SVG attributes through `options:` and existing path attributes through `path_options:`.
+
+```erb
+<%= lc_icon "check", options: { class: "size-5" } %>
+<%= lc_icon "check", variant: :mini, options: {
+  class: "size-4", role: "img", aria: { label: "Complete", hidden: false }
+} %>
+```
 
 ## Advanced style composition
 
@@ -121,15 +187,17 @@ buttons or fields remain ordinary containers.
 
 The engine stylesheet includes shared text styles and layout defaults. Heading level controls document
 structure independently of its visual size. Layout parents own the spacing between children, including fields.
+Inline `<code>` elements get a shared monospace style with a theme-aware background. `<pre><code>`
+blocks keep their block styling.
 
 ```erb
-<%= ui_stack gap: :section do %>
-  <%= ui_heading "Workspace", level: 1, size: :page %>
-  <%= ui_section title: "Members" do %>
-    <%= ui_card do %>
-      <%= ui_stack gap: :related do %>
-        <%= ui_heading "Design team", level: 3, size: :card %>
-        <%= ui_text "Three people share this workspace.", tone: :muted %>
+<%= lc_stack gap: :section do %>
+  <%= lc_heading "Workspace", level: 1, size: :page %>
+  <%= lc_section title: "Members" do %>
+    <%= lc_card do %>
+      <%= lc_stack gap: :related do %>
+        <%= lc_heading "Design team", level: 3, size: :card %>
+        <%= lc_text "Three people share this workspace.", tone: :muted %>
       <% end %>
     <% end %>
   <% end %>
@@ -139,8 +207,8 @@ structure independently of its visual size. Layout parents own the spacing betwe
 Heading sizes are `page`, `section` and `card`. Text sizes are `body`, `small` and `caption`,
 with `default`, `muted` and `subtle` tones. Stacks and inline groups accept `tight` (4px), `related`
 (8px), `heading` (12px), `content` (16px), `inset` (20px) and `section` (32px) gaps at the default
-browser font size. `ui_section` leaves 12px below its heading and 16px between content blocks.
-`ui_container` provides `page`, `reading` and `form` widths. Only the page container adds gutters.
+browser font size. `lc_section` leaves 12px below its heading and 16px between content blocks.
+`lc_container` provides `page`, `reading` and `form` widths. Only the page container adds gutters.
 
 Fonts and colours come from the shared theme and your app's overrides. Optional custom properties override the shared defaults:
 `--ui-space-section`, `--ui-heading-page-size`, `--ui-heading-page-line-height`, `--ui-page-max`,
@@ -157,15 +225,15 @@ For articles or rendered Markdown, enable Tailwind Typography in the host input:
 @plugin "@tailwindcss/typography";
 ```
 
-The standalone Tailwind CLI used by `tailwindcss-rails` includes this plugin. `ui_prose` supplies the host
+The standalone Tailwind CLI used by `tailwindcss-rails` includes this plugin. `lc_prose` supplies the host
 theme colours, a 65ch maximum width, 1.75 line height and proportional block spacing. Its block follows
 Rails' normal escaping rules; sanitise rendered user content before marking it safe.
 
 ```erb
-<%= ui_prose do %>
+<%= lc_prose do %>
   <h2>Share a workspace</h2>
   <p>Invite your team and keep your work together.</p>
-  <div class="not-prose"><%= ui_button "Invite someone" %></div>
+  <div class="not-prose"><%= lc_button "Invite someone" %></div>
 <% end %>
 ```
 
@@ -175,73 +243,73 @@ to tune a reading context. Use `not-prose` for embedded components.
 ### Class helpers
 
 Class helpers remain available for custom markup. The application owns its semantics and behavior.
-`glass_class` supplies translucent surfaces; `tw` merges utilities with the last class winning.
+`lc_glass_class` supplies translucent surfaces; `lc_tw` merges utilities with the last class winning.
 
 ```erb
-<nav class="<%= glass_class(shape: :bar) %>" aria-label="Project navigation">
-  <%= link_to "Overview", project_path(@project), class: button_class(variant: :ghost) %>
+<nav class="<%= lc_glass_class(shape: :bar) %>" aria-label="Project navigation">
+  <%= link_to "Overview", project_path(@project), class: lc_button_class(variant: :ghost) %>
 </nav>
 ```
 
 Generated by `bin/rails lostcoords:ui:builders`; `bin/lint` checks this list against the style helpers.
 
 <!-- builders -->
-- `icon_badge_class(size: :base, extra: nil)` (BadgeHelper)
-- `icon_medallion_class(size: :sm, tone: :accent, extra: nil)` (BadgeHelper)
-- `avatar_class(size: :base, ink: false, linked: false, extra: nil)` (BadgeHelper)
-- `avatar_stack_class(compact: false, extra: nil)` (BadgeHelper)
-- `avatar_stack_row_class(extra: nil)` (BadgeHelper)
-- `eyebrow_class(extra: nil)` (BadgeHelper)
-- `badge_class(tone: :neutral, extra: nil)` (BadgeHelper)
-- `status_pill_class(tone: :accent, extra: nil)` (BadgeHelper)
-- `pill_class(active: false, ghost: false, size: :base, extra: nil)` (BadgeHelper)
-- `pill_row_class(extra: nil)` (BadgeHelper)
-- `button_class(variant: :default, size: :base, block: false, extra: nil)` (ButtonHelper)
-- `icon_button_class(shape: :square, size: :base, extra: nil)` (ButtonHelper)
-- `card_class(interactive: false, dense: false, extra: nil)` (CardHelper)
-- `card_surface_class(extra: nil)` (CardHelper)
-- `form_card_class(padding: :default, extra: nil)` (CardHelper)
-- `dialog_class(kind = :modal, extra: nil)` (DialogHelper)
-- `dialog_surface_class(extra: nil)` (DialogHelper)
-- `emoji_picker_groups` (EmojiPickerHelper)
-- `emoji_picker_count` (EmojiPickerHelper)
-- `emoji_picker_version` (EmojiPickerHelper)
-- `emoji_picker_search_text(emoji)` (EmojiPickerHelper)
-- `emoji_picker_search_name(emoji)` (EmojiPickerHelper)
-- `emoji_picker_search_labels(emoji)` (EmojiPickerHelper)
-- `emoji_picker_toneable?(emoji)` (EmojiPickerHelper)
-- `spinner_class(size: :base, extra: nil)` (FeedbackHelper)
-- `skeleton_class(extra: nil)` (FeedbackHelper)
-- `empty_state_class(extra: nil)` (FeedbackHelper)
-- `segmented_class(extra: nil)` (FormHelper)
-- `segmented_tab_class(active: false, extra: nil)` (FormHelper)
-- `input_class(size: :base, extra: nil)` (FormHelper)
-- `dropdown_trigger_class(size: :base, extra: nil)` (FormHelper)
-- `select_class(size: :base, extra: nil)` (FormHelper)
-- `textarea_class(extra: nil)` (FormHelper)
-- `field_class(extra: nil)` (FormHelper)
-- `field_label_class(extra: nil)` (FormHelper)
-- `form_actions_class(extra: nil)` (FormHelper)
-- `form_alert_class(extra: nil)` (FormHelper)
-- `form_alert_icon(tone: :error)` (FormHelper)
-- `glass_class(shape: :bar, thick: false, extra: nil)` (GlassHelper)
-- `stack_class(gap: :content, extra: nil)` (LayoutHelper)
-- `inline_class(gap: :related, extra: nil)` (LayoutHelper)
-- `container_class(size: :page, extra: nil)` (LayoutHelper)
-- `section_header_class(extra: nil)` (LayoutHelper)
-- `popover_class(align: :end, extra: nil)` (MenuHelper)
-- `menu_popover_class(align: :end, extra: nil)` (MenuHelper)
-- `menu_option_class(tone: :default, extra: nil)` (MenuHelper)
-- `prose_class(extra: nil)` (ReadingHelper)
-- `sheet_data(data = {}, detents: "fit")` (SheetHelper)
-- `sheet_row_class(extra: nil)` (SheetHelper)
-- `sheet_row_label_class(extra: nil)` (SheetHelper)
-- `sheet_chip_class(active: false, member: false, extra: nil)` (SheetHelper)
-- `sheet_datetime_input_class(extra: nil)` (SheetHelper)
-- `sheet_text_input_class(extra: nil)` (SheetHelper)
-- `tw(*classes)` (TailwindHelper)
-- `heading_class(size: :section, extra: nil)` (TypographyHelper)
-- `text_class(size: :body, tone: :default, extra: nil)` (TypographyHelper)
+- `lc_icon_badge_class(size: :base, extra: nil)` (BadgeHelper)
+- `lc_icon_medallion_class(size: :sm, tone: :accent, extra: nil)` (BadgeHelper)
+- `lc_avatar_class(size: :base, ink: false, linked: false, extra: nil)` (BadgeHelper)
+- `lc_avatar_stack_class(compact: false, extra: nil)` (BadgeHelper)
+- `lc_avatar_stack_row_class(extra: nil)` (BadgeHelper)
+- `lc_eyebrow_class(extra: nil)` (BadgeHelper)
+- `lc_badge_class(tone: :neutral, extra: nil)` (BadgeHelper)
+- `lc_status_pill_class(tone: :accent, extra: nil)` (BadgeHelper)
+- `lc_pill_class(active: false, ghost: false, size: :base, extra: nil)` (BadgeHelper)
+- `lc_pill_row_class(extra: nil)` (BadgeHelper)
+- `lc_button_class(variant: :default, size: :base, block: false, extra: nil)` (ButtonHelper)
+- `lc_icon_button_class(shape: :square, size: :base, extra: nil)` (ButtonHelper)
+- `lc_card_class(interactive: false, dense: false, extra: nil)` (CardHelper)
+- `lc_card_surface_class(extra: nil)` (CardHelper)
+- `lc_form_card_class(padding: :default, extra: nil)` (CardHelper)
+- `lc_dialog_class(kind = :modal, extra: nil)` (DialogHelper)
+- `lc_dialog_surface_class(extra: nil)` (DialogHelper)
+- `lc_emoji_picker_groups` (EmojiPickerHelper)
+- `lc_emoji_picker_count` (EmojiPickerHelper)
+- `lc_emoji_picker_version` (EmojiPickerHelper)
+- `lc_emoji_picker_search_text(emoji)` (EmojiPickerHelper)
+- `lc_emoji_picker_search_name(emoji)` (EmojiPickerHelper)
+- `lc_emoji_picker_search_labels(emoji)` (EmojiPickerHelper)
+- `lc_emoji_picker_toneable?(emoji)` (EmojiPickerHelper)
+- `lc_spinner_class(size: :base, extra: nil)` (FeedbackHelper)
+- `lc_skeleton_class(extra: nil)` (FeedbackHelper)
+- `lc_empty_state_class(extra: nil)` (FeedbackHelper)
+- `lc_segmented_class(extra: nil)` (FormHelper)
+- `lc_segmented_tab_class(active: false, extra: nil)` (FormHelper)
+- `lc_input_class(size: :base, extra: nil)` (FormHelper)
+- `lc_dropdown_trigger_class(size: :base, extra: nil)` (FormHelper)
+- `lc_select_class(size: :base, extra: nil)` (FormHelper)
+- `lc_textarea_class(extra: nil)` (FormHelper)
+- `lc_field_class(extra: nil)` (FormHelper)
+- `lc_field_label_class(extra: nil)` (FormHelper)
+- `lc_form_actions_class(extra: nil)` (FormHelper)
+- `lc_form_alert_class(extra: nil)` (FormHelper)
+- `lc_form_alert_icon(tone: :error)` (FormHelper)
+- `lc_glass_class(shape: :bar, thick: false, extra: nil)` (GlassHelper)
+- `lc_stack_class(gap: :content, extra: nil)` (LayoutHelper)
+- `lc_inline_class(gap: :related, extra: nil)` (LayoutHelper)
+- `lc_container_class(size: :page, extra: nil)` (LayoutHelper)
+- `lc_section_header_class(extra: nil)` (LayoutHelper)
+- `lc_popover_class(align: :end, extra: nil)` (MenuHelper)
+- `lc_menu_popover_class(align: :end, extra: nil)` (MenuHelper)
+- `lc_menu_option_class(tone: :default, extra: nil)` (MenuHelper)
+- `lc_prose_class(extra: nil)` (ReadingHelper)
+- `lc_sheet_data(data = {}, detents: "fit")` (SheetHelper)
+- `lc_sheet_row_class(extra: nil)` (SheetHelper)
+- `lc_sheet_row_label_class(extra: nil)` (SheetHelper)
+- `lc_sheet_chip_class(active: false, member: false, extra: nil)` (SheetHelper)
+- `lc_sheet_datetime_input_class(extra: nil)` (SheetHelper)
+- `lc_sheet_text_input_class(extra: nil)` (SheetHelper)
+- `lc_tw(*classes)` (TailwindHelper)
+- `lc_heading_class(size: :section, extra: nil)` (TypographyHelper)
+- `lc_text_class(size: :body, tone: :default, extra: nil)` (TypographyHelper)
 <!-- /builders -->
 
 ## Blocks
@@ -270,3 +338,15 @@ bin/rails tailwindcss:build
 bin/test
 bin/lint
 ```
+
+The helper migration tool updates Ruby calls, ERB code, and Ruby/ERB Markdown examples to the `lc_`
+namespace. Run it in a consumer checkout to preview changes, then add `--write` to apply them.
+Review dynamic method names stored in strings separately.
+
+```sh
+ruby "$(bundle show lostcoords-ui)/script/migrate_helpers.rb" .
+ruby "$(bundle show lostcoords-ui)/script/migrate_helpers.rb" . --write
+```
+
+The icon catalog and its MIT license live in `vendor/heroicons`. Regenerate them from the pinned
+upstream archive with `ruby bin/update-icons`.

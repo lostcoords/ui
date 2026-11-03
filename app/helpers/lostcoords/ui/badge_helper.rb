@@ -108,12 +108,12 @@ module Lostcoords::Ui
     PILL_ROW_BASE =
       "flex flex-wrap items-center gap-y-2 gap-x-2"
 
-    def icon_badge_class(size: :base, extra: nil)
-      tw(ICON_BADGE_BASE, ICON_BADGE_SIZES.fetch(size.to_sym), extra)
+    def lc_icon_badge_class(size: :base, extra: nil)
+      lc_tw(ICON_BADGE_BASE, ICON_BADGE_SIZES.fetch(size.to_sym), extra)
     end
 
-    def icon_medallion_class(size: :sm, tone: :accent, extra: nil)
-      tw(
+    def lc_icon_medallion_class(size: :sm, tone: :accent, extra: nil)
+      lc_tw(
         ICON_MEDALLION_BASE,
         ICON_MEDALLION_SIZES.fetch(size.to_sym, ICON_MEDALLION_SIZES[:sm]),
         ICON_MEDALLION_TONES.fetch(tone.to_sym, ICON_MEDALLION_TONES[:accent]),
@@ -121,32 +121,32 @@ module Lostcoords::Ui
       )
     end
 
-    def avatar_class(size: :base, ink: false, linked: false, extra: nil)
-      tw(AVATAR_BASE, AVATAR_SIZES.fetch(size.to_sym), (AVATAR_INK if ink), (AVATAR_LINKED if linked), extra)
+    def lc_avatar_class(size: :base, ink: false, linked: false, extra: nil)
+      lc_tw(AVATAR_BASE, AVATAR_SIZES.fetch(size.to_sym), (AVATAR_INK if ink), (AVATAR_LINKED if linked), extra)
     end
 
-    def avatar_stack_class(compact: false, extra: nil)
-      tw(AVATAR_STACK_BASE, (AVATAR_STACK_COMPACT if compact), extra)
+    def lc_avatar_stack_class(compact: false, extra: nil)
+      lc_tw(AVATAR_STACK_BASE, (AVATAR_STACK_COMPACT if compact), extra)
     end
 
-    def avatar_stack_row_class(extra: nil)
-      tw(AVATAR_STACK_ROW, extra)
+    def lc_avatar_stack_row_class(extra: nil)
+      lc_tw(AVATAR_STACK_ROW, extra)
     end
 
-    def eyebrow_class(extra: nil)
-      tw(EYEBROW_BASE, extra)
+    def lc_eyebrow_class(extra: nil)
+      lc_tw(EYEBROW_BASE, extra)
     end
 
-    def badge_class(tone: :neutral, extra: nil)
-      tw(BADGE_BASE, BADGE_TONES.fetch(tone.to_sym, BADGE_TONES[:neutral]), extra)
+    def lc_badge_class(tone: :neutral, extra: nil)
+      lc_tw(BADGE_BASE, BADGE_TONES.fetch(tone.to_sym, BADGE_TONES[:neutral]), extra)
     end
 
-    def status_pill_class(tone: :accent, extra: nil)
-      tw(STATUS_PILL_BASE, STATUS_PILL_TONES.fetch(tone.to_sym, STATUS_PILL_TONES[:accent]), extra)
+    def lc_status_pill_class(tone: :accent, extra: nil)
+      lc_tw(STATUS_PILL_BASE, STATUS_PILL_TONES.fetch(tone.to_sym, STATUS_PILL_TONES[:accent]), extra)
     end
 
-    def pill_class(active: false, ghost: false, size: :base, extra: nil)
-      tw(
+    def lc_pill_class(active: false, ghost: false, size: :base, extra: nil)
+      lc_tw(
         PILL_BASE,
         ButtonHelper::BUTTON_SIZES.fetch(size.to_sym, ButtonHelper::BUTTON_SIZES[:base]),
         (PILL_GHOST if ghost),
@@ -155,8 +155,8 @@ module Lostcoords::Ui
       )
     end
 
-    def pill_row_class(extra: nil)
-      tw(PILL_ROW_BASE, extra)
+    def lc_pill_row_class(extra: nil)
+      lc_tw(PILL_ROW_BASE, extra)
     end
   end
 end

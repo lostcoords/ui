@@ -1,20 +1,20 @@
-<main id="main" class="mx-auto flex max-w-330 flex-col gap-12 px-5 pb-12 pt-12 sm:gap-16 sm:px-8 sm:pt-20 lg:px-10">
-  <header class="flex flex-col gap-4">
-    <h1 class="text-4xl font-semibold tracking-tight sm:text-6xl">Blocks</h1>
-    <p class="text-lg text-ink-2">Ready-made layouts built with our components.</p>
+<main id="main" class="<%= lc_stack_class(gap: :section, extra: "mx-auto max-w-330 px-5 pb-12 pt-12 sm:px-8 sm:pt-20 lg:px-10") %>">
+  <header class="<%= lc_stack_class(gap: :heading) %>">
+    <%= lc_heading "Blocks", level: 1, size: :page %>
+    <p class="<%= lc_text_class(tone: :muted) %>">Ready-made layouts built with our components.</p>
   </header>
 
   <% @blocks.each do |block| %>
-    <section id="<%= block.id %>" class="flex min-w-0 scroll-mt-28 flex-col gap-4" aria-labelledby="<%= block.id %>-title" data-controller="block-stage">
-      <div class="flex flex-wrap items-center gap-3">
-        <h2 id="<%= block.id %>-title" class="w-full text-xl font-semibold tracking-tight sm:me-auto sm:w-auto"><%= block.title %></h2>
+    <section id="<%= block.id %>" class="<%= lc_stack_class(gap: :heading, extra: "scroll-mt-28") %>" aria-labelledby="<%= block.id %>-title" data-controller="block-stage">
+      <div class="<%= lc_section_header_class %>">
+        <h2 id="<%= block.id %>-title" class="<%= lc_heading_class(extra: "w-full sm:me-auto sm:w-auto") %>"><%= block.title %></h2>
         <div class="flex gap-1 rounded-full bg-paper-2 p-1" role="group" aria-label="Preview width">
-          <%= ui_button "Desktop", variant: :ghost, size: :sm, class: "aria-pressed:bg-paper", aria: { pressed: true }, data: { block_stage_target: "width", action: "block-stage#resize", width: "desktop" } %>
-          <%= ui_button "Mobile", variant: :ghost, size: :sm, class: "aria-pressed:bg-paper", aria: { pressed: false }, data: { block_stage_target: "width", action: "block-stage#resize", width: "mobile" } %>
+          <%= lc_button "Desktop", variant: :ghost, size: :sm, class: "aria-pressed:bg-paper", aria: { pressed: true }, data: { block_stage_target: "width", action: "block-stage#resize", width: "desktop" } %>
+          <%= lc_button "Mobile", variant: :ghost, size: :sm, class: "aria-pressed:bg-paper", aria: { pressed: false }, data: { block_stage_target: "width", action: "block-stage#resize", width: "mobile" } %>
         </div>
-        <%= ui_button_link_to "Code", "#{block.url}#files-title", variant: :ghost, size: :sm, aria: { label: "#{block.title} source code" } %>
-        <%= link_to block.preview_url, class: icon_button_class(size: :sm, shape: :circle), aria: { label: "Open #{block.title} preview" }, target: "_blank", rel: "noopener" do %>
-          <%= heroicon "arrow-up-right", options: { "aria-hidden": true } %>
+        <%= lc_button_link_to "Code", "#{block.url}#files-title", variant: :ghost, size: :sm, aria: { label: "#{block.title} source code" } %>
+        <%= link_to block.preview_url, class: lc_icon_button_class(size: :sm, shape: :circle), aria: { label: "Open #{block.title} preview" }, target: "_blank", rel: "noopener" do %>
+          <%= lc_icon "arrow-up-right", options: { "aria-hidden": true } %>
         <% end %>
       </div>
       <div class="flex justify-center overflow-hidden rounded-3xl bg-paper-2 p-2 sm:p-3">

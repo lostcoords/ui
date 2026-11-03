@@ -7,16 +7,16 @@ module Lostcoords::Ui
     end
 
     test "heading level controls semantics independently of visual size" do
-      heading = fragment(@view.ui_heading("Expenses", level: 3, size: :page)).at_css("h3")
+      heading = fragment(@view.lc_heading("Expenses", level: 3, size: :page)).at_css("h3")
 
       assert_equal "Expenses", heading.text
       assert_includes heading["class"].split, "ui-heading-page"
-      assert_nil fragment(@view.ui_heading("Expenses", level: 3)).at_css("h2")
-      assert fragment(@view.ui_heading("Expenses")).at_css("h2.ui-heading-section")
+      assert_nil fragment(@view.lc_heading("Expenses", level: 3)).at_css("h2")
+      assert fragment(@view.lc_heading("Expenses")).at_css("h2.ui-heading-section")
     end
 
     test "heading content is escaped and native attributes are preserved" do
-      heading = fragment(@view.ui_heading("<Expenses>", level: 1, id: "title", lang: "ja", data: { controller: "title" }, aria: { describedby: "subtitle" }, class: [ "text-accent", { "min-w-0" => true } ])).at_css("h1")
+      heading = fragment(@view.lc_heading("<Expenses>", level: 1, id: "title", lang: "ja", data: { controller: "title" }, aria: { describedby: "subtitle" }, class: [ "text-accent", { "min-w-0" => true } ])).at_css("h1")
 
       assert_equal "<Expenses>", heading.text
       assert_nil heading.at_css("expenses")
@@ -30,19 +30,19 @@ module Lostcoords::Ui
     end
 
     test "text uses paragraphs with named sizes and tones" do
-      paragraph = fragment(@view.ui_text("<Details>", size: "small", tone: "muted")).at_css("p")
+      paragraph = fragment(@view.lc_text("<Details>", size: "small", tone: "muted")).at_css("p")
 
       assert_equal "<Details>", paragraph.text
       assert_nil paragraph.at_css("details")
       assert_includes paragraph["class"].split, "ui-text-small"
       assert_includes paragraph["class"].split, "text-ink-2"
-      assert fragment(@view.ui_text("Details")).at_css("p.ui-text-body")
-      assert fragment(@view.ui_text("Updated today", size: :caption, tone: :subtle)).at_css("p.ui-text-caption.text-ink-3")
+      assert fragment(@view.lc_text("Details")).at_css("p.ui-text-body")
+      assert fragment(@view.lc_text("Updated today", size: :caption, tone: :subtle)).at_css("p.ui-text-caption.text-ink-3")
     end
 
     test "typography blocks capture markup and preserve attributes" do
-      heading = @view.ui_heading(level: 4, size: :card) { @view.tag.em("Shared expenses") }
-      paragraph = @view.ui_text(id: "description", lang: "ja", data: { state: "ready" }) { @view.tag.strong("Details") }
+      heading = @view.lc_heading(level: 4, size: :card) { @view.tag.em("Shared expenses") }
+      paragraph = @view.lc_text(id: "description", lang: "ja", data: { state: "ready" }) { @view.tag.strong("Details") }
 
       assert_equal "Shared expenses", fragment(heading).at_css("h4.ui-heading-card em").text
       assert_equal "Details", fragment(paragraph).at_css("p#description strong").text
@@ -52,13 +52,13 @@ module Lostcoords::Ui
 
     test "typography rejects invalid roles and unsafe heading levels" do
       [ 0, 7, "2", 2.0, nil, :h2, "script" ].each do |level|
-        assert_raises(ArgumentError) { @view.ui_heading("Title", level: level) }
+        assert_raises(ArgumentError) { @view.lc_heading("Title", level: level) }
       end
-      assert_raises(ArgumentError) { @view.ui_heading("Title", size: :huge) }
-      assert_raises(ArgumentError) { @view.ui_text("Details", size: nil) }
-      assert_raises(ArgumentError) { @view.ui_text("Details", tone: :danger) }
-      assert_raises(ArgumentError) { @view.heading_class(size: :huge) }
-      assert_raises(ArgumentError) { @view.text_class(tone: :danger) }
+      assert_raises(ArgumentError) { @view.lc_heading("Title", size: :huge) }
+      assert_raises(ArgumentError) { @view.lc_text("Details", size: nil) }
+      assert_raises(ArgumentError) { @view.lc_text("Details", tone: :danger) }
+      assert_raises(ArgumentError) { @view.lc_heading_class(size: :huge) }
+      assert_raises(ArgumentError) { @view.lc_text_class(tone: :danger) }
     end
 
     private

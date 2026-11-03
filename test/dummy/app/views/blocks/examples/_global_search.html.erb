@@ -17,36 +17,36 @@
 <div class="search-example min-h-screen" data-controller="blocks-search" data-action="turbo:before-cache@document->blocks-search#reset">
   <header class="px-5 pt-5 sm:px-8">
     <div class="relative mx-auto flex max-w-5xl items-center justify-between gap-4">
-      <span class="flex items-center gap-2.5 font-semibold tracking-tight"><%= ui_icon_badge icon: "sparkles" %> Studio</span>
+      <span class="flex items-center gap-2.5 font-semibold tracking-tight"><%= lc_icon_badge icon: "sparkles" %> Studio</span>
       <button type="button" class="search-example__trigger flex min-h-11 items-center gap-3 rounded-full bg-paper-2 px-3.5 text-ink-3 hover:bg-paper-3 hover:text-ink" data-blocks-search-target="trigger" data-action="blocks-search#open" aria-label="Search workspace" aria-haspopup="dialog" aria-keyshortcuts="Meta+K Control+K">
-        <%= heroicon "magnifying-glass", options: { class: "size-5 shrink-0", "aria-hidden": true } %>
+        <%= lc_icon "magnifying-glass", options: { class: "size-5 shrink-0", "aria-hidden": true } %>
         <span class="hidden flex-1 text-start text-sm sm:block">Search anything…</span>
         <kbd class="hidden text-xs sm:block" data-blocks-search-target="shortcut" aria-hidden="true">⌘ K</kbd>
       </button>
-      <%= ui_avatar "AL", size: :sm, class: "bg-sky-soft text-accent", aria: { label: "Alex Lee" } %>
+      <%= lc_avatar "AL", size: :sm, class: "bg-sky-soft text-accent", aria: { label: "Alex Lee" } %>
     </div>
   </header>
 
   <main id="main" class="mx-auto flex max-w-5xl flex-col gap-8 px-5 py-12 sm:px-8 sm:py-16">
     <div class="flex flex-col items-start gap-3">
-      <%= ui_eyebrow "YOUR WORKSPACE" %>
+      <%= lc_eyebrow "YOUR WORKSPACE" %>
       <h1 class="text-3xl font-semibold tracking-tight sm:text-4xl">Room for good work.</h1>
       <p class="max-w-lg text-ink-2">Projects, people, and ideas. All in one place.</p>
     </div>
     <section class="flex flex-col gap-3" aria-labelledby="search-projects-heading">
-      <div class="flex items-center justify-between gap-3"><h2 id="search-projects-heading" class="font-semibold">On the desk</h2><%= ui_badge "3 projects" %></div>
+      <div class="flex items-center justify-between gap-3"><h2 id="search-projects-heading" class="font-semibold">On the desk</h2><%= lc_badge "3 projects" %></div>
       <div class="grid gap-4 sm:grid-cols-3">
         <% collections.fetch("Projects").each do |item| %>
-          <%= ui_card class: "flex flex-col items-start gap-5" do %>
-            <%= ui_medallion icon: item[:icon], size: :lg %>
+          <%= lc_card class: "flex flex-col items-start gap-5" do %>
+            <%= lc_medallion icon: item[:icon], size: :lg %>
             <div class="flex flex-col gap-1"><h3 class="font-semibold"><%= item[:title] %></h3><p class="text-sm text-ink-3"><%= item[:meta] %></p></div>
-            <%= ui_button "Explore", variant: :ghost, size: :sm, icon: "arrow-up-right", icon_position: :end, data: { action: "blocks-search#explore", title: item[:title], detail: item[:detail] } %>
+            <%= lc_button "Explore", variant: :ghost, size: :sm, icon: "arrow-up-right", icon_position: :end, data: { action: "blocks-search#explore", title: item[:title], detail: item[:detail] } %>
           <% end %>
         <% end %>
       </div>
     </section>
-    <%= ui_card class: "flex flex-col gap-3", aria: { labelledby: "search-selection-heading" } do %>
-      <%= ui_eyebrow "A LITTLE LESS LOOKING" %>
+    <%= lc_card class: "flex flex-col gap-3", aria: { labelledby: "search-selection-heading" } do %>
+      <%= lc_eyebrow "A LITTLE LESS LOOKING" %>
       <h2 id="search-selection-heading" class="text-xl font-semibold" data-blocks-search-target="selectionTitle">Find your next thought.</h2>
       <p class="max-w-xl text-sm text-ink-2" data-blocks-search-target="selectionDetail">Open search and try “Fieldwork”, “Alex”, or “references”. Use the arrow keys to move through results.</p>
     <% end %>
@@ -56,24 +56,24 @@
   <dialog class="search-example__dialog" aria-label="Search workspace" data-blocks-search-target="dialog" data-action="close->blocks-search#closed keydown->blocks-search#navigate click->blocks-search#dismiss">
     <div class="search-example__stack" data-search-dismiss>
       <div class="flex shrink-0 items-center gap-3">
-        <label class="<%= glass_class(extra: "flex min-h-14 min-w-0 flex-1 cursor-text items-center gap-3 ps-5 pe-2 sm:min-h-16") %>" data-blocks-search-target="bar">
-          <%= heroicon "magnifying-glass", options: { class: "size-6 shrink-0 text-ink-3", "aria-hidden": true } %>
+        <label class="<%= lc_glass_class(extra: "flex min-h-14 min-w-0 flex-1 cursor-text items-center gap-3 ps-5 pe-2 sm:min-h-16") %>" data-blocks-search-target="bar">
+          <%= lc_icon "magnifying-glass", options: { class: "size-6 shrink-0 text-ink-3", "aria-hidden": true } %>
           <input type="search" class="search-example__input min-w-0 flex-1 self-stretch border-0 bg-transparent text-base text-ink placeholder:text-ink-3" aria-label="Search projects, people, and notes" placeholder="Search anything…" autocomplete="off" enterkeyhint="search" data-blocks-search-target="input" data-action="input->blocks-search#filter compositionend->blocks-search#filter">
-          <%= ui_icon_button "Clear search", icon: "x-circle", size: :sm, hidden: true, data: { blocks_search_target: "clear", action: "blocks-search#clear" } %>
+          <%= lc_icon_button "Clear search", icon: "x-circle", size: :sm, hidden: true, data: { blocks_search_target: "clear", action: "blocks-search#clear" } %>
           <kbd class="hidden rounded-lg bg-paper-2 px-2 py-1 text-xs text-ink-3 sm:block" aria-hidden="true">esc</kbd>
         </label>
-        <%= ui_button "Cancel", variant: :ghost, size: :sm, data: { action: "blocks-search#close" } %>
+        <%= lc_button "Cancel", variant: :ghost, size: :sm, data: { action: "blocks-search#close" } %>
       </div>
-      <div class="<%= glass_class(shape: :panel, extra: "search-example__results min-h-0 overflow-y-auto overscroll-contain p-2") %>" data-blocks-search-target="results">
+      <div class="<%= lc_glass_class(shape: :panel, extra: "search-example__results min-h-0 overflow-y-auto overscroll-contain p-2") %>" data-blocks-search-target="results">
         <p class="px-3 pb-2 pt-3 text-xs text-ink-3" data-blocks-search-target="summary" role="status">Start with something recent</p>
         <% collections.each do |name, items| %>
           <section class="py-2" aria-label="<%= name %>" data-blocks-search-target="group">
             <h2 class="px-3 pb-2 font-mono text-xs font-medium uppercase tracking-widest text-ink-3"><%= name %></h2>
             <% items.each do |item| %>
               <button type="button" class="search-example__result flex min-h-16 w-full items-center gap-3 rounded-2xl px-3 py-2 text-start" data-blocks-search-target="result" data-action="blocks-search#select" data-title="<%= item[:title] %>" data-detail="<%= item[:detail] %>" data-search="<%= item[:words] %>">
-                <%= ui_icon_badge icon: item[:icon] %>
+                <%= lc_icon_badge icon: item[:icon] %>
                 <span class="flex min-w-0 flex-1 flex-col gap-0.5"><span class="truncate text-sm font-semibold"><%= item[:title] %></span><span class="text-xs text-ink-3"><%= item[:meta] %></span></span>
-                <%= heroicon "arrow-up-left", options: { class: "size-4 shrink-0 text-ink-3", "aria-hidden": true } %>
+                <%= lc_icon "arrow-up-left", options: { class: "size-4 shrink-0 text-ink-3", "aria-hidden": true } %>
               </button>
             <% end %>
           </section>

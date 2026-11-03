@@ -1,69 +1,69 @@
-<main id="main" class="mx-auto flex max-w-330 flex-col gap-12 px-5 pb-12 pt-12 sm:px-8 sm:pt-20 lg:px-10">
-  <header class="flex flex-col items-start gap-6">
-    <h1 class="max-w-3xl text-4xl font-semibold tracking-tight sm:text-6xl">Components for Rails.</h1>
-    <p class="max-w-lg text-lg text-ink-2">Render complete components from Ruby. Bring your own palette.</p>
-    <%= ui_button_link_to "Browse components", "/components/button.html", icon: "arrow-up-right", icon_position: :end %>
+<main id="main" class="<%= lc_stack_class(gap: :section, extra: "mx-auto max-w-330 px-5 pb-12 pt-12 sm:px-8 sm:pt-20 lg:px-10") %>">
+  <header class="<%= lc_stack_class(gap: :heading, extra: "items-start") %>">
+    <%= lc_heading "Components for Rails.", level: 1, size: :page %>
+    <p class="<%= lc_text_class(tone: :muted, extra: "max-w-lg") %>">Render complete components from Ruby. Customize the included theme.</p>
+    <%= lc_button_link_to "Browse components", "/components/button.html", icon: "arrow-up-right", icon_position: :end %>
   </header>
 
-  <div class="grid grid-cols-1 items-start gap-5 md:grid-cols-2 xl:grid-cols-[1.15fr_1fr_0.85fr]">
-    <div class="flex min-w-0 flex-col gap-5">
-      <%= ui_card class: "flex flex-col gap-5", aria: { labelledby: "workspace-title" } do %>
-        <div class="flex items-start justify-between gap-4"><div class="flex flex-col gap-1"><%= ui_eyebrow "Workspace" %><h2 id="workspace-title" class="text-xl font-semibold">Workspace settings</h2></div><%= ui_medallion icon: "squares-2x2" %></div>
+  <div class="grid grid-cols-1 items-start gap-[var(--ui-space-content,1rem)] md:grid-cols-2 xl:grid-cols-[1.15fr_1fr_0.85fr]">
+    <div class="<%= lc_stack_class %>">
+      <%= lc_card class: lc_stack_class, aria: { labelledby: "workspace-title" } do %>
+        <div class="flex items-start justify-between gap-4"><div class="flex flex-col gap-1"><%= lc_eyebrow "Workspace" %><h2 id="workspace-title" class="<%= lc_heading_class(size: :card) %>">Workspace settings</h2></div><%= lc_medallion icon: "squares-2x2" %></div>
         <div class="flex items-center gap-3 py-2">
-          <%= ui_avatar_stack aria: { label: "Alex, Sam and Jamie" } do %>
-            <% { "AL" => "sky", "SK" => "leaf", "JR" => "berry" }.each do |initials, tone| %><%= ui_avatar initials, style: "background-color: var(--#{tone})" %><% end %>
+          <%= lc_avatar_stack aria: { label: "Alex, Sam and Jamie" } do %>
+            <% { "AL" => "sky", "SK" => "leaf", "JR" => "berry" }.each do |initials, tone| %><%= lc_avatar initials, style: "background-color: var(--#{tone})" %><% end %>
           <% end %>
           <p class="text-sm text-ink-2">Alex, Sam and Jamie</p>
         </div>
-        <form class="flex flex-col gap-5" data-action="submit->showcase#save">
-          <%= ui_field label: "Name", id: "workspace-name" do |field| %><%= ui_input value: "Design studio", required: true, class: "bg-paper", **field %><% end %>
-          <%= ui_field label: "About", id: "workspace-about" do |field| %><%= ui_textarea placeholder: "What are you working on?", rows: 3, class: "bg-paper", **field %><% end %>
-          <div class="flex flex-wrap items-center justify-between gap-3"><%= ui_badge "Private workspace" %><%= ui_button "Save changes", size: :sm, type: :submit %></div>
+        <form class="<%= lc_stack_class %>" data-action="submit->showcase#save">
+          <%= lc_field label: "Name", id: "workspace-name" do |field| %><%= lc_input value: "Design studio", required: true, class: "bg-paper", **field %><% end %>
+          <%= lc_field label: "About", id: "workspace-about" do |field| %><%= lc_textarea placeholder: "What are you working on?", rows: 3, class: "bg-paper", **field %><% end %>
+          <div class="flex flex-wrap items-center justify-between gap-3"><%= lc_badge "Private workspace" %><%= lc_button "Save changes", size: :sm, type: :submit %></div>
           <p role="status" class="text-sm text-accent" data-save-status hidden>Changes saved.</p>
         </form>
       <% end %>
-      <%= ui_card class: "flex flex-col gap-5", aria: { labelledby: "filters-title" } do %>
-        <div class="flex items-center justify-between gap-3"><h2 id="filters-title" class="text-sm font-semibold">Topics</h2><%= heroicon "adjustments-horizontal", options: { class: "size-5 text-ink-3", "aria-hidden": true } %></div>
-        <%= ui_pill_row role: "group", aria: { label: "Topics" } do %>
-          <% { "Design" => true, "Writing" => false, "Engineering" => false, "Research" => true }.each do |label, active| %><%= ui_pill label, active: active, size: :sm, class: "bg-paper" %><% end %>
+      <%= lc_card class: lc_stack_class, aria: { labelledby: "filters-title" } do %>
+        <div class="flex items-center justify-between gap-3"><h2 id="filters-title" class="<%= lc_heading_class(size: :card) %>">Topics</h2><%= lc_icon "adjustments-horizontal", options: { class: "size-5 text-ink-3", "aria-hidden": true } %></div>
+        <%= lc_pill_row role: "group", aria: { label: "Topics" } do %>
+          <% { "Design" => true, "Writing" => false, "Engineering" => false, "Research" => true }.each do |label, active| %><%= lc_pill label, active: active, size: :sm, class: "bg-paper" %><% end %>
         <% end %>
         <a href="/components/pill.html" class="text-xs text-ink-3 hover:text-ink">Pills ↗</a>
       <% end %>
     </div>
 
-    <div class="flex min-w-0 flex-col gap-5">
-      <%= ui_card class: "flex flex-col gap-5", aria: { labelledby: "invite-title" } do %>
-        <%= ui_medallion icon: "user-plus", tone: :accent, size: :lg %>
-        <div class="flex flex-col gap-2"><h2 id="invite-title" class="text-xl font-semibold">Invite a teammate</h2><p class="text-sm text-ink-2">Invite someone to your workspace.</p></div>
+    <div class="<%= lc_stack_class %>">
+      <%= lc_card class: lc_stack_class, aria: { labelledby: "invite-title" } do %>
+        <%= lc_medallion icon: "user-plus", tone: :accent, size: :lg %>
+        <div class="flex flex-col gap-2"><h2 id="invite-title" class="<%= lc_heading_class(size: :card) %>">Invite a teammate</h2><p class="text-sm text-ink-2">Invite someone to your workspace.</p></div>
         <form class="flex flex-col gap-3" data-action="submit->showcase#save">
-          <%= ui_field label: "Email address", id: "invite-email" do |field| %><%= ui_input type: :email, placeholder: "name@example.com", required: true, class: "bg-paper", **field %><% end %>
-          <%= ui_button "Send invitation", type: :submit, class: "w-full", icon: "arrow-right", icon_position: :end %>
+          <%= lc_field label: "Email address", id: "invite-email" do |field| %><%= lc_input type: :email, placeholder: "name@example.com", required: true, class: "bg-paper", **field %><% end %>
+          <%= lc_button "Send invitation", type: :submit, class: "w-full", icon: "arrow-right", icon_position: :end %>
           <p role="status" class="text-sm text-accent" data-save-status hidden>Invitation sent.</p>
         </form>
       <% end %>
-      <%= ui_card class: "flex flex-col gap-5", aria: { labelledby: "view-title" } do %>
-        <h2 id="view-title" class="text-sm font-semibold">Project overview</h2>
-        <%= ui_segmented label: "View", name: "period", value: "month", class: "bg-paper w-fit" do %>
-          <% %w[Week Month Year].each do |label| %><%= ui_segmented_tab label, value: label.downcase, selected: label == "Month", class: "aria-pressed:bg-paper-3" %><% end %>
+      <%= lc_card class: lc_stack_class, aria: { labelledby: "view-title" } do %>
+        <h2 id="view-title" class="<%= lc_heading_class(size: :card) %>">Project overview</h2>
+        <%= lc_segmented label: "View", name: "period", value: "month", class: "bg-paper w-fit" do %>
+          <% %w[Week Month Year].each do |label| %><%= lc_segmented_tab label, value: label.downcase, selected: label == "Month", class: "aria-pressed:bg-paper-3" %><% end %>
         <% end %>
-        <div class="flex items-end justify-between gap-3"><div class="flex flex-col gap-1"><p class="text-xs text-ink-3">Projects completed</p><p class="text-4xl font-semibold tabular-nums">24<span class="text-xl text-ink-3"> / 32</span></p></div><%= ui_status_pill "On track" %></div>
+        <div class="flex items-end justify-between gap-3"><div class="flex flex-col gap-1"><p class="text-xs text-ink-3">Projects completed</p><p class="text-4xl font-semibold tabular-nums">24<span class="text-xl text-ink-3"> / 32</span></p></div><%= lc_status_pill "On track" %></div>
         <div class="h-2 overflow-hidden rounded-full bg-paper"><div class="h-full w-3/4 rounded-full bg-sky"></div></div>
         <a href="/components/segmented.html" class="text-xs text-ink-3 hover:text-ink">Segmented controls ↗</a>
       <% end %>
-      <%= ui_form_alert "All changes saved.", tone: :notice, class: "justify-center" %>
+      <%= lc_form_alert "All changes saved.", tone: :notice, class: "justify-center" %>
     </div>
 
-    <div class="flex min-w-0 flex-col gap-5 md:col-span-2 md:grid md:grid-cols-2 xl:col-span-1 xl:flex">
-      <%= ui_card class: "flex flex-col gap-5", aria: { labelledby: "people-title" } do %>
-        <div class="flex items-center justify-between gap-3"><h2 id="people-title" class="text-sm font-semibold">Team</h2><%= ui_badge "3" %></div>
+    <div class="<%= lc_stack_class(extra: "md:col-span-2 md:grid md:grid-cols-2 xl:col-span-1 xl:flex") %>">
+      <%= lc_card class: lc_stack_class, aria: { labelledby: "people-title" } do %>
+        <div class="flex items-center justify-between gap-3"><h2 id="people-title" class="<%= lc_heading_class(size: :card) %>">Team</h2><%= lc_badge "3" %></div>
         <% { "Alex Lee" => [ "AL", "sky", "Owner" ], "Sam Kim" => [ "SK", "leaf", "Editor" ], "Jamie Reed" => [ "JR", "berry", "Editor" ] }.each do |name, (initials, tone, role)| %>
-          <div class="flex items-center gap-3"><%= ui_avatar initials, style: "background-color: var(--#{tone})", aria: { label: name } %><div class="flex min-w-0 flex-1 flex-col gap-0.5"><p class="truncate text-sm font-medium"><%= name %></p><p class="text-xs text-ink-3"><%= role %></p></div><span class="size-2 rounded-full bg-leaf" role="img" aria-label="Available"></span></div>
+          <div class="flex items-center gap-3"><%= lc_avatar initials, style: "background-color: var(--#{tone})", aria: { label: name } %><div class="flex min-w-0 flex-1 flex-col gap-0.5"><p class="truncate text-sm font-medium"><%= name %></p><p class="text-xs text-ink-3"><%= role %></p></div><span class="size-2 rounded-full bg-leaf" role="img" aria-label="Available"></span></div>
         <% end %>
         <a href="/components/avatar.html" class="text-xs text-ink-3 hover:text-ink">Avatars ↗</a>
       <% end %>
-      <%= ui_card class: "flex flex-col items-start gap-5", aria: { labelledby: "dialog-title" } do %>
-        <%= ui_medallion icon: "rectangle-stack", tone: :neutral %>
-        <h2 id="dialog-title" class="text-lg font-semibold">A focused task.</h2>
+      <%= lc_card class: lc_stack_class(extra: "items-start"), aria: { labelledby: "dialog-title" } do %>
+        <%= lc_medallion icon: "rectangle-stack", tone: :neutral %>
+        <h2 id="dialog-title" class="<%= lc_heading_class(size: :card) %>">A focused task.</h2>
         <% dialog_example = @sections.find { |section| section.id == :dialog }.examples.find { |example| example.specimen == :modal_dialog } %>
         <%= render inline: showcase_source(dialog_example, id: "home-dialog") %>
         <a href="/components/dialog.html" class="text-xs text-ink-3 hover:text-ink">Dialogs ↗</a>

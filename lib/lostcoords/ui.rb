@@ -1,5 +1,2 @@
-require "heroicons"
-require "importmap-rails"
-require "tailwind_merge"
-require "lostcoords/ui/version"
-require "lostcoords/ui/engine"
+require "lostcoords/ui/action_view"
+require "lostcoords/ui/rails" if defined?(::Rails::Engine)

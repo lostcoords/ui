@@ -7,7 +7,7 @@ module Lostcoords::Ui
     end
 
     test "reading wrappers capture escaped markup and preserve native attributes" do
-      html = @view.ui_prose(id: "guide", lang: "ja", class: [ "mx-auto", { "w-full" => true } ], aria: { labelledby: "title" }) do
+      html = @view.lc_prose(id: "guide", lang: "ja", class: [ "mx-auto", { "w-full" => true } ], aria: { labelledby: "title" }) do
         @view.tag.p("<script> & text")
       end
       prose = Nokogiri::HTML.fragment(html).at_css("#guide")
@@ -23,15 +23,15 @@ module Lostcoords::Ui
     end
 
     test "reading wrappers retain the plugin escape hatch for interactive content" do
-      html = @view.ui_prose do
-        @view.tag.div(class: "not-prose") { @view.ui_button("Continue") }
+      html = @view.lc_prose do
+        @view.tag.div(class: "not-prose") { @view.lc_button("Continue") }
       end
 
       assert_equal "Continue", Nokogiri::HTML.fragment(html).at_css(".ui-prose .not-prose button").text
     end
 
     test "reading size measure and leading allow ordinary utility overrides" do
-      prose = Nokogiri::HTML.fragment(@view.ui_prose(class: "max-w-none text-lg leading-relaxed") { "Text" }).at_css("div")
+      prose = Nokogiri::HTML.fragment(@view.lc_prose(class: "max-w-none text-lg leading-relaxed") { "Text" }).at_css("div")
 
       assert_includes prose["class"].split, "max-w-none"
       assert_includes prose["class"].split, "text-lg"
@@ -44,8 +44,8 @@ module Lostcoords::Ui
     test "field spacing belongs inside fields and caller layout controls sibling spacing" do
       html = @view.tag.div(class: "grid gap-5") do
         @view.safe_join([ "first", "second" ].map do |id|
-          @view.ui_field(label: id.capitalize, id: id, hint: "Help") do |control|
-            @view.ui_input(**control)
+          @view.lc_field(label: id.capitalize, id: id, hint: "Help") do |control|
+            @view.lc_input(**control)
           end
         end)
       end

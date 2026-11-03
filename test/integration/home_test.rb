@@ -7,7 +7,7 @@ class HomeTest < ActionDispatch::IntegrationTest
     get root_path
 
     assert_response :success
-    assert_includes response.body, ERB::Util.html_escape(ApplicationController.helpers.button_class(variant: :accent))
+    assert_includes response.body, ERB::Util.html_escape(ApplicationController.helpers.lc_button_class(variant: :accent))
   end
 
   test "each component page renders its examples and public API" do

@@ -31,8 +31,8 @@
         </nav>
         <div class="ms-auto flex items-center gap-2">
           <%= render "showcase/palette_picker" %>
-          <%= ui_button_link_to "https://github.com/lostcoords/ui", variant: :ghost, size: :sm, class: "max-sm:hidden", aria: { label: "Source on GitHub" } do %><%= heroicon "code-bracket", options: { "aria-hidden": true } %><% end %>
-          <%= ui_icon_button "Switch color theme", icon: "moon", size: :sm, data: { action: "showcase#toggleTheme", showcase_target: "theme" }, aria: { pressed: false } %>
+          <%= lc_button_link_to "https://github.com/lostcoords/ui", variant: :ghost, size: :sm, class: "max-sm:hidden", aria: { label: "Source on GitHub" } do %><%= lc_icon "code-bracket", options: { "aria-hidden": true } %><% end %>
+          <%= lc_icon_button "Switch color theme", icon: "moon", size: :sm, data: { action: "showcase#toggleTheme", showcase_target: "theme" }, aria: { pressed: false } %>
         </div>
       </div>
     </header>

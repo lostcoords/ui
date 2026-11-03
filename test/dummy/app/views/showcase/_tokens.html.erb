@@ -1,9 +1,9 @@
-<section id="tokens" class="flex scroll-mt-24 flex-col gap-3">
+<section id="tokens" class="<%= lc_stack_class(extra: "scroll-mt-24") %>">
   <div class="flex flex-col gap-2">
-    <h3 class="text-lg font-semibold">Theme variable reference</h3>
+    <%= lc_heading "Theme variable reference", level: 3, size: :card %>
     <p class="text-sm text-ink-3">These variables have defaults in the engine stylesheet. Values below reflect the current documentation theme. Tailwind may inline aliases or omit unused theme utilities.</p>
   </div>
-  <ul class="<%= card_class(extra: "grid grid-cols-[repeat(auto-fill,minmax(min(100%,17rem),1fr))] gap-x-4 gap-y-3") %>">
+  <ul class="<%= lc_card_class(extra: "grid grid-cols-[repeat(auto-fill,minmax(min(100%,17rem),1fr))] gap-x-4 gap-y-3") %>">
     <% Lostcoords::Ui::TOKENS.each do |token| %>
       <li class="flex min-w-0 items-center gap-3" data-showcase-target="token" data-token="<%= token %>">
         <span class="size-8 shrink-0 rounded-xl bg-(--swatch) shadow-(--shadow) block" data-token-swatch hidden></span>

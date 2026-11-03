@@ -18,8 +18,8 @@ module Lostcoords::Ui
       "max-md:[--glass-fill:color-mix(in_oklab,var(--paper)_90%,transparent)] " \
       "dark:max-md:[--glass-fill:color-mix(in_oklab,var(--paper-2)_92%,transparent)]"
 
-    def glass_class(shape: :bar, thick: false, extra: nil)
-      tw("glass", GLASS_SHAPES.fetch(shape.to_sym, GLASS_SHAPES[:bar]), (GLASS_THICK if thick), extra)
+    def lc_glass_class(shape: :bar, thick: false, extra: nil)
+      lc_tw("glass", GLASS_SHAPES.fetch(shape.to_sym, GLASS_SHAPES[:bar]), (GLASS_THICK if thick), extra)
     end
   end
 end

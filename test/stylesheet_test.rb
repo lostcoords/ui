@@ -15,7 +15,9 @@ module Lostcoords::Ui
       Dir.mktmpdir do |dir|
         _, error, status = Open3.capture3(Tailwindcss::Ruby.executable, "-i", Rails.root.join("app/assets/tailwind/application.css").to_s, "-o", "#{dir}/out.css")
         assert status.success?, error
-        assert_includes File.read("#{dir}/out.css"), ".duration-\\[180ms\\]"
+        css = File.read("#{dir}/out.css")
+        assert_includes css, ".duration-\\(--ui-motion-control\\)"
+        assert_includes css, ".ui-copy-content"
       end
     end
   end

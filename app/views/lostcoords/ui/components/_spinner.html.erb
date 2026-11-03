@@ -1,7 +1,7 @@
 <%# Inherits currentColor. Pass label: nil inside an already-labelled loading region. %>
 <% label = local_assigns.fetch(:label, "Loading…") %>
 
-<%= tag.span class: spinner_class(size: local_assigns.fetch(:size, :base), extra: local_assigns[:class]),
+<%= tag.span class: lc_spinner_class(size: local_assigns.fetch(:size, :base), extra: local_assigns[:class]),
       role: (label.present? ? "status" : nil),
       **local_assigns.fetch(:attributes, {}) do %>
   <% if label.present? %>

@@ -16,17 +16,17 @@ module Lostcoords::Ui
         "sm:max-h-[calc(100dvh-2rem)] sm:origin-(--dialog-origin,center) [--dialog-from:scale(0.96)] #{ANCHORED}"
     }.freeze
 
-    def dialog_class(kind = :modal, extra: nil)
-      tw("squircle", dialog_kinds.fetch(kind), extra)
+    def lc_dialog_class(kind = :modal, extra: nil)
+      lc_tw("squircle", lc_dialog_kinds.fetch(kind), extra)
     end
 
-    def dialog_surface_class(extra: nil)
-      tw(DIALOG_SURFACE, extra)
+    def lc_dialog_surface_class(extra: nil)
+      lc_tw(DIALOG_SURFACE, extra)
     end
 
     private
 
-    def dialog_kinds
+    def lc_dialog_kinds
       DIALOGS
     end
   end

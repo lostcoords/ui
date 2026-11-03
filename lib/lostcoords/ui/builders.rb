@@ -7,10 +7,16 @@ module Lostcoords::Ui
 
     Builder = Data.define(:helper, :name, :parameters, :path, :line) do
       def signature = parameters ? "#{name}(#{parameters})" : name.to_s
+
+      def component?
+        !name.to_s.end_with?("_class") &&
+          !%i[lc_tw lc_sheet_data lc_form_alert_icon].include?(name) &&
+          helper != "EmojiPickerHelper"
+      end
     end
 
     def self.all
-      definitions.reject { |builder| builder.name.to_s.start_with?("ui_") }
+      definitions.reject(&:component?)
     end
 
     def self.definitions

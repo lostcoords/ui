@@ -4,12 +4,12 @@ module Lostcoords::Ui
       "prose ui-prose min-w-0 max-w-(--ui-reading-measure,65ch) " \
       "text-(length:--ui-reading-size,1rem) leading-(--ui-reading-leading,1.75)"
 
-    def prose_class(extra: nil)
-      tw(PROSE_BASE, extra)
+    def lc_prose_class(extra: nil)
+      lc_tw(PROSE_BASE, extra)
     end
 
-    def ui_prose(**attributes, &block)
-      tag.div(**ui_attributes({ class: prose_class }, attributes), &block)
+    def lc_prose(**attributes, &block)
+      tag.div(**lc_attributes({ class: lc_prose_class }, attributes), &block)
     end
   end
 end

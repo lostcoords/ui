@@ -2,7 +2,7 @@ require "test_helper"
 
 class SourceCodeTest < ActiveSupport::TestCase
   test "highlighting preserves the exact ERB source including Unicode" do
-    source = %(<%= ui_button "保存 & <script>", icon: "plus" %>\n<p class="text-sm">日本語</p>)
+    source = %(<%= lc_button "保存 & <script>", icon: "plus" %>\n<p class="text-sm">日本語</p>)
     html = ApplicationController.helpers.highlight_source(source)
     fragment = Nokogiri::HTML.fragment(html)
 

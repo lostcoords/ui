@@ -5,7 +5,6 @@ module DocsTheming
       --sky-deep: oklch(46% 0.14 155);
       --sky-soft: oklch(96% 0.02 155);
     }
-
     html[data-theme="dark"] {
       --sky: oklch(75% 0.14 155);
       --sky-deep: oklch(70% 0.14 155);
@@ -32,7 +31,4 @@ module DocsTheming
       --shadow: 0 2px 12px rgb(0 0 0 / 0.3);
     }
   CSS
-  DARK_MODE = <<~HTML.strip.freeze
-    <html lang="en" data-theme="dark">
-  HTML
 end

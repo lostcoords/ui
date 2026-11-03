@@ -1,6 +1,11 @@
 en:
   lostcoords:
     ui:
+      copy_button:
+        label: "Copy"
+        copied: "Copied"
+        retry: "Retry"
+        error: "Could not copy. Select the text and copy it manually."
       emoji_picker:
         recently_used: "Recently used"
         search_label: "Search emoji"

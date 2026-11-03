@@ -6,7 +6,7 @@ module Lostcoords::Ui
       lg: "min-h-14 py-3.5"
     }.freeze
 
-    def tw(*classes)
+    def lc_tw(*classes)
       @tailwind_merger ||= TailwindMerge::Merger.new
       @tailwind_merger.merge(classes.flatten.compact.join(" "))
     end

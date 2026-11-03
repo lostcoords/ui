@@ -2,70 +2,47 @@
   <%= render "showcase/sidebar" %>
   <main id="main" class="min-w-0 max-w-4xl flex-1 py-5 lg:py-10">
     <%= render "showcase/mobile_navigation" %>
-    <div class="flex flex-col gap-12 pt-6 lg:pt-0">
-      <header class="flex flex-col gap-4">
-        <h1 class="text-balance text-4xl font-semibold tracking-tight sm:text-5xl">Theming</h1>
-        <p class="text-pretty text-ink-2">Start with the Lostcoords light and dark theme. Override the values you want to change.</p>
-      </header>
-      <section id="defaults" class="flex scroll-mt-28 flex-col gap-4">
-        <h2 class="text-xl font-semibold">Start with the default theme</h2>
-        <p class="text-pretty text-sm text-ink-2">The engine stylesheet includes colors, system fonts, shadows, glass effects and motion settings. After <a href="/installation.html" class="underline underline-offset-2">installation</a>, every component has a working theme. No token file is required.</p>
-        <%= ui_card class: "flex flex-col gap-4" do %>
-          <%= ui_heading "Your theme, across every component", level: 3, size: :card %>
-          <%= ui_text "Use the palette picker and theme switch above to preview the same components with different colors.", size: :small, class: "text-ink-2" %>
-          <div class="flex flex-wrap gap-3">
-            <%= ui_button "Create project", icon: "plus" %>
-            <%= ui_button "View projects", variant: :secondary %>
-            <%= ui_badge "In progress" %>
-          </div>
+    <%= lc_stack gap: :section, class: "pt-6 lg:pt-0" do %>
+      <header class="<%= lc_stack_class(gap: :heading) %>">
+        <%= lc_heading "Theming", level: 1, size: :page %>
+        <%= lc_text tone: :muted do %>
+          The engine includes a complete light and dark theme. After <a href="/installation.html" class="underline underline-offset-2">installation</a>, no token file is required.
         <% end %>
-      </section>
-      <section id="colors" class="flex scroll-mt-28 flex-col gap-4">
-        <h2 class="text-xl font-semibold">Change your colors</h2>
-        <p class="text-pretty text-sm text-ink-2">A design token is a named CSS value shared by components. Add overrides after the engine import in <code>app/assets/tailwind/application.css</code>. Override only the values you need.</p>
-        <div class="overflow-x-auto">
-          <table class="w-full text-start text-sm">
-            <thead class="text-ink"><tr class="border-b border-hairline"><th class="py-3 pe-5 text-start font-medium">CSS variables</th><th class="py-3 text-start font-medium">Controls</th></tr></thead>
-            <tbody class="divide-y divide-hairline text-ink-2">
-              <tr><td class="py-3 pe-5 font-mono text-xs">--paper, --paper-2, --paper-3</td><td class="py-3">Page backgrounds and layered surfaces</td></tr>
-              <tr><td class="py-3 pe-5 font-mono text-xs">--ink, --ink-2, --ink-3</td><td class="py-3">Primary, secondary and muted text</td></tr>
-              <tr><td class="py-3 pe-5 font-mono text-xs">--sky, --sky-deep, --sky-soft</td><td class="py-3">Primary actions, hover states and subtle highlights</td></tr>
-              <tr><td class="py-3 pe-5 font-mono text-xs">--ink-on-accent</td><td class="py-3">Text on primary actions</td></tr>
-              <tr><td class="py-3 pe-5 font-mono text-xs">--accent</td><td class="py-3">Links and accents. Defaults to the primary hover color.</td></tr>
-              <tr><td class="py-3 pe-5 font-mono text-xs">--hairline</td><td class="py-3">Borders and dividers</td></tr>
-              <tr><td class="py-3 pe-5 font-mono text-xs">--leaf, --gold, --berry</td><td class="py-3">Success, warning and error tones, each with a matching -soft value</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <p class="text-pretty text-sm text-ink-2">For green primary actions, set the three primary colors for both themes. The existing <code>sky</code> names work with any hue.</p>
+      </header>
+      <%= lc_section title: "Change your colors", id: "colors" do %>
+        <%= lc_text size: :small, tone: :muted do %>
+          Add overrides after the engine import in <code>app/assets/tailwind/application.css</code>. This example changes primary actions to green.
+        <% end %>
         <%= render "showcase/source_code", source: DocsTheming::COLORS, language: :css, id: "theme-colors", label: "Primary color overrides" %>
-        <p class="text-pretty text-sm text-ink-2">The theme maps these values to Tailwind utilities such as <code>bg-paper</code>, <code>text-ink</code> and <code>bg-sky</code>. Use the same utilities in your own markup to match the components. When you change a palette, check text and focus contrast in both themes.</p>
-      </section>
-      <section id="dark-mode" class="flex scroll-mt-28 flex-col gap-4">
-        <h2 class="text-xl font-semibold">Switch to dark mode</h2>
-        <p class="text-pretty text-sm text-ink-2">Set <code>data-theme="dark"</code> on <code>&lt;html&gt;</code> to activate the dark palette and Tailwind's <code>dark:</code> variant.</p>
-        <%= render "showcase/source_code", source: DocsTheming::DARK_MODE, language: :html, id: "theme-dark", label: "Dark theme attribute" %>
-        <p class="text-pretty text-sm text-ink-2">Remove the attribute, or set it to <code>light</code>, for the light theme. Your app controls the switch, saved preference and system preference. Set the attribute before the first paint to avoid a theme flash.</p>
-      </section>
-      <section id="fonts" class="flex scroll-mt-28 flex-col gap-4">
-        <h2 class="text-xl font-semibold">Choose your fonts</h2>
-        <p class="text-pretty text-sm text-ink-2">The default theme uses system fonts. Load your own font in your app, then override the body and heading families.</p>
-        <%= render "showcase/source_code", source: DocsTheming::FONTS, language: :css, id: "theme-fonts", label: "Font family overrides" %>
-        <p class="text-pretty text-sm text-ink-2">Use <code>--f-mono</code> for code. The default theme uses <code>--f-japanese</code> on pages with <code>lang="ja"</code>. If you override the body and heading fonts globally, add your Japanese font overrides under <code>html:lang(ja)</code> too. See <a href="/components/foundations.html" class="underline underline-offset-2">Foundations</a> for text roles and spacing overrides.</p>
-      </section>
-      <section id="shape" class="flex scroll-mt-28 flex-col gap-4">
-        <h2 class="text-xl font-semibold">Adjust corners and shadows</h2>
-        <p class="text-pretty text-sm text-ink-2">Set Tailwind's radius variables on <code>body</code> to adjust rounded controls and cards. Buttons that use <code>rounded-full</code> keep their pill shape. Override <code>--shadow</code> to change the shared surface shadow.</p>
-        <%= render "showcase/source_code", source: DocsTheming::SHAPE, language: :css, id: "theme-shape", label: "Radius and shadow overrides" %>
-        <p class="text-pretty text-sm text-ink-2">For one component, use its <code>class:</code> attribute, such as <code>class: "rounded-lg shadow-none"</code>.</p>
-      </section>
-      <section id="advanced" class="flex scroll-mt-28 flex-col gap-4">
-        <h2 class="text-xl font-semibold">Advanced theme values</h2>
-        <p class="text-pretty text-sm text-ink-2">Glass surfaces, pill effects, overlay scrims, animation timing and stacking order have defaults too. Override these only when you need a different treatment. Reduced motion preferences shorten animations automatically.</p>
-        <%= ui_disclosure title: "All theme variables" do %>
+        <%= lc_text size: :small, tone: :muted do %>
+          Use <code>--paper</code> for backgrounds, <code>--ink</code> for text and <code>--hairline</code> for borders. Matching Tailwind utilities include <code>bg-paper</code> and <code>text-ink</code>.
+        <% end %>
+      <% end %>
+      <%= lc_section title: "Switch themes", id: "dark-mode" do %>
+        <%= lc_text size: :small, tone: :muted do %>
+          Set <code>data-theme="dark"</code> on <code>&lt;html&gt;</code> for dark mode and Tailwind's <code>dark:</code> variant. Remove it for light mode. Your app controls the switch and saved preference.
+        <% end %>
+      <% end %>
+      <%= lc_stack id: "advanced" do %>
+        <%= lc_disclosure title: "Fonts, corners and shadows" do %>
+          <%= lc_stack do %>
+            <%= lc_text size: :small, tone: :muted do %>
+              Load your font, then set the body and heading families. The defaults use system fonts.
+            <% end %>
+            <%= render "showcase/source_code", source: DocsTheming::FONTS, language: :css, id: "theme-fonts", label: "Font family overrides" %>
+            <%= lc_text size: :small, tone: :muted do %>
+              Set radius variables on <code>body</code> for controls and cards. <code>rounded-full</code> buttons keep their pill shape. <code>--shadow</code> controls the shared surface shadow.
+            <% end %>
+            <%= render "showcase/source_code", source: DocsTheming::SHAPE, language: :css, id: "theme-shape", label: "Radius and shadow overrides" %>
+            <%= lc_text size: :small, tone: :muted do %>
+              For one component, use <code>class:</code>. See <a href="/components/foundations.html" class="underline underline-offset-2">Foundations</a> for typography, Japanese text and spacing.
+            <% end %>
+          <% end %>
+        <% end %>
+        <%= lc_disclosure title: "All theme variables" do %>
           <%= render "showcase/tokens" %>
         <% end %>
-      </section>
-    </div>
+      <% end %>
+    <% end %>
   </main>
 </div>

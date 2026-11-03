@@ -1,11 +1,14 @@
 require "unicode/emoji"
 require "yaml"
+require_relative "translation_helper"
 
 module Lostcoords::Ui
   module EmojiPickerHelper
-    SEARCH_NAMES_PATH = Lostcoords::Ui::Engine.root.join("config/emoji_search_names.yml")
-    SEARCH_NAMES_JA_PATH = Lostcoords::Ui::Engine.root.join("config/emoji_search_names_ja.yml")
-    SEARCH_ALIASES_PATH = Lostcoords::Ui::Engine.root.join("config/emoji_search_aliases.yml")
+    include TranslationHelper
+
+    SEARCH_NAMES_PATH = Lostcoords::Ui.root.join("config/emoji_search_names.yml")
+    SEARCH_NAMES_JA_PATH = Lostcoords::Ui.root.join("config/emoji_search_names_ja.yml")
+    SEARCH_ALIASES_PATH = Lostcoords::Ui.root.join("config/emoji_search_aliases.yml")
 
     # Representative glyph for each category's tab in the picker navigation.
     CATEGORY_ICONS = {
@@ -66,33 +69,33 @@ module Lostcoords::Ui
       "Flags" => "flags"
     }.freeze
 
-    def emoji_picker_groups
+    def lc_emoji_picker_groups
       Lostcoords::Ui::EmojiPickerHelper.groups.map do |group|
-        group.merge(name: t("lostcoords.ui.emoji_picker.categories.#{group[:key]}", default: group[:name]))
+        group.merge(name: lc_t("lostcoords.ui.emoji_picker.categories.#{group[:key]}", default: group[:name]))
       end
     end
 
-    def emoji_picker_count
-      emoji_picker_groups.sum { |group| group[:emojis].size }
+    def lc_emoji_picker_count
+      lc_emoji_picker_groups.sum { |group| group[:emojis].size }
     end
 
-    def emoji_picker_version
+    def lc_emoji_picker_version
       "#{Unicode::Emoji::EMOJI_VERSION}-#{I18n.locale}-search-v3"
     end
 
-    def emoji_picker_search_text(emoji)
+    def lc_emoji_picker_search_text(emoji)
       Lostcoords::Ui::EmojiPickerHelper.search_text_for(emoji)
     end
 
-    def emoji_picker_search_name(emoji)
+    def lc_emoji_picker_search_name(emoji)
       Lostcoords::Ui::EmojiPickerHelper.search_name_for(emoji, locale: I18n.locale)
     end
 
-    def emoji_picker_search_labels(emoji)
+    def lc_emoji_picker_search_labels(emoji)
       Lostcoords::Ui::EmojiPickerHelper.search_labels_for(emoji).join("|")
     end
 
-    def emoji_picker_toneable?(emoji)
+    def lc_emoji_picker_toneable?(emoji)
       Lostcoords::Ui::EmojiPickerHelper.toneable?(emoji)
     end
 

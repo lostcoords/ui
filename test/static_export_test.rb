@@ -15,7 +15,7 @@ class StaticExportTest < ActiveSupport::TestCase
       assert_equal "ui.lostcoords.com\n", File.read(File.join(directory, "CNAME"))
       reference = JSON.parse(File.read(File.join(directory, "api.json")))
       assert_equal Lostcoords::Ui::Components.all.size, reference.fetch("components").size
-      assert_includes File.read(File.join(directory, "llms.txt")), "ui_button_to"
+      assert_includes File.read(File.join(directory, "llms.txt")), "lc_button_to"
       installation = Nokogiri::HTML(File.read(File.join(directory, "installation.html")))
       assert_includes installation.text, "app/assets/tailwind/application.css"
       assert_includes File.read(File.join(directory, "starter.css")), '@import "../builds/tailwind/lostcoords_ui.css"'

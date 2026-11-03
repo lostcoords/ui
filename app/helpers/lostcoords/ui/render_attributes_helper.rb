@@ -1,11 +1,11 @@
 module Lostcoords::Ui
   module RenderAttributesHelper
     private
-      def ui_attributes(defaults, attributes)
-        defaults = ui_normalize_attributes(defaults)
-        attributes = ui_normalize_attributes(attributes)
+      def lc_attributes(defaults, attributes)
+        defaults = lc_normalize_attributes(defaults)
+        attributes = lc_normalize_attributes(attributes)
         merged = defaults.merge(attributes)
-        merged[:class] = tw(CGI.unescape_html(class_names(defaults[:class], attributes[:class]))) if defaults.key?(:class) || attributes.key?(:class)
+        merged[:class] = lc_tw(CGI.unescape_html(class_names(defaults[:class], attributes[:class]))) if defaults.key?(:class) || attributes.key?(:class)
         %i[data aria].each do |key|
           next unless defaults[key].is_a?(Hash) && attributes[key].is_a?(Hash)
 
@@ -20,7 +20,7 @@ module Lostcoords::Ui
         merged
       end
 
-      def ui_normalize_attributes(attributes)
+      def lc_normalize_attributes(attributes)
         normalized = attributes.deep_symbolize_keys
         %i[data aria].each do |prefix|
           values = normalized[prefix]
@@ -36,7 +36,7 @@ module Lostcoords::Ui
         normalized
       end
 
-      def ui_option!(name, value, allowed)
+      def lc_option!(name, value, allowed)
         normalized = value.to_sym if value.is_a?(String) || value.is_a?(Symbol)
         return normalized if allowed.include?(normalized)
 

@@ -1,8 +1,8 @@
 <div class="grid gap-5">
-  <%= ui_heading "Weekend in Kyoto", level: 2, size: :page %>
-  <%= ui_heading "Shared expenses", level: 3, size: :section %>
-  <%= ui_heading "Dinner with friends", level: 4, size: :card %>
-  <%= ui_text "Keep the details together so everyone can see what they owe." %>
-  <%= ui_text "Add a receipt or a short note for your group.", size: :small, tone: :muted %>
-  <%= ui_text "Updated a few minutes ago", size: :caption, tone: :subtle %>
+  <%= lc_heading "Weekend in Kyoto", level: 2, size: :page %>
+  <%= lc_heading "Shared expenses", level: 3, size: :section %>
+  <%= lc_heading "Dinner with friends", level: 4, size: :card %>
+  <%= lc_text do %>Use <code>lc_stack</code> to keep related content together.<% end %>
+  <%= lc_text "Add a receipt or a short note for your group.", size: :small, tone: :muted %>
+  <%= lc_text "Updated a few minutes ago", size: :caption, tone: :subtle %>
 </div>

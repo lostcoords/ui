@@ -24,31 +24,31 @@ module Lostcoords::Ui
 
     # Makes a <dialog> an iOS sheet on phones (sheet_controller), keeping the dialog's own
     # controllers. detents: "fit", "medium large" or "large".
-    def sheet_data(data = {}, detents: "fit")
+    def lc_sheet_data(data = {}, detents: "fit")
       data.merge(
         controller: [ data[:controller], "sheet" ].compact.join(" "),
         sheet_detents_value: detents
       )
     end
 
-    def sheet_row_class(extra: nil)
-      tw(SHEET_ROW_BASE, extra)
+    def lc_sheet_row_class(extra: nil)
+      lc_tw(SHEET_ROW_BASE, extra)
     end
 
-    def sheet_row_label_class(extra: nil)
-      tw(SHEET_ROW_LABEL_BASE, extra)
+    def lc_sheet_row_label_class(extra: nil)
+      lc_tw(SHEET_ROW_LABEL_BASE, extra)
     end
 
-    def sheet_chip_class(active: false, member: false, extra: nil)
-      pill_class(size: :sm, active: active, extra: tw(SHEET_CHIP_BASE, (SHEET_CHIP_ACTIVE if active), (SHEET_MEMBER_CHIP if member), extra))
+    def lc_sheet_chip_class(active: false, member: false, extra: nil)
+      lc_pill_class(size: :sm, active: active, extra: lc_tw(SHEET_CHIP_BASE, (SHEET_CHIP_ACTIVE if active), (SHEET_MEMBER_CHIP if member), extra))
     end
 
-    def sheet_datetime_input_class(extra: nil)
-      tw(SHEET_DATETIME_INPUT_BASE, extra)
+    def lc_sheet_datetime_input_class(extra: nil)
+      lc_tw(SHEET_DATETIME_INPUT_BASE, extra)
     end
 
-    def sheet_text_input_class(extra: nil)
-      tw(SHEET_TEXT_INPUT_BASE, extra)
+    def lc_sheet_text_input_class(extra: nil)
+      lc_tw(SHEET_TEXT_INPUT_BASE, extra)
     end
   end
 end

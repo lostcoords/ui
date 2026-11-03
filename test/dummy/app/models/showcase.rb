@@ -7,7 +7,10 @@ module Showcase
       'For custom SVGs and spinners, use data-icon="inline-start" or data-icon="inline-end". The button reduces padding on that edge for optical balance. The icon: option sets this automatically.'
     end
 
-    def builders = source.scan(/\bui_\w+/).map(&:to_sym).uniq
+    def builders
+      names = Lostcoords::Ui::Components.all.map(&:name)
+      source.scan(/\blc_\w+/).map(&:to_sym).uniq & names
+    end
   end
 
   Section = Data.define(:id, :title, :description, :examples) do
@@ -24,6 +27,10 @@ module Showcase
         Example.new(:reading, "Reading content", :page),
         Example.new(:reading_japanese, "Japanese reading", :page)
       ]),
+      Section.new(:motion, "Motion", "Shared motion settings and feedback tied to real interaction states.", [
+        Example.new(:motion_controls, "Hover and press", :card),
+        Example.new(:motion_feedback, "Label and icon feedback", :card)
+      ]),
       Section.new(:button, "Button", "Actions, links and native Rails forms.", [
         Example.new(:button, "Default", :card),
         Example.new(:button_options, "Variants", :card),
@@ -34,6 +41,11 @@ module Showcase
         Example.new(:button_disabled, "Disabled", :card),
         Example.new(:button_link, "As a link", :card),
         Example.new(:button_form, "HTTP actions", :card)
+      ]),
+      Section.new(:copy_button, "Copy button", "Copy text or a live field value with animated confirmation and accessible feedback.", [
+        Example.new(:copy_button, "Labels, icons and disabled controls", :card),
+        Example.new(:copy_button_source, "Copy from an element", :card),
+        Example.new(:copy_button_localized, "Translated labels", :card)
       ]),
       Section.new(:icon_button, "Icon button", "An icon action with an accessible label.", [
         Example.new(:icon_button, "Shapes and sizes", :card)

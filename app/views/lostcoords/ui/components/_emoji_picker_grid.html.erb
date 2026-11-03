@@ -1,4 +1,4 @@
-<% emoji_picker_groups.each do |group| %>
+<% lc_emoji_picker_groups.each do |group| %>
   <section
     class="emoji-picker__category"
     data-section="<%= group[:key] %>"
@@ -14,12 +14,12 @@
         <button
           type="button"
           data-emoji="<%= emoji %>"
-          data-tone="<%= "true" if emoji_picker_toneable?(emoji) %>"
-          data-search="<%= emoji_picker_search_text(emoji) %>"
-          data-search-name="<%= emoji_picker_search_name(emoji) %>"
-          data-search-labels="<%= emoji_picker_search_labels(emoji) %>"
-          title="<%= emoji_picker_search_name(emoji) %>"
-          aria-label="<%= emoji_picker_search_name(emoji) %>"
+          data-tone="<%= "true" if lc_emoji_picker_toneable?(emoji) %>"
+          data-search="<%= lc_emoji_picker_search_text(emoji) %>"
+          data-search-name="<%= lc_emoji_picker_search_name(emoji) %>"
+          data-search-labels="<%= lc_emoji_picker_search_labels(emoji) %>"
+          title="<%= lc_emoji_picker_search_name(emoji) %>"
+          aria-label="<%= lc_emoji_picker_search_name(emoji) %>"
         >
           <%= emoji %>
         </button>

@@ -8,8 +8,10 @@
 
 /* A control gives a little as it is pressed, unless it is disabled. */
 @utility press {
-  &:not([disabled], :disabled, [aria-disabled="true"]):active {
-    transform: scale(var(--press-scale, 0.96));
+  @media (prefers-reduced-motion: no-preference) {
+    &:not([disabled], :disabled, [aria-disabled="true"]):active {
+      transform: scale(var(--press-scale, var(--ui-press-scale)));
+    }
   }
 }
 

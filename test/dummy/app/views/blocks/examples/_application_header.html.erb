@@ -1,34 +1,34 @@
 <div class="header-example min-h-screen" data-controller="blocks-header" data-action="scroll@window->blocks-header#scroll">
   <header class="header-example__header sticky top-0 z-nav px-3 pt-3 pb-4 sm:px-6">
     <div class="header-example__bar relative isolate mx-auto flex max-w-5xl items-center gap-2 px-3 py-2">
-      <span class="header-example__glass <%= glass_class(extra: "absolute inset-0 -z-10 pointer-events-none") %>" aria-hidden="true"></span>
+      <span class="header-example__glass <%= lc_glass_class(extra: "absolute inset-0 -z-10 pointer-events-none") %>" aria-hidden="true"></span>
       <a href="#overview" class="flex min-h-11 items-center gap-2.5 pe-4 font-semibold tracking-tight" aria-label="Studio home">
-        <span class="grid size-8 place-items-center rounded-xl bg-ink text-paper"><%= heroicon "square-3-stack-3d", options: { class: "size-4.5", "aria-hidden": true } %></span>
+        <span class="grid size-8 place-items-center rounded-xl bg-ink text-paper"><%= lc_icon "square-3-stack-3d", options: { class: "size-4.5", "aria-hidden": true } %></span>
         Studio
       </a>
       <nav class="hidden items-center gap-1 sm:flex" aria-label="Workspace">
         <% [ [ "Overview", "overview" ], [ "Projects", "projects" ], [ "People", "people" ] ].each do |label, id| %>
-          <%= ui_button_link_to label, "##{id}", variant: :ghost, size: :sm %>
+          <%= lc_button_link_to label, "##{id}", variant: :ghost, size: :sm %>
         <% end %>
       </nav>
       <div class="ms-auto flex items-center gap-2">
-        <span class="hidden sm:inline-flex"><%= ui_badge "Personal workspace" %></span>
+        <span class="hidden sm:inline-flex"><%= lc_badge "Personal workspace" %></span>
         <div class="relative" data-controller="row-menu">
-          <button class="<%= icon_button_class(shape: :circle, size: :sm) %>" type="button" aria-label="Account menu" aria-haspopup="menu" aria-expanded="false" aria-controls="header-account-menu" data-row-menu-target="trigger" data-action="row-menu#toggle">
-            <%= ui_avatar "AL", size: :sm, class: "bg-sky-soft text-sky-deep" %>
+          <button class="<%= lc_icon_button_class(shape: :circle, size: :sm) %>" type="button" aria-label="Account menu" aria-haspopup="menu" aria-expanded="false" aria-controls="header-account-menu" data-row-menu-target="trigger" data-action="row-menu#toggle">
+            <%= lc_avatar "AL", size: :sm, class: "bg-sky-soft text-sky-deep" %>
           </button>
-          <div id="header-account-menu" class="<%= menu_popover_class %>" role="menu" aria-label="Account" data-row-menu-target="popover">
-            <%= ui_menu_option "Alex Lee · Personal workspace", href: "#people" %>
-            <%= ui_menu_option "Workspace overview", href: "#overview" %>
-            <%= ui_menu_option "See projects", href: "#projects" %>
+          <div id="header-account-menu" class="<%= lc_menu_popover_class %>" role="menu" aria-label="Account" data-row-menu-target="popover">
+            <%= lc_menu_option "Alex Lee · Personal workspace", href: "#people" %>
+            <%= lc_menu_option "Workspace overview", href: "#overview" %>
+            <%= lc_menu_option "See projects", href: "#projects" %>
           </div>
         </div>
         <div class="relative sm:hidden" data-controller="row-menu">
-          <%= ui_icon_button "Workspace menu", icon: "bars-3", size: :sm, aria: { haspopup: "menu", expanded: false, controls: "header-workspace-menu" }, data: { row_menu_target: "trigger", action: "row-menu#toggle" } %>
-          <div id="header-workspace-menu" class="<%= menu_popover_class %>" role="menu" aria-label="Workspace" data-row-menu-target="popover">
-            <%= ui_menu_option "Overview", href: "#overview" %>
-            <%= ui_menu_option "Projects", href: "#projects" %>
-            <%= ui_menu_option "People", href: "#people" %>
+          <%= lc_icon_button "Workspace menu", icon: "bars-3", size: :sm, aria: { haspopup: "menu", expanded: false, controls: "header-workspace-menu" }, data: { row_menu_target: "trigger", action: "row-menu#toggle" } %>
+          <div id="header-workspace-menu" class="<%= lc_menu_popover_class %>" role="menu" aria-label="Workspace" data-row-menu-target="popover">
+            <%= lc_menu_option "Overview", href: "#overview" %>
+            <%= lc_menu_option "Projects", href: "#projects" %>
+            <%= lc_menu_option "People", href: "#people" %>
           </div>
         </div>
       </div>
@@ -38,14 +38,14 @@
   <main class="mx-auto flex max-w-4xl flex-col gap-12 px-5 pt-8 pb-16 sm:px-8 sm:pt-12">
     <section id="overview" class="flex scroll-mt-28 flex-col gap-6">
       <div class="flex flex-col gap-3">
-        <%= ui_eyebrow "Your workspace, at a glance" %>
+        <%= lc_eyebrow "Your workspace, at a glance" %>
         <h1 class="text-4xl font-semibold tracking-tight sm:text-5xl">Room for good work.</h1>
         <p class="max-w-lg text-ink-2">A little space for your projects, your people, and whatever comes next.</p>
       </div>
       <div class="grid gap-4 sm:grid-cols-3">
         <% [ [ "Projects in motion", "06", "rectangle-stack" ], [ "Your collaborators", "12", "users" ], [ "This week’s milestones", "03", "flag" ] ].each do |label, number, icon| %>
-          <%= ui_card class: "flex flex-col gap-6" do %>
-            <div class="flex items-center justify-between gap-3"><span class="text-sm text-ink-2"><%= label %></span><%= heroicon icon, options: { class: "size-5 shrink-0 text-ink-3", "aria-hidden": true } %></div>
+          <%= lc_card class: "flex flex-col gap-6" do %>
+            <div class="flex items-center justify-between gap-3"><span class="text-sm text-ink-2"><%= label %></span><%= lc_icon icon, options: { class: "size-5 shrink-0 text-ink-3", "aria-hidden": true } %></div>
             <p class="text-4xl font-semibold tracking-tight tabular-nums"><%= number %></p>
           <% end %>
         <% end %>
@@ -53,10 +53,10 @@
     </section>
 
     <section id="projects" class="flex scroll-mt-28 flex-col gap-4">
-      <div class="flex min-h-11 items-center justify-between gap-3"><h2 class="text-xl font-semibold">In the studio</h2><%= ui_badge "3 featured" %></div>
+      <div class="flex min-h-11 items-center justify-between gap-3"><h2 class="text-xl font-semibold">In the studio</h2><%= lc_badge "3 featured" %></div>
       <% [ [ "Brand refresh", "A fresh look for a familiar idea.", "swatch", :accent, "In progress" ], [ "Summer collection", "Objects made for everyday moments.", "sun", :neutral, "Taking shape" ], [ "Field notes", "Small observations, collected together.", "book-open", :accent, "Ready to share" ] ].each do |title, description, icon, tone, status| %>
-        <%= ui_card class: "flex items-center gap-4" do %>
-          <%= ui_medallion icon: icon, tone: tone, size: :sm %>
+        <%= lc_card class: "flex items-center gap-4" do %>
+          <%= lc_medallion icon: icon, tone: tone, size: :sm %>
           <div class="flex min-w-0 flex-1 flex-col gap-1"><h3 class="font-semibold"><%= title %></h3><p class="text-sm text-ink-2"><%= description %></p></div>
           <span class="hidden text-xs text-ink-3 sm:block"><%= status %></span>
         <% end %>
@@ -65,9 +65,9 @@
 
     <section id="people" class="flex scroll-mt-28 flex-col gap-4">
       <h2 class="text-xl font-semibold">Good company</h2>
-      <%= ui_card class: "flex flex-col gap-5" do %>
+      <%= lc_card class: "flex flex-col gap-5" do %>
         <% [ [ "AL", "Alex Lee", "Designer" ], [ "SK", "Sam Kim", "Writer" ], [ "JR", "Jamie Reed", "Maker" ] ].each do |initials, name, role| %>
-          <div class="flex items-center gap-3"><%= ui_avatar initials, class: "bg-paper text-ink-2" %><div class="flex-1"><p class="text-sm font-semibold"><%= name %></p><p class="text-sm text-ink-3"><%= role %></p></div><%= ui_status_pill "Available" %></div>
+          <div class="flex items-center gap-3"><%= lc_avatar initials, class: "bg-paper text-ink-2" %><div class="flex-1"><p class="text-sm font-semibold"><%= name %></p><p class="text-sm text-ink-3"><%= role %></p></div><%= lc_status_pill "Available" %></div>
         <% end %>
       <% end %>
     </section>

@@ -1,0 +1,44 @@
+#!/usr/bin/env ruby
+
+require "digest"
+require "fileutils"
+require "json"
+require "net/http"
+require "rubygems/package"
+require "stringio"
+require "zlib"
+
+version = "2.2.0"
+checksum = "42bd31001127631a20270e7bd87ac13647bfcd628dd533e2ff31497068b4f7af"
+url = "https://codeload.github.com/tailwindlabs/heroicons/tar.gz/refs/tags/v#{version}"
+archive = if ARGV.first
+  File.binread(ARGV.first)
+else
+  response = Net::HTTP.get_response(URI(url))
+  abort "Icon download failed: #{response.code}" unless response.is_a?(Net::HTTPSuccess)
+  response.body
+end
+abort "Icon archive checksum mismatch" unless Digest::SHA256.hexdigest(archive) == checksum
+
+variants = { "24/outline" => "outline", "24/solid" => "solid", "20/solid" => "mini", "16/solid" => "micro" }
+icons = variants.values.to_h { |variant| [ variant, {} ] }
+license = nil
+Gem::Package::TarReader.new(Zlib::GzipReader.new(StringIO.new(archive))) do |tar|
+  tar.each do |entry|
+    next unless entry.file?
+
+    relative = entry.full_name.delete_prefix("heroicons-#{version}/")
+    license = entry.read if relative == "LICENSE"
+    next unless (match = relative.match(%r{\Aoptimized/(24/outline|24/solid|20/solid|16/solid)/([\w-]+)\.svg\z}))
+
+    icons.fetch(variants.fetch(match[1]))[match[2]] = entry.read.strip
+  end
+end
+abort "Icon archive is incomplete" unless license && icons.values.all?(&:any?)
+
+destination = File.expand_path("../vendor/heroicons", __dir__)
+FileUtils.mkdir_p(destination)
+catalog = { version: version, source: url, sha256: checksum, icons: icons.transform_values { |entries| entries.sort.to_h } }
+File.write(File.join(destination, "icons.json"), JSON.pretty_generate(catalog) + "\n")
+File.write(File.join(destination, "LICENSE"), license)
+puts "Imported #{icons.values.sum(&:size)} Heroicons v#{version} icons"

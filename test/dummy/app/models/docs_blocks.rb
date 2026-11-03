@@ -9,7 +9,7 @@ module DocsBlocks
     def preview_url = "/blocks/#{id}/preview.html"
 
     def components
-      builders = sources.first.content.scan(/\bui_\w+/).map(&:to_sym)
+      builders = sources.first.content.scan(/\blc_\w+/).map(&:to_sym)
       Showcase.sections.filter_map { |section| section.id if (section.builders & builders).any? }
     end
 

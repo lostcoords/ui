@@ -1,6 +1,11 @@
 ja:
   lostcoords:
     ui:
+      copy_button:
+        label: "コピー"
+        copied: "コピー済み"
+        retry: "再試行"
+        error: "コピーできませんでした。テキストを選択して手動でコピーしてください。"
       emoji_picker:
         recently_used: "最近使った絵文字"
         search_label: "絵文字を検索"

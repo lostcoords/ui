@@ -1,13 +1,13 @@
-<%= ui_button variant: :secondary do %>
-  <%= heroicon "arrow-down-tray", options: {
+<%= lc_button variant: :secondary do %>
+  <%= lc_icon "arrow-down-tray", options: {
     "aria-hidden": true,
     "data-icon": "inline-start"
   } %>
   Download report
 <% end %>
 
-<%= ui_button disabled: true, aria: { busy: true } do %>
-  <%= ui_spinner size: :sm, label: nil,
+<%= lc_button disabled: true, aria: { busy: true } do %>
+  <%= lc_spinner size: :sm, label: nil,
       data: { icon: "inline-start" } %>
   Loading report…
 <% end %>
