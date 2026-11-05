@@ -6,7 +6,7 @@
     <title><%= @section ? "#{@section.title} · " : (@block ? "#{@block.title} · " : (controller_name == "blocks" ? "Blocks · " : "")) %>LOST COORDS UI</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="description" content="A Rails component library. Examples, ERB and API reference.">
-    <link rel="icon" href="data:,">
+    <%= showcase_favicon_tag %>
     <script>
       const palette = localStorage.getItem("lostcoords-ui:palette")
       if (<%= raw DocsPalette::ALL.reject { |palette| palette.id == "original" }.map(&:id).to_json %>.includes(palette)) document.documentElement.dataset.palette = palette

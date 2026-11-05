@@ -1,4 +1,15 @@
 module ShowcaseHelper
+  # The header's brand mark, inlined so the static export needs no icon file. It follows the browser's color scheme.
+  FAVICON = <<~SVG.squish.freeze
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28" fill="none">
+    <style>path{stroke:#111}@media (prefers-color-scheme:dark){path{stroke:#fff}}</style>
+    <path d="M7 3v18h18M3 7h18v18M14 9v10M9 14h10" stroke-width="2"/></svg>
+  SVG
+
+  def showcase_favicon_tag
+    tag.link(rel: "icon", type: "image/svg+xml", href: "data:image/svg+xml,#{ERB::Util.url_encode(FAVICON)}")
+  end
+
   def showcase_components(section)
     components = Lostcoords::Ui::Components.all.index_by(&:name)
     section.components.map { |name| components.fetch(name) }
