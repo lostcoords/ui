@@ -103,7 +103,12 @@ export default class extends Controller {
     this.setState("choosing")
     this.setFates((index) => (index < chosen ? "left" : index > chosen ? "right" : "chosen"))
     // The bands already cover the page, so the palette can change underneath.
-    this.dispatch("choose", { detail: { id: choices[chosen].value } })
+    // Restyling the page is heavy, so it waits until the bands and label have
+    // started moving.
+    const id = choices[chosen].value
+    requestAnimationFrame(() =>
+      requestAnimationFrame(() => this.dispatch("choose", { detail: { id } })),
+    )
     this.settle().then((settled) => settled && this.finish())
   }
 
