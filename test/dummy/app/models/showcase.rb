@@ -41,13 +41,14 @@ module Showcase
       Section.new(:foundations, "Foundations", "Typography, spacing and reading rhythm shared by every app.", [
         Example.new(:typography, "Text styles", :panel),
         Example.new(:typography_japanese, "Japanese text", :panel),
+        Example.new(:eyebrow, "Eyebrow", :panel),
         Example.new(:layout, "Page rhythm", :bare),
         Example.new(:layout_responsive, "Responsive containers", :bare),
         Example.new(:reading, "Reading content", :bare),
         Example.new(:reading_japanese, "Japanese reading", :bare),
         Example.new(:motion_controls, "Hover and press", :panel),
         Example.new(:motion_feedback, "Motion feedback", :panel)
-      ], %i[lc_stack lc_inline lc_container lc_section lc_heading lc_text lc_prose]),
+      ], %i[lc_stack lc_inline lc_container lc_section lc_section_header lc_heading lc_text lc_prose]),
       Section.new(:code_block, "Code block", "Source snippets with copying, optional highlighting and collapsible long content.", [
         Example.new(:code_block, "Plain source", :bare),
         Example.new(:code_block_title, "With a filename", :bare),
@@ -56,6 +57,7 @@ module Showcase
       Section.new(:button, "Button", "Actions, links and native Rails forms.", [
         Example.new(:button, "Default", :panel),
         Example.new(:button_options, "Variants", :panel),
+        Example.new(:button_tones, "Destructive tone", :panel),
         Example.new(:button_glass, "Glass over content", :bare),
         Example.new(:button_sizes, "Sizes", :panel),
         Example.new(:button_with_icon, "With an icon", :panel),
@@ -64,8 +66,11 @@ module Showcase
         Example.new(:button_disabled, "Disabled", :panel),
         Example.new(:button_link, "As a link", :panel),
         Example.new(:button_form, "HTTP actions", :panel),
-        Example.new(:icon_button, "Icon buttons", :panel)
-      ], %i[lc_button lc_button_link_to lc_button_to lc_icon_button lc_icon]),
+        Example.new(:icon_button, "Icon buttons", :panel),
+        Example.new(:select_trigger, "Select trigger", :panel),
+        Example.new(:split_button, "Split button", :panel),
+        Example.new(:split_button_variants, "Split button variants and sizes", :panel)
+      ], %i[lc_button lc_button_link_to lc_button_to lc_icon_button lc_icon_button_link_to lc_icon_button_to lc_icon lc_select_trigger lc_split_button]),
       Section.new(:copy_button, "Copy button", "Copy text or a live field value with animated confirmation and accessible feedback.", [
         Example.new(:copy_button, "Labels, icons and disabled controls", :panel),
         Example.new(:copy_button_source, "Copy from an element", :panel),
@@ -73,15 +78,16 @@ module Showcase
       ]),
       Section.new(:badge, "Badge", "Labels, counts and status.", [
         Example.new(:badge, "Tones", :panel),
-        Example.new(:badge_status, "Status", :panel)
+        Example.new(:badge_status, "Pill status", :panel)
       ]),
-      Section.new(:toggle, "Toggle", "Pressed controls and filter navigation.", [
+      Section.new(:toggle, "Toggle", "Pressed controls, filter links and radio choices.", [
         Example.new(:toggle, "Filters", :panel),
         Example.new(:toggle_links, "Navigation", :panel),
         Example.new(:toggle_disabled, "Disabled and ghost", :panel)
       ]),
       Section.new(:avatar, "Avatar", "Initials or an image representing a person.", [
         Example.new(:avatar, "Initials and images", :panel),
+        Example.new(:avatar_sizes, "Sizes", :panel),
         Example.new(:avatar_stack, "Avatar groups", :panel)
       ], %i[lc_avatar lc_avatar_stack]),
       Section.new(:icon_badge, "Icon badge", "A small container for a symbol.", [
@@ -97,6 +103,9 @@ module Showcase
         Example.new(:card_form, "With form controls", :bare),
         Example.new(:card_validation, "Validation feedback", :bare)
       ]),
+      Section.new(:glass, "Glass", "A translucent surface for controls floating over content.", [
+        Example.new(:glass, "Search bar", :bare)
+      ]),
       Section.new(:table, "Table", "Native tables with clear headers and subtle row dividers. Keep captions, headers and scroll containers in the view.", [
         Example.new(:table, "Records", :bare)
       ]),
@@ -108,8 +117,9 @@ module Showcase
         Example.new(:invalid_field, "Validation", :panel),
         Example.new(:rails_field, "Rails forms", :panel),
         Example.new(:layout_form_actions, "Form actions", :panel),
-        Example.new(:form_builder, "Form builder", :panel)
-      ], %i[lc_field lc_form_with]),
+        Example.new(:form_builder, "Form builder", :panel),
+        Example.new(:fieldset, "Grouped controls", :panel)
+      ], %i[lc_field lc_fieldset lc_form_with]),
       Section.new(:checkbox, "Checkbox", "Native checkboxes with labels and hints.", [
         Example.new(:checkbox, "Checkboxes", :panel)
       ]),
@@ -142,9 +152,11 @@ module Showcase
       Section.new(:breadcrumb, "Breadcrumb", "The path to the current page.", [
         Example.new(:breadcrumb, "Breadcrumb", :panel)
       ]),
-      Section.new(:nav_list, "Nav list", "Vertical navigation that marks the current page, for sidebars and page contents.", [
+      Section.new(:nav_list, "Nav list", "Navigation that marks the current page: sidebars, page contents, tab rows and a phone dock.", [
         Example.new(:nav_list, "Sidebar", :panel),
-        Example.new(:nav_list_compact, "On this page", :panel)
+        Example.new(:nav_list_compact, "On this page", :panel),
+        Example.new(:nav_list_row, "Row with a sliding indicator", :bare),
+        Example.new(:nav_list_dock, "Dock", :panel)
       ]),
       Section.new(:pager, "Pager", "Previous and next links between pages in a sequence.", [
         Example.new(:pager, "Pager", :bare),
@@ -161,7 +173,8 @@ module Showcase
       ]),
       Section.new(:toggle_group, "Toggle group", "Mutually exclusive choices with keyboard navigation and form values.", [
         Example.new(:toggle_group, "Mutually exclusive choices", :panel),
-        Example.new(:toggle_group_form, "Form values and reset", :panel)
+        Example.new(:toggle_group_links, "Navigation links", :panel),
+        Example.new(:toggle_group_form, "Form values, native radios and reset", :panel)
       ], %i[lc_toggle_group lc_toggle_group_item]),
       Section.new(:kbd, "Keyboard shortcut", "Page-wide keys that focus or press an element, and the hints that show them.", [
         Example.new(:kbd, "Focus a field", :panel)
@@ -173,10 +186,12 @@ module Showcase
         Example.new(:skeleton, "Placeholder", :panel)
       ]),
       Section.new(:menu, "Menu", "Actions in a floating panel.", [
-        Example.new(:row_menu, "Actions", :panel)
+        Example.new(:row_menu, "Actions", :panel),
+        Example.new(:menu_options, "Icon trigger, hints and choices", :panel)
       ], %i[lc_menu lc_menu_option]),
       Section.new(:popover, "Popover", "Content anchored to a trigger.", [
-        Example.new(:open_popover, "Anchored content", :panel)
+        Example.new(:open_popover, "Anchored content", :panel),
+        Example.new(:row_popover, "Opened from a row", :panel)
       ]),
       Section.new(:tooltip, "Tooltip", "A short hint on hover and keyboard focus.", [
         Example.new(:tooltip, "Tooltips", :panel)
@@ -185,18 +200,27 @@ module Showcase
         Example.new(:modal_dialog, "Modal", :panel),
         Example.new(:dialog_fit, "Mobile dialog", :panel),
         Example.new(:dialog_heights, "Mobile height options", :panel),
-        Example.new(:dialog_context, "Compact dialog", :panel)
-      ]),
+        Example.new(:dialog_context, "Compact dialog", :panel),
+        Example.new(:sheet_popover, "Popover sheet", :panel),
+        Example.new(:dialog_controlled, "Opened by your controller", :panel),
+        Example.new(:confirm_sheet, "Turbo confirm", :panel)
+      ], %i[lc_dialog lc_confirm_sheet lc_sheet]),
       Section.new(:toast, "Toast", "Brief feedback after an action.", [
         Example.new(:toast, "Brief feedback", :panel),
-        Example.new(:toast_region, "Over dialogs and sticky headers", :panel)
+        Example.new(:toast_region, "Over dialogs and sticky headers", :panel),
+        Example.new(:toast_region_placement, "Centred, at the top on phones", :panel)
       ], %i[lc_toast lc_toast_region]),
       Section.new(:search, "Search", "A full-screen search with grouped results.", [
         Example.new(:search, "Filtered in the browser", :panel)
       ], %i[lc_search lc_search_group lc_search_result]),
       Section.new(:collapsible, "Collapsible", "Content that expands in place.", [
-        Example.new(:collapsible, "Expandable content", :bare)
+        Example.new(:collapsible, "Expandable content", :bare),
+        Example.new(:collapsible_summary, "Row summary with a chevron", :panel),
+        Example.new(:collapsible_button, "Button summary", :panel)
       ]),
+      Section.new(:list_group, "List group", "Grouped rows of settings, with a heading and footnote.", [
+        Example.new(:list_group, "Settings", :bare)
+      ], %i[lc_list_section lc_list_group lc_list_row lc_list_item]),
       Section.new(:emoji, "Emoji picker", "Search, categories and skin tones.", [
         Example.new(:html, "Emoji picker", :panel)
       ], %i[lc_emoji_picker])

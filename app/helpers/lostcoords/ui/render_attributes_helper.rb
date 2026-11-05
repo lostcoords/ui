@@ -36,6 +36,8 @@ module Lostcoords::Ui
           end
           normalized[prefix] = values if values
         end
+        # Rails renders popover: true as popover="true", which browsers read as manual: no light dismiss.
+        normalized[:popover] = "auto" if normalized[:popover] == true
         normalized
       end
 

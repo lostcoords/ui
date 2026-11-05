@@ -73,9 +73,18 @@ module Lostcoords::Ui
     end
 
     class Dialog < Base
-      def initialize(view, id)
+      attr_reader :header_actions
+
+      def initialize(view, id, close_action = "lc-dialog#close")
         super(view)
         @id = id
+        @close_action = close_action
+      end
+
+      # Content placed in the header, before the close button. Renders nothing where it is called.
+      def actions(&block)
+        @header_actions = view.capture(&block)
+        nil
       end
 
       def footer(**attributes, &block)
@@ -84,7 +93,7 @@ module Lostcoords::Ui
 
       def close(label = nil, variant: :secondary, **attributes)
         label ||= view.send(:lc_t, "lostcoords.ui.dialog.cancel")
-        view.lc_button(label, variant: variant, **merge({ data: { action: "lc-dialog#close", slot: "dialog-close" } }, attributes))
+        view.lc_button(label, variant: variant, **merge({ data: { action: @close_action, slot: "dialog-close" } }, attributes))
       end
     end
 
@@ -115,16 +124,46 @@ module Lostcoords::Ui
       end
     end
 
-    class NavList < Base
-      def initialize(view, compact)
-        super(view)
-        @compact = compact
+    class Collapsible < Base
+      attr_reader :summary_content, :summary_attributes
+
+      def initialize(view)
+        super
+        @summary_attributes = {}
       end
 
-      # current: marks the page the reader is on with aria-current="page".
-      def link(label, url, current: false, indent: false, **attributes)
-        view.tag.li(class: ("ps-content" if indent), data: { slot: "nav-item" }) do
-          view.link_to(label, url, **merge({ class: view.lc_nav_link_class(compact: @compact), aria: { current: ("page" if current) }, data: { slot: "nav-link" } }, attributes))
+      # Records the summary; lc_collapsible renders it before the content.
+      def summary(**attributes, &block)
+        @summary_content = view.capture(&block)
+        @summary_attributes = attributes
+        nil
+      end
+    end
+
+    class NavList < Base
+      def initialize(view, compact, layout, indicator)
+        super(view)
+        @compact = compact
+        @layout = layout
+        @indicator = indicator
+      end
+
+      # current: marks the page the reader is on with aria-current="page". icon: names an icon before
+      # the label; a block replaces both, as in `nav.link(url) { … }`. Outside the column layout the
+      # item takes no box, so a class that hides the link removes its cell too.
+      def link(label = nil, url = nil, icon: nil, current: false, indent: false, **attributes, &block)
+        if block
+          url = label
+          content = view.capture(&block)
+        else
+          view.send(:lc_label!, label, :label)
+          content = icon ? view.safe_join([ view.lc_icon(icon, options: { aria: { hidden: true } }), view.tag.span(label) ]) : label
+        end
+        raise ArgumentError, "nav link needs a URL" if url.blank?
+
+        data = { slot: "nav-link", lc_nav_target: ("link" if @indicator), action: ("lc-nav#select" if @indicator) }.compact
+        view.tag.li(class: view.lc_tw(("contents" unless @layout == :column), ("ps-content" if indent)).presence, data: { slot: "nav-item" }) do
+          view.link_to(content, url, **merge({ class: view.lc_nav_link_class(compact: @compact, layout: @layout), aria: { current: ("page" if current) }, data: data }, attributes))
         end
       end
 
@@ -137,6 +176,24 @@ module Lostcoords::Ui
             view.tag.ul(view.capture(&block), class: "m-0 flex list-none flex-col gap-px p-0", aria: { label: title })
           ])
         end
+      end
+    end
+
+    # menu.trigger yields the attributes that wire an element as the panel's trigger, merged with
+    # the ones passed to it, and the element it renders replaces the default trigger.
+    class Panel < Base
+      attr_reader :rendered_trigger
+
+      def initialize(view, wiring)
+        super(view)
+        @wiring = wiring
+      end
+
+      def trigger(**attributes, &block)
+        raise ArgumentError, "trigger needs a block that renders the trigger element" unless block
+
+        @rendered_trigger = view.capture(view.send(:lc_attributes, attributes, {}, @wiring), &block)
+        nil
       end
     end
 

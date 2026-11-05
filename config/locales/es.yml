@@ -13,6 +13,9 @@ es:
         trigger: "Abrir diálogo"
         cancel: "Cancelar"
         close: "Cerrar %{title}"
+      confirm:
+        cancel: "Cancelar"
+        accept: "Confirmar"
       menu:
         label: "Acciones"
       popover:

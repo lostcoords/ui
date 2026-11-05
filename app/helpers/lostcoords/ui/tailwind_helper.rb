@@ -9,7 +9,7 @@ module Lostcoords::Ui
 
     # The theme's own scales, so class merging knows text-label is a size and gap-related a gap.
     MERGE_THEME = {
-      "text" => %w[display title heading subheading body small label caption],
+      "text" => %w[display title heading subheading body small label caption eyebrow],
       "spacing" => %w[tight related heading content inset section gutter control-sm control-md control-lg],
       "container" => %w[page reading form],
       "radius" => %w[pill]

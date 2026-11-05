@@ -13,6 +13,9 @@ ja:
         trigger: "ダイアログを開く"
         cancel: "キャンセル"
         close: "%{title}を閉じる"
+      confirm:
+        cancel: "キャンセル"
+        accept: "OK"
       menu:
         label: "操作"
       popover:

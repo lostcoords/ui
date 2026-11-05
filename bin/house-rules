@@ -112,6 +112,16 @@ def js_state_class_violations(files)
   end
 end
 
+# Playwright treats the Promise an async predicate returns as truthy, so waitForFunction(async …) never waits.
+def async_wait_violations(files)
+  files.grep(%r{\Atest/browser/.*\.js\z}).flat_map do |path|
+    File.read(path).enum_for(:scan, /waitForFunction\(\s*async\b/).map do
+      line = $~.pre_match.count("\n") + 1
+      Violation.new(path, line, "waitForFunction resolves an async predicate at once; read window.Stimulus synchronously")
+    end
+  end
+end
+
 # Stylesheets not yet converted, with the literals they still use. Shrink as they move to tokens.
 CSS_LITERAL_ALLOWED = {
   "app/assets/tailwind/lostcoords/ui/avatar.css" => %w[1.5px 3px],
@@ -275,7 +285,7 @@ violations = dependency_violations + stylesheet_import_violations(files) + autho
   js_state_class_violations(files) + css_literal_violations(files) + builder_duplicate_violations(builders) +
   orphan_builder_violations(files, builders) + readme_builders_violations +
   showcase_coverage_violations + helper_namespace_violations + z_index_violations(files) +
-  source_ownership_violations
+  source_ownership_violations + async_wait_violations(files)
 
 if violations.any?
   violations.each { |violation| warn "#{violation.path}:#{violation.line}: #{violation.message}" }

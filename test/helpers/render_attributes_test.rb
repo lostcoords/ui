@@ -54,6 +54,13 @@ module Lostcoords::Ui
       refute_includes html, "&amp;amp;"
     end
 
+    test "popover: true renders an auto popover on every component" do
+      assert_equal "auto", @view.send(:lc_attributes, {}, { popover: true })[:popover]
+      assert_equal "manual", @view.send(:lc_attributes, {}, { popover: "manual" })[:popover]
+      node = Nokogiri::HTML.fragment(@view.lc_glass(id: "menu", popover: true) { "Menu" }).at_css("#menu")
+      assert_equal "auto", node["popover"]
+    end
+
     test "component reflection excludes private plumbing and style builders" do
       names = Components.all.map(&:name)
 

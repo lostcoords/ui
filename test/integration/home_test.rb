@@ -114,7 +114,7 @@ class HomeTest < ActionDispatch::IntegrationTest
     get "/components/foundations.html"
 
     assert_response :success
-    assert_select "#theme-color-table tbody tr", count: 20
+    assert_select "#theme-color-table tbody tr", count: 22
     assert_select "#theme-color-table [data-token='--primary']", text: /Primary actions, links, selected states and keyboard focus/
     assert_select "section#style-settings #foundation-token-table"
     assert_select "details #foundation-token-table", count: 0

@@ -16,8 +16,9 @@ async function _verifySearch(page) {
     )
 
   const ready = () =>
-    page.waitForFunction(async () => {
-      const { application } = await import("controllers/application")
+    page.waitForFunction(() => {
+      const application = window.Stimulus
+      if (!application) return false
       return [
         ...document.querySelectorAll(
           "[data-controller~=docs-search], [data-controller~=lc-search]",
