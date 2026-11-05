@@ -1,6 +1,5 @@
 <%= lc_nav_list label: "Documentation" do |nav| %>
   <%= nav.group "Library" do %>
-    <%= nav.link "Overview", "/" %>
     <%= nav.link "Installation", "/installation.html", current: action_name == "installation" %>
     <%= nav.link "Theming", "/theming.html", current: action_name == "theming" %>
     <%= nav.link "Blocks", "/blocks.html", current: controller_name == "blocks" %>

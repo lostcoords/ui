@@ -36,14 +36,17 @@ def main():
     parser.add_argument('paths', nargs='+', type=Path)
     parser.add_argument('--write', action='store_true')
     args = parser.parse_args()
+    skipped = {'.git', '.jj', 'node_modules', 'vendor', 'builds', 'tmp', 'log'}
     paths = set()
-    for path in args.paths:
-        paths.update(path.rglob('*') if path.is_dir() else [path])
+    for root in args.paths:
+        if not root.is_dir():
+            paths.add(root)
+            continue
+        # Skip directories inside the scanned tree, not ones above it such as /tmp.
+        paths.update(path for path in root.rglob('*') if not skipped & set(path.relative_to(root).parts))
     changed = []
     for path in sorted(paths):
         if path.is_symlink() or not path.is_file() or path.suffix not in {'.css', '.rb', '.erb', '.js', '.md'}:
-            continue
-        if any(part in {'.git', '.jj', 'node_modules', 'vendor', 'builds', 'tmp', 'log'} for part in path.parts):
             continue
         source = path.read_text()
         updated = migrate(source)

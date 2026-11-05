@@ -2,7 +2,7 @@
 @source "../../../../helpers/**/*.rb";
 @source "../../../../javascript/**/*.js";
 @source "../../../../views/**/*.erb";
-@source not "../../../../../lib";
+@source "../../../../../lib/lostcoords/ui/parts.rb";
 
 @import "./glass.css";
 @import "./copy-button.css";

@@ -133,7 +133,7 @@ module Migration05
       next [ root ] if File.file?(root)
 
       Find.find(root).select do |path|
-        File.file?(path) && EXTENSIONS.include?(File.extname(path)) && !path.match?(SKIP)
+        File.file?(path) && EXTENSIONS.include?(File.extname(path)) && !path.delete_prefix(root).match?(SKIP)
       end
     end
   end

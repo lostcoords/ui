@@ -38,6 +38,8 @@ module Lostcoords::Ui
         css = File.read("#{dir}/out.css")
         assert_includes css, ".duration-\\(--lc-motion-control\\)"
         assert_includes css, ".lc-copy-content"
+        assert css.include?(".not-first\\:pt-section"), "Missing spacing between navigation groups"
+        assert css.include?(".pb-tight"), "Missing spacing beneath navigation group titles"
       end
     end
   end
