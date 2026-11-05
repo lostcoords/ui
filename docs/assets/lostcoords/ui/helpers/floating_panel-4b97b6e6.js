@@ -40,6 +40,15 @@ export class FloatingPanel extends Controller {
     this.isOpen ? this.close() : this.open()
   }
 
+  // A host that is a whole row opens its panel from a click anywhere on the row except its controls.
+  toggleFromRow(event) {
+    if (this.popoverTarget.contains(event.target)) return
+    if (event.target.closest("a, button, input, select, textarea, [data-lc-menu-ignore]")) return
+
+    event.preventDefault()
+    this.isOpen ? this.close() : this.open()
+  }
+
   open(opener) {
     if (this.isOpen) return
     this.opener = opener instanceof Element ? opener : this.triggerTarget

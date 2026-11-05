@@ -1,6 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 import { holdDocumentScroll } from "lostcoords/ui/helpers/dismiss_stack"
 import { SHEET_TIMING, sheetDuration } from "lostcoords/ui/helpers/sheet_motion"
+import { hideTopLayer, supportsTopLayer } from "lostcoords/ui/helpers/top_layer"
 import { isSheetViewport, prefersReducedMotion, TEXT_ENTRY } from "lostcoords/ui/helpers/viewport"
 
 const PROJECTION_MS = 180
@@ -29,20 +30,27 @@ export default class extends Controller {
     this.element.addEventListener("touchcancel", this.onTouchEnd)
     this.element.addEventListener("pointerdown", this.onPointerDown)
 
-    if (this.isDialog) {
-      this.observer = new MutationObserver(() =>
-        this.element.open ? this.present() : this.closed(),
-      )
-      this.observer.observe(this.element, { attributes: true, attributeFilter: ["open"] })
-      if (this.element.open) this.present()
-    } else {
-      this.observer = new MutationObserver(() => this.element.hidden || this.pinFloor())
-      this.observer.observe(this.element, { attributes: true, attributeFilter: ["hidden"] })
-    }
+    this.sync = this.sync.bind(this)
+    this.shown = false
+    this.observer = new MutationObserver(this.sync)
+    this.observer.observe(this.element, {
+      attributes: true,
+      attributeFilter: ["open", "data-open"],
+    })
+    this.element.addEventListener("toggle", this.sync)
+    this.sync()
+  }
+
+  sync() {
+    const shown = this.isShown
+    if (shown === this.shown) return
+    this.shown = shown
+    shown ? this.present() : this.closed()
   }
 
   disconnect() {
     this.observer?.disconnect()
+    this.element.removeEventListener("toggle", this.sync)
     this.element.removeEventListener("touchstart", this.onTouchStart)
     this.element.removeEventListener("touchmove", this.onTouchMove)
     this.element.removeEventListener("touchend", this.onTouchEnd)
@@ -242,7 +250,8 @@ export default class extends Controller {
     this.transition()
     this.element.style.transform = `translateY(${this.element.getBoundingClientRect().height + 48}px)`
     this.later(() => {
-      this.dispatch("dismiss", { bubbles: false })
+      const event = this.dispatch("dismiss", { bubbles: false, cancelable: true })
+      if (!event.defaultPrevented) hideTopLayer(this.element)
       requestAnimationFrame(() => this.resetSurface())
     })
   }
@@ -377,10 +386,7 @@ export default class extends Controller {
 
   transition() {
     const timing = prefersReducedMotion() ? "0s" : SHEET_TIMING
-    const discrete = this.isDialog
-      ? `, display ${timing} allow-discrete, overlay ${timing} allow-discrete`
-      : ""
-    this.element.style.transition = `transform ${timing}, block-size ${timing}${discrete}`
+    this.element.style.transition = `transform ${timing}, block-size ${timing}, display ${timing} allow-discrete, overlay ${timing} allow-discrete`
     clearTimeout(this.transitionTimer)
     this.transitionTimer = setTimeout(() => {
       this.element.style.transition = ""
@@ -417,6 +423,14 @@ export default class extends Controller {
 
   get isDialog() {
     return this.element instanceof HTMLDialogElement
+  }
+
+  get isShown() {
+    if (this.isDialog) return this.element.open
+    return (
+      this.element.hasAttribute("data-open") ||
+      (supportsTopLayer() && this.element.matches(":popover-open"))
+    )
   }
 
   get isSheet() {

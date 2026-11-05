@@ -49,12 +49,11 @@ export default class extends FloatingPanel {
     if (event.detail === 0) focusFirstMenuItem(this.popoverTarget)
   }
 
-  toggleFromRow(event) {
-    if (this.popoverTarget.contains(event.target)) return
-    if (event.target.closest("a, button, input, select, textarea, [data-lc-menu-ignore]")) return
-
-    event.preventDefault()
-    this.isOpen ? this.close() : this.open()
+  check(event) {
+    const item = event.currentTarget
+    const checked = item.getAttribute("aria-checked") !== "true"
+    item.setAttribute("aria-checked", String(checked))
+    this.dispatch("check", { target: item, detail: { checked } })
   }
 
   open() {

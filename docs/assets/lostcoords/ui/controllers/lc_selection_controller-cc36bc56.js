@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 import { navigate } from "lostcoords/ui/helpers/roving_focus"
 
 export default class extends Controller {
-  static targets = ["option", "input"]
+  static targets = ["option"]
   static values = { value: String }
 
   connect() {
@@ -44,14 +44,9 @@ export default class extends Controller {
       option.setAttribute("aria-checked", String(option === selected))
       option.tabIndex = option === selected ? 0 : -1
     }
-    if (this.hasInputTarget) this.inputTarget.value = selected?.dataset.value || ""
   }
 
   changed(option) {
-    if (this.hasInputTarget) {
-      this.inputTarget.dispatchEvent(new Event("input", { bubbles: true }))
-      this.inputTarget.dispatchEvent(new Event("change", { bubbles: true }))
-    }
     this.dispatch("change", { detail: { value: option.dataset.value } })
   }
 

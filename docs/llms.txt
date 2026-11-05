@@ -18,6 +18,8 @@ Override only the roles you need. Soft status backgrounds are generated automati
 - `--foreground`: Main text and headings
 - `--card`: Cards and grouped content
 - `--card-foreground`: Text on cards
+- `--card-input`: Fields on cards; defaults to --input
+- `--card-secondary`: Secondary buttons on cards; defaults to --secondary
 - `--popover`: Menus, popovers and dialogs
 - `--popover-foreground`: Text on menus, popovers and dialogs
 - `--primary`: Primary actions, links, selected states and keyboard focus
@@ -137,7 +139,7 @@ Vertical, with manual activation: https://ui.lostcoords.com/components/tabs.html
 https://ui.lostcoords.com/components/radio.html#lc_choice_group
 
 ```ruby
-lc_choice_group(legend:, id: nil, hint: nil, error: nil, **attributes, &block)
+lc_choice_group(legend:, **options, &block)
 ```
 
 Radio group: https://ui.lostcoords.com/components/radio.html
@@ -193,7 +195,7 @@ Collapsible source: https://ui.lostcoords.com/components/code_block.html
 https://ui.lostcoords.com/components/collapsible.html#lc_collapsible
 
 ```ruby
-lc_collapsible(title:, open: false, **attributes, &block)
+lc_collapsible(title: nil, open: false, card: true, summary_class: nil, indicator: :marker, **attributes, &block)
 ```
 
 Expandable content: https://ui.lostcoords.com/components/collapsible.html
@@ -201,6 +203,35 @@ Expandable content: https://ui.lostcoords.com/components/collapsible.html
 ```erb
 <%= lc_collapsible class: "w-full", title: "Can I use my own colors?" do %>
   <p class="text-sm text-muted-foreground">Yes. Override the default theme values in your application stylesheet.</p>
+<% end %>
+```
+
+Row summary with a chevron: https://ui.lostcoords.com/components/collapsible.html
+
+```erb
+<%= lc_collapsible card: false, indicator: :chevron, class: "w-full max-w-80", summary_class: "rounded-2xl px-3 font-medium hover:bg-accent" do |collapsible| %>
+  <% collapsible.summary do %>
+    <span class="me-auto">Language</span>
+    <span class="font-normal text-muted-foreground">English</span>
+  <% end %>
+  <%= lc_toggle_group label: "Language", value: "en" do %>
+    <%= lc_toggle_group_item "English", value: "en", selected: true %>
+    <%= lc_toggle_group_item "日本語", value: "ja" %>
+  <% end %>
+<% end %>
+```
+
+Button summary: https://ui.lostcoords.com/components/collapsible.html
+
+```erb
+<%= lc_collapsible card: false, indicator: :none, class: "w-full max-w-80", summary_class: lc_button_class(variant: :secondary, size: :sm, extra: "w-fit") do |collapsible| %>
+  <% collapsible.summary do %>
+    <%= lc_icon "user-plus", options: { "aria-hidden": true } %>
+    <span>Invite people</span>
+  <% end %>
+  <%= lc_field label: "Email", id: "my-component-email" do |field| %>
+    <%= lc_input name: "email", type: :email, **field %>
+  <% end %>
 <% end %>
 ```
 
@@ -280,7 +311,9 @@ Details: https://ui.lostcoords.com/components/description_list.html
 https://ui.lostcoords.com/components/dialog.html#lc_dialog
 
 ```ruby
-lc_dialog(id:, title:, description: nil, trigger: lc_t("lostcoords.ui.dialog.trigger"), kind: :modal, detents: "fit", **attributes, &block)
+lc_dialog(id:, title:, description: nil, trigger: lc_t("lostcoords.ui.dialog.trigger"), kind: :modal, size: nil, detents: "fit",
+      close_action: "lc-dialog#close", close_label: nil, title_attributes: {}, description_attributes: {}, **attributes, &block)
+dialog.actions(&block)
 dialog.footer(**attributes, &block)
 dialog.close(label = nil, variant: :secondary, **attributes)
 ```
@@ -328,6 +361,43 @@ Compact dialog: https://ui.lostcoords.com/components/dialog.html
 <% end %>
 ```
 
+Opened by your controller: https://ui.lostcoords.com/components/dialog.html
+
+```erb
+<div data-controller="lc-dialog">
+  <%= lc_button "Show members", variant: :secondary, aria: { haspopup: "dialog", controls: "my-component-members" }, data: { action: "lc-dialog#open" } %>
+  <%= lc_dialog id: "my-component-members", title: "Members", trigger: false, size: :lg, detents: "large", data: { lc_dialog_target: "dialog" } do |dialog| %>
+    <%= dialog.actions do %>
+      <%= lc_button "Invite", size: :sm %>
+    <% end %>
+    <% %w[Aiko Ben Chiara Dmitri Emi Farah Goro Hana].each do |name| %>
+      <p class="<%= lc_text_class %>"><%= name %></p>
+    <% end %>
+  <% end %>
+</div>
+```
+
+## lc_confirm_sheet
+
+https://ui.lostcoords.com/components/dialog.html#lc_confirm_sheet
+
+```ruby
+lc_confirm_sheet(**attributes)
+```
+
+Turbo confirm: https://ui.lostcoords.com/components/dialog.html
+
+```erb
+<%# In the layout, once. %>
+<%= lc_confirm_sheet %>
+
+<%= lc_button_to "Delete project", "/projects/42", method: :delete, variant: :destructive, form: { data: { turbo_confirm: "Delete this project?", turbo_confirm_description: "Its pages and files are deleted for everyone.", controller: "confirm-demo", action: "confirm-demo#submit" } } %>
+<%= lc_button_to "Archive", "/projects/42/archival", form: { data: { turbo_confirm: "Archive this project?", turbo_confirm_accept: "Archive project", controller: "confirm-demo", action: "confirm-demo#submit" } } %>
+<%= lc_menu id: "my-component-menu", label: "Membership" do %>
+  <%= lc_menu_option "Leave project", href: "/projects/42/membership", method: :delete, tone: :destructive, form: { data: { turbo_confirm: "Leave this project?", turbo_confirm_accept: "Leave", controller: "confirm-demo", action: "confirm-demo#submit" } } %>
+<% end %>
+```
+
 ## lc_emoji_picker
 
 https://ui.lostcoords.com/components/emoji.html#lc_emoji_picker
@@ -349,18 +419,37 @@ Emoji picker: https://ui.lostcoords.com/components/emoji.html
 https://ui.lostcoords.com/components/field.html#lc_form_with
 
 ```ruby
-lc_form_with(**options, &block)
+lc_form_with(card: false, padding: :md, gap: nil, **options, &block)
 ```
 
 Form builder: https://ui.lostcoords.com/components/field.html
 
 ```erb
-<%= lc_form_with model: DocsProject.invalid_example, url: "#", class: "flex w-full max-w-sm flex-col gap-content" do |form| %>
+<%= lc_form_with model: DocsProject.invalid_example, url: "#", card: true, class: "w-full max-w-sm" do |form| %>
   <%= form.field :name, hint: "Shown to members." %>
-  <%= form.field :email, as: :email_field %>
+  <%= form.field :email, as: :email_field, size: :sm, label: "Email (compact)" %>
   <%= form.switch :public, hint: "Anyone with the link can view." %>
   <%= form.submit "Save project" %>
 <% end %>
+```
+
+## lc_glass
+
+https://ui.lostcoords.com/components/glass.html#lc_glass
+
+```ruby
+lc_glass(shape: :bar, thick: false, as: :div, **attributes, &block)
+```
+
+Search bar: https://ui.lostcoords.com/components/glass.html
+
+```erb
+<div class="relative isolate grid h-64 w-full place-items-center overflow-hidden rounded-3xl bg-linear-to-br from-success/40 via-warning/40 to-primary/30 p-6">
+  <%= lc_glass as: :label, class: "flex w-full max-w-sm items-center gap-related min-h-control-lg px-content" do %>
+    <%= lc_icon "magnifying-glass", options: { class: "size-5 text-muted-foreground", "aria-hidden": true } %>
+    <input type="search" class="min-w-0 flex-1 bg-transparent outline-none" placeholder="Search expenses" aria-label="Search expenses">
+  <% end %>
+</div>
 ```
 
 ## lc_icon
@@ -389,12 +478,61 @@ Custom icons and content: https://ui.lostcoords.com/components/button.html
 <% end %>
 ```
 
+Button summary: https://ui.lostcoords.com/components/collapsible.html
+
+```erb
+<%= lc_collapsible card: false, indicator: :none, class: "w-full max-w-80", summary_class: lc_button_class(variant: :secondary, size: :sm, extra: "w-fit") do |collapsible| %>
+  <% collapsible.summary do %>
+    <%= lc_icon "user-plus", options: { "aria-hidden": true } %>
+    <span>Invite people</span>
+  <% end %>
+  <%= lc_field label: "Email", id: "my-component-email" do |field| %>
+    <%= lc_input name: "email", type: :email, **field %>
+  <% end %>
+<% end %>
+```
+
+Search bar: https://ui.lostcoords.com/components/glass.html
+
+```erb
+<div class="relative isolate grid h-64 w-full place-items-center overflow-hidden rounded-3xl bg-linear-to-br from-success/40 via-warning/40 to-primary/30 p-6">
+  <%= lc_glass as: :label, class: "flex w-full max-w-sm items-center gap-related min-h-control-lg px-content" do %>
+    <%= lc_icon "magnifying-glass", options: { class: "size-5 text-muted-foreground", "aria-hidden": true } %>
+    <input type="search" class="min-w-0 flex-1 bg-transparent outline-none" placeholder="Search expenses" aria-label="Search expenses">
+  <% end %>
+</div>
+```
+
+Settings: https://ui.lostcoords.com/components/list_group.html
+
+```erb
+<%= lc_list_section "Sign-in methods", id: "my-component", footnote: "Keep at least one way to sign in.", class: "w-full max-w-md" do %>
+  <%= lc_list_group do %>
+    <%= lc_list_row "Email", subtitle: "ada@example.com", icon: "envelope" do %>
+      <%= lc_button "Change", variant: :secondary, size: :sm %>
+    <% end %>
+    <%= lc_list_row "Passkey", subtitle: "Not set up", icon: "key" do %>
+      <%= lc_button "Add", variant: :secondary, size: :sm %>
+    <% end %>
+    <%= lc_list_row "Sign-in alerts", subtitle: "Email me when a new device signs in", icon: "bell", tag: :label, class: "cursor-pointer" do %>
+      <input type="checkbox" role="switch" name="alerts" class="<%= lc_switch_class %>" checked>
+    <% end %>
+    <%= lc_list_row "Recovery codes", icon: "document-text", href: "#recovery-codes" do %>
+      <%= lc_icon "chevron-right", variant: :mini, options: { class: "size-5 text-muted-foreground rtl:rotate-180", "aria-hidden": true } %>
+    <% end %>
+    <%= lc_list_row padded: false do %>
+      <%= lc_list_item "Delete account", icon: "trash", tag: :button, type: "button", class: "w-full cursor-pointer rounded-[inherit] text-destructive transition-colors hover:bg-accent" %>
+    <% end %>
+  <% end %>
+<% end %>
+```
+
 ## lc_stack
 
 https://ui.lostcoords.com/components/foundations.html#lc_stack
 
 ```ruby
-lc_stack(gap: :content, **attributes, &block)
+lc_stack(gap: :content, as: :div, **attributes, &block)
 ```
 
 Text styles: https://ui.lostcoords.com/components/foundations.html
@@ -425,7 +563,13 @@ Page rhythm: https://ui.lostcoords.com/components/foundations.html
       <%= lc_text "Train tickets" %>
     <% end %>
   <% end %>
-  <%= lc_section title: "Members" do %>
+  <%= lc_stack as: :section, gap: :heading do %>
+    <%= lc_section_header do %>
+      <%= lc_stack gap: :tight do %>
+        <%= lc_heading "Members" %>
+        <%= lc_text "Everyone who can see this workspace.", size: :small, tone: :muted %>
+      <% end %>
+    <% end %>
     <%= lc_card do %>
       <%= lc_inline do %>
         <%= lc_avatar "AK", class: "bg-primary" %>
@@ -503,6 +647,27 @@ Empty state: https://ui.lostcoords.com/components/empty_state.html
 <% end %>
 ```
 
+Grouped controls: https://ui.lostcoords.com/components/field.html
+
+```erb
+<%= lc_stack class: "w-full max-w-sm" do %>
+  <%= lc_fieldset legend: "Split", id: "my-component-split", hint: "Everyone pays the same share unless you change it." do %>
+    <%= lc_inline do %>
+      <%= lc_toggle "Equally", active: true %>
+      <%= lc_toggle "By amount" %>
+      <%= lc_toggle "By share" %>
+    <% end %>
+  <% end %>
+  <%= lc_stack gap: :related do %>
+    <%= lc_text "This app can", size: :label, tone: :muted %>
+    <ul class="m-0 ps-5 list-disc text-muted-foreground">
+      <li>Read your groups</li>
+      <li>Add expenses</li>
+    </ul>
+  <% end %>
+<% end %>
+```
+
 Focus a field: https://ui.lostcoords.com/components/kbd.html
 
 ```erb
@@ -549,7 +714,7 @@ Switches: https://ui.lostcoords.com/components/switch.html
 https://ui.lostcoords.com/components/foundations.html#lc_inline
 
 ```ruby
-lc_inline(gap: :related, **attributes, &block)
+lc_inline(gap: :related, as: :div, **attributes, &block)
 ```
 
 Page rhythm: https://ui.lostcoords.com/components/foundations.html
@@ -567,7 +732,13 @@ Page rhythm: https://ui.lostcoords.com/components/foundations.html
       <%= lc_text "Train tickets" %>
     <% end %>
   <% end %>
-  <%= lc_section title: "Members" do %>
+  <%= lc_stack as: :section, gap: :heading do %>
+    <%= lc_section_header do %>
+      <%= lc_stack gap: :tight do %>
+        <%= lc_heading "Members" %>
+        <%= lc_text "Everyone who can see this workspace.", size: :small, tone: :muted %>
+      <% end %>
+    <% end %>
     <%= lc_card do %>
       <%= lc_inline do %>
         <%= lc_avatar "AK", class: "bg-primary" %>
@@ -619,6 +790,27 @@ Form actions: https://ui.lostcoords.com/components/field.html
 <% end %>
 ```
 
+Grouped controls: https://ui.lostcoords.com/components/field.html
+
+```erb
+<%= lc_stack class: "w-full max-w-sm" do %>
+  <%= lc_fieldset legend: "Split", id: "my-component-split", hint: "Everyone pays the same share unless you change it." do %>
+    <%= lc_inline do %>
+      <%= lc_toggle "Equally", active: true %>
+      <%= lc_toggle "By amount" %>
+      <%= lc_toggle "By share" %>
+    <% end %>
+  <% end %>
+  <%= lc_stack gap: :related do %>
+    <%= lc_text "This app can", size: :label, tone: :muted %>
+    <ul class="m-0 ps-5 list-disc text-muted-foreground">
+      <li>Read your groups</li>
+      <li>Add expenses</li>
+    </ul>
+  <% end %>
+<% end %>
+```
+
 Filters: https://ui.lostcoords.com/components/toggle.html
 
 ```erb
@@ -633,9 +825,26 @@ Navigation: https://ui.lostcoords.com/components/toggle.html
 
 ```erb
 <%= lc_inline do %>
-  <%= lc_button_link_to "All projects", "/components/toggle.html", variant: :outline, size: :sm, aria: { current: "page" }, class: "bg-primary-soft border-primary text-primary" %>
-  <%= lc_button_link_to "Archived", "/components/badge.html", variant: :outline, size: :sm %>
+  <%= lc_toggle "All projects", href: "/components/toggle.html", active: true, size: :sm %>
+  <%= lc_toggle "Archived", href: "/components/badge.html", size: :sm %>
 <% end %>
+```
+
+Form values, native radios and reset: https://ui.lostcoords.com/components/toggle_group.html
+
+```erb
+<form class="flex flex-col items-center gap-4">
+  <%= lc_toggle_group label: "Billing", name: "billing", value: "monthly" do %>
+    <%= lc_toggle_group_item "Monthly", value: "monthly" %>
+    <%= lc_toggle_group_item "Annual", value: "annual" %>
+    <%= lc_toggle_group_item "Custom", value: "custom", disabled: true %>
+  <% end %>
+  <%= lc_inline role: "radiogroup", aria: { label: "Heard about us" } do %>
+    <%= lc_toggle "A friend", name: "source", value: "friend", size: :sm %>
+    <%= lc_toggle "Search", name: "source", value: "search", size: :sm %>
+  <% end %>
+  <%= lc_button "Reset", type: :reset, variant: :ghost, size: :sm %>
+</form>
 ```
 
 Tooltips: https://ui.lostcoords.com/components/tooltip.html
@@ -711,7 +920,13 @@ Page rhythm: https://ui.lostcoords.com/components/foundations.html
       <%= lc_text "Train tickets" %>
     <% end %>
   <% end %>
-  <%= lc_section title: "Members" do %>
+  <%= lc_stack as: :section, gap: :heading do %>
+    <%= lc_section_header do %>
+      <%= lc_stack gap: :tight do %>
+        <%= lc_heading "Members" %>
+        <%= lc_text "Everyone who can see this workspace.", size: :small, tone: :muted %>
+      <% end %>
+    <% end %>
     <%= lc_card do %>
       <%= lc_inline do %>
         <%= lc_avatar "AK", class: "bg-primary" %>
@@ -754,12 +969,207 @@ Responsive containers: https://ui.lostcoords.com/components/foundations.html
 <% end %>
 ```
 
+## lc_section_header
+
+https://ui.lostcoords.com/components/foundations.html#lc_section_header
+
+```ruby
+lc_section_header(as: :header, **attributes, &block)
+```
+
+Page rhythm: https://ui.lostcoords.com/components/foundations.html
+
+```erb
+<%= lc_stack gap: :section, class: "w-full max-w-xl" do %>
+  <%= lc_section title: "Recent expenses", actions: capture { lc_button("Add expense", icon: "plus", size: :sm) } do %>
+    <%= lc_card do %>
+      <%= lc_inline class: "flex-nowrap justify-between" do %>
+        <%= lc_text "Dinner with friends" %>
+        <%= lc_text "¥8,400", class: "shrink-0 tabular-nums" %>
+      <% end %>
+    <% end %>
+    <%= lc_card do %>
+      <%= lc_text "Train tickets" %>
+    <% end %>
+  <% end %>
+  <%= lc_stack as: :section, gap: :heading do %>
+    <%= lc_section_header do %>
+      <%= lc_stack gap: :tight do %>
+        <%= lc_heading "Members" %>
+        <%= lc_text "Everyone who can see this workspace.", size: :small, tone: :muted %>
+      <% end %>
+    <% end %>
+    <%= lc_card do %>
+      <%= lc_inline do %>
+        <%= lc_avatar "AK", class: "bg-primary" %>
+        <%= lc_stack gap: :tight do %>
+          <%= lc_text "Alex Kim" %>
+          <%= lc_text "Joined today", size: :small, tone: :muted %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
+```
+
+## lc_list_section
+
+https://ui.lostcoords.com/components/list_group.html#lc_list_section
+
+```ruby
+lc_list_section(heading, footnote: nil, level: 2, **attributes, &block)
+```
+
+Settings: https://ui.lostcoords.com/components/list_group.html
+
+```erb
+<%= lc_list_section "Sign-in methods", id: "my-component", footnote: "Keep at least one way to sign in.", class: "w-full max-w-md" do %>
+  <%= lc_list_group do %>
+    <%= lc_list_row "Email", subtitle: "ada@example.com", icon: "envelope" do %>
+      <%= lc_button "Change", variant: :secondary, size: :sm %>
+    <% end %>
+    <%= lc_list_row "Passkey", subtitle: "Not set up", icon: "key" do %>
+      <%= lc_button "Add", variant: :secondary, size: :sm %>
+    <% end %>
+    <%= lc_list_row "Sign-in alerts", subtitle: "Email me when a new device signs in", icon: "bell", tag: :label, class: "cursor-pointer" do %>
+      <input type="checkbox" role="switch" name="alerts" class="<%= lc_switch_class %>" checked>
+    <% end %>
+    <%= lc_list_row "Recovery codes", icon: "document-text", href: "#recovery-codes" do %>
+      <%= lc_icon "chevron-right", variant: :mini, options: { class: "size-5 text-muted-foreground rtl:rotate-180", "aria-hidden": true } %>
+    <% end %>
+    <%= lc_list_row padded: false do %>
+      <%= lc_list_item "Delete account", icon: "trash", tag: :button, type: "button", class: "w-full cursor-pointer rounded-[inherit] text-destructive transition-colors hover:bg-accent" %>
+    <% end %>
+  <% end %>
+<% end %>
+```
+
+## lc_list_group
+
+https://ui.lostcoords.com/components/list_group.html#lc_list_group
+
+```ruby
+lc_list_group(tag: :div, **attributes, &block)
+```
+
+Settings: https://ui.lostcoords.com/components/list_group.html
+
+```erb
+<%= lc_list_section "Sign-in methods", id: "my-component", footnote: "Keep at least one way to sign in.", class: "w-full max-w-md" do %>
+  <%= lc_list_group do %>
+    <%= lc_list_row "Email", subtitle: "ada@example.com", icon: "envelope" do %>
+      <%= lc_button "Change", variant: :secondary, size: :sm %>
+    <% end %>
+    <%= lc_list_row "Passkey", subtitle: "Not set up", icon: "key" do %>
+      <%= lc_button "Add", variant: :secondary, size: :sm %>
+    <% end %>
+    <%= lc_list_row "Sign-in alerts", subtitle: "Email me when a new device signs in", icon: "bell", tag: :label, class: "cursor-pointer" do %>
+      <input type="checkbox" role="switch" name="alerts" class="<%= lc_switch_class %>" checked>
+    <% end %>
+    <%= lc_list_row "Recovery codes", icon: "document-text", href: "#recovery-codes" do %>
+      <%= lc_icon "chevron-right", variant: :mini, options: { class: "size-5 text-muted-foreground rtl:rotate-180", "aria-hidden": true } %>
+    <% end %>
+    <%= lc_list_row padded: false do %>
+      <%= lc_list_item "Delete account", icon: "trash", tag: :button, type: "button", class: "w-full cursor-pointer rounded-[inherit] text-destructive transition-colors hover:bg-accent" %>
+    <% end %>
+  <% end %>
+<% end %>
+```
+
+## lc_list_row
+
+https://ui.lostcoords.com/components/list_group.html#lc_list_row
+
+```ruby
+lc_list_row(title = nil, subtitle: nil, icon: nil, href: nil, tag: nil, padded: true, **attributes, &block)
+```
+
+Settings: https://ui.lostcoords.com/components/list_group.html
+
+```erb
+<%= lc_list_section "Sign-in methods", id: "my-component", footnote: "Keep at least one way to sign in.", class: "w-full max-w-md" do %>
+  <%= lc_list_group do %>
+    <%= lc_list_row "Email", subtitle: "ada@example.com", icon: "envelope" do %>
+      <%= lc_button "Change", variant: :secondary, size: :sm %>
+    <% end %>
+    <%= lc_list_row "Passkey", subtitle: "Not set up", icon: "key" do %>
+      <%= lc_button "Add", variant: :secondary, size: :sm %>
+    <% end %>
+    <%= lc_list_row "Sign-in alerts", subtitle: "Email me when a new device signs in", icon: "bell", tag: :label, class: "cursor-pointer" do %>
+      <input type="checkbox" role="switch" name="alerts" class="<%= lc_switch_class %>" checked>
+    <% end %>
+    <%= lc_list_row "Recovery codes", icon: "document-text", href: "#recovery-codes" do %>
+      <%= lc_icon "chevron-right", variant: :mini, options: { class: "size-5 text-muted-foreground rtl:rotate-180", "aria-hidden": true } %>
+    <% end %>
+    <%= lc_list_row padded: false do %>
+      <%= lc_list_item "Delete account", icon: "trash", tag: :button, type: "button", class: "w-full cursor-pointer rounded-[inherit] text-destructive transition-colors hover:bg-accent" %>
+    <% end %>
+  <% end %>
+<% end %>
+```
+
+## lc_list_item
+
+https://ui.lostcoords.com/components/list_group.html#lc_list_item
+
+```ruby
+lc_list_item(title, subtitle: nil, icon: nil, tag: :div, **attributes, &block)
+```
+
+Settings: https://ui.lostcoords.com/components/list_group.html
+
+```erb
+<%= lc_list_section "Sign-in methods", id: "my-component", footnote: "Keep at least one way to sign in.", class: "w-full max-w-md" do %>
+  <%= lc_list_group do %>
+    <%= lc_list_row "Email", subtitle: "ada@example.com", icon: "envelope" do %>
+      <%= lc_button "Change", variant: :secondary, size: :sm %>
+    <% end %>
+    <%= lc_list_row "Passkey", subtitle: "Not set up", icon: "key" do %>
+      <%= lc_button "Add", variant: :secondary, size: :sm %>
+    <% end %>
+    <%= lc_list_row "Sign-in alerts", subtitle: "Email me when a new device signs in", icon: "bell", tag: :label, class: "cursor-pointer" do %>
+      <input type="checkbox" role="switch" name="alerts" class="<%= lc_switch_class %>" checked>
+    <% end %>
+    <%= lc_list_row "Recovery codes", icon: "document-text", href: "#recovery-codes" do %>
+      <%= lc_icon "chevron-right", variant: :mini, options: { class: "size-5 text-muted-foreground rtl:rotate-180", "aria-hidden": true } %>
+    <% end %>
+    <%= lc_list_row padded: false do %>
+      <%= lc_list_item "Delete account", icon: "trash", tag: :button, type: "button", class: "w-full cursor-pointer rounded-[inherit] text-destructive transition-colors hover:bg-accent" %>
+    <% end %>
+  <% end %>
+<% end %>
+```
+
 ## lc_menu
 
 https://ui.lostcoords.com/components/menu.html#lc_menu
 
 ```ruby
-lc_menu(id:, label: lc_t("lostcoords.ui.menu.label"), align: :end, **attributes, &block)
+lc_menu(id:, label: lc_t("lostcoords.ui.menu.label"), align: :end, trigger: :button, icon: "ellipsis-vertical", trigger_attributes: {}, wrapper_attributes: {}, **attributes, &block)
+```
+
+Select trigger: https://ui.lostcoords.com/components/button.html
+
+```erb
+<%= lc_menu id: "my-component-menu", label: "Member", align: :start do |menu| %>
+  <% menu.trigger(class: "min-w-44") { |attrs| lc_select_trigger "All members", **attrs } %>
+  <%= lc_menu_option "All members", checked: true %>
+  <%= lc_menu_option "Alex", checked: false %>
+  <%= lc_menu_option "Sam", checked: false %>
+<% end %>
+```
+
+Turbo confirm: https://ui.lostcoords.com/components/dialog.html
+
+```erb
+<%# In the layout, once. %>
+<%= lc_confirm_sheet %>
+
+<%= lc_button_to "Delete project", "/projects/42", method: :delete, variant: :destructive, form: { data: { turbo_confirm: "Delete this project?", turbo_confirm_description: "Its pages and files are deleted for everyone.", controller: "confirm-demo", action: "confirm-demo#submit" } } %>
+<%= lc_button_to "Archive", "/projects/42/archival", form: { data: { turbo_confirm: "Archive this project?", turbo_confirm_accept: "Archive project", controller: "confirm-demo", action: "confirm-demo#submit" } } %>
+<%= lc_menu id: "my-component-menu", label: "Membership" do %>
+  <%= lc_menu_option "Leave project", href: "/projects/42/membership", method: :delete, tone: :destructive, form: { data: { turbo_confirm: "Leave this project?", turbo_confirm_accept: "Leave", controller: "confirm-demo", action: "confirm-demo#submit" } } %>
+<% end %>
 ```
 
 Actions: https://ui.lostcoords.com/components/menu.html
@@ -772,12 +1182,32 @@ Actions: https://ui.lostcoords.com/components/menu.html
 <% end %>
 ```
 
+Icon trigger, hints and choices: https://ui.lostcoords.com/components/menu.html
+
+```erb
+<div class="flex flex-wrap items-center gap-content">
+  <%= lc_menu id: "my-component-row-menu", label: "Actions for Alex", trigger: :icon do %>
+    <%= lc_menu_option "Rename", icon: "pencil" %>
+    <%= lc_menu_option "Move up", icon: "arrow-up", hint: "Second in the list" %>
+    <%= lc_menu_option "Copy link" %>
+    <%= lc_menu_option "Pinned", icon: "star", checkbox: true %>
+    <%= lc_menu_option "Remove", icon: "trash", href: "/components/menu.html", method: :delete, tone: :destructive %>
+  <% end %>
+  <%= lc_menu id: "my-component-currency-menu", label: "Currency", align: :start do |menu| %>
+    <% menu.trigger { |attrs| lc_select_trigger "Euro", **attrs } %>
+    <%= lc_menu_option "Euro", hint: "EUR", leading: tag.span("€"), checked: true %>
+    <%= lc_menu_option "Japanese yen", hint: "JPY", leading: tag.span("¥"), checked: false %>
+    <%= lc_menu_option "US dollar", hint: "USD", leading: tag.span("$"), checked: false %>
+  <% end %>
+</div>
+```
+
 ## lc_popover
 
 https://ui.lostcoords.com/components/popover.html#lc_popover
 
 ```ruby
-lc_popover(id:, label: lc_t("lostcoords.ui.popover.trigger"), title: nil, align: :end, trigger_variant: :secondary, **attributes, &block)
+lc_popover(id:, label: lc_t("lostcoords.ui.popover.trigger"), title: nil, align: :end, trigger_variant: :secondary, trigger: :button, icon: "ellipsis-vertical", trigger_attributes: {}, wrapper_attributes: {}, **attributes, &block)
 ```
 
 Anchored content: https://ui.lostcoords.com/components/popover.html
@@ -788,12 +1218,68 @@ Anchored content: https://ui.lostcoords.com/components/popover.html
 <% end %>
 ```
 
+Opened from a row: https://ui.lostcoords.com/components/popover.html
+
+```erb
+<div class="flex items-center gap-related min-h-control-md px-3 rounded-2xl bg-muted cursor-pointer" data-controller="lc-popover" data-action="click->lc-popover#toggleFromRow">
+  <button type="button" class="font-semibold" aria-haspopup="dialog" aria-expanded="false" data-lc-popover-target="trigger" data-action="lc-popover#toggle">Alex</button>
+  <span class="text-muted-foreground">Tap anywhere on the row</span>
+  <%= lc_popover id: "my-component-row-popover", label: "How to pay Alex", trigger: false, align: :start do %>
+    <p class="m-0">Alex takes bank transfers.</p>
+  <% end %>
+</div>
+```
+
 ## lc_menu_option
 
 https://ui.lostcoords.com/components/menu.html#lc_menu_option
 
 ```ruby
-lc_menu_option(label = nil, href: nil, tone: :default, **attributes, &block)
+lc_menu_option(label = nil, href: nil, tone: :default, icon: nil, leading: nil, hint: nil, checked: nil, checkbox: false, method: nil, params: {}, form: {}, **attributes, &block)
+```
+
+Select trigger: https://ui.lostcoords.com/components/button.html
+
+```erb
+<%= lc_menu id: "my-component-menu", label: "Member", align: :start do |menu| %>
+  <% menu.trigger(class: "min-w-44") { |attrs| lc_select_trigger "All members", **attrs } %>
+  <%= lc_menu_option "All members", checked: true %>
+  <%= lc_menu_option "Alex", checked: false %>
+  <%= lc_menu_option "Sam", checked: false %>
+<% end %>
+```
+
+Split button: https://ui.lostcoords.com/components/button.html
+
+```erb
+<%= lc_split_button "Add expense", id: "my-component-menu", icon: "plus", menu_label: "More ways to add" do %>
+  <%= lc_menu_option "Import a CSV", icon: "arrow-down-tray" %>
+  <%= lc_menu_option "Scan a receipt", icon: "camera" %>
+<% end %>
+```
+
+Split button variants and sizes: https://ui.lostcoords.com/components/button.html
+
+```erb
+<% [ [ :secondary, :sm ], [ :outline, :md ], [ :ghost, :lg ] ].each do |variant, size| %>
+  <%= lc_split_button "Export", id: "my-component-#{variant}", variant: variant, size: size, menu_label: "Export options" do %>
+    <%= lc_menu_option "Export as CSV" %>
+    <%= lc_menu_option "Export as PDF" %>
+  <% end %>
+<% end %>
+```
+
+Turbo confirm: https://ui.lostcoords.com/components/dialog.html
+
+```erb
+<%# In the layout, once. %>
+<%= lc_confirm_sheet %>
+
+<%= lc_button_to "Delete project", "/projects/42", method: :delete, variant: :destructive, form: { data: { turbo_confirm: "Delete this project?", turbo_confirm_description: "Its pages and files are deleted for everyone.", controller: "confirm-demo", action: "confirm-demo#submit" } } %>
+<%= lc_button_to "Archive", "/projects/42/archival", form: { data: { turbo_confirm: "Archive this project?", turbo_confirm_accept: "Archive project", controller: "confirm-demo", action: "confirm-demo#submit" } } %>
+<%= lc_menu id: "my-component-menu", label: "Membership" do %>
+  <%= lc_menu_option "Leave project", href: "/projects/42/membership", method: :delete, tone: :destructive, form: { data: { turbo_confirm: "Leave this project?", turbo_confirm_accept: "Leave", controller: "confirm-demo", action: "confirm-demo#submit" } } %>
+<% end %>
 ```
 
 Actions: https://ui.lostcoords.com/components/menu.html
@@ -804,6 +1290,26 @@ Actions: https://ui.lostcoords.com/components/menu.html
   <%= lc_menu_option "Duplicate project" %>
   <%= lc_menu_option "Archive project", tone: :destructive %>
 <% end %>
+```
+
+Icon trigger, hints and choices: https://ui.lostcoords.com/components/menu.html
+
+```erb
+<div class="flex flex-wrap items-center gap-content">
+  <%= lc_menu id: "my-component-row-menu", label: "Actions for Alex", trigger: :icon do %>
+    <%= lc_menu_option "Rename", icon: "pencil" %>
+    <%= lc_menu_option "Move up", icon: "arrow-up", hint: "Second in the list" %>
+    <%= lc_menu_option "Copy link" %>
+    <%= lc_menu_option "Pinned", icon: "star", checkbox: true %>
+    <%= lc_menu_option "Remove", icon: "trash", href: "/components/menu.html", method: :delete, tone: :destructive %>
+  <% end %>
+  <%= lc_menu id: "my-component-currency-menu", label: "Currency", align: :start do |menu| %>
+    <% menu.trigger { |attrs| lc_select_trigger "Euro", **attrs } %>
+    <%= lc_menu_option "Euro", hint: "EUR", leading: tag.span("€"), checked: true %>
+    <%= lc_menu_option "Japanese yen", hint: "JPY", leading: tag.span("¥"), checked: false %>
+    <%= lc_menu_option "US dollar", hint: "USD", leading: tag.span("$"), checked: false %>
+  <% end %>
+</div>
 ```
 
 ## lc_link
@@ -829,8 +1335,8 @@ Tones: https://ui.lostcoords.com/components/link.html
 https://ui.lostcoords.com/components/nav_list.html#lc_nav_list
 
 ```ruby
-lc_nav_list(label:, compact: false, **attributes, &block)
-nav.link(label, url, current: false, indent: false, **attributes)
+lc_nav_list(label:, compact: false, layout: :column, indicator: false, **attributes, &block)
+nav.link(label = nil, url = nil, icon: nil, current: false, indent: false, **attributes, &block)
 nav.group(title, **attributes, &block)
 ```
 
@@ -858,6 +1364,29 @@ On this page: https://ui.lostcoords.com/components/nav_list.html
   <%= nav.link "Usage", "#usage" %>
   <%= nav.link "Sizes", "#sizes", indent: true %>
   <%= nav.link "API reference", "#api" %>
+<% end %>
+```
+
+Row with a sliding indicator: https://ui.lostcoords.com/components/nav_list.html
+
+```erb
+<%= lc_nav_list label: "Project", layout: :row, indicator: true, class: "w-full" do |nav| %>
+  <%= nav.link "Overview", "#overview", icon: "document-text", current: true %>
+  <%= nav.link "Activity", "#activity", icon: "clock" %>
+  <%= nav.link "Files", "#files", icon: "paper-clip" %>
+  <%= nav.link "Settings", "#settings", icon: "cog-6-tooth" %>
+<% end %>
+```
+
+Dock: https://ui.lostcoords.com/components/nav_list.html
+
+```erb
+<%# On phones, fix it to the bottom with your own classes. layout: :responsive is a dock below sm and a row from sm. %>
+<%= lc_nav_list label: "Group", layout: :dock, indicator: true, class: lc_glass_class(thick: true, extra: "w-full max-w-sm") do |nav| %>
+  <%= nav.link "Overview", "#overview", icon: "document-text", current: true %>
+  <%= nav.link "Members", "#members", icon: "users" %>
+  <%= nav.link "Activity", "#activity", icon: "clock" %>
+  <%= nav.link "Stats", "#stats", icon: "chart-bar" %>
 <% end %>
 ```
 
@@ -917,7 +1446,7 @@ Breadcrumb: https://ui.lostcoords.com/components/breadcrumb.html
 https://ui.lostcoords.com/components/tabs.html#lc_tabs
 
 ```ruby
-lc_tabs(id:, label:, selected: nil, orientation: :horizontal, activation: :automatic, **attributes, &block)
+lc_tabs(id:, label:, selected: nil, orientation: :horizontal, activation: :automatic, list: {}, **attributes, &block)
 tabs.panel(label, value: nil, **attributes, &block)
 ```
 
@@ -958,7 +1487,7 @@ Vertical, with manual activation: https://ui.lostcoords.com/components/tabs.html
 https://ui.lostcoords.com/components/button.html#lc_button
 
 ```ruby
-lc_button(content = nil, variant: :primary, size: :md, icon: nil, icon_position: :start, **attributes, &block)
+lc_button(content = nil, variant: :primary, tone: :default, size: :md, block: false, icon: nil, icon_position: :start, **attributes, &content_block)
 ```
 
 Page rhythm: https://ui.lostcoords.com/components/foundations.html
@@ -976,7 +1505,13 @@ Page rhythm: https://ui.lostcoords.com/components/foundations.html
       <%= lc_text "Train tickets" %>
     <% end %>
   <% end %>
-  <%= lc_section title: "Members" do %>
+  <%= lc_stack as: :section, gap: :heading do %>
+    <%= lc_section_header do %>
+      <%= lc_stack gap: :tight do %>
+        <%= lc_heading "Members" %>
+        <%= lc_text "Everyone who can see this workspace.", size: :small, tone: :muted %>
+      <% end %>
+    <% end %>
     <%= lc_card do %>
       <%= lc_inline do %>
         <%= lc_avatar "AK", class: "bg-primary" %>
@@ -1074,6 +1609,15 @@ Variants: https://ui.lostcoords.com/components/button.html
 <%= lc_button "Ghost", variant: :ghost %>
 <%= lc_button "Glass", variant: :glass %>
 <%= lc_button "Delete", variant: :destructive %>
+```
+
+Destructive tone: https://ui.lostcoords.com/components/button.html
+
+```erb
+<%= lc_button "Revoke", variant: :ghost, tone: :destructive %>
+<%= lc_button "Sign out", variant: :outline, tone: :destructive %>
+<%= lc_button "Remove member", variant: :secondary, tone: :destructive %>
+<%= lc_button "Delete group", tone: :destructive %>
 ```
 
 Glass over content: https://ui.lostcoords.com/components/button.html
@@ -1203,6 +1747,22 @@ Modal: https://ui.lostcoords.com/components/dialog.html
 <% end %>
 ```
 
+Opened by your controller: https://ui.lostcoords.com/components/dialog.html
+
+```erb
+<div data-controller="lc-dialog">
+  <%= lc_button "Show members", variant: :secondary, aria: { haspopup: "dialog", controls: "my-component-members" }, data: { action: "lc-dialog#open" } %>
+  <%= lc_dialog id: "my-component-members", title: "Members", trigger: false, size: :lg, detents: "large", data: { lc_dialog_target: "dialog" } do |dialog| %>
+    <%= dialog.actions do %>
+      <%= lc_button "Invite", size: :sm %>
+    <% end %>
+    <% %w[Aiko Ben Chiara Dmitri Emi Farah Goro Hana].each do |name| %>
+      <p class="<%= lc_text_class %>"><%= name %></p>
+    <% end %>
+  <% end %>
+</div>
+```
+
 Empty state: https://ui.lostcoords.com/components/empty_state.html
 
 ```erb
@@ -1225,6 +1785,30 @@ Form actions: https://ui.lostcoords.com/components/field.html
 <% end %>
 ```
 
+Settings: https://ui.lostcoords.com/components/list_group.html
+
+```erb
+<%= lc_list_section "Sign-in methods", id: "my-component", footnote: "Keep at least one way to sign in.", class: "w-full max-w-md" do %>
+  <%= lc_list_group do %>
+    <%= lc_list_row "Email", subtitle: "ada@example.com", icon: "envelope" do %>
+      <%= lc_button "Change", variant: :secondary, size: :sm %>
+    <% end %>
+    <%= lc_list_row "Passkey", subtitle: "Not set up", icon: "key" do %>
+      <%= lc_button "Add", variant: :secondary, size: :sm %>
+    <% end %>
+    <%= lc_list_row "Sign-in alerts", subtitle: "Email me when a new device signs in", icon: "bell", tag: :label, class: "cursor-pointer" do %>
+      <input type="checkbox" role="switch" name="alerts" class="<%= lc_switch_class %>" checked>
+    <% end %>
+    <%= lc_list_row "Recovery codes", icon: "document-text", href: "#recovery-codes" do %>
+      <%= lc_icon "chevron-right", variant: :mini, options: { class: "size-5 text-muted-foreground rtl:rotate-180", "aria-hidden": true } %>
+    <% end %>
+    <%= lc_list_row padded: false do %>
+      <%= lc_list_item "Delete account", icon: "trash", tag: :button, type: "button", class: "w-full cursor-pointer rounded-[inherit] text-destructive transition-colors hover:bg-accent" %>
+    <% end %>
+  <% end %>
+<% end %>
+```
+
 Over dialogs and sticky headers: https://ui.lostcoords.com/components/toast.html
 
 ```erb
@@ -1234,14 +1818,27 @@ Over dialogs and sticky headers: https://ui.lostcoords.com/components/toast.html
 <%= lc_button "Save project", data: { controller: "toast-demo", action: "toast-demo#show", toast_demo_template_value: "my-component-toast", toast_demo_region_value: "my-component-toasts" } %>
 ```
 
-Form values and reset: https://ui.lostcoords.com/components/toggle_group.html
+Centred, at the top on phones: https://ui.lostcoords.com/components/toast.html
+
+```erb
+<%# Centred at the bottom, and at the top on phones, clear of a bottom tab bar. %>
+<%= lc_toast_region id: "my-component-toasts", placement: :bottom_center, mobile_placement: :top_center %>
+<template id="my-component-toast"><%= lc_toast "Expense added." %></template>
+<%= lc_button "Add expense", data: { controller: "toast-demo", action: "toast-demo#show", toast_demo_template_value: "my-component-toast", toast_demo_region_value: "my-component-toasts" } %>
+```
+
+Form values, native radios and reset: https://ui.lostcoords.com/components/toggle_group.html
 
 ```erb
 <form class="flex flex-col items-center gap-4">
   <%= lc_toggle_group label: "Billing", name: "billing", value: "monthly" do %>
-    <%= lc_toggle_group_item "Monthly", value: "monthly", selected: true %>
+    <%= lc_toggle_group_item "Monthly", value: "monthly" %>
     <%= lc_toggle_group_item "Annual", value: "annual" %>
     <%= lc_toggle_group_item "Custom", value: "custom", disabled: true %>
+  <% end %>
+  <%= lc_inline role: "radiogroup", aria: { label: "Heard about us" } do %>
+    <%= lc_toggle "A friend", name: "source", value: "friend", size: :sm %>
+    <%= lc_toggle "Search", name: "source", value: "search", size: :sm %>
   <% end %>
   <%= lc_button "Reset", type: :reset, variant: :ghost, size: :sm %>
 </form>
@@ -1265,7 +1862,7 @@ Tooltips: https://ui.lostcoords.com/components/tooltip.html
 https://ui.lostcoords.com/components/button.html#lc_button_link_to
 
 ```ruby
-lc_button_link_to(content = nil, url = nil, variant: :primary, size: :md, icon: nil, icon_position: :start, **attributes, &block)
+lc_button_link_to(content = nil, url = nil, variant: :primary, tone: :default, size: :md, block: false, icon: nil, icon_position: :start, **attributes, &content_block)
 ```
 
 As a link: https://ui.lostcoords.com/components/button.html
@@ -1274,21 +1871,12 @@ As a link: https://ui.lostcoords.com/components/button.html
 <%= lc_button_link_to "Browse components", "/components/button.html", variant: :secondary %>
 ```
 
-Navigation: https://ui.lostcoords.com/components/toggle.html
-
-```erb
-<%= lc_inline do %>
-  <%= lc_button_link_to "All projects", "/components/toggle.html", variant: :outline, size: :sm, aria: { current: "page" }, class: "bg-primary-soft border-primary text-primary" %>
-  <%= lc_button_link_to "Archived", "/components/badge.html", variant: :outline, size: :sm %>
-<% end %>
-```
-
 ## lc_button_to
 
 https://ui.lostcoords.com/components/button.html#lc_button_to
 
 ```ruby
-lc_button_to(content = nil, url = nil, variant: :primary, size: :md, icon: nil, icon_position: :start, **attributes, &block)
+lc_button_to(content = nil, url = nil, variant: :primary, tone: :default, size: :md, block: false, icon: nil, icon_position: :start, **attributes, &content_block)
 ```
 
 HTTP actions: https://ui.lostcoords.com/components/button.html
@@ -1297,12 +1885,93 @@ HTTP actions: https://ui.lostcoords.com/components/button.html
 <%= lc_button_to "Archive project", "/projects/42", method: :delete, variant: :destructive, form: { data: { turbo_confirm: "Archive this project?" } } %>
 ```
 
+Turbo confirm: https://ui.lostcoords.com/components/dialog.html
+
+```erb
+<%# In the layout, once. %>
+<%= lc_confirm_sheet %>
+
+<%= lc_button_to "Delete project", "/projects/42", method: :delete, variant: :destructive, form: { data: { turbo_confirm: "Delete this project?", turbo_confirm_description: "Its pages and files are deleted for everyone.", controller: "confirm-demo", action: "confirm-demo#submit" } } %>
+<%= lc_button_to "Archive", "/projects/42/archival", form: { data: { turbo_confirm: "Archive this project?", turbo_confirm_accept: "Archive project", controller: "confirm-demo", action: "confirm-demo#submit" } } %>
+<%= lc_menu id: "my-component-menu", label: "Membership" do %>
+  <%= lc_menu_option "Leave project", href: "/projects/42/membership", method: :delete, tone: :destructive, form: { data: { turbo_confirm: "Leave this project?", turbo_confirm_accept: "Leave", controller: "confirm-demo", action: "confirm-demo#submit" } } %>
+<% end %>
+```
+
+## lc_select_trigger
+
+https://ui.lostcoords.com/components/button.html#lc_select_trigger
+
+```ruby
+lc_select_trigger(label = nil, size: :md, block: false, **attributes, &content)
+```
+
+Select trigger: https://ui.lostcoords.com/components/button.html
+
+```erb
+<%= lc_menu id: "my-component-menu", label: "Member", align: :start do |menu| %>
+  <% menu.trigger(class: "min-w-44") { |attrs| lc_select_trigger "All members", **attrs } %>
+  <%= lc_menu_option "All members", checked: true %>
+  <%= lc_menu_option "Alex", checked: false %>
+  <%= lc_menu_option "Sam", checked: false %>
+<% end %>
+```
+
+Icon trigger, hints and choices: https://ui.lostcoords.com/components/menu.html
+
+```erb
+<div class="flex flex-wrap items-center gap-content">
+  <%= lc_menu id: "my-component-row-menu", label: "Actions for Alex", trigger: :icon do %>
+    <%= lc_menu_option "Rename", icon: "pencil" %>
+    <%= lc_menu_option "Move up", icon: "arrow-up", hint: "Second in the list" %>
+    <%= lc_menu_option "Copy link" %>
+    <%= lc_menu_option "Pinned", icon: "star", checkbox: true %>
+    <%= lc_menu_option "Remove", icon: "trash", href: "/components/menu.html", method: :delete, tone: :destructive %>
+  <% end %>
+  <%= lc_menu id: "my-component-currency-menu", label: "Currency", align: :start do |menu| %>
+    <% menu.trigger { |attrs| lc_select_trigger "Euro", **attrs } %>
+    <%= lc_menu_option "Euro", hint: "EUR", leading: tag.span("€"), checked: true %>
+    <%= lc_menu_option "Japanese yen", hint: "JPY", leading: tag.span("¥"), checked: false %>
+    <%= lc_menu_option "US dollar", hint: "USD", leading: tag.span("$"), checked: false %>
+  <% end %>
+</div>
+```
+
+## lc_split_button
+
+https://ui.lostcoords.com/components/button.html#lc_split_button
+
+```ruby
+lc_split_button(label, id:, href: nil, menu_label: lc_t("lostcoords.ui.menu.label"), variant: :primary, tone: :default, size: :md,
+                        icon: nil, icon_position: :start, block: false, align: :end, action: {}, toggle: {}, menu: {}, **attributes, &items)
+```
+
+Split button: https://ui.lostcoords.com/components/button.html
+
+```erb
+<%= lc_split_button "Add expense", id: "my-component-menu", icon: "plus", menu_label: "More ways to add" do %>
+  <%= lc_menu_option "Import a CSV", icon: "arrow-down-tray" %>
+  <%= lc_menu_option "Scan a receipt", icon: "camera" %>
+<% end %>
+```
+
+Split button variants and sizes: https://ui.lostcoords.com/components/button.html
+
+```erb
+<% [ [ :secondary, :sm ], [ :outline, :md ], [ :ghost, :lg ] ].each do |variant, size| %>
+  <%= lc_split_button "Export", id: "my-component-#{variant}", variant: variant, size: size, menu_label: "Export options" do %>
+    <%= lc_menu_option "Export as CSV" %>
+    <%= lc_menu_option "Export as PDF" %>
+  <% end %>
+<% end %>
+```
+
 ## lc_icon_button
 
 https://ui.lostcoords.com/components/button.html#lc_icon_button
 
 ```ruby
-lc_icon_button(label, icon:, size: :md, shape: :circle, **attributes)
+lc_icon_button(label, icon: nil, size: :md, shape: :circle, **attributes, &content)
 ```
 
 Hover and press: https://ui.lostcoords.com/components/foundations.html
@@ -1320,6 +1989,9 @@ Icon buttons: https://ui.lostcoords.com/components/button.html
 <%= lc_icon_button "Settings", icon: "cog-6-tooth", shape: :square %>
 <%= lc_icon_button "Search", icon: "magnifying-glass", size: :sm %>
 <%= lc_icon_button "Close", icon: "x-mark", size: :lg %>
+<%= lc_icon_button_link_to "Back to buttons", "/components/button.html", icon: "chevron-left", shape: :square %>
+<%= lc_icon_button "Account", size: :lg do %><span class="<%= lc_avatar_class %>">AL</span><% end %>
+<%= lc_icon_button_to "Reload buttons", "/components/button.html", icon: "arrow-path", method: :get, form: { class: "contents" } %>
 ```
 
 Tooltips: https://ui.lostcoords.com/components/tooltip.html
@@ -1335,12 +2007,52 @@ Tooltips: https://ui.lostcoords.com/components/tooltip.html
 <% end %>
 ```
 
+## lc_icon_button_link_to
+
+https://ui.lostcoords.com/components/button.html#lc_icon_button_link_to
+
+```ruby
+lc_icon_button_link_to(label, url, icon: nil, size: :md, shape: :circle, **attributes, &content)
+```
+
+Icon buttons: https://ui.lostcoords.com/components/button.html
+
+```erb
+<%= lc_icon_button "Add project", icon: "plus" %>
+<%= lc_icon_button "Settings", icon: "cog-6-tooth", shape: :square %>
+<%= lc_icon_button "Search", icon: "magnifying-glass", size: :sm %>
+<%= lc_icon_button "Close", icon: "x-mark", size: :lg %>
+<%= lc_icon_button_link_to "Back to buttons", "/components/button.html", icon: "chevron-left", shape: :square %>
+<%= lc_icon_button "Account", size: :lg do %><span class="<%= lc_avatar_class %>">AL</span><% end %>
+<%= lc_icon_button_to "Reload buttons", "/components/button.html", icon: "arrow-path", method: :get, form: { class: "contents" } %>
+```
+
+## lc_icon_button_to
+
+https://ui.lostcoords.com/components/button.html#lc_icon_button_to
+
+```ruby
+lc_icon_button_to(label, url, icon: nil, size: :md, shape: :circle, **attributes, &content)
+```
+
+Icon buttons: https://ui.lostcoords.com/components/button.html
+
+```erb
+<%= lc_icon_button "Add project", icon: "plus" %>
+<%= lc_icon_button "Settings", icon: "cog-6-tooth", shape: :square %>
+<%= lc_icon_button "Search", icon: "magnifying-glass", size: :sm %>
+<%= lc_icon_button "Close", icon: "x-mark", size: :lg %>
+<%= lc_icon_button_link_to "Back to buttons", "/components/button.html", icon: "chevron-left", shape: :square %>
+<%= lc_icon_button "Account", size: :lg do %><span class="<%= lc_avatar_class %>">AL</span><% end %>
+<%= lc_icon_button_to "Reload buttons", "/components/button.html", icon: "arrow-path", method: :get, form: { class: "contents" } %>
+```
+
 ## lc_badge
 
 https://ui.lostcoords.com/components/badge.html#lc_badge
 
 ```ruby
-lc_badge(content = nil, tone: :neutral, **attributes, &block)
+lc_badge(content = nil, tone: :neutral, shape: :rounded, **attributes, &block)
 ```
 
 Tones: https://ui.lostcoords.com/components/badge.html
@@ -1353,10 +2065,12 @@ Tones: https://ui.lostcoords.com/components/badge.html
 <%= lc_badge "Failed", tone: :destructive %>
 ```
 
-Status: https://ui.lostcoords.com/components/badge.html
+Pill status: https://ui.lostcoords.com/components/badge.html
 
 ```erb
-<%= lc_badge "On track", tone: :primary, class: "rounded-full text-sm" %>
+<%= lc_badge "On track", tone: :primary, shape: :pill %>
+<%= lc_badge "Pending", shape: :pill %>
+<%= lc_badge "3 errors", tone: :destructive, shape: :pill %>
 ```
 
 Details: https://ui.lostcoords.com/components/description_list.html
@@ -1379,7 +2093,7 @@ Details: https://ui.lostcoords.com/components/description_list.html
 https://ui.lostcoords.com/components/icon_badge.html#lc_icon_badge
 
 ```ruby
-lc_icon_badge(icon:, size: :md, shape: :square, tone: :neutral, **attributes)
+lc_icon_badge(content = nil, icon: nil, size: :md, shape: :square, tone: :neutral, **attributes, &block)
 ```
 
 Empty state: https://ui.lostcoords.com/components/empty_state.html
@@ -1398,8 +2112,11 @@ Empty state: https://ui.lostcoords.com/components/empty_state.html
 Shapes and sizes: https://ui.lostcoords.com/components/icon_badge.html
 
 ```erb
+<%= lc_icon_badge icon: "folder", size: :sm %>
 <%= lc_icon_badge icon: "folder" %>
 <%= lc_icon_badge icon: "document-text", size: :lg %>
+<%= lc_icon_badge icon: "document-text", size: :xl %>
+<%= lc_icon_badge "🍜", aria: { hidden: true } %>
 ```
 
 Round icons and tones: https://ui.lostcoords.com/components/icon_badge.html
@@ -1414,7 +2131,7 @@ Round icons and tones: https://ui.lostcoords.com/components/icon_badge.html
 https://ui.lostcoords.com/components/avatar.html#lc_avatar
 
 ```ruby
-lc_avatar(content = nil, src: nil, alt: nil, size: :md, ink: false, linked: false, **attributes, &block)
+lc_avatar(content = nil, src: nil, alt: nil, size: :md, ink: false, linked: false, as: :span, **attributes, &block)
 ```
 
 Page rhythm: https://ui.lostcoords.com/components/foundations.html
@@ -1432,7 +2149,13 @@ Page rhythm: https://ui.lostcoords.com/components/foundations.html
       <%= lc_text "Train tickets" %>
     <% end %>
   <% end %>
-  <%= lc_section title: "Members" do %>
+  <%= lc_stack as: :section, gap: :heading do %>
+    <%= lc_section_header do %>
+      <%= lc_stack gap: :tight do %>
+        <%= lc_heading "Members" %>
+        <%= lc_text "Everyone who can see this workspace.", size: :small, tone: :muted %>
+      <% end %>
+    <% end %>
     <%= lc_card do %>
       <%= lc_inline do %>
         <%= lc_avatar "AK", class: "bg-primary" %>
@@ -1455,6 +2178,14 @@ Initials and images: https://ui.lostcoords.com/components/avatar.html
 <%= lc_avatar "MK", ink: true, class: "bg-destructive-soft", aria: { label: "Morgan Kim" } %>
 ```
 
+Sizes: https://ui.lostcoords.com/components/avatar.html
+
+```erb
+<% %i[xs sm md lg xl xxl].each do |size| %>
+  <%= lc_avatar "AL", size: size, ink: true, class: "bg-accent", aria: { label: "Alex Lee (#{size})" } %>
+<% end %>
+```
+
 Avatar groups: https://ui.lostcoords.com/components/avatar.html
 
 ```erb
@@ -1470,7 +2201,7 @@ Avatar groups: https://ui.lostcoords.com/components/avatar.html
 https://ui.lostcoords.com/components/avatar.html#lc_avatar_stack
 
 ```ruby
-lc_avatar_stack(compact: false, **attributes, &block)
+lc_avatar_stack(compact: false, row: {}, **attributes, &block)
 ```
 
 Avatar groups: https://ui.lostcoords.com/components/avatar.html
@@ -1488,7 +2219,7 @@ Avatar groups: https://ui.lostcoords.com/components/avatar.html
 https://ui.lostcoords.com/components/card.html#lc_card
 
 ```ruby
-lc_card(href: nil, interactive: false, padding: :md, **attributes, &block)
+lc_card(href: nil, interactive: false, padding: :md, as: :div, **attributes, &block)
 card.header(title: nil, description: nil, level: 3, **attributes, &actions)
 card.title(content = nil, level: 3, **attributes, &block)
 card.description(content = nil, **attributes, &block)
@@ -1511,7 +2242,13 @@ Page rhythm: https://ui.lostcoords.com/components/foundations.html
       <%= lc_text "Train tickets" %>
     <% end %>
   <% end %>
-  <%= lc_section title: "Members" do %>
+  <%= lc_stack as: :section, gap: :heading do %>
+    <%= lc_section_header do %>
+      <%= lc_stack gap: :tight do %>
+        <%= lc_heading "Members" %>
+        <%= lc_text "Everyone who can see this workspace.", size: :small, tone: :muted %>
+      <% end %>
+    <% end %>
     <%= lc_card do %>
       <%= lc_inline do %>
         <%= lc_avatar "AK", class: "bg-primary" %>
@@ -1831,6 +2568,100 @@ Japanese reading: https://ui.lostcoords.com/components/foundations.html
 <% end %>
 ```
 
+## lc_search
+
+https://ui.lostcoords.com/components/search.html#lc_search
+
+```ruby
+lc_search(label:, src: nil, param: "q", placeholder: label, trigger: lc_t("lostcoords.ui.search.trigger"), shortcut: "mod+k", id: "lc-search", **attributes, &block)
+```
+
+Filtered in the browser: https://ui.lostcoords.com/components/search.html
+
+```erb
+<%# Rows rendered in the block are filtered in the browser. Pass src: to have your server answer each query instead. %>
+<%= lc_search label: "Search the workspace", placeholder: "Search projects and people…", id: "my-component", shortcut: nil do %>
+  <%= lc_search_group "Projects" do %>
+    <%= lc_search_result "Fieldwork", "#fieldwork", detail: "A quieter identity for an outdoor journal.", icon: "sun", keywords: "brand identity" %>
+    <%= lc_search_result "Sunday House", "#sunday-house", detail: "A welcoming home for a neighborhood bakery.", icon: "home", keywords: "website" %>
+  <% end %>
+  <%= lc_search_group "People" do %>
+    <%= lc_search_result "Alex Lee", "#alex-lee", detail: "Designer", icon: "user" %>
+    <%= lc_search_result "Sam Kim", "#sam-kim", detail: "Developer", icon: "user" %>
+  <% end %>
+<% end %>
+```
+
+## lc_search_group
+
+https://ui.lostcoords.com/components/search.html#lc_search_group
+
+```ruby
+lc_search_group(title, **attributes, &block)
+```
+
+Filtered in the browser: https://ui.lostcoords.com/components/search.html
+
+```erb
+<%# Rows rendered in the block are filtered in the browser. Pass src: to have your server answer each query instead. %>
+<%= lc_search label: "Search the workspace", placeholder: "Search projects and people…", id: "my-component", shortcut: nil do %>
+  <%= lc_search_group "Projects" do %>
+    <%= lc_search_result "Fieldwork", "#fieldwork", detail: "A quieter identity for an outdoor journal.", icon: "sun", keywords: "brand identity" %>
+    <%= lc_search_result "Sunday House", "#sunday-house", detail: "A welcoming home for a neighborhood bakery.", icon: "home", keywords: "website" %>
+  <% end %>
+  <%= lc_search_group "People" do %>
+    <%= lc_search_result "Alex Lee", "#alex-lee", detail: "Designer", icon: "user" %>
+    <%= lc_search_result "Sam Kim", "#sam-kim", detail: "Developer", icon: "user" %>
+  <% end %>
+<% end %>
+```
+
+## lc_search_result
+
+https://ui.lostcoords.com/components/search.html#lc_search_result
+
+```ruby
+lc_search_result(title, url, detail: nil, icon: nil, keywords: nil, **attributes, &block)
+```
+
+Filtered in the browser: https://ui.lostcoords.com/components/search.html
+
+```erb
+<%# Rows rendered in the block are filtered in the browser. Pass src: to have your server answer each query instead. %>
+<%= lc_search label: "Search the workspace", placeholder: "Search projects and people…", id: "my-component", shortcut: nil do %>
+  <%= lc_search_group "Projects" do %>
+    <%= lc_search_result "Fieldwork", "#fieldwork", detail: "A quieter identity for an outdoor journal.", icon: "sun", keywords: "brand identity" %>
+    <%= lc_search_result "Sunday House", "#sunday-house", detail: "A welcoming home for a neighborhood bakery.", icon: "home", keywords: "website" %>
+  <% end %>
+  <%= lc_search_group "People" do %>
+    <%= lc_search_result "Alex Lee", "#alex-lee", detail: "Designer", icon: "user" %>
+    <%= lc_search_result "Sam Kim", "#sam-kim", detail: "Developer", icon: "user" %>
+  <% end %>
+<% end %>
+```
+
+## lc_sheet
+
+https://ui.lostcoords.com/components/dialog.html#lc_sheet
+
+```ruby
+lc_sheet(tag: :div, anchored: false, detents: "fit", handle: false, size: nil, **attributes, &block)
+```
+
+Popover sheet: https://ui.lostcoords.com/components/dialog.html
+
+```erb
+<button type="button" class="<%= lc_button_class(variant: :secondary) %>" popovertarget="my-component-filters">Filters</button>
+<%= lc_sheet id: "my-component-filters", popover: "auto", role: "dialog", aria: { labelledby: "my-component-filters-title" },
+      class: lc_glass_class(shape: :picker, extra: "sm:m-auto sm:w-80 sm:rounded-3xl text-foreground") do %>
+  <div class="grid gap-content p-inset">
+    <%= lc_heading "Filters", id: "my-component-filters-title", size: :title %>
+    <p class="text-sm text-muted-foreground">A popover on desktop, a sheet you can swipe away on phones.</p>
+    <button type="button" class="<%= lc_button_class(block: true) %>" popovertarget="my-component-filters" popovertargetaction="hide">Done</button>
+  </div>
+<% end %>
+```
+
 ## lc_input
 
 https://ui.lostcoords.com/components/input.html#lc_input
@@ -1864,6 +2695,20 @@ Validation feedback: https://ui.lostcoords.com/components/card.html
     <%= lc_field label: "Project name", id: "my-component-name", error: "This name is already taken." do |field| %>
       <%= lc_input name: "project[name]", value: "Design system", **field %>
     <% end %>
+  <% end %>
+<% end %>
+```
+
+Button summary: https://ui.lostcoords.com/components/collapsible.html
+
+```erb
+<%= lc_collapsible card: false, indicator: :none, class: "w-full max-w-80", summary_class: lc_button_class(variant: :secondary, size: :sm, extra: "w-fit") do |collapsible| %>
+  <% collapsible.summary do %>
+    <%= lc_icon "user-plus", options: { "aria-hidden": true } %>
+    <span>Invite people</span>
+  <% end %>
+  <%= lc_field label: "Email", id: "my-component-email" do |field| %>
+    <%= lc_input name: "email", type: :email, **field %>
   <% end %>
 <% end %>
 ```
@@ -1992,7 +2837,7 @@ Native select: https://ui.lostcoords.com/components/select.html
 https://ui.lostcoords.com/components/field.html#lc_field
 
 ```ruby
-lc_field(label:, id:, hint: nil, error: nil, **attributes, &block)
+lc_field(label:, id:, hint: nil, error: nil, size: :md, **attributes, &block)
 ```
 
 With form controls: https://ui.lostcoords.com/components/card.html
@@ -2020,6 +2865,20 @@ Validation feedback: https://ui.lostcoords.com/components/card.html
     <%= lc_field label: "Project name", id: "my-component-name", error: "This name is already taken." do |field| %>
       <%= lc_input name: "project[name]", value: "Design system", **field %>
     <% end %>
+  <% end %>
+<% end %>
+```
+
+Button summary: https://ui.lostcoords.com/components/collapsible.html
+
+```erb
+<%= lc_collapsible card: false, indicator: :none, class: "w-full max-w-80", summary_class: lc_button_class(variant: :secondary, size: :sm, extra: "w-fit") do |collapsible| %>
+  <% collapsible.summary do %>
+    <%= lc_icon "user-plus", options: { "aria-hidden": true } %>
+    <span>Invite people</span>
+  <% end %>
+  <%= lc_field label: "Email", id: "my-component-email" do |field| %>
+    <%= lc_input name: "email", type: :email, **field %>
   <% end %>
 <% end %>
 ```
@@ -2102,32 +2961,90 @@ Focus a field: https://ui.lostcoords.com/components/kbd.html
 <% end %>
 ```
 
+## lc_fieldset
+
+https://ui.lostcoords.com/components/field.html#lc_fieldset
+
+```ruby
+lc_fieldset(legend:, id: nil, hint: nil, error: nil, size: :md, **attributes, &block)
+```
+
+Grouped controls: https://ui.lostcoords.com/components/field.html
+
+```erb
+<%= lc_stack class: "w-full max-w-sm" do %>
+  <%= lc_fieldset legend: "Split", id: "my-component-split", hint: "Everyone pays the same share unless you change it." do %>
+    <%= lc_inline do %>
+      <%= lc_toggle "Equally", active: true %>
+      <%= lc_toggle "By amount" %>
+      <%= lc_toggle "By share" %>
+    <% end %>
+  <% end %>
+  <%= lc_stack gap: :related do %>
+    <%= lc_text "This app can", size: :label, tone: :muted %>
+    <ul class="m-0 ps-5 list-disc text-muted-foreground">
+      <li>Read your groups</li>
+      <li>Add expenses</li>
+    </ul>
+  <% end %>
+<% end %>
+```
+
 ## lc_toggle_group
 
 https://ui.lostcoords.com/components/toggle_group.html#lc_toggle_group
 
 ```ruby
-lc_toggle_group(label:, name: nil, value: nil, **attributes, &block)
+lc_toggle_group(label:, name: nil, value: nil, as: :div, **attributes, &block)
+```
+
+Row summary with a chevron: https://ui.lostcoords.com/components/collapsible.html
+
+```erb
+<%= lc_collapsible card: false, indicator: :chevron, class: "w-full max-w-80", summary_class: "rounded-2xl px-3 font-medium hover:bg-accent" do |collapsible| %>
+  <% collapsible.summary do %>
+    <span class="me-auto">Language</span>
+    <span class="font-normal text-muted-foreground">English</span>
+  <% end %>
+  <%= lc_toggle_group label: "Language", value: "en" do %>
+    <%= lc_toggle_group_item "English", value: "en", selected: true %>
+    <%= lc_toggle_group_item "日本語", value: "ja" %>
+  <% end %>
+<% end %>
 ```
 
 Mutually exclusive choices: https://ui.lostcoords.com/components/toggle_group.html
 
 ```erb
-<%= lc_toggle_group label: "View", name: "view", value: "month" do %>
+<%= lc_toggle_group label: "View", value: "month" do %>
   <%= lc_toggle_group_item "Week", value: "week" %>
   <%= lc_toggle_group_item "Month", value: "month", selected: true %>
   <%= lc_toggle_group_item "Year", value: "year" %>
 <% end %>
 ```
 
-Form values and reset: https://ui.lostcoords.com/components/toggle_group.html
+Navigation links: https://ui.lostcoords.com/components/toggle_group.html
+
+```erb
+<%= lc_toggle_group label: "Period", as: :nav do %>
+  <%= lc_toggle_group_item "Month", href: "/components/toggle_group.html", current: true %>
+  <%= lc_toggle_group_item "Quarter", href: "/components/toggle.html" %>
+  <%= lc_toggle_group_item "Year", href: "/components/tabs.html" %>
+<% end %>
+```
+
+Form values, native radios and reset: https://ui.lostcoords.com/components/toggle_group.html
 
 ```erb
 <form class="flex flex-col items-center gap-4">
   <%= lc_toggle_group label: "Billing", name: "billing", value: "monthly" do %>
-    <%= lc_toggle_group_item "Monthly", value: "monthly", selected: true %>
+    <%= lc_toggle_group_item "Monthly", value: "monthly" %>
     <%= lc_toggle_group_item "Annual", value: "annual" %>
     <%= lc_toggle_group_item "Custom", value: "custom", disabled: true %>
+  <% end %>
+  <%= lc_inline role: "radiogroup", aria: { label: "Heard about us" } do %>
+    <%= lc_toggle "A friend", name: "source", value: "friend", size: :sm %>
+    <%= lc_toggle "Search", name: "source", value: "search", size: :sm %>
   <% end %>
   <%= lc_button "Reset", type: :reset, variant: :ghost, size: :sm %>
 </form>
@@ -2138,27 +3055,56 @@ Form values and reset: https://ui.lostcoords.com/components/toggle_group.html
 https://ui.lostcoords.com/components/toggle_group.html#lc_toggle_group_item
 
 ```ruby
-lc_toggle_group_item(label = nil, value: nil, selected: false, **attributes, &block)
+lc_toggle_group_item(label = nil, value: nil, selected: nil, checked: nil, href: nil, current: nil, input: {}, **attributes, &block)
+```
+
+Row summary with a chevron: https://ui.lostcoords.com/components/collapsible.html
+
+```erb
+<%= lc_collapsible card: false, indicator: :chevron, class: "w-full max-w-80", summary_class: "rounded-2xl px-3 font-medium hover:bg-accent" do |collapsible| %>
+  <% collapsible.summary do %>
+    <span class="me-auto">Language</span>
+    <span class="font-normal text-muted-foreground">English</span>
+  <% end %>
+  <%= lc_toggle_group label: "Language", value: "en" do %>
+    <%= lc_toggle_group_item "English", value: "en", selected: true %>
+    <%= lc_toggle_group_item "日本語", value: "ja" %>
+  <% end %>
+<% end %>
 ```
 
 Mutually exclusive choices: https://ui.lostcoords.com/components/toggle_group.html
 
 ```erb
-<%= lc_toggle_group label: "View", name: "view", value: "month" do %>
+<%= lc_toggle_group label: "View", value: "month" do %>
   <%= lc_toggle_group_item "Week", value: "week" %>
   <%= lc_toggle_group_item "Month", value: "month", selected: true %>
   <%= lc_toggle_group_item "Year", value: "year" %>
 <% end %>
 ```
 
-Form values and reset: https://ui.lostcoords.com/components/toggle_group.html
+Navigation links: https://ui.lostcoords.com/components/toggle_group.html
+
+```erb
+<%= lc_toggle_group label: "Period", as: :nav do %>
+  <%= lc_toggle_group_item "Month", href: "/components/toggle_group.html", current: true %>
+  <%= lc_toggle_group_item "Quarter", href: "/components/toggle.html" %>
+  <%= lc_toggle_group_item "Year", href: "/components/tabs.html" %>
+<% end %>
+```
+
+Form values, native radios and reset: https://ui.lostcoords.com/components/toggle_group.html
 
 ```erb
 <form class="flex flex-col items-center gap-4">
   <%= lc_toggle_group label: "Billing", name: "billing", value: "monthly" do %>
-    <%= lc_toggle_group_item "Monthly", value: "monthly", selected: true %>
+    <%= lc_toggle_group_item "Monthly", value: "monthly" %>
     <%= lc_toggle_group_item "Annual", value: "annual" %>
     <%= lc_toggle_group_item "Custom", value: "custom", disabled: true %>
+  <% end %>
+  <%= lc_inline role: "radiogroup", aria: { label: "Heard about us" } do %>
+    <%= lc_toggle "A friend", name: "source", value: "friend", size: :sm %>
+    <%= lc_toggle "Search", name: "source", value: "search", size: :sm %>
   <% end %>
   <%= lc_button "Reset", type: :reset, variant: :ghost, size: :sm %>
 </form>
@@ -2169,7 +3115,28 @@ Form values and reset: https://ui.lostcoords.com/components/toggle_group.html
 https://ui.lostcoords.com/components/toggle.html#lc_toggle
 
 ```ruby
-lc_toggle(label = nil, active: false, ghost: false, size: :md, **attributes, &block)
+lc_toggle(label = nil, active: false, ghost: false, size: :md, href: nil, name: nil, value: nil, input: {}, **attributes, &block)
+```
+
+Grouped controls: https://ui.lostcoords.com/components/field.html
+
+```erb
+<%= lc_stack class: "w-full max-w-sm" do %>
+  <%= lc_fieldset legend: "Split", id: "my-component-split", hint: "Everyone pays the same share unless you change it." do %>
+    <%= lc_inline do %>
+      <%= lc_toggle "Equally", active: true %>
+      <%= lc_toggle "By amount" %>
+      <%= lc_toggle "By share" %>
+    <% end %>
+  <% end %>
+  <%= lc_stack gap: :related do %>
+    <%= lc_text "This app can", size: :label, tone: :muted %>
+    <ul class="m-0 ps-5 list-disc text-muted-foreground">
+      <li>Read your groups</li>
+      <li>Add expenses</li>
+    </ul>
+  <% end %>
+<% end %>
 ```
 
 Filters: https://ui.lostcoords.com/components/toggle.html
@@ -2182,11 +3149,37 @@ Filters: https://ui.lostcoords.com/components/toggle.html
 <% end %>
 ```
 
+Navigation: https://ui.lostcoords.com/components/toggle.html
+
+```erb
+<%= lc_inline do %>
+  <%= lc_toggle "All projects", href: "/components/toggle.html", active: true, size: :sm %>
+  <%= lc_toggle "Archived", href: "/components/badge.html", size: :sm %>
+<% end %>
+```
+
 Disabled and ghost: https://ui.lostcoords.com/components/toggle.html
 
 ```erb
 <%= lc_toggle "Unavailable", disabled: true %>
 <%= lc_toggle "Add filter", ghost: true %>
+```
+
+Form values, native radios and reset: https://ui.lostcoords.com/components/toggle_group.html
+
+```erb
+<form class="flex flex-col items-center gap-4">
+  <%= lc_toggle_group label: "Billing", name: "billing", value: "monthly" do %>
+    <%= lc_toggle_group_item "Monthly", value: "monthly" %>
+    <%= lc_toggle_group_item "Annual", value: "annual" %>
+    <%= lc_toggle_group_item "Custom", value: "custom", disabled: true %>
+  <% end %>
+  <%= lc_inline role: "radiogroup", aria: { label: "Heard about us" } do %>
+    <%= lc_toggle "A friend", name: "source", value: "friend", size: :sm %>
+    <%= lc_toggle "Search", name: "source", value: "search", size: :sm %>
+  <% end %>
+  <%= lc_button "Reset", type: :reset, variant: :ghost, size: :sm %>
+</form>
 ```
 
 ## lc_table
@@ -2237,12 +3230,21 @@ Over dialogs and sticky headers: https://ui.lostcoords.com/components/toast.html
 <%= lc_button "Save project", data: { controller: "toast-demo", action: "toast-demo#show", toast_demo_template_value: "my-component-toast", toast_demo_region_value: "my-component-toasts" } %>
 ```
 
+Centred, at the top on phones: https://ui.lostcoords.com/components/toast.html
+
+```erb
+<%# Centred at the bottom, and at the top on phones, clear of a bottom tab bar. %>
+<%= lc_toast_region id: "my-component-toasts", placement: :bottom_center, mobile_placement: :top_center %>
+<template id="my-component-toast"><%= lc_toast "Expense added." %></template>
+<%= lc_button "Add expense", data: { controller: "toast-demo", action: "toast-demo#show", toast_demo_template_value: "my-component-toast", toast_demo_region_value: "my-component-toasts" } %>
+```
+
 ## lc_toast_region
 
 https://ui.lostcoords.com/components/toast.html#lc_toast_region
 
 ```ruby
-lc_toast_region(**attributes, &block)
+lc_toast_region(placement: :bottom_end, mobile_placement: nil, **attributes, &block)
 ```
 
 Over dialogs and sticky headers: https://ui.lostcoords.com/components/toast.html
@@ -2252,6 +3254,15 @@ Over dialogs and sticky headers: https://ui.lostcoords.com/components/toast.html
 <%= lc_toast_region id: "my-component-toasts" %>
 <template id="my-component-toast"><%= lc_toast "Project saved." %></template>
 <%= lc_button "Save project", data: { controller: "toast-demo", action: "toast-demo#show", toast_demo_template_value: "my-component-toast", toast_demo_region_value: "my-component-toasts" } %>
+```
+
+Centred, at the top on phones: https://ui.lostcoords.com/components/toast.html
+
+```erb
+<%# Centred at the bottom, and at the top on phones, clear of a bottom tab bar. %>
+<%= lc_toast_region id: "my-component-toasts", placement: :bottom_center, mobile_placement: :top_center %>
+<template id="my-component-toast"><%= lc_toast "Expense added." %></template>
+<%= lc_button "Add expense", data: { controller: "toast-demo", action: "toast-demo#show", toast_demo_template_value: "my-component-toast", toast_demo_region_value: "my-component-toasts" } %>
 ```
 
 ## lc_tooltip
@@ -2307,6 +3318,54 @@ Japanese text: https://ui.lostcoords.com/components/foundations.html
 </div>
 ```
 
+Eyebrow: https://ui.lostcoords.com/components/foundations.html
+
+```erb
+<div class="grid gap-related">
+  <%= lc_text "Product", size: :eyebrow, tone: :muted %>
+  <%= lc_heading "Split costs with anyone", level: 3, size: :heading %>
+</div>
+<div lang="ja" class="grid gap-related">
+  <%= lc_text "プロダクト", size: :eyebrow, tone: :muted %>
+  <%= lc_heading "誰とでも費用を割り勘", level: 3, size: :heading %>
+</div>
+```
+
+Page rhythm: https://ui.lostcoords.com/components/foundations.html
+
+```erb
+<%= lc_stack gap: :section, class: "w-full max-w-xl" do %>
+  <%= lc_section title: "Recent expenses", actions: capture { lc_button("Add expense", icon: "plus", size: :sm) } do %>
+    <%= lc_card do %>
+      <%= lc_inline class: "flex-nowrap justify-between" do %>
+        <%= lc_text "Dinner with friends" %>
+        <%= lc_text "¥8,400", class: "shrink-0 tabular-nums" %>
+      <% end %>
+    <% end %>
+    <%= lc_card do %>
+      <%= lc_text "Train tickets" %>
+    <% end %>
+  <% end %>
+  <%= lc_stack as: :section, gap: :heading do %>
+    <%= lc_section_header do %>
+      <%= lc_stack gap: :tight do %>
+        <%= lc_heading "Members" %>
+        <%= lc_text "Everyone who can see this workspace.", size: :small, tone: :muted %>
+      <% end %>
+    <% end %>
+    <%= lc_card do %>
+      <%= lc_inline do %>
+        <%= lc_avatar "AK", class: "bg-primary" %>
+        <%= lc_stack gap: :tight do %>
+          <%= lc_text "Alex Kim" %>
+          <%= lc_text "Joined today", size: :small, tone: :muted %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
+```
+
 Responsive containers: https://ui.lostcoords.com/components/foundations.html
 
 ```erb
@@ -2336,6 +3395,20 @@ Responsive containers: https://ui.lostcoords.com/components/foundations.html
 <% end %>
 ```
 
+Popover sheet: https://ui.lostcoords.com/components/dialog.html
+
+```erb
+<button type="button" class="<%= lc_button_class(variant: :secondary) %>" popovertarget="my-component-filters">Filters</button>
+<%= lc_sheet id: "my-component-filters", popover: "auto", role: "dialog", aria: { labelledby: "my-component-filters-title" },
+      class: lc_glass_class(shape: :picker, extra: "sm:m-auto sm:w-80 sm:rounded-3xl text-foreground") do %>
+  <div class="grid gap-content p-inset">
+    <%= lc_heading "Filters", id: "my-component-filters-title", size: :title %>
+    <p class="text-sm text-muted-foreground">A popover on desktop, a sheet you can swipe away on phones.</p>
+    <button type="button" class="<%= lc_button_class(block: true) %>" popovertarget="my-component-filters" popovertargetaction="hide">Done</button>
+  </div>
+<% end %>
+```
+
 Empty state: https://ui.lostcoords.com/components/empty_state.html
 
 ```erb
@@ -2354,7 +3427,7 @@ Empty state: https://ui.lostcoords.com/components/empty_state.html
 https://ui.lostcoords.com/components/foundations.html#lc_text
 
 ```ruby
-lc_text(content = nil, size: :body, tone: :default, trim: false, **attributes, &block)
+lc_text(content = nil, size: :body, tone: :default, trim: false, as: :p, **attributes, &block)
 ```
 
 Text styles: https://ui.lostcoords.com/components/foundations.html
@@ -2381,6 +3454,19 @@ Japanese text: https://ui.lostcoords.com/components/foundations.html
 </div>
 ```
 
+Eyebrow: https://ui.lostcoords.com/components/foundations.html
+
+```erb
+<div class="grid gap-related">
+  <%= lc_text "Product", size: :eyebrow, tone: :muted %>
+  <%= lc_heading "Split costs with anyone", level: 3, size: :heading %>
+</div>
+<div lang="ja" class="grid gap-related">
+  <%= lc_text "プロダクト", size: :eyebrow, tone: :muted %>
+  <%= lc_heading "誰とでも費用を割り勘", level: 3, size: :heading %>
+</div>
+```
+
 Page rhythm: https://ui.lostcoords.com/components/foundations.html
 
 ```erb
@@ -2396,7 +3482,13 @@ Page rhythm: https://ui.lostcoords.com/components/foundations.html
       <%= lc_text "Train tickets" %>
     <% end %>
   <% end %>
-  <%= lc_section title: "Members" do %>
+  <%= lc_stack as: :section, gap: :heading do %>
+    <%= lc_section_header do %>
+      <%= lc_stack gap: :tight do %>
+        <%= lc_heading "Members" %>
+        <%= lc_text "Everyone who can see this workspace.", size: :small, tone: :muted %>
+      <% end %>
+    <% end %>
     <%= lc_card do %>
       <%= lc_inline do %>
         <%= lc_avatar "AK", class: "bg-primary" %>
@@ -2502,6 +3594,27 @@ Empty state: https://ui.lostcoords.com/components/empty_state.html
     <%= lc_text "Create a project to get started.", size: :small, tone: :muted %>
   <% end %>
   <%= lc_button "Create project" %>
+<% end %>
+```
+
+Grouped controls: https://ui.lostcoords.com/components/field.html
+
+```erb
+<%= lc_stack class: "w-full max-w-sm" do %>
+  <%= lc_fieldset legend: "Split", id: "my-component-split", hint: "Everyone pays the same share unless you change it." do %>
+    <%= lc_inline do %>
+      <%= lc_toggle "Equally", active: true %>
+      <%= lc_toggle "By amount" %>
+      <%= lc_toggle "By share" %>
+    <% end %>
+  <% end %>
+  <%= lc_stack gap: :related do %>
+    <%= lc_text "This app can", size: :label, tone: :muted %>
+    <ul class="m-0 ps-5 list-disc text-muted-foreground">
+      <li>Read your groups</li>
+      <li>Add expenses</li>
+    </ul>
+  <% end %>
 <% end %>
 ```
 
@@ -3042,365 +4155,6 @@ export default class extends Controller {
 }
 ```
 
-### Global search
-
-A search trigger that expands into a focused overlay with grouped results.
-https://ui.lostcoords.com/blocks/global_search.html
-
-This example filters sample results in the browser so it also works on the static documentation site.
-
-Replace the sample results with your own data or a Turbo Frame endpoint. Keep permissions, ranking and fetching in your application.
-
-app/views/shared/_global_search.html.erb
-
-```erb
-<%
-  collections = {
-    "Projects" => [
-      { title: "Fieldwork", detail: "A quieter identity for an outdoor journal.", icon: "sun", meta: "Brand identity", words: "brand identity outdoor journal fieldwork" },
-      { title: "Sunday House", detail: "A welcoming home for a neighborhood bakery.", icon: "home", meta: "Website", words: "website bakery sunday house" },
-      { title: "Open Water", detail: "A new chapter for an independent publisher.", icon: "book-open", meta: "Editorial", words: "editorial publishing open water" }
-    ],
-    "People" => [
-      { title: "Alex Lee", detail: "Alex leads brand design and the Fieldwork project.", icon: "user", meta: "Designer", words: "alex lee designer fieldwork" },
-      { title: "Sam Kim", detail: "Sam brings our websites and digital products to life.", icon: "user", meta: "Developer", words: "sam kim developer website" }
-    ],
-    "Notes" => [
-      { title: "A few good references", detail: "Our shared collection of typography, color, and things worth keeping.", icon: "document-text", meta: "Updated today", words: "notes references typography color inspiration" }
-    ]
-  }
-%>
-<div class="search-example min-h-screen" data-controller="blocks-search" data-action="turbo:before-cache@document->blocks-search#reset">
-  <header class="px-5 pt-5 sm:px-8">
-    <div class="relative mx-auto flex max-w-5xl items-center justify-between gap-4">
-      <span class="flex items-center gap-2.5 font-semibold tracking-tight"><%= lc_icon_badge icon: "sparkles" %> Studio</span>
-      <%= tag.button type: "button", class: "search-example__trigger flex min-h-11 items-center gap-3 rounded-full bg-muted px-3.5 text-muted-foreground hover:bg-accent hover:text-foreground", data: lc_shortcut_data("mod+k", blocks_search_target: "trigger", action: "blocks-search#open"), aria: { label: "Search workspace", haspopup: "dialog" } do %>
-        <%= lc_icon "magnifying-glass", options: { class: "size-5 shrink-0", "aria-hidden": true } %>
-        <span class="hidden flex-1 text-start text-sm sm:block">Search anything…</span>
-        <%= lc_kbd "mod+k", class: "hidden bg-transparent px-0 sm:block", aria: { hidden: true } %>
-      <% end %>
-      <%= lc_avatar "AL", size: :sm, class: "bg-primary-soft text-primary", aria: { label: "Alex Lee" } %>
-    </div>
-  </header>
-
-  <main id="main" class="isolate mx-auto flex max-w-5xl flex-col gap-8 px-5 py-12 sm:px-8 sm:py-16">
-    <div class="flex flex-col items-start gap-3">
-      <%= lc_text "YOUR WORKSPACE", size: :caption, tone: :muted %>
-      <h1 class="text-3xl font-semibold tracking-tight sm:text-4xl">Room for good work.</h1>
-      <p class="max-w-lg text-muted-foreground">Projects, people, and ideas. All in one place.</p>
-    </div>
-    <section class="flex flex-col gap-3" aria-labelledby="search-projects-heading">
-      <div class="flex items-center justify-between gap-3"><h2 id="search-projects-heading" class="font-semibold">On the desk</h2><%= lc_badge "3 projects" %></div>
-      <div class="grid gap-4 sm:grid-cols-3">
-        <% collections.fetch("Projects").each do |item| %>
-          <%= lc_card class: "flex flex-col items-start gap-5" do %>
-            <%= lc_icon_badge shape: :circle, tone: :primary, icon: item[:icon], size: :lg%>
-            <div class="flex flex-col gap-1"><h3 class="font-semibold"><%= item[:title] %></h3><p class="text-sm text-muted-foreground"><%= item[:meta] %></p></div>
-            <%= lc_button "Explore", variant: :ghost, size: :sm, icon: "arrow-up-right", icon_position: :end, data: { action: "blocks-search#explore", title: item[:title], detail: item[:detail] } %>
-          <% end %>
-        <% end %>
-      </div>
-    </section>
-    <%= lc_card class: "flex flex-col gap-3", aria: { labelledby: "search-selection-heading" } do %>
-      <%= lc_text "A LITTLE LESS LOOKING", size: :caption, tone: :muted %>
-      <h2 id="search-selection-heading" class="text-xl font-semibold" data-blocks-search-target="selectionTitle">Find your next thought.</h2>
-      <p class="max-w-xl text-sm text-muted-foreground" data-blocks-search-target="selectionDetail">Open search and try “Fieldwork”, “Alex”, or “references”. Use the arrow keys to move through results.</p>
-    <% end %>
-    <p class="sr-only" role="status" data-blocks-search-target="selectionStatus"></p>
-  </main>
-
-  <dialog class="search-example__dialog" aria-label="Search workspace" data-blocks-search-target="dialog" data-action="close->blocks-search#closed keydown->blocks-search#navigate click->blocks-search#dismiss">
-    <div class="search-example__stack" data-search-dismiss>
-      <div class="flex shrink-0 items-center gap-3">
-        <label class="<%= lc_glass_class(extra: "flex min-h-14 min-w-0 flex-1 cursor-text items-center gap-3 ps-5 pe-2 sm:min-h-16") %>" data-blocks-search-target="bar">
-          <%= lc_icon "magnifying-glass", options: { class: "size-6 shrink-0 text-muted-foreground", "aria-hidden": true } %>
-          <input type="search" class="search-example__input min-w-0 flex-1 self-stretch border-0 bg-transparent text-base text-foreground placeholder:text-muted-foreground" aria-label="Search projects, people, and notes" placeholder="Search anything…" autocomplete="off" enterkeyhint="search" data-blocks-search-target="input" data-action="input->blocks-search#filter compositionend->blocks-search#filter" data-controller="lc-shortcut" data-lc-shortcut-keys-value="mod+k">
-          <%= lc_icon_button "Clear search", icon: "x-circle", size: :sm, hidden: true, data: { blocks_search_target: "clear", action: "blocks-search#clear" } %>
-          <%= lc_kbd "escape", class: "hidden rounded-lg px-2 py-1 sm:block", aria: { hidden: true } %>
-        </label>
-        <%= lc_button "Cancel", variant: :ghost, size: :sm, data: { action: "blocks-search#close" } %>
-      </div>
-      <div class="<%= lc_glass_class(shape: :panel, extra: "search-example__results min-h-0 overflow-y-auto overscroll-contain p-2") %>" data-blocks-search-target="results">
-        <p class="px-3 pb-2 pt-3 text-xs text-muted-foreground" data-blocks-search-target="summary" role="status">Start with something recent</p>
-        <% collections.each do |name, items| %>
-          <section class="py-2" aria-label="<%= name %>" data-blocks-search-target="group">
-            <h2 class="px-3 pb-2 font-mono text-xs font-medium uppercase tracking-widest text-muted-foreground"><%= name %></h2>
-            <% items.each do |item| %>
-              <button type="button" class="search-example__result flex min-h-16 w-full items-center gap-3 rounded-2xl px-3 py-2 text-start" data-blocks-search-target="result" data-action="blocks-search#select" data-title="<%= item[:title] %>" data-detail="<%= item[:detail] %>" data-search="<%= item[:words] %>">
-                <%= lc_icon_badge icon: item[:icon] %>
-                <span class="flex min-w-0 flex-1 flex-col gap-0.5"><span class="truncate text-sm font-semibold"><%= item[:title] %></span><span class="text-xs text-muted-foreground"><%= item[:meta] %></span></span>
-                <%= lc_icon "arrow-up-left", options: { class: "size-4 shrink-0 text-muted-foreground", "aria-hidden": true } %>
-              </button>
-            <% end %>
-          </section>
-        <% end %>
-        <div class="px-5 py-10 text-center" data-blocks-search-target="empty" hidden>
-          <p class="font-semibold">Nothing here just yet.</p><p class="pt-2 text-sm text-muted-foreground">Try a project, a person, or a different word.</p>
-        </div>
-      </div>
-    </div>
-  </dialog>
-</div>
-```
-
-app/assets/stylesheets/global_search.css
-
-```css
-.search-example__trigger {
-  cursor: pointer;
-  transition: background-color 160ms, color 160ms;
-}
-
-.search-example__dialog {
-  position: fixed;
-  inset: 0;
-  inline-size: 100%;
-  max-inline-size: none;
-  block-size: 100%;
-  max-block-size: none;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  overflow: hidden;
-  background: transparent;
-  color: var(--foreground);
-}
-
-.search-example__dialog::backdrop {
-  background: color-mix(in oklab, var(--background) 35%, transparent);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
-  backdrop-filter: blur(20px) saturate(160%);
-}
-
-:root[data-theme="dark"] .search-example__dialog::backdrop {
-  background: rgb(0 0 0 / 0.4);
-}
-
-.search-example__stack {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  inline-size: min(40rem, calc(100% - 1.5rem));
-  block-size: 100%;
-  margin-inline: auto;
-  padding-block: max(0.75rem, env(safe-area-inset-top)) max(0.75rem, env(safe-area-inset-bottom));
-}
-
-.search-example__results {
-  --lc-glass-fill: color-mix(in oklab, var(--background) 82%, transparent);
-}
-
-.search-example__input::-webkit-search-cancel-button {
-  /* stylelint-disable-next-line property-no-vendor-prefix -- The clear button has an accessible label. */
-  -webkit-appearance: none;
-}
-
-.search-example__result {
-  border: 0;
-  background: transparent;
-  color: var(--foreground);
-  cursor: pointer;
-}
-
-.search-example__result:is(:hover, :focus-visible) {
-  background: color-mix(in oklab, var(--foreground) 6%, transparent);
-}
-
-.search-example [hidden] {
-  display: none;
-}
-
-@media (width >= 40rem) {
-  .search-example__trigger {
-    inline-size: 21rem;
-  }
-
-  .search-example__stack {
-    padding-block-start: 14vh;
-  }
-
-  .search-example__results {
-    max-block-size: min(60dvh, 34rem);
-  }
-}
-
-@media (prefers-reduced-transparency: reduce) {
-  .search-example__dialog::backdrop,
-  :root[data-theme="dark"] .search-example__dialog::backdrop {
-    background: var(--background);
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-  }
-}
-```
-
-app/javascript/controllers/blocks_search_controller.js
-
-```javascript
-import { Controller } from "@hotwired/stimulus"
-import { registerDialog } from "lostcoords/ui/helpers/dialog"
-import { prefersReducedMotion } from "lostcoords/ui/helpers/viewport"
-
-export default class extends Controller {
-  static targets = [
-    "dialog",
-    "trigger",
-    "input",
-    "bar",
-    "results",
-    "result",
-    "group",
-    "empty",
-    "clear",
-    "summary",
-    "selectionTitle",
-    "selectionDetail",
-    "selectionStatus",
-  ]
-
-  // ⌘K / Ctrl+K comes from lc-shortcut: it presses the trigger while search is
-  // closed and refocuses the field while it is open.
-  connect() {
-    this.animations = []
-  }
-
-  disconnect() {
-    this.returnFocus = null
-    this.reset()
-  }
-
-  open() {
-    if (this.closing) return
-    if (this.dialogTarget.open) return this.inputTarget.focus()
-    this.returnFocus =
-      document.activeElement === document.body ? this.triggerTarget : document.activeElement
-    this.filter()
-    this.dialogTarget.showModal()
-    this.unregisterDialog = registerDialog(this.dialogTarget, { close: () => this.close() })
-    this.inputTarget.focus({ preventScroll: true })
-    this.animate()
-  }
-
-  close() {
-    if (!this.dialogTarget.open || this.closing) return
-    this.closing = true
-    this.animate({ reverse: true })
-    Promise.allSettled(this.animations.map((animation) => animation.finished)).then(() =>
-      this.reset(),
-    )
-  }
-
-  reset() {
-    this.animations.forEach((animation) => animation.cancel())
-    this.animations = []
-    this.dialogTarget.close()
-    this.unregisterDialog?.()
-    this.unregisterDialog = null
-    this.closing = false
-  }
-
-  closed() {
-    this.reset()
-    this.returnFocus?.focus({ preventScroll: true })
-    this.returnFocus = null
-  }
-
-  dismiss(event) {
-    if (event.target.hasAttribute("data-search-dismiss")) this.close()
-  }
-
-  clear() {
-    this.inputTarget.value = ""
-    this.filter()
-    this.inputTarget.focus()
-  }
-
-  filter(event) {
-    if (event?.isComposing) return
-    const query = this.inputTarget.value.normalize("NFKC").trim().toLowerCase()
-    const words = query.split(/\s+/).filter(Boolean)
-    let count = 0
-    for (const result of this.resultTargets) {
-      result.hidden = !words.every((word) => result.dataset.search.includes(word))
-      if (!result.hidden) count++
-    }
-    for (const group of this.groupTargets) {
-      group.hidden = !group.querySelector("[data-blocks-search-target=result]:not([hidden])")
-    }
-    this.clearTarget.hidden = !this.inputTarget.value
-    this.emptyTarget.hidden = count > 0
-    this.summaryTarget.textContent = query
-      ? `${count} ${count === 1 ? "result" : "results"} for “${this.inputTarget.value.trim()}”`
-      : "Start with something recent"
-  }
-
-  navigate(event) {
-    if (event.isComposing || event.keyCode === 229) return
-    const results = this.resultTargets.filter((result) => !result.hidden)
-    const items = [this.inputTarget, ...results]
-    const index = items.indexOf(document.activeElement)
-    if (event.key === "ArrowDown" || event.key === "ArrowUp") {
-      event.preventDefault()
-      const step = event.key === "ArrowDown" ? 1 : -1
-      items[Math.min(Math.max(index + step, 0), items.length - 1)].focus()
-    } else if (event.key === "Enter" && document.activeElement === this.inputTarget) {
-      event.preventDefault()
-      results[0]?.click()
-    }
-  }
-
-  select(event) {
-    this.showSelection(event.currentTarget.dataset)
-    this.close()
-  }
-
-  explore(event) {
-    this.showSelection(event.currentTarget.dataset)
-  }
-
-  showSelection({ title, detail }) {
-    this.selectionTitleTarget.textContent = title
-    this.selectionDetailTarget.textContent = detail
-    this.selectionStatusTarget.textContent = `Opened ${title}.`
-  }
-
-  animate({ reverse = false } = {}) {
-    this.animations.forEach((animation) => animation.cancel())
-    this.animations = []
-    if (prefersReducedMotion()) return
-    const from = this.triggerTarget.getBoundingClientRect()
-    const to = this.barTarget.getBoundingClientRect()
-    const insetY = Math.max((to.height - from.height) / 2, 0)
-    const shiftY = from.top + from.height / 2 - (to.top + to.height / 2)
-    const timing = {
-      duration: reverse ? 200 : 360,
-      easing: "cubic-bezier(0.16, 1, 0.3, 1)",
-      direction: reverse ? "reverse" : "normal",
-      fill: "both",
-    }
-    this.animations = [
-      this.barTarget.animate(
-        [
-          {
-            clipPath: `inset(${insetY}px ${to.right - from.right}px ${insetY}px ${from.left - to.left}px round 999px)`,
-            translate: `0 ${shiftY}px`,
-          },
-          { clipPath: "inset(-1rem round 999px)", translate: "0 0" },
-        ],
-        timing,
-      ),
-      this.resultsTarget.animate(
-        [
-          { opacity: 0, translate: "0 -0.5rem" },
-          { opacity: 1, translate: "0 0" },
-        ],
-        timing,
-      ),
-    ]
-  }
-}
-```
-
 ## Advanced styles
 
 Class helpers style custom markup; the application owns its behavior.
@@ -3410,16 +4164,17 @@ Glass surfaces use lc_glass_class; lc_tw merges utility classes. Read https://gi
 - `lc_avatar_class(size: :md, ink: false, linked: false, extra: nil)`
 - `lc_avatar_stack_class(compact: false, extra: nil)`
 - `lc_avatar_stack_row_class(extra: nil)`
-- `lc_badge_class(tone: :neutral, extra: nil)`
+- `lc_badge_class(tone: :neutral, shape: :rounded, extra: nil)`
 - `lc_toggle_class(active: false, ghost: false, size: :md, extra: nil)`
-- `lc_button_class(variant: :primary, size: :md, block: false, extra: nil)`
+- `lc_button_class(variant: :primary, tone: :default, size: :md, block: false, extra: nil)`
+- `lc_select_trigger_class(size: :md, block: false, extra: nil)`
 - `lc_icon_button_class(shape: :square, size: :md, extra: nil)`
 - `lc_card_class(interactive: false, padding: :md, extra: nil)`
 - `lc_choice_label_class(card: false, extra: nil)`
 - `lc_checkbox_class(extra: nil)`
 - `lc_radio_class(extra: nil)`
 - `lc_switch_class(extra: nil)`
-- `lc_dialog_class(kind = :modal, extra: nil)`
+- `lc_dialog_class(kind = :modal, size: nil, extra: nil)`
 - `lc_emoji_picker_groups`
 - `lc_emoji_picker_count`
 - `lc_emoji_picker_version`
@@ -3437,8 +4192,8 @@ Glass surfaces use lc_glass_class; lc_tw merges utility classes. Read https://gi
 - `lc_input_class(size: :md, extra: nil)`
 - `lc_select_class(size: :md, extra: nil)`
 - `lc_textarea_class(extra: nil)`
-- `lc_field_class(extra: nil)`
-- `lc_field_label_class(extra: nil)`
+- `lc_field_class(size: :md, extra: nil)`
+- `lc_field_label_class(size: :md, extra: nil)`
 - `lc_glass_class(shape: :bar, thick: false, extra: nil)`
 - `lc_stack_class(gap: :content, extra: nil)`
 - `lc_inline_class(gap: :related, extra: nil)`
@@ -3448,9 +4203,8 @@ Glass surfaces use lc_glass_class; lc_tw merges utility classes. Read https://gi
 - `lc_menu_popover_class(align: :end, extra: nil)`
 - `lc_menu_option_class(tone: :default, extra: nil)`
 - `lc_link_class(tone: :inherit, extra: nil)`
-- `lc_nav_link_class(compact: false, extra: nil)`
+- `lc_nav_link_class(compact: false, layout: :column, extra: nil)`
 - `lc_prose_class(extra: nil)`
-- `lc_sheet_data(data = {}, detents: "fit")`
 - `lc_table_class(extra: nil)`
 - `lc_tw(*classes)`
 - `lc_heading_class(size: :heading, trim: false, extra: nil)`
