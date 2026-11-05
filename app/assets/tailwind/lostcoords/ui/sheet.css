@@ -4,13 +4,12 @@
       position: fixed;
 
       /* Anchored from the top edge at the screen height it opened at
-         (sheet_controller), then lifted by its own height. In-app browsers
+         (lc-sheet), then lifted by its own height. In-app browsers
          (Brave, Chrome) resize the page under the keyboard; anything hung
          from the bottom edge jumps a frame as they do, but the top holds. */
       inset: var(--lc-sheet-floor, 100dvh) 0 auto;
       translate: 0 -100%;
       margin: 0;
-      z-index: var(--lc-z-sheet);
       inline-size: 100%;
       max-block-size: calc(var(--lc-sheet-floor, 100dvh) * 0.9);
       overflow-y: auto;
@@ -74,7 +73,7 @@
 }
 
 @layer modules {
-  /* Phones: every modal dialog is an iOS sheet (sheet_controller). It floats
+  /* Phones: every modal dialog is an iOS sheet (lc-sheet). It floats
      inset with all corners round while it is short, and docks to the screen
      edges as it reaches the large detent: --lc-sheet-p runs 0 → 1 between them.
      Lives in this layer so it out-ranks a dialog's own frame. */
@@ -151,7 +150,7 @@
     }
 
     /* Behind a large sheet the page shrinks back and rounds off, over black,
-       as UIKit's page sheet does; sheet_controller drives the variables. */
+       as UIKit's page sheet does; lc-sheet drives the variables. */
     html[data-lc-sheet-page] {
       background: #000;
 

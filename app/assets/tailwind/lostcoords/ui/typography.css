@@ -31,7 +31,7 @@
   text-box: trim-both cap alphabetic; /* browser-compat: enhancement */
 }
 
-/* Inline code inside running text. base.css applies it to every <code>; prose
+/* Inline code inside running text. base.css applies it to every <code>; prose.css
    applies it inside .lc-prose. */
 @utility lc-inline-code {
   font-family: var(--font-mono);
@@ -47,11 +47,5 @@
   &::before,
   &::after {
     content: none;
-  }
-}
-
-@layer utilities {
-  .lc-prose :where(code):not(:where(pre code)) {
-    @apply lc-inline-code;
   }
 }

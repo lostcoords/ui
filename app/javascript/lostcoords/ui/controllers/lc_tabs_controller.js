@@ -1,29 +1,32 @@
 import { Controller } from "@hotwired/stimulus"
+import { navigate } from "lostcoords/ui/helpers/roving_focus"
 
-// Tabs with automatic activation: arrow keys, Home and End move focus and select.
+// The ARIA tabs pattern. Arrow keys follow the tab list's aria-orientation, and
+// Home and End jump to the ends. With automatic activation, moving focus selects
+// the tab; with manual activation, Enter or Space does.
 export default class extends Controller {
   static targets = ["tab", "panel"]
+  static values = { activation: { type: String, default: "automatic" } }
 
   select(event) {
     this.show(event.currentTarget)
   }
 
   navigate(event) {
-    const tabs = this.tabTargets.filter((tab) => !tab.disabled)
-    const index = tabs.indexOf(event.currentTarget)
-    const step = getComputedStyle(this.element).direction === "rtl" ? -1 : 1
-    const next = {
-      ArrowRight: index + step,
-      ArrowLeft: index - step,
-      Home: 0,
-      End: tabs.length - 1,
-    }[event.key]
-    if (next === undefined) return
+    const list = event.currentTarget.closest('[role="tablist"]')
+    const tab = navigate(event, this.tabTargets, {
+      orientation:
+        list?.getAttribute("aria-orientation") === "vertical" ? "vertical" : "horizontal",
+      wrap: true,
+    })
+    if (!tab) return
 
-    event.preventDefault()
-    const tab = tabs[(next + tabs.length) % tabs.length]
-    tab.focus()
-    this.show(tab)
+    if (this.activationValue === "manual") this.focusOnly(tab)
+    else this.show(tab)
+  }
+
+  focusOnly(tab) {
+    for (const candidate of this.tabTargets) candidate.tabIndex = candidate === tab ? 0 : -1
   }
 
   show(tab) {

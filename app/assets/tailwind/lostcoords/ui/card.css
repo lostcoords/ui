@@ -2,10 +2,13 @@
   /* Padding comes from --lc-inset, so a card that sets --lc-inset passes the
      same rhythm to everything inside it. */
 
-  /* Inputs keep their --input fill on cards. Choice tiles, which use the muted
-     fill on the page, switch to the page background so they stand out. */
+  /* Inputs keep their --input fill on cards. Fills that are muted on the page
+     (choice tiles, alerts, neutral badges, skeletons) switch to the page
+     background, and toggle group tracks to the accent fill, so they stay
+     visible on the muted card. */
   .lc-card {
     --lc-tile-bg: var(--background);
+    --lc-track-bg: var(--accent);
     --lc-avatar-cutout: var(--lc-card-bg, var(--card));
     background: var(--lc-card-bg, var(--card));
     color: var(--card-foreground);

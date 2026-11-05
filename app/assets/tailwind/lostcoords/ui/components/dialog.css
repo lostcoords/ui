@@ -1,0 +1,9 @@
+/* lc_dialog, with the phone sheet (lc_sheet_data) and confirm dialogs. */
+@import "../sheet.css";
+@import "../dialog.css";
+@source "../../../../../helpers/lostcoords/ui/dialog_helper.rb";
+@source "../../../../../helpers/lostcoords/ui/sheet_helper.rb";
+@source "../../../../../views/lostcoords/ui/components/_lc_dialog.html.erb";
+@source "../../../../../javascript/lostcoords/ui/controllers/lc_dialog_controller.js";
+@source "../../../../../javascript/lostcoords/ui/controllers/lc_sheet_controller.js";
+@source "../../../../../javascript/lostcoords/ui/controllers/lc_confirm_dialog_controller.js";

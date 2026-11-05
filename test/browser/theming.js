@@ -7,6 +7,23 @@ async function _verifyTheming(page, defaultCss, customCss) {
   const origin = await page.evaluate(() => location.origin)
   await page.goto(`${origin}/theming.html`)
   await page.locator("h1").waitFor()
+  // Without arguments, the suite checks the docs build against the guide's own override snippets.
+  if (!defaultCss || !customCss) {
+    const sources = await page.evaluate(async () => {
+      const link = [...document.querySelectorAll('link[rel="stylesheet"]')].find((node) =>
+        node.href.includes("/tailwind-"),
+      )
+      return {
+        css: await (await fetch(link.href)).text(),
+        guide: [...document.querySelectorAll("pre")]
+          .map((pre) => pre.textContent)
+          .filter((text) => text.trim().startsWith(":root"))
+          .join("\n"),
+      }
+    })
+    defaultCss ||= sources.css
+    customCss ||= sources.guide
+  }
   const cardPage = await (
     await page.request.get(`${origin}/components/card.html`, { ignoreHTTPSErrors: true })
   ).text()
@@ -21,8 +38,9 @@ async function _verifyTheming(page, defaultCss, customCss) {
         .querySelector("#example-0 [data-example-preview]").firstElementChild
       const button = parser
         .parseFromString(buttonPage, "text/html")
-        .querySelector("#example-0 [data-example-preview] button")
+        .querySelector('#example-0 [data-example-preview] button[data-variant="primary"]')
       card.dataset.defaultCard = ""
+      button.dataset.themingButton = ""
       card.append(button)
       return card.outerHTML
     },
@@ -43,7 +61,7 @@ async function _verifyTheming(page, defaultCss, customCss) {
   await page.addStyleTag({ content: "* { transition: none !important; }" })
   const values = () =>
     page.evaluate(() => {
-      const button = document.querySelector("button")
+      const button = document.querySelector("[data-theming-button]")
       const root = getComputedStyle(document.documentElement)
       const style = getComputedStyle(button)
       return {
@@ -67,7 +85,12 @@ async function _verifyTheming(page, defaultCss, customCss) {
       `${theme}: primary button has a default color`,
     )
     verify(defaults[theme].shadow.length > 0, `${theme}: surfaces have a default shadow value`)
-    verify(defaults[theme].duration === "500ms", `${theme}: sheet motion has a default duration`)
+    verify(
+      Number.parseFloat(defaults[theme].duration) *
+        (defaults[theme].duration.endsWith("ms") ? 1 : 1000) ===
+        500,
+      `${theme}: sheet motion has a default duration`,
+    )
     verify(
       defaults[theme].font.includes("system-ui"),
       `${theme}: system font needs no font download`,
@@ -92,7 +115,10 @@ async function _verifyTheming(page, defaultCss, customCss) {
       custom.primary !== defaults[theme].primary,
       `${theme}: the guide's color overrides restyle primary actions`,
     )
-    verify(custom.radius === "16px", `${theme}: the guide's radius override restyles cards`)
+    verify(
+      custom.radius !== defaults[theme].radius,
+      `${theme}: the guide's radius override restyles cards`,
+    )
     verify(
       custom.shadow !== defaults[theme].shadow,
       `${theme}: the guide's shadow override changes surface shadows`,

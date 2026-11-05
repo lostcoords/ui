@@ -1,7 +1,15 @@
 module ShowcaseHelper
-  def showcase_builders(section)
+  def showcase_components(section)
     components = Lostcoords::Ui::Components.all.index_by(&:name)
-    section.builders.filter_map { |name| components[name] }
+    section.components.map { |name| components.fetch(name) }
+  end
+
+  # Helpers the section's examples call that another page documents, with a link to that page's entry.
+  def showcase_related(section)
+    section.related.filter_map do |name|
+      owner = Showcase.owner(name)
+      [ name, "/components/#{owner.id}.html##{name}" ] if owner
+    end
   end
 
   def showcase_title(example, _index) = example.title
@@ -16,8 +24,8 @@ module ShowcaseHelper
     end)
   end
 
-  def showcase_parameters(component)
-    node = Prism.parse("def #{component.signature}; end").value.statements.body.first.parameters
+  def showcase_parameters(signature)
+    node = Prism.parse("def #{signature}; end").value.statements.body.first.parameters
     return [] unless node
 
     (node.requireds + node.optionals + node.posts + node.keywords + [ node.rest, node.keyword_rest, node.block ].compact).map do |parameter|
@@ -30,7 +38,7 @@ module ShowcaseHelper
     end
   end
 
-  def showcase_choices(component, parameter)
+  def showcase_choices(name, signature, parameter)
     ui = Lostcoords::Ui
     choices = {
       lc_button: { variant: ui::ButtonHelper::BUTTON_VARIANTS.keys, size: ui::TailwindHelper::CONTROL_SIZES.keys },
@@ -52,16 +60,16 @@ module ShowcaseHelper
       lc_menu: { align: ui::MenuHelper::MENU_POPOVER_ALIGN.keys },
       lc_popover: { align: ui::MenuHelper::MENU_POPOVER_ALIGN.keys, trigger_variant: ui::ButtonHelper::BUTTON_VARIANTS.keys },
       lc_menu_option: { tone: ui::MenuHelper::MENU_OPTION_TONES.keys }
-    }.dig(component.name, parameter)
+    }.dig(name, parameter)
     return choices.map { |key| ":#{key}" }.join(" · ") if choices
     return ":start · :end" if parameter == :icon_position
     return "Heroicon name; spacing is handled automatically" if parameter == :icon
     return "Native HTML attributes; class:, data: and aria: merge with defaults" if %i[attrs attributes].include?(parameter)
-    return "Captured Rails ERB content" if parameter == :block
+    return "Captured Rails ERB content" if showcase_parameters(signature).to_h[parameter] == "Captured block"
     return "fit · medium large · large" if parameter == :detents
     return "GET URL for lazy-loaded emoji catalog HTML" if parameter == :catalog_url
     return "Accessible name, visible where applicable" if parameter == :label
-    return "true · false" if %w[true false].include?(showcase_parameters(component).to_h[parameter])
+    return "true · false" if %w[true false].include?(showcase_parameters(signature).to_h[parameter])
 
     "—"
   end

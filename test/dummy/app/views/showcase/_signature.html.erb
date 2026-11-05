@@ -1,0 +1,18 @@
+<%# locals: (id:, name:, title:, signature:, definition:, level: 3) %>
+<div class="<%= lc_stack_class %>">
+  <%= content_tag "h#{level}", title, id: id, class: "scroll-mt-28 font-mono text-sm font-medium" %>
+  <%= render "showcase/source_code", source: signature, id: "#{id}-signature", language: :ruby, label: "#{title} signature" %>
+  <% parameters = showcase_parameters(definition) %>
+  <% if parameters.any? %>
+    <div class="overflow-x-auto">
+      <%= lc_table class: "min-w-80" do %>
+        <thead><tr><th scope="col">Input</th><th scope="col">Default</th><th scope="col">Values</th></tr></thead>
+        <tbody>
+          <% parameters.each do |parameter, default| %>
+            <tr><td class="align-top font-mono text-xs"><%= parameter %></td><td class="align-top font-mono text-xs"><%= default %></td><td class="align-top text-xs text-muted-foreground"><%= showcase_choices(name, definition, parameter) %></td></tr>
+          <% end %>
+        </tbody>
+      <% end %>
+    </div>
+  <% end %>
+</div>

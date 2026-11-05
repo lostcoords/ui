@@ -1,0 +1,4 @@
+<%# In an app, render the region once in the layout and append toasts with turbo_stream.append. %>
+<%= lc_toast_region id: "EXAMPLE_ID-toasts" %>
+<template id="EXAMPLE_ID-toast"><%= lc_toast "Project saved." %></template>
+<%= lc_button "Save project", data: { controller: "toast-demo", action: "toast-demo#show", toast_demo_template_value: "EXAMPLE_ID-toast", toast_demo_region_value: "EXAMPLE_ID-toasts" } %>

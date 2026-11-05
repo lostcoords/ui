@@ -1,0 +1,5 @@
+/* lc_emoji_picker. */
+@import "../emoji-picker.css";
+@source "../../../../../helpers/lostcoords/ui/emoji_picker_helper.rb";
+@source "../../../../../views/lostcoords/ui/components/_emoji_picker*.html.erb";
+@source "../../../../../javascript/lostcoords/ui/controllers/lc_emoji_picker_controller.js";

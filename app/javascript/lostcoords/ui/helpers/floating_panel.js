@@ -1,9 +1,8 @@
 import { Controller } from "@hotwired/stimulus"
 import { registerDismissable } from "lostcoords/ui/helpers/dismiss_stack"
-import { liftToTopLayer } from "lostcoords/ui/helpers/top_layer"
+import { liftToTopLayer, onPageLeave } from "lostcoords/ui/helpers/top_layer"
 
 const BEFORE_OPEN = "overlay:before-open"
-const PAGE_LEAVES = ["turbo:before-cache", "turbo:before-visit", "turbo:before-render"]
 
 export class FloatingPanel extends Controller {
   static targets = ["trigger", "popover"]
@@ -14,7 +13,9 @@ export class FloatingPanel extends Controller {
 
   initialize() {
     this.closeForOther = (event) => {
-      if (event.detail?.source !== this) this.close()
+      // A panel opened inside this one (a menu in a popover form) keeps it open.
+      const source = event.detail?.source
+      if (source !== this && !this.element.contains(source?.element)) this.close()
     }
     this.closeOnOutsideClick = (event) => {
       if (!this.element.contains(event.target)) this.close()
@@ -24,14 +25,12 @@ export class FloatingPanel extends Controller {
 
   connect() {
     document.addEventListener(BEFORE_OPEN, this.closeForOther)
-    for (const type of PAGE_LEAVES) document.addEventListener(type, this.closeForPageLeave)
-    window.addEventListener("pagehide", this.closeForPageLeave)
+    this.stopPageLeave = onPageLeave(this.closeForPageLeave)
   }
 
   disconnect() {
     document.removeEventListener(BEFORE_OPEN, this.closeForOther)
-    for (const type of PAGE_LEAVES) document.removeEventListener(type, this.closeForPageLeave)
-    window.removeEventListener("pagehide", this.closeForPageLeave)
+    this.stopPageLeave?.()
     this.release({ immediate: true })
   }
 

@@ -1,6 +1,8 @@
 import { holdDocumentScroll } from "lostcoords/ui/helpers/dismiss_stack"
 import { FloatingPanel } from "lostcoords/ui/helpers/floating_panel"
+import { navigableItems, navigate, rove } from "lostcoords/ui/helpers/roving_focus"
 import { SHEET_TIMING, sheetDuration } from "lostcoords/ui/helpers/sheet_motion"
+import { hideTopLayer, showTopLayer, supportsTopLayer } from "lostcoords/ui/helpers/top_layer"
 import { isSheetViewport } from "lostcoords/ui/helpers/viewport"
 
 const catalogs = new Map()
@@ -133,24 +135,14 @@ export class CatalogPicker extends FloatingPanel {
   }
 
   showSheet() {
-    if (!this.supportsPopover) return
-
-    if (this.popoverTarget.getAttribute("popover") !== "manual") {
+    if (this.popoverTarget.getAttribute("popover") !== "manual")
       this.popoverTarget.setAttribute("popover", "manual")
-    }
-    try {
-      if (!this.popoverTarget.matches(":popover-open")) this.popoverTarget.showPopover()
-    } catch {}
+    showTopLayer(this.popoverTarget)
   }
 
   hideSheet() {
-    if (this.supportsPopover && this.popoverTarget.matches(":popover-open")) {
-      try {
-        this.popoverTarget.hidePopover()
-      } catch {}
-    } else {
-      this.popoverTarget.hidden = true
-    }
+    if (this.supportsPopover) hideTopLayer(this.popoverTarget)
+    else this.popoverTarget.hidden = true
   }
 
   // A non-modal popover's ::backdrop doesn't block input, so a tap in the dimmed
@@ -179,13 +171,71 @@ export class CatalogPicker extends FloatingPanel {
     this.applyFilter(this.searchQuery)
   }
 
+  // Arrow Down leaves the search for the first option in view; Enter picks
+  // the best match.
   onSearchKeydown(event) {
-    if (event.key !== "Escape" || !this.searchQuery) return
+    if (event.isComposing) return
 
-    event.preventDefault()
-    event.stopPropagation()
-    this.searchInputTarget.value = ""
-    this.applyFilter("")
+    if (event.key === "ArrowDown") {
+      const top = this.bodyTarget.getBoundingClientRect().top
+      const option = this.gridOptions().find((item) => item.getBoundingClientRect().bottom > top)
+      if (!option) return
+      event.preventDefault()
+      rove(this.allOptions(), option)
+      option.focus()
+    } else if (event.key === "Enter" && this.searchQuery) {
+      const first = this.gridOptions()[0]
+      if (!first) return
+      event.preventDefault()
+      first.click()
+    }
+  }
+
+  // The options are one Tab stop. Arrows move through them as a grid that
+  // flows in rows, across section breaks; Arrow Up from the top row returns
+  // to the search field.
+  navigateGrid(event) {
+    if (!event.target.matches(this.optionSelector)) return
+
+    const options = this.gridOptions()
+    const option = navigate(event, options, { orientation: "grid", flow: "row" })
+    if (option) {
+      rove(this.allOptions(), option)
+      return
+    }
+    if (event.key === "ArrowUp" && this.hasSearchInputTarget && !event.defaultPrevented) {
+      event.preventDefault()
+      this.searchInputTarget.focus()
+    }
+  }
+
+  // Keeps the Tab stop on the option focus last landed on.
+  trackGridFocus(event) {
+    if (event.target.matches?.(this.optionSelector)) rove(this.allOptions(), event.target)
+  }
+
+  syncGridStop() {
+    const options = this.allOptions()
+    const stop = this.gridStop(options)
+    rove(options, stop)
+  }
+
+  gridStop(options = this.allOptions()) {
+    const visible = (option) => option.getClientRects().length > 0
+    return (
+      options.find((option) => option.getAttribute("tabindex") === "0" && visible(option)) ||
+      options.find((option) => option.getAttribute("aria-current") === "true" && visible(option)) ||
+      options.find(visible) ||
+      null
+    )
+  }
+
+  gridOptions() {
+    return navigableItems(this.allOptions())
+  }
+
+  allOptions() {
+    return [...this.bodyTarget.querySelectorAll(this.optionSelector)]
   }
 
   applyFilter(query) {
@@ -195,6 +245,7 @@ export class CatalogPicker extends FloatingPanel {
     if (!normalizedQuery) {
       if (this.hasResultsTarget) this.resultsTarget.hidden = true
       if (this.hasEmptyTarget) this.emptyTarget.hidden = true
+      this.syncGridStop()
       return
     }
 
@@ -216,6 +267,7 @@ export class CatalogPicker extends FloatingPanel {
     this.resultsTarget.hidden = matches.length === 0
     if (this.hasEmptyTarget) this.emptyTarget.hidden = matches.length > 0
     this.bodyTarget.scrollTop = 0
+    this.syncGridStop()
   }
 
   score(entry, query) {
@@ -446,7 +498,7 @@ export class CatalogPicker extends FloatingPanel {
   }
 
   get supportsPopover() {
-    return typeof this.popoverTarget.showPopover === "function"
+    return supportsTopLayer()
   }
 
   get searchQuery() {

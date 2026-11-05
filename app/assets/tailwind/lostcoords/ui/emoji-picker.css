@@ -1,18 +1,16 @@
 @layer components {
-  .emoji-picker {
+  .lc-emoji-picker {
     display: flex;
     gap: 6px;
     flex-wrap: wrap;
     align-items: center;
 
-    /* Sit above the mobile app nav (z-100 + 25) so the sheet covers it. */
-    --lc-emoji-sheet-z: calc(100 + 30);
     --lc-emoji-cell: 2.25rem;
   }
 
   /* ---- Trigger + quick choices -------------------------------------- */
-  .emoji-picker__choice,
-  .emoji-picker__trigger {
+  .lc-emoji-picker__choice,
+  .lc-emoji-picker__trigger {
     display: inline-grid;
     place-items: center;
     inline-size: 44px;
@@ -38,12 +36,12 @@
     }
   }
 
-  .emoji-picker__trigger {
+  .lc-emoji-picker__trigger {
     color: var(--muted-foreground);
     font-weight: var(--font-weight-normal, 400);
   }
 
-  .emoji-picker__more {
+  .lc-emoji-picker__more {
     position: relative;
     display: inline-flex;
   }
@@ -58,7 +56,7 @@
      dims everything beneath it — including the app nav. The allow-discrete
      transitions keep it in the top layer while it eases out, so it fades
      both ways instead of snapping away on close. */
-  .emoji-picker__popover::backdrop {
+  .lc-emoji-picker__popover::backdrop {
     background: var(--lc-scrim);
     opacity: 0;
     transition:
@@ -72,7 +70,7 @@
   /* Only the phone sheet dims the page; the desktop popover rides the top
      layer too (so nothing paints over it) but floats over an undimmed page. */
   @media (width < 40rem) {
-    .emoji-picker__popover:popover-open::backdrop {
+    .lc-emoji-picker__popover:popover-open::backdrop {
       opacity: 1;
 
       @starting-style { opacity: 0; }
@@ -82,7 +80,7 @@
   /* Phones get a solid sheet; on desktop the host paints the popover as a
      floating surface (glass in wariwari), so the gem leaves it unpainted. */
   @media (width < 40rem) {
-    .emoji-picker__popover {
+    .lc-emoji-picker__popover {
       border: 1px solid var(--lc-glass-edge, var(--border));
       border-block-end: 0;
       background: var(--background);
@@ -90,11 +88,11 @@
     }
   }
 
-  .emoji-picker__popover {
+  .lc-emoji-picker__popover {
     position: fixed;
     inset: auto 0 0;
     margin: 0;
-    z-index: var(--lc-emoji-sheet-z);
+    z-index: var(--lc-z-overlay);
     display: none;
     max-inline-size: none;
     color: var(--foreground);
@@ -125,7 +123,7 @@
 
   /* Fallback for browsers without the Popover API: class-driven display. */
   @supports not selector(:popover-open) {
-    .emoji-picker__popover[data-open] {
+    .lc-emoji-picker__popover[data-open] {
       display: flex;
       transform: translateY(0);
     }
@@ -135,7 +133,7 @@
      is large; the host's sheet draws the pill.
      touch-action: none lets a vertical drag pull the sheet down rather than
      scroll. Drag-to-dismiss is wired by the sheet controller. */
-  .emoji-picker__handle {
+  .lc-emoji-picker__handle {
     flex: 0 0 auto;
     display: grid;
     place-items: center;
@@ -145,10 +143,10 @@
     cursor: grab;
   }
 
-  .emoji-picker__handle:active { cursor: grabbing; }
+  .lc-emoji-picker__handle:active { cursor: grabbing; }
 
   /* ---- Search row --------------------------------------------------- */
-  .emoji-picker__search {
+  .lc-emoji-picker__search {
     flex: 0 0 auto;
     display: flex;
     gap: 0.5rem;
@@ -156,14 +154,14 @@
     padding: 0.75rem 0.75rem 0.5rem;
   }
 
-  .emoji-picker__search-field {
+  .lc-emoji-picker__search-field {
     position: relative;
     flex: 1 1 auto;
     display: flex;
     align-items: center;
   }
 
-  .emoji-picker__search-icon {
+  .lc-emoji-picker__search-icon {
     position: absolute;
     inset-inline-start: 14px;
     inline-size: 18px;
@@ -172,7 +170,7 @@
     pointer-events: none;
   }
 
-  .emoji-picker__search-input {
+  .lc-emoji-picker__search-input {
     inline-size: 100%;
     min-block-size: 44px;
     padding-inline: 40px 1rem;
@@ -198,12 +196,12 @@
   }
 
   /* ---- Skin-tone control ------------------------------------------- */
-  .emoji-picker__tones {
+  .lc-emoji-picker__tones {
     position: relative;
     flex: 0 0 auto;
   }
 
-  .emoji-picker__tone-toggle {
+  .lc-emoji-picker__tone-toggle {
     display: inline-grid;
     place-items: center;
     inline-size: 44px;
@@ -221,7 +219,7 @@
     &[aria-expanded="true"] { background: color-mix(in oklab, var(--primary) 12%, var(--background)); }
   }
 
-  .emoji-picker__tone-menu {
+  .lc-emoji-picker__tone-menu {
     position: absolute;
     inset-block-end: calc(100% + 6px);
     inset-inline-end: 0;
@@ -234,7 +232,7 @@
     &[hidden] { display: none; }
   }
 
-  .emoji-picker__tone {
+  .lc-emoji-picker__tone {
     display: inline-grid;
     place-items: center;
     inline-size: 36px;
@@ -255,7 +253,7 @@
 
   /* Category tabs: a segmented track, like the app's tab strips — a paper-2
      track with the active tab raised on a paper thumb. */
-  .emoji-picker__tabs {
+  .lc-emoji-picker__tabs {
     flex: 0 0 auto;
     display: flex;
     gap: 2px;
@@ -269,7 +267,7 @@
     &::-webkit-scrollbar { display: none; }
   }
 
-  .emoji-picker__tab {
+  .lc-emoji-picker__tab {
     flex: 0 0 auto;
     display: inline-grid;
     place-items: center;
@@ -294,7 +292,7 @@
   }
 
   /* ---- Scrollable body --------------------------------------------- */
-  .emoji-picker__body {
+  .lc-emoji-picker__body {
     position: relative;
     flex: 1 1 auto;
     overflow-y: auto;
@@ -309,15 +307,15 @@
     @media (prefers-reduced-motion: reduce) { scroll-behavior: auto; }
   }
 
-  .emoji-picker__category + .emoji-picker__category,
-  .emoji-picker__recent + .emoji-picker__catalog,
-  .emoji-picker__results + * {
+  .lc-emoji-picker__category + .lc-emoji-picker__category,
+  .lc-emoji-picker__recent + .lc-emoji-picker__catalog,
+  .lc-emoji-picker__results + * {
     margin-block-start: 0.5rem;
   }
 
   /* Heads scroll with their section: the tab track already marks the current
      category, and a sticky band would sit as a stripe across the panel. */
-  .emoji-picker__category-head {
+  .lc-emoji-picker__category-head {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
@@ -338,7 +336,7 @@
     }
   }
 
-  .emoji-picker__grid {
+  .lc-emoji-picker__grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(var(--lc-emoji-cell), 1fr));
     gap: 2px;
@@ -370,13 +368,13 @@
   }
 
   /* Section that owns the sticky header needs the scroll anchor, not the grid */
-  .emoji-picker__category,
-  .emoji-picker__recent,
-  .emoji-picker__results {
+  .lc-emoji-picker__category,
+  .lc-emoji-picker__recent,
+  .lc-emoji-picker__results {
     scroll-margin-block-start: 0;
   }
 
-  .emoji-picker__empty {
+  .lc-emoji-picker__empty {
     margin: 0;
     padding: 1rem 0.5rem;
     color: var(--muted-foreground);
@@ -385,16 +383,16 @@
   }
 
   /* ---- Search mode: swap catalog for a single ranked result list ---- */
-  .emoji-picker__popover:not([data-searching]) .emoji-picker__results { display: none; }
+  .lc-emoji-picker__popover:not([data-searching]) .lc-emoji-picker__results { display: none; }
 
-  .emoji-picker__popover[data-searching] {
-    .emoji-picker__tabs,
-    .emoji-picker__recent,
-    .emoji-picker__catalog { display: none; }
+  .lc-emoji-picker__popover[data-searching] {
+    .lc-emoji-picker__tabs,
+    .lc-emoji-picker__recent,
+    .lc-emoji-picker__catalog { display: none; }
   }
 
   /* ---- Preview footer ---------------------------------------------- */
-  .emoji-picker__preview {
+  .lc-emoji-picker__preview {
     flex: 0 0 auto;
     display: flex;
     gap: 0.5rem;
@@ -403,12 +401,12 @@
     padding: 0.25rem 1rem 0.75rem;
   }
 
-  .emoji-picker__preview-emoji {
+  .lc-emoji-picker__preview-emoji {
     font-size: 1.5rem;
     line-height: 1;
   }
 
-  .emoji-picker__preview-name {
+  .lc-emoji-picker__preview-name {
     overflow: hidden;
     font-size: 1rem;
     color: var(--muted-foreground);
@@ -422,7 +420,7 @@
 
   /* ==================================================================== */
   @media (width >= 40rem) {
-    .emoji-picker__popover {
+    .lc-emoji-picker__popover {
       position: absolute;
       inset-block: calc(100% + 8px) auto;
       inset-inline: 0 auto;
@@ -452,10 +450,10 @@
       @media (prefers-reduced-motion: reduce) { transition: none; }
     }
 
-    .emoji-picker__handle { display: none; }
+    .lc-emoji-picker__handle { display: none; }
 
-    main:has(.emoji-picker__popover[data-open]),
-    .emoji-picker:has(.emoji-picker__popover[data-open]) {
+    main:has(.lc-emoji-picker__popover[data-open]),
+    .lc-emoji-picker:has(.lc-emoji-picker__popover[data-open]) {
       z-index: var(--lc-z-overlay);
     }
   }

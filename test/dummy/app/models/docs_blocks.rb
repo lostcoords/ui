@@ -10,7 +10,7 @@ module DocsBlocks
 
     def components
       builders = sources.first.content.scan(/\blc_\w+/).map(&:to_sym)
-      Showcase.sections.filter_map { |section| section.id if (section.builders & builders).any? }
+      Showcase.sections.filter_map { |section| section.id if (section.components & builders).any? }
     end
 
     def sources

@@ -4,7 +4,7 @@
   <aside tabindex="0" aria-label="Documentation sidebar" class="docs-shell__sidebar sticky top-20 hidden h-[calc(100dvh-5rem)] w-52 shrink-0 overflow-y-auto py-8 pe-4 lg:block">
     <%= navigation %>
   </aside>
-  <main id="main" class="min-w-0 flex-1 py-5 lg:py-10 <%= width %>">
+  <main id="main" class="isolate min-w-0 flex-1 py-5 lg:py-10 <%= width %>">
     <details class="group/nav relative z-raised rounded-2xl lc-squircle bg-muted lg:hidden">
       <summary class="flex min-h-12 cursor-pointer list-none items-center justify-between gap-content px-4 text-label [&::-webkit-details-marker]:hidden"><%= menu_label %><%= lc_icon "chevron-down", options: { class: "size-4 transition-transform group-open/nav:rotate-180", "aria-hidden": true } %></summary>
       <div class="max-h-[60dvh] overflow-y-auto p-3 pt-0"><%= navigation %></div>

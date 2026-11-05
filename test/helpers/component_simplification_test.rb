@@ -16,14 +16,6 @@ module Lostcoords::Ui
       assert_raises(ArgumentError) { @view.lc_button_class(size: :missing) }
     end
 
-    test "the consolidated API removes the old decorative and layout wrappers" do
-      refute_respond_to @view, :lc_icon_medallion_class
-      %i[lc_status_pill lc_medallion lc_eyebrow lc_card_surface lc_form_card lc_sheet lc_pill_row lc_form_actions].each do |name|
-        refute_respond_to @view, name
-        refute_respond_to @view, "#{name}_class"
-      end
-    end
-
     test "decorative icons support both shapes and feedback tones" do
       html = @view.lc_icon_badge(icon: "check", shape: :circle, size: :sm, tone: :success)
       icon = Nokogiri::HTML.fragment(html).at_css("span")

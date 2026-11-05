@@ -1,10 +1,16 @@
 module Lostcoords::Ui
   module ButtonHelper
+    # Disabled controls drop their variant colours for a faint tint and dim ink, so they read as unavailable on any surface.
+    BUTTON_DISABLED =
+      "disabled:cursor-not-allowed disabled:shadow-none " \
+      "disabled:[--lc-button-bg:color-mix(in_oklab,var(--foreground)_10%,transparent)] " \
+      "disabled:text-[color-mix(in_oklab,var(--foreground)_38%,transparent)]"
+
     BUTTON_BASE =
       "inline-flex items-center justify-center gap-related rounded-pill font-sans " \
       "whitespace-nowrap no-underline cursor-pointer " \
       "transition-[background-color,border-color,color,box-shadow,transform,translate,scale,filter] duration-(--lc-motion-control) ease-(--lc-ease-out) " \
-      "motion-safe:hover:-translate-y-px motion-safe:active:translate-y-px active:shadow-none disabled:opacity-40 disabled:pointer-events-none " \
+      "motion-safe:not-disabled:hover:-translate-y-px motion-safe:not-disabled:active:translate-y-px active:shadow-none #{BUTTON_DISABLED} " \
       "[&_svg]:block [&_svg:not([class*='size-'])]:size-[1.1em] [&_svg]:shrink-0"
 
     # Height comes from the shared control sizes; an icon trims the padding on its side.
@@ -15,15 +21,15 @@ module Lostcoords::Ui
     }.freeze
 
     BUTTON_HOVER =
-      "hover:bg-[color-mix(in_oklab,var(--lc-button-bg,var(--secondary))_94%,var(--lc-button-ink,var(--foreground)))] " \
-      "active:bg-[color-mix(in_oklab,var(--lc-button-bg,var(--secondary))_94%,var(--lc-button-ink,var(--foreground)))]"
+      "not-disabled:hover:bg-[color-mix(in_oklab,var(--lc-button-bg,var(--secondary))_94%,var(--lc-button-ink,var(--foreground)))] " \
+      "not-disabled:active:bg-[color-mix(in_oklab,var(--lc-button-bg,var(--secondary))_94%,var(--lc-button-ink,var(--foreground)))]"
 
     BUTTON_VARIANTS = {
       primary: "border border-transparent [--lc-button-bg:var(--primary)] [--lc-button-ink:var(--primary-foreground)] bg-(--lc-button-bg) text-(--lc-button-ink) #{BUTTON_HOVER}",
       secondary: "border border-transparent [--lc-button-bg:var(--secondary)] [--lc-button-ink:var(--secondary-foreground)] bg-(--lc-button-bg) text-(--lc-button-ink) #{BUTTON_HOVER}",
       outline: "border border-border bg-transparent text-(--lc-button-ink,var(--foreground)) #{BUTTON_HOVER}",
       glass: "[--lc-button-bg:var(--_lc-glass-fill)] text-(--lc-button-ink,var(--foreground)) #{BUTTON_HOVER}",
-      ghost: "border border-transparent bg-transparent text-muted-foreground hover:text-(--lc-button-ink,var(--foreground)) #{BUTTON_HOVER}",
+      ghost: "border border-transparent bg-transparent text-muted-foreground not-disabled:hover:text-(--lc-button-ink,var(--foreground)) #{BUTTON_HOVER}",
       destructive: "border border-transparent [--lc-button-bg:color-mix(in_oklab,var(--destructive)_60%,black)] [--lc-button-ink:#fff] bg-(--lc-button-bg) text-(--lc-button-ink) #{BUTTON_HOVER}"
     }.freeze
 
@@ -31,8 +37,8 @@ module Lostcoords::Ui
       "lc-press inline-grid place-items-center shrink-0 border-0 bg-transparent " \
       "text-muted-foreground cursor-pointer no-underline " \
       "transition-[background-color,color,transform,scale] duration-(--lc-motion-quick) ease-(--lc-ease-out) " \
-      "hover:text-(--lc-button-ink,var(--foreground)) #{BUTTON_HOVER} " \
-      "disabled:opacity-40 disabled:pointer-events-none " \
+      "not-disabled:hover:text-(--lc-button-ink,var(--foreground)) #{BUTTON_HOVER} " \
+      "#{BUTTON_DISABLED} " \
       "[&_svg]:block [&_svg]:shrink-0"
 
     ICON_BUTTON_SHAPES = {

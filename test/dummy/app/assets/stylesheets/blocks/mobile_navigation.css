@@ -10,7 +10,7 @@
 
 .mobile-example__tabs {
   position: fixed;
-  z-index: 20;
+  z-index: var(--lc-z-sticky);
   inset-inline: max(1rem, env(safe-area-inset-left, 0px)) calc(var(--dock-gap) + var(--dock-size) + 0.75rem);
   bottom: var(--dock-bottom);
 }
@@ -47,7 +47,7 @@
 
 .mobile-example__dock {
   position: fixed;
-  z-index: 30;
+  z-index: calc(var(--lc-z-sticky) + 1);
   inset-inline-end: var(--dock-gap);
   bottom: var(--dock-bottom);
 }

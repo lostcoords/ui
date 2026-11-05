@@ -2,7 +2,8 @@
   <header class="<%= lc_section_header_class %>"><h3 class="<%= lc_heading_class(size: :subheading) %>"><a href="#<%= id %>" class="inline-flex items-center gap-2"><%= title %><span class="text-muted-foreground opacity-0 transition-opacity group-hover/heading:opacity-100 group-has-focus-visible/heading:opacity-100" aria-hidden="true">#</span></a></h3></header>
   <%= lc_stack do %>
     <% if example.note %><p class="text-pretty text-sm text-muted-foreground"><%= example.note %></p><% end %>
-    <div class="<%= example.stage == :flush ? 'min-w-0' : "flex min-h-48 flex-wrap items-center justify-center gap-4 rounded-2xl p-6 sm:p-10 #{example.stage == :page ? 'bg-background' : 'bg-muted'}" %>" data-example-preview>
+    <%# The panel sets the context a card sets, so muted fills, choice tiles and avatar cutouts look as they do on a card. %>
+    <div class="<%= example.stage == :panel ? 'flex min-h-48 flex-wrap items-center justify-center gap-4 rounded-2xl bg-muted p-6 sm:p-10 [--lc-tile-bg:var(--background)] [--lc-track-bg:var(--accent)] [--lc-avatar-cutout:var(--muted)]' : 'min-w-0' %>" data-example-preview data-stage="<%= example.stage %>">
       <%= render inline: showcase_source(example, id:) %>
     </div>
     <%= render "showcase/source_code", source: showcase_source(example, id:), id: "#{id}-code", label: "#{title} code" %>

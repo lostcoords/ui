@@ -1,0 +1,14 @@
+<%# The palette picker: every palette cuts a diagonal band across a live copy of the page. %>
+<dialog class="palette-split" aria-label="Choose a color palette" style="--palette-count: <%= DocsPalette::ALL.size %>"
+        data-palette-split-target="dialog" data-action="cancel->palette-split#cancel pointerleave->palette-split#unhover">
+  <% DocsPalette::ALL.each_with_index do |palette, index| %>
+    <div class="palette-split-band" style="--slot: <%= index %>" data-palette-split-target="band">
+      <div class="palette-split-copy" aria-hidden="true" inert data-palette-split-target="copy"></div>
+      <button type="button" class="palette-split-choice" name="palette" value="<%= palette.id %>" data-palette-name="<%= palette.name %>"
+              data-showcase-target="palette" data-action="palette-split#choose keydown->palette-split#navigate pointerenter->palette-split#hover focus->palette-split#hover">
+        <span class="palette-split-label"><%= palette.name %></span>
+      </button>
+    </div>
+  <% end %>
+</dialog>
+<span role="status" class="sr-only" data-showcase-target="paletteStatus"></span>

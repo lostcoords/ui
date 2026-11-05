@@ -9,13 +9,13 @@ module Lostcoords::Ui
       lg: "size-8 border-[3px]"
     }.freeze
 
-    SKELETON_BASE = "block rounded-xl bg-muted animate-pulse"
+    SKELETON_BASE = "block rounded-xl bg-tile animate-pulse"
 
     EMPTY_STATE_BASE =
       "flex flex-col items-center gap-content text-center " \
       "py-section px-content"
 
-    ALERT_BASE = "flex items-start gap-related py-heading px-content rounded-2xl lc-squircle bg-muted text-foreground text-label"
+    ALERT_BASE = "flex items-start gap-related py-heading px-content rounded-2xl lc-squircle bg-tile text-foreground text-label"
     ALERT_ICONS = {
       neutral: [ "information-circle", "text-muted-foreground" ],
       primary: [ "information-circle", "text-primary" ],

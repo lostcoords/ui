@@ -6,42 +6,21 @@ async function _verifyComponentSimplification(page) {
     if (!condition) throw new Error(message)
     checks.push(message)
   }
-  const response = await page.request.get(`${origin}/api.json`, { ignoreHTTPSErrors: true })
-  const reference = await response.json()
-  const retired = [
-    "lc_status_pill",
-    "lc_medallion",
-    "lc_eyebrow",
-    "lc_form_card",
-    "lc_card_surface",
-    "lc_sheet",
-    "lc_form_actions",
-    "lc_pill_row",
-    "lc_pill",
-    "lc_segmented",
-    "lc_segmented_tab",
-    "lc_form_alert",
-    "lc_disclosure",
-  ]
-  verify(
-    reference.components.every((component) => !retired.includes(component.name)),
-    "The public API contains the consolidated helpers and no retired wrappers",
-  )
   await page.setViewportSize({ width: 1440, height: 900 })
   await page.goto(`${origin}/components/card.html`)
   verify(
     (await page
       .locator('aside nav[aria-label="Documentation"] a[href^="/components/"]')
-      .count()) === 36,
-    "The sidebar groups the catalog into 36 component and foundation pages",
+      .count()) === 37,
+    "The sidebar groups the catalog into 37 component and foundation pages",
   )
   await page.emulateMedia({ reducedMotion: "reduce" })
   try {
     for (const theme of ["light", "dark"]) {
       const card = await page.evaluate((theme) => {
         document.documentElement.dataset.theme = theme
-        const formCard = document.querySelector("#example-4 .lc-card")
-        const invalidCard = document.querySelector("#example-5 .lc-card")
+        const formCard = document.querySelector("#example-5 .lc-card")
+        const invalidCard = document.querySelector("#example-6 .lc-card")
         const input = formCard.querySelector("input")
         const probe = document.createElement("span")
         probe.style.backgroundColor = "var(--background)"

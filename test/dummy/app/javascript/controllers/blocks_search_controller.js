@@ -14,27 +14,18 @@ export default class extends Controller {
     "empty",
     "clear",
     "summary",
-    "shortcut",
     "selectionTitle",
     "selectionDetail",
     "selectionStatus",
   ]
 
+  // ⌘K / Ctrl+K comes from lc-shortcut: it presses the trigger while search is
+  // closed and refocuses the field while it is open.
   connect() {
     this.animations = []
-    this.onShortcut = (event) => {
-      if (event.isComposing || !(event.metaKey || event.ctrlKey) || event.key.toLowerCase() !== "k")
-        return
-      if (document.querySelector("dialog[open]") && !this.dialogTarget.open) return
-      event.preventDefault()
-      this.open()
-    }
-    document.addEventListener("keydown", this.onShortcut)
-    this.shortcutTarget.textContent = /Mac|iPhone|iPad/.test(navigator.platform) ? "⌘ K" : "Ctrl K"
   }
 
   disconnect() {
-    document.removeEventListener("keydown", this.onShortcut)
     this.returnFocus = null
     this.reset()
   }

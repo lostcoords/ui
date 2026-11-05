@@ -93,7 +93,7 @@ async function _verifyBlocks(page) {
         await trigger.evaluate((node) => node === document.activeElement),
         "Search restores trigger focus",
       )
-      await page.keyboard.press("Control+k")
+      await page.keyboard.press("ControlOrMeta+k")
       await dialog.waitFor()
       await dialog.getByRole("button", { name: "Clear search", exact: true }).click()
       verify((await input.inputValue()) === "", "Search clears the query")

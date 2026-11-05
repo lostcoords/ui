@@ -1,27 +1,28 @@
-const ITEMS = '[role^="menuitem"]:not([disabled]):not([aria-disabled="true"])'
+import { navigableItems, navigate } from "lostcoords/ui/helpers/roving_focus"
 
-function items(menu) {
-  return [...menu.querySelectorAll(ITEMS)].filter((item) => item.getClientRects().length > 0)
+const ITEMS = '[role^="menuitem"]'
+
+export function menuItems(menu) {
+  return navigableItems(menu.querySelectorAll(ITEMS))
 }
 
 export function focusFirstMenuItem(menu) {
-  items(menu)[0]?.focus()
+  menuItems(menu)[0]?.focus()
 }
 
-// The ARIA menu pattern: arrows move between items and wrap, Home/End jump.
-export function navigateMenu(event, menu) {
-  const list = items(menu)
-  if (list.length === 0) return
+export function focusLastMenuItem(menu) {
+  menuItems(menu).at(-1)?.focus()
+}
 
-  const index = list.indexOf(document.activeElement)
-  const next = {
-    ArrowDown: (index + 1) % list.length,
-    ArrowUp: (index - 1 + list.length) % list.length,
-    Home: 0,
-    End: list.length - 1,
-  }[event.key]
-  if (next === undefined) return
+// The ARIA menu pattern: arrows move between items and wrap, Home/End jump,
+// typing a letter jumps to the next item that starts with it, and Space
+// activates a link item as Enter does.
+export function navigateMenu(event, menu, { orientation = "vertical" } = {}) {
+  if (event.key === " " && event.target.matches(`a${ITEMS}`)) {
+    event.preventDefault()
+    event.target.click()
+    return
+  }
 
-  event.preventDefault()
-  list[next].focus()
+  navigate(event, menuItems(menu), { orientation, wrap: true, typeahead: true })
 }

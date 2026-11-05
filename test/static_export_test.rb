@@ -22,7 +22,7 @@ class StaticExportTest < ActiveSupport::TestCase
       theming = Nokogiri::HTML(File.read(File.join(directory, "theming.html")))
       assert_equal "Theming", theming.at_css("h1").text
       pages = Dir["#{directory}/**/*.html"]
-      assert_equal Showcase.sections.size + 6 + DocsBlocks.all.size * 2, pages.size
+      assert_equal Showcase.sections.size + 7 + DocsBlocks.all.size * 2, pages.size
       assert_equal DocsBlocks.all.size, reference.fetch("blocks").size
 
       Dir.mktmpdir do |second|

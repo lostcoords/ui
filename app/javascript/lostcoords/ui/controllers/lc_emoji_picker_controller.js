@@ -1,4 +1,7 @@
 import { CatalogPicker } from "lostcoords/ui/helpers/catalog_picker"
+import { registerDismissable } from "lostcoords/ui/helpers/dismiss_stack"
+import { menuItems, navigateMenu } from "lostcoords/ui/helpers/menu_keys"
+import { navigate } from "lostcoords/ui/helpers/roving_focus"
 import { prefersReducedMotion } from "lostcoords/ui/helpers/viewport"
 
 const TONE_MODIFIERS = ["", "\u{1F3FB}", "\u{1F3FC}", "\u{1F3FD}", "\u{1F3FE}", "\u{1F3FF}"]
@@ -25,7 +28,7 @@ export default class extends CatalogPicker {
   }
 
   static optionKey = "emoji"
-  static catalogClass = "emoji-picker__catalog"
+  static catalogClass = "lc-emoji-picker__catalog"
   static previewTargets = ["previewEmoji", "previewName"]
 
   connect() {
@@ -36,6 +39,7 @@ export default class extends CatalogPicker {
   }
 
   disconnect() {
+    this.unregisterTones?.()
     this.clearPopover()
     super.disconnect()
   }
@@ -151,13 +155,33 @@ export default class extends CatalogPicker {
     })
   }
 
+  navigateTabs(event) {
+    navigate(event, this.tabTargets, { orientation: "horizontal", wrap: true })
+  }
+
+  // Escape closes the tone menu before the picker around it.
   toggleTones(event) {
     event.preventDefault()
     event.stopPropagation()
-    const open = this.toneMenuTarget.hidden
-    this.toneMenuTarget.hidden = !open
-    this.toneToggleTarget.setAttribute("aria-expanded", String(open))
-    if (open) this.syncTones()
+    if (!this.toneMenuTarget.hidden) return this.closeTones()
+
+    this.toneMenuTarget.hidden = false
+    this.toneToggleTarget.setAttribute("aria-expanded", "true")
+    this.syncTones()
+    this.unregisterTones = registerDismissable({
+      element: this.toneMenuTarget,
+      type: "popover",
+      close: () => this.closeTones(),
+      restoreFocus: () => this.toneToggleTarget.focus({ preventScroll: true }),
+    })
+    if (event.detail === 0) {
+      const items = menuItems(this.toneMenuTarget)
+      ;(items.find((item) => item.getAttribute("aria-current") === "true") || items[0])?.focus()
+    }
+  }
+
+  navigateTones(event) {
+    navigateMenu(event, this.toneMenuTarget, { orientation: "both" })
   }
 
   selectTone(event) {
@@ -174,7 +198,11 @@ export default class extends CatalogPicker {
 
   closeTones() {
     if (!this.hasToneMenuTarget) return
+    this.unregisterTones?.()
+    this.unregisterTones = null
+    const hadFocus = this.toneMenuTarget.contains(document.activeElement)
     this.toneMenuTarget.hidden = true
+    if (hadFocus) this.toneToggleTarget.focus({ preventScroll: true })
     this.toneToggleTarget.setAttribute("aria-expanded", "false")
   }
 
@@ -255,7 +283,7 @@ export default class extends CatalogPicker {
   renderRecent(emojis) {
     if (!this.hasRecentTarget) return
 
-    const grid = this.recentTarget.querySelector(".emoji-picker__grid")
+    const grid = this.recentTarget.querySelector(".lc-emoji-picker__grid")
     const count = this.recentTarget.querySelector(".count")
     if (!grid) return
 

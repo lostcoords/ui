@@ -13,3 +13,14 @@ namespace :lostcoords do
     end
   end
 end
+
+# Runs with tailwindcss-rails' own engines step, before every tailwindcss:build and tailwindcss:watch.
+# Apps without tailwindcss-rails import the gem's stylesheets by path instead.
+if defined?(Tailwindcss::Engines)
+  namespace :tailwindcss do
+    task :engines do
+      require "lostcoords/ui/stylesheets"
+      Lostcoords::Ui::Stylesheets.write(Rails.root.join("app/assets/builds/tailwind"))
+    end
+  end
+end

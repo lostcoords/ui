@@ -1,0 +1,5 @@
+/* lc_code_block. Its copy button ships in core. */
+@import "../code-block.css";
+@source "../../../../../helpers/lostcoords/ui/code_block_helper.rb";
+@source "../../../../../views/lostcoords/ui/components/_lc_code_block.html.erb";
+@source "../../../../../javascript/lostcoords/ui/controllers/lc_code_block_controller.js";

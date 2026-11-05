@@ -1,0 +1,11 @@
+<%= lc_tabs id: "EXAMPLE_ID-settings", label: "Settings", orientation: :vertical, activation: :manual, class: "w-full" do |tabs| %>
+  <% tabs.panel "Profile" do %>
+    <%= lc_text "Name, photo and contact details." %>
+  <% end %>
+  <% tabs.panel "Notifications" do %>
+    <%= lc_switch "Email me about mentions", name: "settings[mentions]" %>
+  <% end %>
+  <% tabs.panel "Billing" do %>
+    <%= lc_text "Plan, invoices and payment method.", tone: :muted %>
+  <% end %>
+<% end %>

@@ -1,4 +1,6 @@
 @layer components {
+  /* lc-tooltip lifts the content into the top layer while it shows. Without
+     JavaScript or the Popover API it shows in place, over its neighbours. */
   .lc-tooltip__content {
     position: absolute;
     inset-block-end: calc(100% + var(--spacing-related));
@@ -6,7 +8,9 @@
     z-index: var(--lc-z-popover);
     inline-size: max-content;
     max-inline-size: min(16rem, calc(100vw - 2rem));
+    overflow: visible;
     padding: var(--spacing-tight) var(--spacing-related);
+    border: 0;
     border-radius: var(--radius-md);
     background: var(--foreground);
     color: var(--background);
@@ -17,29 +21,26 @@
     pointer-events: none;
     opacity: 0;
     visibility: hidden;
-    translate: -50% 0.125rem;
+    translate: -50% 0;
+
+    /* allow-discrete keeps a lifted tooltip in the top layer while it fades out. */
     transition:
       opacity 120ms var(--lc-ease-out),
-      translate 120ms var(--lc-ease-out),
-      visibility 120ms;
+      visibility 120ms,
+      display 120ms allow-discrete,
+      overlay 120ms allow-discrete;
 
-    &:dir(rtl) { translate: 50% 0.125rem; }
+    &:dir(rtl) { translate: 50% 0; }
   }
 
   .lc-tooltip[data-side="bottom"] > .lc-tooltip__content {
     inset-block: calc(100% + var(--spacing-related)) auto;
-    translate: -50% -0.125rem;
   }
 
-  .lc-tooltip:is(:hover, :has(:focus-visible)) > .lc-tooltip__content {
+  .lc-tooltip:is([data-open], :hover, :has(:focus-visible)) > .lc-tooltip__content {
     opacity: 1;
     visibility: visible;
-    translate: -50% 0;
     transition-delay: 300ms;
-  }
-
-  .lc-tooltip:is(:hover, :has(:focus-visible)) > .lc-tooltip__content:dir(rtl) {
-    translate: 50% 0;
   }
 
   .lc-tooltip[data-dismissed] > .lc-tooltip__content {

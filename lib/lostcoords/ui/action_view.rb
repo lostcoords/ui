@@ -8,5 +8,6 @@ require_relative "icons"
 require_relative "parts"
 require_relative "form_builder"
 require_relative "helpers"
+require_relative "stylesheets"
 
 Lostcoords::Ui.load_translations!

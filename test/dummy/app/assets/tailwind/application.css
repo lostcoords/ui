@@ -118,4 +118,159 @@ html[data-theme="dark"] {
   --primary-foreground: var(--background);
 }
 
+/* Palette picker: one diagonal band per palette, fixed to the viewport. Each
+   band spans --a to --b across and --t0 to --t1 down, as fractions of the
+   height, so a band can grow along its own diagonal or slide sideways. */
+html[data-palette-split-open] {
+  overscroll-behavior: none;
+}
+
+.palette-split {
+  --split-slant: min(18vh, 9vw);
+
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  overflow: visible;
+  border: 0;
+  background: transparent;
+  color: inherit;
+
+  &::backdrop { background: transparent; }
+
+  @media (orientation: portrait) { --split-slant: min(18vw, 9vh); }
+}
+
+.palette-split-band {
+  --edge-left: calc(-1 * var(--split-slant));
+  --edge-right: calc(100% + var(--split-slant));
+  --split-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Folded bands collapse onto the top edge; 1 would fold them to the bottom. */
+  --folded: 0;
+  --a: var(--from);
+  --b: var(--to);
+  --t0: var(--folded);
+  --t1: var(--folded);
+
+  position: fixed;
+  inset: 0;
+  overflow: clip;
+  background: var(--background);
+  color: var(--foreground);
+  clip-path: polygon(
+    calc(var(--a) + var(--split-slant) * (1 - 2 * var(--t0))) calc(var(--t0) * 100%),
+    calc(var(--b) + var(--split-slant) * (1 - 2 * var(--t0))) calc(var(--t0) * 100%),
+    calc(var(--b) + var(--split-slant) * (1 - 2 * var(--t1))) calc(var(--t1) * 100%),
+    calc(var(--a) + var(--split-slant) * (1 - 2 * var(--t1))) calc(var(--t1) * 100%)
+  );
+  transition: clip-path 420ms var(--split-ease);
+
+  &:not([data-fate="folded"]) { --t0: 0; --t1: 1; }
+  &[data-fate="chosen"] { --a: var(--edge-left); --b: var(--edge-right); }
+  &[data-fate="left"] { --a: var(--edge-left); --b: var(--edge-left); }
+  &[data-fate="right"] { --a: var(--edge-right); --b: var(--edge-right); }
+
+  /* Each band draws along its diagonal at an even pace, one after another. */
+  [data-state="opening"] & {
+    transition: clip-path 560ms cubic-bezier(0.65, 0, 0.35, 1) calc(var(--slot) * 55ms);
+  }
+
+  [data-state="choosing"] & { transition-duration: 560ms; }
+
+  [data-state="closing"] & {
+    transition: clip-path 380ms cubic-bezier(0.55, 0, 0.8, 0.35)
+      calc((var(--palette-count) - 1 - var(--slot)) * 35ms);
+  }
+
+  /* Portrait turns the layout: bands stack as slanted strips that grow in
+     from the right edge, with --a and --b running down the page. */
+  @media (orientation: portrait) {
+    --folded: 1;
+
+    clip-path: polygon(
+      calc(var(--t0) * 100%) calc(var(--a) + var(--split-slant) * (1 - 2 * var(--t0))),
+      calc(var(--t0) * 100%) calc(var(--b) + var(--split-slant) * (1 - 2 * var(--t0))),
+      calc(var(--t1) * 100%) calc(var(--b) + var(--split-slant) * (1 - 2 * var(--t1))),
+      calc(var(--t1) * 100%) calc(var(--a) + var(--split-slant) * (1 - 2 * var(--t1)))
+    );
+  }
+
+  @media (prefers-reduced-motion: reduce) { transition: none; }
+}
+
+.palette-split-copy {
+  position: absolute;
+  inset: 0;
+}
+
+.palette-split-page {
+  padding-top: var(--split-header);
+  translate: 0 var(--split-y, 0);
+
+  @supports (animation-timeline: scroll()) {
+    animation: palette-split-scroll linear both;
+    animation-timeline: scroll(root block);
+  }
+}
+
+@keyframes palette-split-scroll {
+  from { translate: 0 0; }
+  to { translate: 0 calc(-1 * var(--split-max)); }
+}
+
+.palette-split-header.palette-split-header {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: auto;
+}
+
+.palette-split-choice {
+  position: absolute;
+  inset: 0;
+  cursor: pointer;
+  background: transparent;
+  outline: none;
+  transition:
+    backdrop-filter 320ms ease,
+    background-color 320ms ease;
+
+  /* While one band is hovered, the others frost over so it stands out. */
+  [data-hovering] .palette-split-band:not([data-hovered]) & {
+    background: color-mix(in oklab, var(--background) 18%, transparent);
+    backdrop-filter: blur(3px) saturate(0.92);
+  }
+}
+
+.palette-split-label {
+  position: absolute;
+  top: 50%;
+  left: var(--center);
+  translate: -50% -50%;
+  color: var(--foreground);
+  font-size: 1.0625rem;
+  font-weight: 650;
+  letter-spacing: -0.015em;
+  white-space: nowrap;
+  opacity: 0;
+  transition:
+    opacity var(--lc-motion-quick) ease,
+    left 420ms cubic-bezier(0.22, 1, 0.36, 1);
+
+  [data-state="open"] [data-hovered] & { opacity: 1; }
+
+  @media (orientation: portrait) {
+    top: var(--center);
+    left: 50%;
+    transition:
+      opacity var(--lc-motion-quick) ease,
+      top 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
+
 @import "../builds/tailwind/lostcoords_ui.css";

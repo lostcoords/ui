@@ -10,16 +10,50 @@ class HomeTest < ActionDispatch::IntegrationTest
     assert_includes response.body, ERB::Util.html_escape(ApplicationController.helpers.lc_button_class(variant: :primary))
   end
 
-  test "each component page renders its examples and public API" do
+  test "every component helper is documented on exactly one page" do
+    owned = Showcase.sections.flat_map(&:components)
+
+    assert_equal Lostcoords::Ui::Components.all.map(&:name).sort, owned.sort
+  end
+
+  test "each component page documents only its own helpers and links the rest" do
     Showcase.sections.each do |section|
       get component_path(component: section.id, format: :html)
 
       assert_response :success
       assert_includes response.body, "API reference"
-      section.builders.each do |name|
-        next if name == :render
+      section.components.each do |name|
+        assert_select "##{name}", { count: 1 }, "#{name} is missing from #{section.id}"
+      end
+      section.related.each do |name|
+        assert_select "##{name}", { count: 0 }, "#{section.id} documents #{name}, which another page owns"
+        assert_select %(#api a[href="/components/#{Showcase.owner(name).id}.html##{name}"]), { count: 1 }, "#{section.id} does not link #{name}"
+      end
+    end
+  end
 
-        assert_includes response.body, ERB::Util.html_escape(name.to_s), "#{name} is missing from #{section.id}"
+  test "compound helpers document the parts they yield" do
+    get component_path(component: :card, format: :html)
+
+    %w[header title description content footer].each { |part| assert_select "#card-#{part}", text: "card.#{part}" }
+  end
+
+  test "the components index lists every component alphabetically and shares navigation order" do
+    get "/components.html"
+
+    assert_response :success
+    assert_select "h1", text: "Components"
+    components = Showcase.sections.reject { |section| section.id == :foundations }.sort_by(&:title)
+    assert_select 'main ul[aria-label="All components"] a' do |links|
+      assert_equal components.map { |component| "/components/#{component.id}.html" }, links.map { |link| link["href"] }
+    end
+    assert_select 'header nav a[href="/components.html"][aria-current="page"]', count: 1
+
+    header_links = css_select('header nav[aria-label="Main"] a').map { |link| link["href"] }
+    assert_select 'nav[aria-label="Documentation"] ul[aria-label="Library"]' do |sidebars|
+      assert_equal 2, sidebars.size
+      sidebars.each do |sidebar|
+        assert_equal header_links, sidebar.css("a").map { |link| link["href"] }
       end
     end
   end

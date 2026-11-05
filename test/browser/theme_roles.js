@@ -129,6 +129,8 @@ async function _verifyThemeRoles(page) {
       const input = document.getElementById("theme-probe-input")
       const fixture = document.getElementById("theme-role-verification")
       input.focus()
+      // The ring transitions, so a read right after the change would return its starting value.
+      input.style.transition = "none"
       fixture.style.setProperty("--primary", "#135ac4")
       const before = getComputedStyle(input).boxShadow
       fixture.style.setProperty("--primary", "#a82235")

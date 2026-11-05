@@ -1,0 +1,8 @@
+<%= lc_stack gap: :related, class: "w-full max-w-sm" do %>
+  <%= lc_field label: "Filter projects", id: "EXAMPLE_ID-filter" do |field| %>
+    <%= lc_input name: "q", type: :search, placeholder: "Press / to filter", data: lc_shortcut_data("/"), **field %>
+  <% end %>
+  <%= lc_text size: :small, tone: :muted do %>
+    Press <%= lc_kbd "/" %> to filter, then <%= lc_kbd "escape" %> to clear.
+  <% end %>
+<% end %>

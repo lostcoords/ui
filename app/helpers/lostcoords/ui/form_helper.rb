@@ -1,7 +1,7 @@
 module Lostcoords::Ui
   module FormHelper
     TOGGLE_GROUP_BASE =
-      "inline-flex items-center gap-1 rounded-2xl bg-muted p-1 lc-squircle"
+      "inline-flex items-center gap-1 rounded-2xl bg-track p-1 lc-squircle"
 
     TOGGLE_GROUP_ITEM_BASE =
       "lc-press inline-flex items-center justify-center gap-1.5 whitespace-nowrap " \

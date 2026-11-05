@@ -1,5 +1,9 @@
 import { FloatingPanel } from "lostcoords/ui/helpers/floating_panel"
-import { focusFirstMenuItem, navigateMenu } from "lostcoords/ui/helpers/menu_keys"
+import {
+  focusFirstMenuItem,
+  focusLastMenuItem,
+  navigateMenu,
+} from "lostcoords/ui/helpers/menu_keys"
 
 // The phone dock's action stack lays itself out over the fixed nav, so it
 // passes lift: false and stays in place instead of lifting into the top layer.
@@ -9,13 +13,31 @@ export default class extends FloatingPanel {
     this.focusOutHandler = this.handleFocusOut.bind(this)
     this.pointerDownHandler = this.handlePointerDown.bind(this)
     this.keydownHandler = (event) => navigateMenu(event, this.popoverTarget)
+    this.triggerKeydownHandler = this.handleTriggerKeydown.bind(this)
     this.focusOutSuppressed = false
     this.focusOutSuppressionTimer = null
   }
 
+  connect() {
+    super.connect()
+    this.triggerTarget.addEventListener("keydown", this.triggerKeydownHandler)
+  }
+
   disconnect() {
+    this.triggerTarget.removeEventListener("keydown", this.triggerKeydownHandler)
     this.clearFocusOutSuppression()
     super.disconnect()
+  }
+
+  // Arrow Down opens the menu on its first item, Arrow Up on its last.
+  handleTriggerKeydown(event) {
+    if (event.key !== "ArrowDown" && event.key !== "ArrowUp") return
+    if (event.altKey || event.ctrlKey || event.metaKey) return
+
+    event.preventDefault()
+    this.open()
+    if (event.key === "ArrowDown") focusFirstMenuItem(this.popoverTarget)
+    else focusLastMenuItem(this.popoverTarget)
   }
 
   toggle(event) {

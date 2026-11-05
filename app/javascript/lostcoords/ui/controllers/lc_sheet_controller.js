@@ -340,7 +340,7 @@ export default class extends Controller {
       this.releaseScroll = holdDocumentScroll()
       const lockedTop = -parseFloat(document.body.style.top || "0")
       root.style.setProperty("--lc-sheet-page-origin", `${window.scrollY + lockedTop}px`)
-      root.dataset.sheetPage = ""
+      root.dataset.lcSheetPage = ""
       this.ownsPage = true
     }
     root.style.setProperty("--lc-sheet-page-p", p.toFixed(3))
@@ -361,7 +361,7 @@ export default class extends Controller {
     if (!this.ownsPage) return
     this.ownsPage = false
     const root = document.documentElement
-    delete root.dataset.sheetPage
+    delete root.dataset.lcSheetPage
     for (const name of ["p", "scale", "origin", "transition"])
       root.style.removeProperty(`--lc-sheet-page-${name}`)
     this.releaseScroll()

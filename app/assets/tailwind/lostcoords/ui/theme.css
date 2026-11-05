@@ -15,6 +15,11 @@
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
+
+  /* Muted fills that a card switches to stay visible on it (card.css): bg-tile for choice tiles,
+     alerts, neutral badges, skeletons and key hints; bg-track for toggle group tracks. */
+  --color-tile: var(--lc-tile-bg, var(--muted));
+  --color-track: var(--lc-track-bg, var(--muted));
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
@@ -56,6 +61,11 @@
   --spacing-control-sm: var(--lc-control-sm);
   --spacing-control-md: var(--lc-control-md);
   --spacing-control-lg: var(--lc-control-lg);
+
+  /* In-page layers: z-raised lifts content over its neighbours, z-sticky keeps
+     app chrome above content. Overlays need no z-index; see --lc-z-popover. */
+  --z-index-raised: var(--lc-z-raised);
+  --z-index-sticky: var(--lc-z-sticky);
 }
 
 @theme {
@@ -116,8 +126,13 @@
     --lc-sheet-duration: 500ms;
     --lc-sheet-offscreen: calc(100% + 2rem);
 
+    --lc-z-raised: 1;
+    --lc-z-sticky: 20;
+
+    /* Dialogs, sheets, menus, popovers, tooltips and toasts open in the
+       browser's top layer, above every z-index. These order them only where
+       the Popover API is missing. */
     --lc-z-popover: 30;
-    --lc-z-sheet: 50;
     --lc-z-overlay: 60;
     --lc-z-toast: 70;
 

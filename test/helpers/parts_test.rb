@@ -96,6 +96,19 @@ module Lostcoords::Ui
       assert_raises(ActionView::Template::Error) { render('<%= lc_tabs id: "t", label: "P", selected: :x do |tabs| %><% tabs.panel "A" do %>1<% end %><% end %>') }
     end
 
+    test "vertical tabs declare their orientation and manual tabs their activation" do
+      html = render('<%= lc_tabs id: "t", label: "P", orientation: :vertical, activation: :manual do |tabs| %><% tabs.panel "A" do %>1<% end %><% tabs.panel "B" do %>2<% end %><% end %>')
+      assert_equal "vertical", html.at_css("[role=tablist]")["aria-orientation"]
+      assert_includes html.at_css("[role=tablist]")["class"].split, "flex-col"
+      assert_equal "manual", html.at_css("[data-slot=tabs]")["data-lc-tabs-activation-value"]
+
+      default = render('<%= lc_tabs id: "t", label: "P" do |tabs| %><% tabs.panel "A" do %>1<% end %><% end %>')
+      assert_nil default.at_css("[role=tablist]")["aria-orientation"]
+      assert_nil default.at_css("[data-slot=tabs]")["data-lc-tabs-activation-value"]
+      assert_raises(ArgumentError) { @view.lc_tabs(id: "t", label: "P", orientation: :diagonal) { } }
+      assert_raises(ArgumentError) { @view.lc_tabs(id: "t", label: "P", activation: :eager) { } }
+    end
+
     test "tooltips describe their trigger" do
       html = render('<%= lc_tooltip "Copy link", id: "tip", side: :bottom do |tip| %><%= lc_button "Copy", **tip %><% end %>')
       assert_equal "tip", html.at_css("button")["aria-describedby"]
@@ -158,11 +171,24 @@ module Lostcoords::Ui
       assert_includes label.text, "Preview"
     end
 
-    test "tooltips can be dismissed with Escape" do
+    test "tooltips open from hover and focus" do
       html = render('<%= lc_tooltip "Copy", id: "tip" do |tip| %><%= lc_button "Copy", **tip %><% end %>')
       tooltip = html.at_css("[data-slot=tooltip]")
       assert_equal "lc-tooltip", tooltip["data-controller"]
-      assert_includes tooltip["data-action"], "keydown@window->lc-tooltip#dismiss"
+      refute_includes tooltip["data-action"], "keydown", "Escape goes through the dismiss stack"
+      assert_includes tooltip["data-action"], "mouseenter->lc-tooltip#show"
+      assert_equal "content", html.at_css("#tip")["data-lc-tooltip-target"]
+    end
+
+    test "toast regions hold toasts and open in the top layer" do
+      html = render('<%= lc_toast_region id: "toasts" do %><%= lc_toast "Saved", timeout: 0 %><% end %>')
+      region = html.at_css("#toasts.lc-toast-region")
+      assert_equal "lc-toast-region", region["data-controller"]
+      assert_equal "toast-region", region["data-slot"]
+      assert_equal "Saved", region.at_css("[data-slot=toast]").text
+      assert_equal %w[status polite], [ region["role"], region["aria-live"] ]
+      assert_nil region.at_css("[data-slot=toast]")["role"], "the region announces its toasts"
+      assert_equal "alert", render('<%= lc_toast "Failed", tone: :destructive %>').at_css("[data-slot=toast]")["role"]
     end
   end
 end

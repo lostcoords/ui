@@ -8,7 +8,9 @@ module DocsReference
           { title: example.title, url: "https://ui.lostcoords.com/components/#{section.id}.html", erb: example.source.gsub("EXAMPLE_ID", "my-component") }
         end
       end
-      { name: component.name, signature: component.signature, examples: examples }
+      owner = Showcase.owner(component.name)
+      parts = DocsParts.for(component.name).map(&:signature)
+      { name: component.name, signature: component.signature, url: ("https://ui.lostcoords.com/components/#{owner.id}.html##{component.name}" if owner), parts: parts.presence, examples: examples }.compact
     end
   end
 
@@ -32,7 +34,7 @@ module DocsReference
     Lostcoords::Ui::Tokens::COLORS.each { |name, description| lines << "- `#{name}`: #{description}" }
     lines << ""
     components.each do |component|
-      lines += [ "## #{component[:name]}", "", "```ruby", component[:signature], "```", "" ]
+      lines += [ "## #{component[:name]}", "", *([ component[:url], "" ] if component[:url]), "```ruby", component[:signature], *component[:parts], "```", "" ]
       component[:examples].each do |example|
         lines += [ "#{example[:title]}: #{example[:url]}", "", "```erb", example[:erb], "```", "" ]
       end

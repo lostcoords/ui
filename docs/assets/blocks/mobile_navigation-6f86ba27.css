@@ -1,0 +1,170 @@
+.mobile-example {
+  --dock-gap: max(1rem, env(safe-area-inset-right, 0px));
+  --dock-bottom: max(0.75rem, env(safe-area-inset-bottom, 0px));
+  --dock-size: 4rem;
+}
+
+.mobile-example__main {
+  padding-block-end: calc(var(--dock-bottom) + var(--dock-size) + 2rem);
+}
+
+.mobile-example__tabs {
+  position: fixed;
+  z-index: var(--lc-z-sticky);
+  inset-inline: max(1rem, env(safe-area-inset-left, 0px)) calc(var(--dock-gap) + var(--dock-size) + 0.75rem);
+  bottom: var(--dock-bottom);
+}
+
+.mobile-example__tab {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  min-height: 3.5rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  border-radius: 999px;
+  color: var(--muted-foreground);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.mobile-example__tab[aria-current="page"] {
+  color: var(--primary);
+}
+
+.mobile-example__indicator {
+  position: absolute;
+  z-index: -1;
+  inset-block: 0.25rem;
+  inset-inline-start: 0;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--foreground) 7%, transparent);
+  transition: translate 380ms var(--lc-ease-sheet, ease), width 380ms var(--lc-ease-sheet, ease);
+}
+
+.mobile-example__dock {
+  position: fixed;
+  z-index: calc(var(--lc-z-sticky) + 1);
+  inset-inline-end: var(--dock-gap);
+  bottom: var(--dock-bottom);
+}
+
+.mobile-example__trigger,
+.mobile-example__action {
+  display: grid;
+  width: var(--dock-size);
+  height: var(--dock-size);
+  place-items: center;
+  padding: 0;
+  color: var(--primary);
+  cursor: pointer;
+}
+
+.mobile-example__trigger {
+  position: relative;
+  z-index: 2;
+}
+
+.mobile-example__trigger svg {
+  transition: rotate 300ms var(--lc-ease-sheet, ease);
+}
+
+.mobile-example__trigger[aria-expanded="true"] svg {
+  rotate: 135deg;
+}
+
+.mobile-example__actions {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.mobile-example__actions[data-open] {
+  visibility: visible;
+}
+
+.mobile-example__scrim {
+  position: fixed;
+  inset: 0;
+  border: 0;
+  background: color-mix(in oklab, var(--foreground) 18%, transparent);
+  opacity: 0;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  transition: opacity 220ms ease;
+}
+
+.mobile-example__actions[data-open] .mobile-example__scrim {
+  pointer-events: auto;
+  opacity: 1;
+}
+
+.mobile-example__action {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  width: 3.5rem;
+  height: 3.5rem;
+  margin: 0.25rem;
+  color: var(--foreground);
+  opacity: 0;
+  transform: scale(0.4);
+  transition: transform 300ms ease, opacity 150ms ease;
+}
+
+.mobile-example__actions[data-open] .mobile-example__action {
+  pointer-events: auto;
+  opacity: 1;
+  transform: translateY(calc(var(--action-index) * -4.5rem)) scale(1);
+  transition: transform 420ms cubic-bezier(0.34, 1.45, 0.64, 1), opacity 160ms ease;
+  transition-delay: calc((var(--action-index) - 1) * 40ms);
+}
+
+.mobile-example__action-label {
+  position: absolute;
+  inset-inline-end: calc(100% + 0.75rem);
+  width: max-content;
+  max-width: calc(100vw - 7rem);
+  padding: 0.5rem 0.875rem;
+  border-radius: 999px;
+  background: var(--background);
+  box-shadow: var(--lc-shadow);
+  color: var(--foreground);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.mobile-example[data-keyboard] .mobile-example__tabs,
+.mobile-example[data-keyboard] .mobile-example__dock {
+  display: none;
+}
+
+@media (width >= 40rem) {
+  .mobile-example__tabs {
+    position: relative;
+    inset: auto;
+    width: max-content;
+    margin-inline: auto;
+    margin-block-end: 1.5rem;
+  }
+
+  .mobile-example__tab {
+    min-width: 7rem;
+    min-height: 2.75rem;
+    flex-direction: row;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-example__indicator,
+  .mobile-example__trigger svg,
+  .mobile-example__scrim,
+  .mobile-example__action,
+  .mobile-example__actions[data-open] .mobile-example__action {
+    transition: none;
+  }
+}

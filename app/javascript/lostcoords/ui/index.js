@@ -4,12 +4,15 @@ import ConfirmDialog from "lostcoords/ui/controllers/lc_confirm_dialog_controlle
 import Copy from "lostcoords/ui/controllers/lc_copy_controller"
 import Dialog from "lostcoords/ui/controllers/lc_dialog_controller"
 import EmojiPicker from "lostcoords/ui/controllers/lc_emoji_picker_controller"
+import Kbd from "lostcoords/ui/controllers/lc_kbd_controller"
 import Menu from "lostcoords/ui/controllers/lc_menu_controller"
 import Popover from "lostcoords/ui/controllers/lc_popover_controller"
 import Selection from "lostcoords/ui/controllers/lc_selection_controller"
 import Sheet from "lostcoords/ui/controllers/lc_sheet_controller"
+import Shortcut from "lostcoords/ui/controllers/lc_shortcut_controller"
 import Tabs from "lostcoords/ui/controllers/lc_tabs_controller"
 import Toast from "lostcoords/ui/controllers/lc_toast_controller"
+import ToastRegion from "lostcoords/ui/controllers/lc_toast_region_controller"
 import Toggle from "lostcoords/ui/controllers/lc_toggle_controller"
 import Tooltip from "lostcoords/ui/controllers/lc_tooltip_controller"
 
@@ -20,12 +23,15 @@ const controllers = {
   "lc-copy": Copy,
   "lc-dialog": Dialog,
   "lc-emoji-picker": EmojiPicker,
+  "lc-kbd": Kbd,
   "lc-menu": Menu,
   "lc-popover": Popover,
   "lc-selection": Selection,
   "lc-sheet": Sheet,
+  "lc-shortcut": Shortcut,
   "lc-tabs": Tabs,
   "lc-toast": Toast,
+  "lc-toast-region": ToastRegion,
   "lc-toggle": Toggle,
   "lc-tooltip": Tooltip,
 }

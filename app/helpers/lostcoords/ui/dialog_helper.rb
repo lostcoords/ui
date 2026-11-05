@@ -14,13 +14,18 @@ module Lostcoords::Ui
     }.freeze
 
     def lc_dialog_class(kind = :modal, extra: nil)
-      lc_tw("lc-squircle", lc_dialog_kinds.fetch(kind), extra)
+      lc_tw("lc-squircle", DIALOGS.fetch(lc_option!(:kind, kind, DIALOGS.keys)), extra)
     end
 
-    private
-
-    def lc_dialog_kinds
-      DIALOGS
+    # Yields a builder with footer and close parts.
+    def lc_dialog(id:, title:, description: nil, trigger: lc_t("lostcoords.ui.dialog.trigger"), kind: :modal, detents: "fit", **attributes, &block)
+      lc_label!(id, :id)
+      lc_label!(title, :title)
+      lc_label!(trigger, :trigger)
+      defaults = { class: lc_dialog_class(kind), aria: { describedby: ("#{id}-description" if description.present?) }, data: lc_sheet_data({ slot: "dialog" }, detents: detents) }
+      required = { id: id, aria: { labelledby: "#{id}-title" }, data: { lc_dialog_target: "dialog" } }
+      render "lostcoords/ui/components/lc_dialog", id: id, title: title, description: description, trigger: trigger,
+        attributes: lc_attributes(defaults, attributes, required), content: (capture(Parts::Dialog.new(self, id), &block) if block)
     end
   end
 end

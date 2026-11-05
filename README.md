@@ -21,7 +21,7 @@ its gem version, so publishing a library update does not upgrade consumers.
 ## Install
 
 ```ruby
-gem "lostcoords-ui", "~> 0.5.0"
+gem "lostcoords-ui", "~> 0.6.0"
 ```
 
 The engine adds its rendering helpers to host views, its JavaScript to the asset paths and its pins to
@@ -57,6 +57,26 @@ It does not set body styles, heading defaults, global inline-code styles or docu
 Map the library's tokens to your app's theme and keep your Tailwind theme declarations after the import.
 The full `ui.css` entry includes those document defaults and remains the Rails default.
 
+Tailwind always ships component rules, used or not, and generates every utility the scanned helpers
+mention. For a smaller build, import `core.css` and the opt-in components you render instead of
+everything. Each entry carries the rules and scans the sources of its own component only. In Rails,
+every Tailwind build writes stable paths for them next to the engine's own import:
+
+```css
+/* app/assets/tailwind/application.css, instead of ../builds/tailwind/lostcoords_ui.css */
+@import "../builds/tailwind/lostcoords_ui/base.css";
+@import "../builds/tailwind/lostcoords_ui/core.css";
+@import "../builds/tailwind/lostcoords_ui/components/dialog.css";
+@import "../builds/tailwind/lostcoords_ui/components/menu.css";
+```
+
+Outside Rails, import the same files from `app/assets/tailwind/lostcoords/ui/` in the gem.
+`base.css` holds the document defaults that `ui.css` adds; skip it when the host owns its base styles.
+`core.css` holds the tokens, buttons, badges, avatars, cards, alerts, form controls, choices,
+toggles, layout, typography and navigation. The opt-in entries are `dialog` (with the phone sheet),
+`menu` (menus and popovers), `toast`, `tooltip`, `collapsible`, `code-block`,
+`emoji-picker`, `table` and `prose`. A component whose entry is missing renders unstyled.
+
 Start one Stimulus application in the host, then register the controllers you use:
 
 ```javascript
@@ -68,7 +88,10 @@ registerControllers(application, { only: ["lc-copy", "lc-collapsible"] })
 ```
 
 Resolve `lostcoords/ui/*` to the gem's `app/javascript/lostcoords/ui/*` and `@hotwired/stimulus` to
-the host's installed package. Build configuration belongs to the host. The entry does not start
+the host's installed package. `registerControllers` imports every controller, so a bundle carries
+them all; to bundle only some, import them directly:
+`import Dialog from "lostcoords/ui/controllers/lc_dialog_controller"` and
+`application.register("lc-dialog", Dialog)`. Build configuration belongs to the host. The entry does not start
 Stimulus or register anything on import. Omit `only` to register all library controllers. Register
 defaults before application overrides. Repeated calls on the same application preserve later
 overrides; unknown controller identifiers raise before registration.
@@ -153,9 +176,20 @@ container pads with `px-gutter`.
 ### Importmap
 
 The engine pins its modules under `lostcoords/ui/*`. Controllers are also pinned under the host's
-`controllers/*` key with an `lc_` prefix, so `eagerLoadControllersFrom("controllers", application)`
-registers them as `lc-dialog`, `lc-menu`, `lc-copy` and so on. A host file with the same name, such as
-`app/javascript/controllers/lc_dialog_controller.js`, replaces the gem's.
+`controllers/*` key with an `lc_` prefix, so Rails' controller loading registers them as `lc-dialog`,
+`lc-menu`, `lc-copy` and so on. Load them lazily, so a page downloads only the controllers it uses,
+the first time their `data-controller` appears:
+
+```javascript
+// app/javascript/controllers/index.js
+import { lazyLoadControllersFrom } from "@hotwired/stimulus-loading"
+import { application } from "controllers/application"
+
+lazyLoadControllersFrom("controllers", application)
+```
+
+`eagerLoadControllersFrom` also works and downloads all of them on every page. A host file with the
+same name, such as `app/javascript/controllers/lc_dialog_controller.js`, replaces the gem's.
 
 ## Components
 
@@ -199,7 +233,7 @@ Wrap wide tables in an app-owned horizontal scroll region with an accessible nam
 Use `lc_table_class` when an existing table renderer owns the markup.
 
 Cards share one API: `lc_card(padding: :md)`, with `:sm` and `:none` for tighter or custom spacing. Padding sizes set `--lc-inset`, so content inside follows the card.
-Inputs keep their `--input` fill inside cards; set `--lc-field-bg` to change it in one context. Cards provide avatar cutouts, a page-colored background for choice tiles, and a validation border when they contain errors.
+Inputs keep their `--input` fill inside cards; set `--lc-field-bg` to change it in one context. Cards provide avatar cutouts and a validation border when they contain errors. Fills that are muted on the page switch so they stay visible on the card: choice tiles, alerts, neutral badges and skeletons take the page background (`--lc-tile-bg`), and toggle group and tab tracks take the accent fill (`--lc-track-bg`). Set either variable to apply the same context to your own muted surface.
 Add `class: "@container"` when a card owns its width and its children use container queries.
 Use `--lc-card-bg`, `--lc-card-border`, `--lc-card-radius` and `--lc-card-shadow` for local appearance overrides.
 
@@ -284,8 +318,9 @@ to omit it. `lc_choice_group` groups them in a fieldset with a legend, hint and 
 ```
 
 Tabs follow the ARIA tabs pattern with arrow key, Home and End navigation, and dispatch
-`lc-tabs:change`. Tooltips show on hover and keyboard focus, Escape hides them, and they describe
-their trigger; keep essential information visible. Description lists stack on phones and use two
+`lc-tabs:change`. `orientation: :vertical` stacks the tabs beside their panels and moves with Arrow Up
+and Down; `activation: :manual` moves focus with the arrows and selects with Enter or Space. Tooltips show on hover and keyboard focus, Escape hides them, and they describe
+their trigger, in the top layer; keep essential information visible. Description lists stack on phones and use two
 columns from `sm`.
 
 ```erb
@@ -317,37 +352,63 @@ header and the documentation layout.
 to choose mobile height stops; the default is `"fit"`. Icon buttons, avatar groups, motion and mobile dialogs
 appear with their parent component examples.
 
-### Upgrade to 0.5
+### Keyboard
 
-0.5 renames the theme to shadcn colors and moves every library name under the `lc-` prefix. Preview
-the changes with `ruby script/migrate_0_5.rb path/to/app`, then add `--write`. The script handles:
+Every interactive component works from the keyboard without extra code:
 
-| 0.4 | 0.5 |
-| --- | --- |
-| `--surface`, `bg-surface` | `--muted`, `bg-muted`; use `bg-card` for card-like surfaces |
-| `--surface-hover` | `--accent` (hover) or `--secondary` (buttons) |
-| `--muted`, `text-muted` | `--muted-foreground`, `text-muted-foreground` |
-| `--on-primary` | `--primary-foreground` |
-| `--danger`, `tone: :danger` | `--destructive`, `tone: :destructive` |
-| `--f-body`, `font-body` | `--font-sans`, `font-sans` |
-| `--control-bg` | `--input` |
-| `--shadow`, `--scrim`, `--glass-*`, `--ui-*`, `--card-*`, `--button-*` | `--lc-` prefixed |
-| `ui-*`, `glass`, `squircle`, `press`, `avatar` classes | `lc-*` |
-| Stimulus `modal`, `row-menu`, `disclosure`, `sheet`, `toast`, `ui-copy` … | `lc-dialog`, `lc-menu`, `lc-collapsible`, `lc-sheet`, `lc-toast`, `lc-copy` … |
-| `size: :base` | `size: :md` |
-| `lc_heading size: :page / :section / :card` | `size: :title / :heading / :subheading` |
+| Component | Keys |
+|---|---|
+| Menu | Arrow Down or Up on the button opens on the first or last item. Arrows move and wrap, Home and End jump, a letter jumps to the next item that starts with it, Enter or Space activates, Escape closes and returns focus. |
+| Tabs | Arrows along the tab list's orientation, Home and End. Automatic tabs select on focus; manual tabs on Enter or Space. |
+| Toggle group | One Tab stop. All four arrows move and select, wrapping; Left and Right follow the text direction. |
+| Emoji picker | Arrow Down from the search enters the grid, arrows move through it by row, Arrow Up from the top row returns to the search, and Enter in the search picks the best match. The grid is one Tab stop. |
+| Dialogs, sheets, popovers, menus, tooltips | Escape closes the topmost one and returns focus to what opened it; an open tooltip closes before the menu or dialog around it. Escape in a search field with text clears it first. |
 
-Review these by hand:
+Page-wide shortcuts focus a field or press a button. Merge `lc_shortcut_data` into the element's data and
+show the keys with `lc_kbd`:
 
-- Card `padding: :default` and `:compact` are now `:md` and `:sm`.
-- `--lc-heading-*`, `--lc-text-*` and `--lc-space-*` overrides become the `--text-*` and `--spacing-*` theme
-  tokens, or `--lc-density` and `--lc-inset`.
-- Controls are 40px by default instead of 48px.
-- `lc_sheet_row_class`, `lc_sheet_chip_class`, `lc_sheet_datetime_input_class`, `lc_sheet_text_input_class`,
-  `lc_dropdown_trigger_class`, `lc_dialog_surface_class` and the `pill-3d` utility are removed.
-- JavaScript imports from `helpers/*` move to `lostcoords/ui/helpers/*`.
+```erb
+<%= lc_input type: :search, name: "q", aria: { label: "Search" }, data: lc_shortcut_data("mod+k") %>
+<%= lc_button data: lc_shortcut_data("n", action: "projects#new") do %>
+  New project <%= lc_kbd "n", aria: { hidden: true } %>
+<% end %>
+```
 
-The 0.4 README covers older migrations.
+Keys are joined with `+`: `mod` is ⌘ on Apple platforms and Ctrl elsewhere, and `ctrl`, `alt`, `shift`
+and `meta` name the others. Separate alternatives with spaces. The element announces its keys through
+`aria-keyshortcuts`. Shortcuts without `mod`, `ctrl` or `alt` don't fire while typing in a field, only
+shortcuts inside an open modal dialog respond, and when two visible elements share keys the first wins
+and the console warns. `lc_kbd` renders the Ctrl form and switches to Apple symbols once JavaScript runs.
+
+Custom widgets can use the same navigation: `navigate(event, items, { orientation, wrap, typeahead })`
+from `lostcoords/ui/helpers/roving_focus` handles vertical, horizontal and grid layouts, right-to-left
+text, Home and End, and typeahead; `rove(items, current)` keeps a single Tab stop.
+
+### Layers
+
+Overlays never need a z-index. Dialogs and sheets open as modal `<dialog>` elements; menus,
+popovers, pickers and tooltips move into the browser's top layer while they are open; toasts go in
+`lc_toast_region`, which does the same. The top layer paints above every z-index, `overflow` clip
+and stacking context on the page, so a sticky header, a `transform` or a glass `backdrop-filter`
+can't cover them. A modal dialog makes the rest of the page inert, so while one is open the toast
+region moves inside it and back when it closes. The region is the live region that announces its
+toasts; destructive toasts are alerts. Where the Popover API is missing overlays stay in place,
+ordered by `--lc-z-popover`, `--lc-z-overlay` and `--lc-z-toast`.
+
+```erb
+<%# In the layout, once %>
+<%= lc_toast_region id: "toasts" do %>
+  <% flash.each do |type, message| %><%= lc_toast message, tone: type == "alert" ? :destructive : :success %><% end %>
+<% end %>
+
+<%# From a controller or job %>
+<%= turbo_stream.append "toasts" do %><%= lc_toast "Project saved." %><% end %>
+```
+
+Two in-page layers remain: `z-sticky` keeps app chrome such as a sticky header above content, and
+`z-raised` lifts an element over its neighbours. Put `isolate` on the main content area, so any z-index
+inside it stays below the chrome. Tailwind drops a `z-*` class it can't resolve without a warning, so
+use these two names, a number or `z-(--a-defined-variable)`.
 
 ## Copy feedback and motion
 
@@ -524,6 +585,8 @@ Generated by `bin/rails lostcoords:ui:builders`; `bin/lint` checks this list aga
 - `lc_tw(*classes)` (TailwindHelper)
 - `lc_heading_class(size: :heading, trim: false, extra: nil)` (TypographyHelper)
 - `lc_text_class(size: :body, tone: :default, trim: false, extra: nil)` (TypographyHelper)
+- `lc_kbd_class(extra: nil)` (TypographyHelper)
+- `lc_shortcut_data(keys, data = {})` (TypographyHelper)
 <!-- /builders -->
 
 ## Blocks
@@ -551,15 +614,6 @@ bin/rails server            # the dummy app in test/dummy
 bin/rails tailwindcss:build
 bin/test
 bin/lint
-```
-
-The helper migration tool updates Ruby calls, ERB code, and Ruby/ERB Markdown examples to the `lc_`
-namespace. Run it in a consumer checkout to preview changes, then add `--write` to apply them.
-Review dynamic method names stored in strings separately.
-
-```sh
-ruby "$(bundle show lostcoords-ui)/script/migrate_helpers.rb" .
-ruby "$(bundle show lostcoords-ui)/script/migrate_helpers.rb" . --write
 ```
 
 The icon catalog and its MIT license live in `vendor/heroicons`. Regenerate them from the pinned

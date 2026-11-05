@@ -6,6 +6,12 @@ module Lostcoords::Ui
   module EmojiPickerHelper
     include TranslationHelper
 
+    def lc_emoji_picker(form:, field:, label:, catalog_url:, value: nil, quick: [], recent: [], recent_scope: nil, auto_submit: false, **attributes)
+      lc_label!(label, :label)
+      lc_label!(catalog_url, :catalog_url)
+      render "lostcoords/ui/components/emoji_picker", form: form, field: field, label: label, catalog_url: catalog_url, value: value, quick: quick, recent: recent, recent_scope: recent_scope, auto_submit: auto_submit, attributes: attributes
+    end
+
     SEARCH_NAMES_PATH = Lostcoords::Ui.root.join("config/emoji_search_names.yml")
     SEARCH_NAMES_JA_PATH = Lostcoords::Ui.root.join("config/emoji_search_names_ja.yml")
     SEARCH_ALIASES_PATH = Lostcoords::Ui.root.join("config/emoji_search_aliases.yml")

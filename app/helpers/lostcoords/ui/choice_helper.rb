@@ -6,7 +6,7 @@ module Lostcoords::Ui
     CHOICE_LABEL = "lc-choice inline-flex min-w-0 items-start gap-related text-body text-foreground cursor-pointer has-disabled:cursor-not-allowed has-disabled:opacity-60"
 
     # card: true draws the whole label as a selectable tile, for plan or theme pickers.
-    CHOICE_CARD = "flex w-full rounded-2xl lc-squircle border border-transparent bg-(--lc-tile-bg,var(--muted)) p-content " \
+    CHOICE_CARD = "flex w-full rounded-2xl lc-squircle border border-transparent bg-tile p-content " \
       "transition-[background-color,border-color] duration-(--lc-motion-quick) ease-(--lc-ease-out) hover:bg-accent " \
       "has-checked:border-primary has-checked:bg-primary-soft has-focus-visible:outline-2 has-focus-visible:outline-offset-2 " \
       "has-focus-visible:outline-(--ring,color-mix(in_oklab,var(--primary)_50%,transparent))"
@@ -42,15 +42,18 @@ module Lostcoords::Ui
       lc_choice("switch", label, hint, false, name, unchecked_value, { type: "checkbox", role: "switch", name: name, value: value, checked: checked, class: lc_switch_class }, attributes)
     end
 
-    # A fieldset of checkboxes, radios or switches with a legend, hint and error.
-    def lc_choice_group(legend:, hint: nil, error: nil, **attributes, &block)
+    # A fieldset of checkboxes, radios or switches with a legend, hint and error. With an id, the
+    # fieldset's aria-describedby points at the hint and error, as lc_field does for its control.
+    def lc_choice_group(legend:, id: nil, hint: nil, error: nil, **attributes, &block)
       lc_label!(legend, :legend)
       errors = Array(error).compact_blank
-      tag.fieldset(**lc_attributes({ class: lc_field_class(extra: "m-0 min-w-0 border-0 p-0"), aria: { invalid: (true if errors.any?) }, data: { slot: "choice-group" } }, attributes)) do
+      described = [ ("#{id}-hint" if id && hint.present?), ("#{id}-error" if id && errors.any?) ].compact.presence&.join(" ")
+      defaults = { id: id, class: lc_field_class(extra: "m-0 min-w-0 border-0 p-0"), aria: { invalid: (true if errors.any?), describedby: described }, data: { slot: "choice-group", invalid: (true if errors.any?) } }
+      tag.fieldset(**lc_attributes(defaults, attributes)) do
         safe_join([
-          tag.legend(legend, class: lc_field_label_class(extra: "p-0")),
+          tag.legend(legend, class: lc_field_label_class(extra: "p-0"), data: { slot: "choice-group-legend" }),
           tag.div(class: "flex flex-col gap-related", &block),
-          *lc_field_messages(nil, hint, errors)
+          *lc_field_messages(id, hint, errors)
         ])
       end
     end
@@ -64,7 +67,7 @@ module Lostcoords::Ui
       end
 
       # Shared with Lostcoords::Ui::FormBuilder, which renders its own inputs.
-      def lc_choice_label(slot, label, hint, input, card: false, **attributes, &block)
+      def lc_choice_label(slot, label, hint, input, card: false, errors: [], error_id: nil, **attributes, &block)
         extra = capture(&block) if block
         tag.label(**lc_attributes({ class: lc_choice_label_class(card: card), data: { slot: slot, card: (true if card) } }, attributes)) do
           safe_join([
@@ -73,6 +76,7 @@ module Lostcoords::Ui
               safe_join([
                 tag.span(label, class: ("text-label" if card)),
                 (tag.span(hint, class: "text-small text-muted-foreground") if hint.present?),
+                (tag.span(safe_join(errors, tag.br), id: error_id, class: "text-small text-destructive", data: { slot: "field-error" }) if errors.any?),
                 (tag.span(extra, class: "flex min-w-0 flex-col pt-tight") if extra.present?)
               ].compact)
             end

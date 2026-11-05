@@ -99,10 +99,20 @@ module Lostcoords::Ui
       end
     end
 
+    TABS_ORIENTATIONS = {
+      horizontal: { root: "flex min-w-0 flex-col gap-content", list: "max-w-full overflow-x-auto lc-scroll-fade-x" },
+      vertical: { root: "flex min-w-0 flex-row items-start gap-content", list: "shrink-0 flex-col items-stretch [&>[role=tab]]:justify-start" }
+    }.freeze
+
     # Yields a builder; each `tabs.panel "Label" do … end` adds a tab and its panel.
-    def lc_tabs(id:, label:, selected: nil, **attributes, &block)
+    # orientation: :vertical stacks the tabs beside the panels and moves them with Arrow Up and Down.
+    # activation: :manual moves focus with the arrows and selects with Enter or Space.
+    def lc_tabs(id:, label:, selected: nil, orientation: :horizontal, activation: :automatic, **attributes, &block)
       lc_label!(id, :id)
       lc_label!(label, :label)
+      orientation = lc_option!(:orientation, orientation, TABS_ORIENTATIONS.keys)
+      activation = lc_option!(:activation, activation, %i[automatic manual])
+      layout = TABS_ORIENTATIONS.fetch(orientation)
       tabs = Parts::Tabs.new(self)
       capture(tabs, &block) if block
       raise ArgumentError, "lc_tabs needs at least one panel" if tabs.panels.empty?
@@ -111,7 +121,9 @@ module Lostcoords::Ui
       raise ArgumentError, "selected tab #{selected.inspect} has no panel" unless tabs.panels.any? { |panel| panel.value == selected }
 
       key = ->(panel) { "#{id}-#{panel.value.gsub(/[^\w-]+/, '-')}" }
-      list = tag.div(role: "tablist", aria: { label: label }, class: lc_toggle_group_class(extra: "max-w-full overflow-x-auto lc-scroll-fade-x"), data: { slot: "tabs-list" }) do
+      ids = tabs.panels.map(&key)
+      raise ArgumentError, "tab values #{tabs.panels.map(&:value).inspect} produce duplicate ids" unless ids.uniq.size == ids.size
+      list = tag.div(role: "tablist", aria: { label: label, orientation: (orientation if orientation == :vertical) }, class: lc_toggle_group_class(extra: layout[:list]), data: { slot: "tabs-list" }) do
         safe_join(tabs.panels.map do |panel|
           active = panel.value == selected
           tag.button(panel.label, type: "button", role: "tab", id: "#{key.(panel)}-tab", tabindex: (active ? 0 : -1),
@@ -121,9 +133,10 @@ module Lostcoords::Ui
       end
       panels = tabs.panels.map do |panel|
         tag.div(panel.content, **lc_attributes({ role: "tabpanel", id: "#{key.(panel)}-panel", tabindex: 0, hidden: (panel.value != selected),
-          aria: { labelledby: "#{key.(panel)}-tab" }, class: "min-w-0 rounded-lg outline-offset-4", data: { slot: "tabs-panel", lc_tabs_target: "panel" } }, panel.attributes))
+          aria: { labelledby: "#{key.(panel)}-tab" }, class: lc_tw("min-w-0 rounded-lg outline-offset-4", ("flex-1" if orientation == :vertical)), data: { slot: "tabs-panel", lc_tabs_target: "panel" } }, panel.attributes))
       end
-      tag.div(**lc_attributes({ id: id, class: "flex min-w-0 flex-col gap-content", data: { slot: "tabs", controller: "lc-tabs" } }, attributes)) do
+      data = { slot: "tabs", controller: "lc-tabs", lc_tabs_activation_value: (activation.to_s if activation == :manual) }.compact
+      tag.div(**lc_attributes({ id: id, class: layout[:root], data: data }, attributes)) do
         safe_join([ list, *panels ])
       end
     end

@@ -1,7 +1,9 @@
 <%= lc_card class: "@container w-full" do |card| %>
   <%= card.header title: "Project settings" %>
-  <%= lc_field label: "Project name", id: "EXAMPLE_ID-name" do |field| %>
-    <%= lc_input name: "project[name]", value: "Design system", **field %>
+  <%= card.content do %>
+    <%= lc_field label: "Project name", id: "EXAMPLE_ID-name" do |field| %>
+      <%= lc_input name: "project[name]", value: "Design system", **field %>
+    <% end %>
   <% end %>
   <%= card.footer do %>
     <%= lc_button "Save changes" %>

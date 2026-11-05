@@ -1,0 +1,5 @@
+/* lc_menu, lc_menu_option and lc_popover. */
+@source "../../../../../helpers/lostcoords/ui/menu_helper.rb";
+@source "../../../../../views/lostcoords/ui/components/_lc_floating_panel.html.erb";
+@source "../../../../../javascript/lostcoords/ui/controllers/lc_menu_controller.js";
+@source "../../../../../javascript/lostcoords/ui/controllers/lc_popover_controller.js";

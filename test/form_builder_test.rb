@@ -55,5 +55,30 @@ module Lostcoords::Ui
       html = form { |f| f.field(:name) { |control| f.text_area(:name, **control.to_hash.except(:id)) } }
       assert_equal "true", html.at_css("textarea")["aria-invalid"]
     end
+
+    test "select fields take choices and keep the field's aria wiring" do
+      html = form { |f| f.field(:name, as: :select, choices: %w[One Two], include_blank: true, aria: { label: "Project name" }) }
+      select = html.at_css("select#docs_project_name")
+      assert_equal [ "", "One", "Two" ], select.css("option").map { |option| option["value"] }
+      assert_equal "true", select["aria-invalid"]
+      assert_equal "docs_project_name-error", select["aria-describedby"]
+      assert_equal "Project name", select["aria-label"]
+    end
+
+    test "switches and choices match the standalone helpers and show their errors" do
+      project = DocsProject.invalid_example.tap { |p| p.errors.add(:public, "must be on") }
+      html = form(project) { |f| @view.safe_join([ f.switch(:public), f.choice(:public, id: "public_choice") ]) }
+      switch = html.at_css("input[role=switch]")
+      assert_equal @view.lc_switch_class.split.sort, switch["class"].split.sort
+      assert_equal "switch-input", switch["data-slot"]
+      assert_equal "docs_project_public-error", switch["aria-describedby"]
+      assert_equal "Public must be on", html.at_css("#docs_project_public-error").text
+      assert_includes html.at_css("#public_choice")["class"].split, "lc-checkbox"
+    end
+
+    test "submit buttons carry the button slots" do
+      button = form { |f| f.submit("Save", variant: :secondary) }.at_css("input[type=submit]")
+      assert_equal [ "button", "secondary", "md" ], %w[data-slot data-variant data-size].map { |name| button[name] }
+    end
   end
 end

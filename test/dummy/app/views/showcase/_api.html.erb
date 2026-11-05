@@ -1,22 +1,22 @@
 <%= lc_section title: "API reference", id: "api", class: "scroll-mt-28" do %>
   <p class="text-sm text-muted-foreground">Helpers render semantic HTML and include their interaction wiring. Pass native attributes through <code>class:</code>, <code>data:</code>, <code>aria:</code> and the usual Rails options. Blocks use captured ERB content.</p>
   <%= lc_stack gap: :section do %>
-    <% showcase_builders(section).each do |component| %>
-      <div class="<%= lc_stack_class %>">
-        <h3 id="<%= component.name %>" class="scroll-mt-28 font-mono text-sm font-medium"><%= component.name %></h3>
-        <%= render "showcase/source_code", source: component.signature, id: "#{component.name}-signature", language: :ruby, label: "#{component.name} signature" %>
-        <div class="overflow-x-auto">
-          <%= lc_table class: "min-w-80" do %>
-            <thead><tr><th scope="col">Input</th><th scope="col">Default</th><th scope="col">Values</th></tr></thead>
-            <tbody>
-              <% showcase_parameters(component).each do |name, default| %>
-                <tr><td class="align-top font-mono text-xs"><%= name %></td><td class="align-top font-mono text-xs"><%= default %></td><td class="align-top text-xs text-muted-foreground"><%= showcase_choices(component, name) %></td></tr>
-              <% end %>
-            </tbody>
+    <% showcase_components(section).each do |component| %>
+      <%= render "showcase/signature", id: component.name, name: component.name, title: component.name, signature: component.signature, definition: component.signature %>
+      <% parts = DocsParts.for(component.name) %>
+      <% if parts.any? %>
+        <%= lc_stack gap: :content do %>
+          <p class="text-sm text-muted-foreground"><code><%= component.name %></code> yields a builder, <code><%= parts.first.receiver %></code>, with these parts. Each part carries <code>data-slot</code> and merges <code>class:</code> and native attributes.</p>
+          <% parts.each do |part| %>
+            <%= render "showcase/signature", id: "#{part.receiver}-#{part.name}", name: part.name, title: "#{part.receiver}.#{part.name}", signature: part.signature, definition: part.definition, level: 4 %>
           <% end %>
-        </div>
-      </div>
+        <% end %>
+      <% end %>
     <% end %>
+  <% end %>
+  <% related = showcase_related(section) %>
+  <% if related.any? %>
+    <p class="text-sm text-muted-foreground">The examples also use <%= to_sentence(related.map { |name, url| link_to(tag.code(name), url, class: lc_link_class) }).html_safe %>. Each is documented on its own page.</p>
   <% end %>
   <%= lc_card do |card| %>
     <%= card.header title: "Styling and extension" %>

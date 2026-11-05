@@ -119,6 +119,12 @@ module Lostcoords::Ui
       assert_raises(ArgumentError) { @view.lc_input(size: :tiny) }
       assert_raises(ArgumentError) { @view.lc_input(type: :unsupported) }
       assert_raises(ArgumentError) { @view.lc_select(size: :tiny) }
+      assert_raises(ArgumentError) { @view.lc_dialog_class(:nope) }
+      assert_raises(ArgumentError) { @view.lc_popover_class(align: :left) }
+      assert_raises(ArgumentError) { @view.lc_menu_option_class(tone: :loud) }
+      assert_raises(ArgumentError) { @view.lc_glass_class(shape: :blob) }
+      assert_raises(ArgumentError) { @view.lc_sheet_data(detents: "huge") }
+      assert_raises(ArgumentError) { @view.lc_tabs(id: "t", label: "T") { |tabs| tabs.panel("a b") { "1" }; tabs.panel("a-b") { "2" } } }
       assert_raises(ArgumentError) { @view.lc_dialog(id: "", title: "Dialog") { "Body" } }
       assert_raises(ArgumentError) { @view.lc_dialog(id: "lc-sheet", title: "Sheet", detents: "short") { "Body" } }
       assert_raises(ArgumentError) { @view.lc_menu(id: "menu", align: :middle) { "Body" } }

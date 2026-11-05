@@ -1,0 +1,5 @@
+/* lc_toast and lc_toast_region. */
+@import "../toast.css";
+@source "../../../../../helpers/lostcoords/ui/toast_helper.rb";
+@source "../../../../../javascript/lostcoords/ui/controllers/lc_toast_controller.js";
+@source "../../../../../javascript/lostcoords/ui/controllers/lc_toast_region_controller.js";

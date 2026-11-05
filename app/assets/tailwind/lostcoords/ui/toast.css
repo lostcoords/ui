@@ -1,0 +1,23 @@
+@layer components {
+  /* lc-toast-region opens it as a popover; these rules also override the
+     popover defaults, which would centre it and hide it while closed. */
+  .lc-toast-region {
+    position: fixed;
+    inset: auto var(--spacing-gutter) var(--spacing-gutter) auto;
+    z-index: var(--lc-z-toast);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--spacing-related);
+    max-inline-size: calc(100vw - var(--spacing-gutter) * 2);
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+    border: 0;
+    background: none;
+    color: inherit;
+
+    &:dir(rtl) { inset: auto auto var(--spacing-gutter) var(--spacing-gutter); }
+    &:empty { display: none; }
+  }
+}

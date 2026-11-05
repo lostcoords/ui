@@ -1,9 +1,10 @@
 <%= lc_nav_list label: "Documentation" do |nav| %>
   <%= nav.group "Library" do %>
     <%= nav.link "Installation", "/installation.html", current: action_name == "installation" %>
-    <%= nav.link "Theming", "/theming.html", current: action_name == "theming" %>
-    <%= nav.link "Blocks", "/blocks.html", current: controller_name == "blocks" %>
     <%= nav.link "Foundations", "/components/foundations.html", current: @section&.id == :foundations %>
+    <%= nav.link "Components", "/components.html", current: action_name == "components" %>
+    <%= nav.link "Blocks", "/blocks.html", current: controller_name == "blocks" %>
+    <%= nav.link "Theming", "/theming.html", current: action_name == "theming" %>
   <% end %>
   <%= nav.group "Components" do %>
     <% @sections.each do |section| %>

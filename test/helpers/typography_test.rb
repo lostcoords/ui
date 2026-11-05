@@ -61,9 +61,38 @@ module Lostcoords::Ui
       assert_raises(ArgumentError) { @view.lc_text_class(tone: :destructive) }
     end
 
+    test "key hints render the non-Apple form and name their keys for the platform formatter" do
+      kbd = fragment(@view.lc_kbd("mod+k", class: "ms-auto", aria: { hidden: true })).at_css("kbd")
+
+      assert_equal "Ctrl K", kbd.text
+      assert_equal "lc-kbd", kbd["data-controller"]
+      assert_equal "mod+k", kbd["data-lc-kbd-keys-value"]
+      assert_equal "true", kbd["aria-hidden"]
+      assert_includes kbd["class"].split, "ms-auto"
+      assert_equal "Shift Esc / ?", fragment(@view.lc_kbd("shift+escape shift+?")).at_css("kbd").text
+      assert_equal "Alt ↓", fragment(@view.lc_kbd("alt+arrowdown")).at_css("kbd").text
+      assert_raises(ArgumentError) { @view.lc_kbd("") }
+    end
+
+    test "shortcut data adds the shortcut controller to existing data" do
+      assert_equal({ controller: "lc-shortcut", lc_shortcut_keys_value: "/" }, @view.lc_shortcut_data("/"))
+      assert_equal({ controller: "search lc-shortcut", action: "search#open", lc_shortcut_keys_value: "mod+k" },
+        @view.lc_shortcut_data("mod+k", controller: "search", action: "search#open"))
+      assert_raises(ArgumentError) { @view.lc_shortcut_data(" ") }
+    end
+
     private
       def fragment(html)
         Nokogiri::HTML.fragment(html)
       end
+
+    test "key hints read every key and reject unknown modifiers" do
+      text = ->(keys) { Nokogiri::HTML.fragment(@view.lc_kbd(keys)).at_css("kbd").text }
+      assert_equal "Ctrl +", text.("ctrl++")
+      assert_equal "Shift 1", text.("shift+1")
+      assert_equal "?", text.("shift+?")
+      assert_equal "Ctrl K / Esc", text.("mod+k escape")
+      assert_raises(ArgumentError) { @view.lc_kbd("cmd+k") }
+    end
   end
 end

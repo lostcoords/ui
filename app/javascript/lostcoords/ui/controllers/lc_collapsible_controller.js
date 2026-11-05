@@ -3,7 +3,7 @@ import { prefersReducedMotion } from "lostcoords/ui/helpers/viewport"
 
 // Animates a <details> both ways and keeps what it reveals on screen. Only
 // user toggles go through here: programmatic opens (validation) already scroll
-// to the field they care about. Durations live in ui/disclosure.css.
+// to the field they care about. Durations live in ui/collapsible.css.
 export default class extends Controller {
   // Where the panel's height can't ease to `auto` in CSS (Safari), ease the
   // <details> itself between measured heights.

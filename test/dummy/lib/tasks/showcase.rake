@@ -12,6 +12,7 @@ namespace :lostcoords do
       end
 
       pages = { "index.html" => fetch.("/"), "emoji-catalog.html" => fetch.("/emoji-catalog.html") }
+      pages["components.html"] = fetch.("/components.html")
       Showcase.sections.each do |section|
         pages["components/#{section.id}.html"] = fetch.("/components/#{section.id}.html")
       end

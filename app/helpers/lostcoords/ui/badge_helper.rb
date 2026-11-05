@@ -58,7 +58,7 @@ module Lostcoords::Ui
       "font-sans text-caption font-medium whitespace-nowrap"
 
     BADGE_TONES = {
-      neutral: "bg-muted text-muted-foreground",
+      neutral: "bg-tile text-muted-foreground",
       success: "bg-success-soft text-success",
       warning: "bg-warning-soft text-warning",
       destructive: "bg-destructive-soft text-destructive",
@@ -86,7 +86,7 @@ module Lostcoords::Ui
       shape = lc_option!(:shape, shape, ICON_BADGE_SHAPES.keys)
       tone = lc_option!(:tone, tone, BADGE_TONES.keys)
       lc_tw(ICON_BADGE_BASE, ICON_BADGE_SIZES.fetch(size), ICON_BADGE_SHAPES.fetch(shape),
-        (tone == :neutral ? "bg-muted text-foreground" : BADGE_TONES.fetch(tone)), extra)
+        (tone == :neutral ? "bg-tile text-foreground" : BADGE_TONES.fetch(tone)), extra)
     end
 
     def lc_avatar_class(size: :md, ink: false, linked: false, extra: nil)

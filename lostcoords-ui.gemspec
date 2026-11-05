@@ -21,7 +21,6 @@ Gem::Specification.new do |spec|
       "config/**/*",
       "lib/**/*",
       "vendor/heroicons/**/*",
-      "script/migrate_helpers.rb",
       "LICENSE",
       "README.md"
     ]

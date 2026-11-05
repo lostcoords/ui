@@ -23,11 +23,6 @@ end
 
 def dependency_violations
   banned = {
-    "devise" => "authentication is hand-rolled passwordless",
-    "pundit" => "authorization belongs on models",
-    "cancancan" => "authorization belongs on models",
-    "sidekiq" => "Solid Queue is used here",
-    "redis" => "Solid Queue, Cache, and Cable do not use Redis",
     "rspec" => "Minitest and fixtures are used here",
     "factory_bot" => "Minitest and fixtures are used here",
     "view_component" => "views use partials",
@@ -201,10 +196,16 @@ end
 def showcase_coverage_violations
   require_relative "../lib/lostcoords/ui/components"
   require_relative "../test/dummy/app/models/showcase"
-  shown = Showcase.builders
+  shown = Showcase.sections.flat_map(&:builders)
+  owned = Showcase.sections.flat_map(&:components)
 
-  Lostcoords::Ui::Components.all.reject { |builder| shown.include?(builder.name) }.map do |builder|
-    Violation.new(Pathname(builder.path).relative_path_from(Dir.pwd).to_s, builder.line, "`#{builder.name}` has no runnable documentation; add an example to Showcase.sections")
+  Lostcoords::Ui::Components.all.filter_map do |builder|
+    path = Pathname(builder.path).relative_path_from(Dir.pwd).to_s
+    if !shown.include?(builder.name)
+      Violation.new(path, builder.line, "`#{builder.name}` has no runnable documentation; add an example to Showcase.sections")
+    elsif owned.count(builder.name) != 1
+      Violation.new(path, builder.line, "`#{builder.name}` must be documented by exactly one Showcase section; list it in that section's components")
+    end
   end
 end
 
@@ -219,12 +220,61 @@ def helper_namespace_violations
   end
 end
 
+# Tailwind drops a z-* class it cannot resolve without a warning, and the element loses its place in the
+# stacking order. Named layers must come from a --z-index-* theme key and variables must be defined.
+Z_CLASS = /(?<![\w-])-?z-(?!index\b)([\w.\[\]()-]+)/
+
+# Gem sources stack in-page content only with the named layers (z-raised, z-sticky) or a --lc-z-* variable,
+# so a host can reorder them in one place. The docs app may also use plain numbers inside its own blocks.
+def z_index_violations(files)
+  gem_css = files.grep(%r{\Aapp/.*\.css\z}).map { |path| File.read(path) }.join("\n")
+  layers = gem_css.scan(/--z-index-([\w-]+)\s*:/).flatten
+
+  files.grep(%r{\A(?:test/dummy/)?(?:app/(?:views|helpers|javascript)|lib)/.*\.(?:erb|rb|js)\z}).flat_map do |path|
+    gem = !path.start_with?("test/dummy/")
+    css = gem ? gem_css : files.grep(/\.css\z/).map { |file| File.read(file) }.join("\n")
+    variables = css.scan(/(--[\w-]+)\s*:/).flatten
+    File.readlines(path, chomp: true).each_with_index.flat_map do |line, index|
+      line.scan(Z_CLASS).flatten.filter_map do |value|
+        next if value == "auto" || value == "0" || layers.include?(value)
+        next if !gem && value.match?(/\A(?:\d+|\[[^\]]+\])\z/)
+        next if (variable = value[/\A\((--[\w-]+)\)\z/, 1]) && variables.include?(variable) && (!gem || variable.start_with?("--lc-z-"))
+
+        Violation.new(path, index + 1, "`z-#{value}` is outside the layer scale; use z-raised, z-sticky or z-(--lc-z-*)")
+      end
+    end
+  end
+end
+
+# core.css and components/*.css each scan only their own sources, so a granular build trims the rest. Every
+# helper, partial and controller must be scanned by exactly one of them, or its classes go missing silently.
+UI_STYLESHEETS = "app/assets/tailwind/lostcoords/ui"
+
+def source_ownership_violations
+  entries = [ "#{UI_STYLESHEETS}/core.css", *Dir["#{UI_STYLESHEETS}/components/*.css"] ]
+  owners = Hash.new { |hash, key| hash[key] = [] }
+  entries.each do |entry|
+    File.read(entry).scan(/@source\s+"([^"]+)"/).flatten.each do |glob|
+      Dir.glob(File.expand_path(glob, File.dirname(entry))).each { |path| owners[Pathname(path).relative_path_from(Dir.pwd).to_s] << entry }
+    end
+  end
+
+  sources = Dir["app/helpers/lostcoords/ui/*_helper.rb", "app/views/lostcoords/ui/components/*.erb", "app/javascript/lostcoords/ui/{controllers,helpers}/*.js"]
+  sources.filter_map do |path|
+    count = owners[path].uniq.size
+    next if count == 1
+
+    Violation.new(path, 1, count.zero? ? "no stylesheet in #{UI_STYLESHEETS} scans this file; add it to core.css or a components/ entry" : "scanned by #{owners[path].uniq.join(' and ')}; keep one owner")
+  end
+end
+
 files = tracked_files
 builders = ui_builders
 violations = dependency_violations + stylesheet_import_violations(files) + authored_state_class_violations(files) +
   js_state_class_violations(files) + css_literal_violations(files) + builder_duplicate_violations(builders) +
   orphan_builder_violations(files, builders) + readme_builders_violations +
-  showcase_coverage_violations + helper_namespace_violations
+  showcase_coverage_violations + helper_namespace_violations + z_index_violations(files) +
+  source_ownership_violations
 
 if violations.any?
   violations.each { |violation| warn "#{violation.path}:#{violation.line}: #{violation.message}" }

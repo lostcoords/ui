@@ -10,8 +10,8 @@ module Lostcoords::Ui
 
       def component?
         !name.to_s.end_with?("_class") &&
-          !%i[lc_tw lc_sheet_data lc_alert_icon].include?(name) &&
-          helper != "EmojiPickerHelper"
+          !%i[lc_tw lc_sheet_data lc_shortcut_data lc_alert_icon].include?(name) &&
+          (helper != "EmojiPickerHelper" || name == :lc_emoji_picker)
       end
     end
 

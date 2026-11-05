@@ -5,7 +5,7 @@
       <span class="truncate font-mono text-xs text-muted-foreground"><%= title %></span>
     </div>
   <% end %>
-  <div class="lc-code-block-copy absolute end-2 top-2 z-10 rounded-full bg-muted">
+  <div class="lc-code-block-copy absolute end-2 top-2 z-raised rounded-full bg-muted">
     <%= lc_copy_button source: "#{id}-content", icon_only: true, variant: :ghost, size: :sm, aria: { label: lc_t("lostcoords.ui.code_block.copy", label: label) } %>
   </div>
   <div class="relative">

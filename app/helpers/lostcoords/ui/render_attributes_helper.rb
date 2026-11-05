@@ -1,7 +1,10 @@
 module Lostcoords::Ui
   module RenderAttributesHelper
     private
-      def lc_attributes(defaults, attributes)
+      # required: attributes the component needs to work, merged last so a caller can't override them.
+      def lc_attributes(defaults, attributes, required = nil)
+        return lc_attributes(lc_attributes(defaults, attributes), required) if required
+
         defaults = lc_normalize_attributes(defaults)
         attributes = lc_normalize_attributes(attributes)
         merged = defaults.merge(attributes)
@@ -34,6 +37,19 @@ module Lostcoords::Ui
           normalized[prefix] = values if values
         end
         normalized
+      end
+
+      def lc_label!(value, name)
+        raise ArgumentError, "#{name} must not be blank" if value.blank?
+      end
+
+      # The hint and error paragraphs under a field or choice group. With an id, controls can point
+      # aria-describedby at them.
+      def lc_field_messages(id, hint, errors)
+        [
+          (tag.p(hint, id: ("#{id}-hint" if id), class: "m-0 text-small text-muted-foreground", data: { slot: "field-description" }) if hint.present?),
+          (tag.p(safe_join(errors, tag.br), id: ("#{id}-error" if id), class: "m-0 text-small text-destructive", role: "alert", data: { slot: "field-error" }) if errors.any?)
+        ].compact
       end
 
       def lc_option!(name, value, allowed)

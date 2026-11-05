@@ -43,22 +43,24 @@ export default class extends Controller {
     this.applyTheme(theme)
   }
 
-  selectPalette({ target }) {
-    localStorage.setItem(PALETTE_KEY, target.value)
-    this.applyPalette(target.value)
-    this.paletteStatusTarget.textContent = `${target.dataset.paletteName} palette applied.`
+  choosePalette({ detail: { id } }) {
+    localStorage.setItem(PALETTE_KEY, id)
+    const selected = this.applyPalette(id)
+    this.paletteStatusTarget.textContent = `${selected.dataset.paletteName} palette applied.`
   }
 
   applyPalette(value) {
     const selected =
-      this.paletteTargets.find((input) => input.value === value) || this.paletteTargets[0]
+      this.paletteTargets.find((choice) => choice.value === value) || this.paletteTargets[0]
     if (selected.value === "original") delete document.documentElement.dataset.palette
     else document.documentElement.dataset.palette = selected.value
-    for (const input of this.paletteTargets) input.checked = input === selected
+    for (const choice of this.paletteTargets)
+      choice.setAttribute("aria-current", String(choice === selected))
     document
       .getElementById("palette-picker-trigger")
       .setAttribute("aria-label", `Color palette: ${selected.dataset.paletteName}`)
     this.readTokens()
+    return selected
   }
 
   save(event) {

@@ -27,7 +27,7 @@ module Lostcoords::Ui
     }.freeze
 
     def lc_popover_class(align: :end, extra: nil)
-      lc_glass_class(shape: :menu, extra: lc_tw(POPOVER_BASE, MENU_POPOVER_ALIGN.fetch(align), extra))
+      lc_glass_class(shape: :menu, extra: lc_tw(POPOVER_BASE, MENU_POPOVER_ALIGN.fetch(lc_option!(:align, align, MENU_POPOVER_ALIGN.keys)), extra))
     end
 
     def lc_menu_popover_class(align: :end, extra: nil)
@@ -35,7 +35,42 @@ module Lostcoords::Ui
     end
 
     def lc_menu_option_class(tone: :default, extra: nil)
-      lc_tw(MENU_OPTION_BASE, MENU_OPTION_TONES.fetch(tone), extra)
+      lc_tw(MENU_OPTION_BASE, MENU_OPTION_TONES.fetch(lc_option!(:tone, tone, MENU_OPTION_TONES.keys)), extra)
+    end
+
+    def lc_menu(id:, label: lc_t("lostcoords.ui.menu.label"), align: :end, **attributes, &block)
+      align = lc_option!(:align, align, MENU_POPOVER_ALIGN.keys)
+      lc_render_panel(id, label, nil, "lc-menu", "menu", lc_menu_popover_class(align: align), lc_attributes({ data: { slot: "menu" } }, attributes), &block)
+    end
+
+    def lc_popover(id:, label: lc_t("lostcoords.ui.popover.trigger"), title: nil, align: :end, trigger_variant: :secondary, **attributes, &block)
+      title = title.presence
+      align = lc_option!(:align, align, MENU_POPOVER_ALIGN.keys)
+      classes = lc_popover_class(align: align, extra: "data-open:flex flex-col gap-content p-inset z-(--lc-z-popover) min-w-64 max-w-[calc(100vw-2rem)]")
+      lc_render_panel(id, label, title, "lc-popover", "dialog", classes, lc_attributes({ data: { slot: "popover" } }, attributes), trigger_variant: trigger_variant, &block)
+    end
+
+    def lc_menu_option(label = nil, href: nil, tone: :default, **attributes, &block)
+      tone = lc_option!(:tone, tone, MENU_OPTION_TONES.keys)
+      content = tag.span(block ? capture(&block) : label, class: "col-span-3")
+      defaults = { class: lc_menu_option_class(tone: tone), role: "menuitem", data: { slot: "menu-item", action: "click->lc-menu#close" } }
+      if href
+        raise ArgumentError, "Links cannot be disabled; use a menu button instead" if attributes[:disabled] || attributes["disabled"]
+
+        tag.a(content, **lc_attributes(defaults.merge(href: href), attributes))
+      else
+        tag.button(content, **lc_attributes(defaults.merge(type: "button"), attributes))
+      end
+    end
+
+    private
+    def lc_render_panel(id, label, title, controller, role, classes, attributes, trigger_variant: :secondary, &block)
+      lc_label!(id, :id)
+      lc_label!(label, :label)
+      required = { id: id, role: role, aria: { labelledby: "#{id}-#{title ? 'title' : 'trigger'}" }, data: { "#{controller}_target" => "popover" } }
+      required[:tabindex] = -1 if role == "dialog"
+      merged = lc_attributes({ class: classes }, attributes, required)
+      render "lostcoords/ui/components/lc_floating_panel", id: id, label: label, title: title, controller: controller, role: role, trigger_variant: trigger_variant, attributes: merged, content: (capture(&block) if block)
     end
   end
 end

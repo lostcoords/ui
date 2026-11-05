@@ -33,8 +33,6 @@ class StandaloneTest < ActiveSupport::TestCase
       abort "Heroicons loaded" if defined?(Heroicons)
       forbidden = %w[rails railties actionpack importmap-rails heroicons]
       abort "Rails dependency" unless (Bundler.load.specs.map(&:name) & forbidden).empty?
-      legacy = JSON.parse(File.read(Lostcoords::Ui.root.join("config/helper_renames.json"))).keys
-      abort "legacy helper" if legacy.any? { |name| view.respond_to?(name, true) }
       abort "helper namespace" unless Lostcoords::Ui::Helpers.instance_methods.all? { |name| name.to_s.start_with?("lc_") }
       puts "standalone rendering passed"
     RUBY

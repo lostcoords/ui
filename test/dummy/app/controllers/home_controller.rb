@@ -13,6 +13,11 @@ class HomeController < ApplicationController
     raise ActionController::RoutingError, "Not found" unless @section
   end
 
+  def components
+    @sections = Showcase.sections
+    @components = @sections.reject { |section| section.id == :foundations }.sort_by(&:title)
+  end
+
   def installation
     @sections = Showcase.sections
   end

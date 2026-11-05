@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
+import { navigate } from "lostcoords/ui/helpers/roving_focus"
 
 export default class extends Controller {
   static targets = ["option", "input"]
@@ -28,21 +29,12 @@ export default class extends Controller {
     this.changed(option)
   }
 
+  // All four arrows move and select, wrapping at the ends; Left and Right
+  // follow the text direction.
   navigate(event) {
-    const current = this.options.indexOf(event.target)
-    if (current < 0) return
-    const next = {
-      ArrowRight: (current + 1) % this.options.length,
-      ArrowDown: (current + 1) % this.options.length,
-      ArrowLeft: (current - 1 + this.options.length) % this.options.length,
-      ArrowUp: (current - 1 + this.options.length) % this.options.length,
-      Home: 0,
-      End: this.options.length - 1,
-    }[event.key]
-    if (next === undefined) return
-    event.preventDefault()
-    const option = this.options[next]
-    option.focus()
+    const option = navigate(event, this.optionTargets, { orientation: "both", wrap: true })
+    if (!option) return
+
     this.apply(option)
     this.changed(option)
   }

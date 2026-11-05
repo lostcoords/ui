@@ -24,6 +24,30 @@ module Lostcoords::Ui
       end
     end
 
+    test "a granular build carries only the entries it imports" do
+      Dir.mktmpdir do |dir|
+        Stylesheets.write(dir)
+        input = File.join(dir, "input.css")
+        File.write(input, <<~CSS)
+          @import "tailwindcss/theme.css";
+          @import "tailwindcss/utilities.css" source(none);
+          @import "./lostcoords_ui/core.css";
+          @import "./lostcoords_ui/components/dialog.css";
+        CSS
+        _, error, status = Open3.capture3(Tailwindcss::Ruby.executable, "-i", input, "-o", "#{dir}/out.css")
+        assert status.success?, error
+        css = File.read("#{dir}/out.css")
+        assert_includes css, ".lc-card"
+        assert_includes css, ".lc-dialog"
+        assert_includes css, ".h-control-md"
+        # min-w-64 only appears in the menu helper, so it proves other entries' sources stay unscanned.
+        %w[.lc-emoji-picker .lc-code-block .lc-tooltip .lc-toast-region .lc-table .min-w-64].each do |selector|
+          refute_includes css, selector, "#{selector} ships without its entry"
+        end
+        assert_equal Stylesheets.entries.size, Dir["#{dir}/lostcoords_ui/**/*.css"].size
+      end
+    end
+
     test "a host build reaches the gem's stylesheet and scans its helpers through the engines entry" do
       Tailwindcss::Engines.bundle
       generated = Rails.root.join("app/assets/builds/tailwind/lostcoords_ui.css").read

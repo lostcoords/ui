@@ -1,22 +1,2 @@
-<% palette_label = safe_join([lc_icon("swatch", options: { class: "size-5", "aria-hidden": true }), tag.span("Color palette", class: "sr-only")]) %>
-<%= lc_popover id: "palette-picker", label: palette_label, title: "Color palette", trigger_variant: :ghost, class: "transition-none w-80 max-h-[calc(100dvh-7rem)] overflow-y-auto" do %>
-    <p class="text-xs text-muted-foreground">Preview across every component.</p>
-    <fieldset class="m-0 grid min-w-0 grid-cols-1 gap-related border-0 p-0">
-      <legend class="sr-only">Choose a palette</legend>
-      <% DocsPalette::ALL.each do |palette| %>
-        <%= lc_radio palette.name, name: "palette", value: palette.id, checked: palette.id == "original", card: true,
-              hint: (palette.number ? "Wada № #{palette.number}" : "Library default"),
-              data: { showcase_target: "palette", palette_name: palette.name, action: "change->showcase#selectPalette" } do %>
-          <span class="flex h-7 overflow-hidden rounded-lg" aria-hidden="true">
-            <% if palette.id == "original" %>
-              <% 3.times do |index| %><span class="flex-1" style="background-color: var(--palette-original-<%= index + 1 %>)"></span><% end %>
-            <% else %>
-              <% palette.colors.each_with_index do |color, index| %><span class="flex-1" title="<%= color %>" style="background-color: var(--palette-<%= palette.id %>-<%= index + 1 %>)"></span><% end %>
-            <% end %>
-          </span>
-        <% end %>
-      <% end %>
-    </fieldset>
-    <p class="text-xs text-muted-foreground">Based on Wada Sanzo’s <span lang="ja">配色事典</span>. UI tints adapted for contrast. <a class="<%= lc_link_class %>" href="https://github.com/mattdesl/dictionary-of-colour-combinations">Color data</a> · <a class="<%= lc_link_class %>" href="/wada-license.txt">License</a></p>
-    <span role="status" class="sr-only" data-showcase-target="paletteStatus"></span>
-<% end %>
+<%= lc_icon_button "Color palette", icon: "swatch", size: :sm, id: "palette-picker-trigger",
+      aria: { haspopup: "dialog", expanded: false }, data: { action: "palette-split#open", palette_split_target: "trigger" } %>

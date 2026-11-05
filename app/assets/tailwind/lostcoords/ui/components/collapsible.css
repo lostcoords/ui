@@ -1,0 +1,5 @@
+/* lc_collapsible. */
+@import "../collapsible.css";
+@source "../../../../../helpers/lostcoords/ui/collapsible_helper.rb";
+@source "../../../../../views/lostcoords/ui/components/_lc_collapsible.html.erb";
+@source "../../../../../javascript/lostcoords/ui/controllers/lc_collapsible_controller.js";

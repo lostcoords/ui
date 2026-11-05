@@ -47,11 +47,27 @@ export function closeTopDismissable(event) {
 
 function dismissOnEscape(event) {
   if (event.key !== "Escape" && event.key !== "Esc") return
+  if (clearSearchField(event)) return
   if (!closeTopDismissable(event)) return
 
   event.preventDefault()
   event.stopPropagation()
   event.stopImmediatePropagation()
+}
+
+// Escape in a search field that has text clears it, as a native search field
+// does, and only the next Escape closes the panel around it.
+function clearSearchField(event) {
+  const field = event.target
+  if (!(field instanceof HTMLInputElement) || field.type !== "search" || field.value === "")
+    return false
+  if (!topDismissable()?.element.contains(field)) return false
+
+  event.preventDefault()
+  event.stopImmediatePropagation()
+  field.value = ""
+  field.dispatchEvent(new Event("input", { bubbles: true }))
+  return true
 }
 
 function cancelDialog(event, dialogEntry) {
@@ -84,6 +100,12 @@ function topModal() {
     .at(-1)
 }
 
+// The modal the page is limited to, if any: the top open lc-dialog, or a native
+// modal <dialog> opened without one. Shortcuts and toasts stay inside it.
+export function topModalElement() {
+  return topModal()?.element ?? [...document.querySelectorAll("dialog:modal")].at(-1) ?? null
+}
+
 function openEntries() {
   return stack.filter((entry) => entry.element?.isConnected && entry.isOpen.call(entry))
 }
@@ -108,6 +130,7 @@ function defaultIsOpen() {
 }
 
 function priorityFor(type) {
+  if (type === "tooltip") return 40
   if (type === "popover") return 30
   if (type === "panel") return 20
   return 10

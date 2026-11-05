@@ -1,0 +1,26 @@
+<%= render layout: "blocks/examples/docs_shell", locals: { navigation: render("showcase/navigation"), menu_label: "Components" } do %>
+  <div class="<%= lc_stack_class(gap: :section) %>">
+    <header class="<%= lc_stack_class(gap: :heading) %>">
+      <%= lc_heading "Components", level: 1, size: :title %>
+      <%= lc_text "Browse every component in the library, with examples and API reference.", tone: :muted %>
+    </header>
+
+    <% rows = (@components.size / 2.0).ceil %>
+    <div class="component-picker-frame">
+      <ul class="component-picker" aria-label="All components" style="--picker-rows: <%= rows %>" data-controller="component-picker" data-action="keydown->component-picker#navigate pointermove@window->component-picker#track">
+        <% @components.each_with_index do |component, index| %>
+          <li>
+            <%= link_to "/components/#{component.id}.html", class: "component-picker__link", data: { component_picker_target: "link", distance: index < rows ? [index, 5].min : 5, action: "pointermove->component-picker#activate focus->component-picker#activate" } do %>
+              <span class="component-picker__number" aria-hidden="true"><%= format("%02d", index + 1) %></span>
+              <span class="component-picker__body">
+                <span class="component-picker__title"><%= component.title %></span>
+                <span class="component-picker__description"><%= component.description %></span>
+              </span>
+              <%= lc_icon "arrow-up-right", options: { class: "component-picker__arrow", "aria-hidden": true } %>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+<% end %>

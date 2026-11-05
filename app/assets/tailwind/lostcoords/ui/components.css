@@ -1,25 +1,12 @@
-@import "./theme.css";
-@source "../../../../helpers/**/*.rb";
-@source "../../../../javascript/**/*.js";
-@source "../../../../views/**/*.erb";
-@source "../../../../../lib/lostcoords/ui/parts.rb";
-
-@import "./glass.css";
-@import "./copy-button.css";
-@import "./code-block.css";
-@import "./disclosure.css";
-@import "./emoji-picker.css";
-@import "./popover.css";
-@import "./sheet.css";
-@import "./card.css";
-@import "./dialog.css";
-@import "./avatar.css";
-@import "./squircle.css";
-@import "./utilities.css";
-@import "./typography.css";
-@import "./layout.css";
-@import "./reading.css";
-@import "./field.css";
-@import "./table.css";
-@import "./choice.css";
-@import "./tooltip.css";
+/* Every component. For a smaller build import ./core.css and the files in
+   ./components/ you use instead. */
+@import "./core.css";
+@import "./components/dialog.css";
+@import "./components/menu.css";
+@import "./components/toast.css";
+@import "./components/tooltip.css";
+@import "./components/collapsible.css";
+@import "./components/code-block.css";
+@import "./components/emoji-picker.css";
+@import "./components/table.css";
+@import "./components/prose.css";

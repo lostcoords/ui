@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   root "home#index"
   get "api", to: "home#api"
   get "llms", to: "home#llms"
+  get "components", to: "home#components"
   get "components/:component", to: "home#component", as: :component
   get "blocks", to: "blocks#index"
   get "blocks/:block/preview", to: "blocks#preview", as: :block_preview

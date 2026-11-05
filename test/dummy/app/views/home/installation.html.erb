@@ -22,7 +22,7 @@
   <%= lc_section title: "3. Load the assets", id: "javascript", class: "scroll-mt-28" do %>
     <p class="<%= lc_text_class(size: :small, tone: :muted, extra: "text-pretty") %>">Your layout needs the compiled Tailwind stylesheet and importmap tags. Keep your existing tags if they already load these assets.</p>
     <%= render "showcase/source_code", source: DocsInstallation::LAYOUT, id: "install-layout", label: "Layout asset tags" %>
-    <p class="<%= lc_text_class(size: :small, tone: :muted, extra: "text-pretty") %>">The engine adds its Stimulus pins to the importmap. Rails’ standard <code>eagerLoadControllersFrom("controllers", application)</code> registration loads them with your app’s controllers.</p>
+    <p class="<%= lc_text_class(size: :small, tone: :muted, extra: "text-pretty") %>">The engine adds its Stimulus pins to the importmap. Load controllers with <code>lazyLoadControllersFrom("controllers", application)</code> in <code>controllers/index.js</code>, so each page downloads only the controllers it uses. To ship less CSS, import <code>core.css</code> and the components you use instead of the whole library; the README lists the entries.</p>
   <% end %>
   <%= lc_section title: "4. Use a component", id: "first-component", class: "scroll-mt-28" do %>
     <%= render "showcase/source_code", source: DocsInstallation::FIRST_COMPONENT, id: "install-first-component", label: "First component" %>
