@@ -19,23 +19,27 @@
 }
 
 .search-example__dialog::backdrop {
-  background: color-mix(in oklab, var(--background) 45%, transparent);
-  -webkit-backdrop-filter: blur(16px) saturate(140%);
-  backdrop-filter: blur(16px) saturate(140%);
+  background: color-mix(in oklab, var(--background) 35%, transparent);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  backdrop-filter: blur(20px) saturate(160%);
+}
+
+:root[data-theme="dark"] .search-example__dialog::backdrop {
+  background: rgb(0 0 0 / 0.4);
 }
 
 .search-example__stack {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  inline-size: min(42rem, calc(100% - 1.5rem));
+  inline-size: min(40rem, calc(100% - 1.5rem));
   block-size: 100%;
   margin-inline: auto;
   padding-block: max(0.75rem, env(safe-area-inset-top)) max(0.75rem, env(safe-area-inset-bottom));
 }
 
 .search-example__results {
-  --lc-glass-fill: color-mix(in oklab, var(--background) 88%, transparent);
+  --lc-glass-fill: color-mix(in oklab, var(--background) 82%, transparent);
 }
 
 .search-example__input::-webkit-search-cancel-button {
@@ -64,16 +68,17 @@
   }
 
   .search-example__stack {
-    padding-block-start: 12vh;
+    padding-block-start: 14vh;
   }
 
   .search-example__results {
-    max-block-size: 65dvh;
+    max-block-size: min(60dvh, 34rem);
   }
 }
 
 @media (prefers-reduced-transparency: reduce) {
-  .search-example__dialog::backdrop {
+  .search-example__dialog::backdrop,
+  :root[data-theme="dark"] .search-example__dialog::backdrop {
     background: var(--background);
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
