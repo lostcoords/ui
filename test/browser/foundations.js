@@ -16,7 +16,7 @@ async function _verifyFoundations(page) {
       }, theme)
       const result = await page.evaluate(() => {
         const style = (selector) => getComputedStyle(document.querySelector(selector))
-        const preview = document.querySelector("#example-2 [data-example-preview]")
+        const preview = document.querySelector("#example-3 [data-example-preview]")
         const stack = preview.firstElementChild
         const section = stack.firstElementChild
         const content = section.lastElementChild
@@ -25,7 +25,7 @@ async function _verifyFoundations(page) {
             "#example-0 [data-example-preview] .lc-heading, #example-0 [data-example-preview] .lc-text",
           ),
         ]
-        const prose = document.querySelector("#example-4 .lc-prose")
+        const prose = document.querySelector("#example-5 .lc-prose")
         const paragraphs = [...prose.querySelectorAll(":scope > p")]
         const probe = document.createElement("span")
         probe.style.color = "var(--muted-foreground)"
@@ -50,8 +50,8 @@ async function _verifyFoundations(page) {
           proseColor: getComputedStyle(paragraphs[0]).color,
           bodyColor,
           japaneseTracking: style("#example-1 [data-example-preview] .lc-heading").letterSpacing,
-          japaneseReadingTracking: style("#example-5 .lc-prose h2").letterSpacing,
-          buttonSize: style("#example-4 .not-prose button").fontSize,
+          japaneseReadingTracking: style("#example-6 .lc-prose h2").letterSpacing,
+          buttonSize: style("#example-5 .not-prose button").fontSize,
         }
       })
       const label = `${width}px ${theme}`
@@ -116,7 +116,7 @@ async function _verifyFoundations(page) {
 
   await page.goto(`${origin}/components/foundations.html`)
   const overrides = await page.evaluate(() => {
-    const stack = document.querySelector("#example-2 [data-example-preview]").firstElementChild
+    const stack = document.querySelector("#example-3 [data-example-preview]").firstElementChild
     stack.style.setProperty("--lc-density", "1.25")
     const heading = document.querySelector("#example-0 .text-title")
     heading.style.setProperty("--text-title", "32px")

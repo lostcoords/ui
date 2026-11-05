@@ -12,6 +12,16 @@
     overflow-wrap: anywhere;
   }
 
+  :where(.lc-eyebrow) {
+    font-family: var(--font-eyebrow);
+    text-transform: uppercase;
+  }
+
+  :where(.lc-eyebrow):lang(ja) {
+    font-family: var(--font-sans);
+    text-transform: none;
+  }
+
   /* Type role utilities read --tw-tracking first, so this wins over their tracking. */
   :where(.lc-heading, .lc-text):lang(ja) {
     --tw-tracking: 0;

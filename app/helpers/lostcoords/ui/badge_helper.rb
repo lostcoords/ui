@@ -4,14 +4,15 @@ module Lostcoords::Ui
       "lc-icon-badge grid place-items-center shrink-0 " \
       "size-[var(--lc-icon-badge-size,var(--lc-icon-badge-size-default,--spacing(10)))] " \
       "[border:var(--lc-icon-badge-border,1px_solid_transparent)] " \
-      "text-[length:var(--lc-icon-badge-font-size,var(--lc-icon-badge-font-size-default,1.125rem))] leading-none"
+      "text-[length:var(--lc-icon-badge-font-size,calc(var(--lc-icon-badge-size,var(--lc-icon-badge-size-default,--spacing(10)))*var(--lc-icon-badge-font-scale,var(--lc-icon-badge-font-scale-default,0.45))))] leading-none"
 
-    # Sizes set the default, so a context that pins --lc-icon-badge-size still wins.
+    # Sizes set the defaults, so a context that pins --lc-icon-badge-size still wins and the emoji
+    # or icon follows it. --lc-icon-badge-font-scale sets the glyph's share of the badge.
     ICON_BADGE_SIZES = {
-      sm: "[--lc-icon-badge-size-default:--spacing(6.5)] [--lc-icon-badge-font-size-default:0.8125rem]",
+      sm: "[--lc-icon-badge-size-default:--spacing(6.5)] [--lc-icon-badge-font-scale-default:0.5]",
       md: "",
-      lg: "[--lc-icon-badge-size-default:--spacing(12)] [--lc-icon-badge-font-size-default:1.5rem]",
-      xl: "[--lc-icon-badge-size-default:--spacing(14)] [--lc-icon-badge-font-size-default:1.75rem]"
+      lg: "[--lc-icon-badge-size-default:--spacing(12)] [--lc-icon-badge-font-scale-default:0.5]",
+      xl: "[--lc-icon-badge-size-default:--spacing(14)] [--lc-icon-badge-font-scale-default:0.5]"
     }.freeze
 
     ICON_BADGE_SHAPES = { square: "lc-squircle rounded-2xl", circle: "rounded-full" }.freeze
@@ -19,16 +20,19 @@ module Lostcoords::Ui
     AVATAR_BASE =
       "lc-avatar grid place-items-center shrink-0 rounded-full font-medium tracking-[var(--lc-avatar-tracking,0.05em)] " \
       "size-[var(--lc-avatar-size,var(--lc-avatar-size-default,--spacing(8)))] " \
-      "text-[length:var(--lc-avatar-font-size,var(--lc-avatar-font-size-default,0.75rem))] " \
+      "text-[length:var(--lc-avatar-font-size,calc(var(--lc-avatar-size,var(--lc-avatar-size-default,--spacing(8)))*var(--lc-avatar-font-scale,var(--lc-avatar-font-scale-default,0.375))))] " \
       "text-[color:var(--lc-avatar-color,var(--primary-foreground))] " \
       "border-[length:var(--lc-avatar-border,0px)] border-[color:var(--lc-avatar-cutout,var(--background))]"
 
-    # Sizes set the default, so a context that pins --lc-avatar-size (a stack, a dialog) still wins.
+    # Sizes set the defaults, so a context that pins --lc-avatar-size (a stack, a dialog) still wins
+    # and the initials follow it. --lc-avatar-font-scale sets their share of the avatar.
     AVATAR_SIZES = {
+      xs: "[--lc-avatar-size-default:--spacing(5)] [--lc-avatar-font-scale-default:0.4]",
+      sm: "[--lc-avatar-size-default:--spacing(6.5)] [--lc-avatar-font-scale-default:0.385]",
       md: "",
-      lg: "[--lc-avatar-size-default:--spacing(12)] [--lc-avatar-font-size-default:1rem]",
-      sm: "[--lc-avatar-size-default:--spacing(6.5)] [--lc-avatar-font-size-default:0.625rem]",
-      xl: "[--lc-avatar-size-default:--spacing(24)] [--lc-avatar-font-size-default:1.25rem]"
+      lg: "[--lc-avatar-size-default:--spacing(12)] [--lc-avatar-font-scale-default:0.333]",
+      xl: "[--lc-avatar-size-default:--spacing(24)] [--lc-avatar-font-scale-default:0.208]",
+      xxl: "[--lc-avatar-size-default:--spacing(28)] [--lc-avatar-font-scale-default:0.25]"
     }.freeze
 
     AVATAR_INK = "[--lc-avatar-color:var(--foreground)]"
@@ -65,6 +69,8 @@ module Lostcoords::Ui
       primary: "bg-primary-soft text-primary"
     }.freeze
 
+    BADGE_SHAPES = { rounded: "", pill: "rounded-full px-2.5" }.freeze
+
     TOGGLE_BASE =
       "inline-flex items-center justify-center gap-related rounded-pill " \
       "border border-transparent bg-input " \
@@ -75,6 +81,7 @@ module Lostcoords::Ui
       "aria-[current]:not-aria-[current=false]:bg-primary-soft aria-[current]:not-aria-[current=false]:border-primary " \
       "aria-[current]:not-aria-[current=false]:text-primary aria-[current]:not-aria-[current=false]:shadow-none " \
       "has-checked:bg-primary-soft has-checked:border-primary has-checked:text-primary has-checked:shadow-none " \
+      "aria-expanded:bg-primary-soft aria-expanded:border-primary aria-expanded:text-primary aria-expanded:shadow-none " \
       "[&_svg]:size-[1.1em] [&_svg]:shrink-0"
 
     TOGGLE_ACTIVE = "bg-primary-soft border-primary text-primary hover:text-primary shadow-none"
@@ -101,9 +108,10 @@ module Lostcoords::Ui
       lc_tw(AVATAR_STACK_ROW, extra)
     end
 
-    def lc_badge_class(tone: :neutral, extra: nil)
+    def lc_badge_class(tone: :neutral, shape: :rounded, extra: nil)
       tone = lc_option!(:tone, tone, BADGE_TONES.keys)
-      lc_tw(BADGE_BASE, BADGE_TONES.fetch(tone), extra)
+      shape = lc_option!(:shape, shape, BADGE_SHAPES.keys)
+      lc_tw(BADGE_BASE, BADGE_SHAPES.fetch(shape), BADGE_TONES.fetch(tone), extra)
     end
 
     def lc_toggle_class(active: false, ghost: false, size: :md, extra: nil)

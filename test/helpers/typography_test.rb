@@ -40,6 +40,25 @@ module Lostcoords::Ui
       assert fragment(@view.lc_text("Updated today", size: :caption, tone: :muted)).at_css("p.text-caption.text-muted-foreground")
     end
 
+    test "eyebrows are a text role that merges with caller classes" do
+      eyebrow = fragment(@view.lc_text("Product", size: :eyebrow, tone: :muted, class: "text-primary")).at_css("p")
+      classes = eyebrow["class"].split
+
+      assert_includes classes, "text-eyebrow"
+      assert_includes classes, "lc-eyebrow"
+      assert_includes classes, "text-primary"
+      assert_not_includes classes, "text-muted-foreground"
+    end
+
+    test "text can render as another element for headings and inline runs" do
+      heading = fragment(@view.lc_text("Receipts", size: :eyebrow, tone: :muted, as: :h3, id: "receipts")).at_css("h3#receipts")
+      inline = fragment(@view.lc_text("Shared", size: :caption, as: "span")).at_css("span.text-caption")
+
+      assert_includes heading["class"].split, "text-eyebrow"
+      assert_equal "Shared", inline.text
+      assert_raises(ArgumentError) { @view.lc_text("Details", as: :script) }
+    end
+
     test "typography blocks capture markup and preserve attributes" do
       heading = @view.lc_heading(level: 4, size: :subheading) { @view.tag.em("Shared expenses") }
       paragraph = @view.lc_text(id: "description", lang: "ja", data: { state: "ready" }) { @view.tag.strong("Details") }

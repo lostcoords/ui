@@ -9,8 +9,9 @@ async function _verifyMotion(page) {
     checks.push(message)
   }
   await page.goto(`${origin}/components/copy_button.html`)
-  await page.waitForFunction(async () => {
-    const { application } = await import("controllers/application")
+  await page.waitForFunction(() => {
+    const application = window.Stimulus
+    if (!application) return false
     const element = document.querySelector('#example-0 [data-controller="lc-copy"]')
     return element && application.getControllerForElementAndIdentifier(element, "lc-copy")
   })
@@ -158,7 +159,7 @@ async function _verifyMotion(page) {
   }
 
   await page.goto(`${origin}/components/foundations.html`)
-  const movingButton = page.locator("#example-6 [data-example-preview] button").first()
+  const movingButton = page.locator("#example-7 [data-example-preview] button").first()
   await movingButton.hover()
   verify(
     await movingButton.evaluate((node) => {
@@ -179,7 +180,7 @@ async function _verifyMotion(page) {
   })
   await page.emulateMedia({ reducedMotion: "reduce" })
   try {
-    const button = page.locator("#example-6 [data-example-preview] button").first()
+    const button = page.locator("#example-7 [data-example-preview] button").first()
     await button.hover()
     verify(
       await button.evaluate((node) => {
@@ -201,7 +202,7 @@ async function _verifyMotion(page) {
     }
     verify(
       await page
-        .locator("#example-7 [data-copy-state='copied']")
+        .locator("#example-8 [data-copy-state='copied']")
         .first()
         .evaluate((node) => {
           const style = getComputedStyle(node)

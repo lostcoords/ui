@@ -1,8 +1,9 @@
 module Lostcoords::Ui
   module TypographyHelper
     HEADING_SIZES = { display: "text-display", title: "text-title", heading: "text-heading", subheading: "text-subheading" }.freeze
-    TEXT_SIZES = { body: "text-body", small: "text-small", label: "text-label", caption: "text-caption" }.freeze
+    TEXT_SIZES = { body: "text-body", small: "text-small", label: "text-label font-semibold", caption: "text-caption", eyebrow: "text-eyebrow lc-eyebrow" }.freeze
     TEXT_TONES = { default: "text-foreground", muted: "text-muted-foreground" }.freeze
+    TEXT_ELEMENTS = %i[p span div label legend figcaption dt dd h1 h2 h3 h4 h5 h6].freeze
     KBD_BASE = "lc-kbd inline-flex items-center rounded-md bg-tile px-1.5 font-sans text-caption leading-5 whitespace-nowrap text-muted-foreground"
     KBD_NAMES = { "mod" => "Ctrl", "ctrl" => "Ctrl", "alt" => "Alt", "shift" => "Shift", "meta" => "Meta", "escape" => "Esc", "enter" => "↵",
                   "arrowup" => "↑", "arrowdown" => "↓", "arrowleft" => "←", "arrowright" => "→" }.freeze
@@ -29,8 +30,9 @@ module Lostcoords::Ui
       tag.public_send("h#{level}", content, **lc_attributes({ class: lc_heading_class(size: size, trim: trim) }, attributes), &block)
     end
 
-    def lc_text(content = nil, size: :body, tone: :default, trim: false, **attributes, &block)
-      tag.p(content, **lc_attributes({ class: lc_text_class(size: size, tone: tone, trim: trim) }, attributes), &block)
+    # as: picks the element, such as :span inside a row or :h3 for a heading set in a text role.
+    def lc_text(content = nil, size: :body, tone: :default, trim: false, as: :p, **attributes, &block)
+      tag.public_send(lc_option!(:as, as, TEXT_ELEMENTS), content, **lc_attributes({ class: lc_text_class(size: size, tone: tone, trim: trim) }, attributes), &block)
     end
 
     # A key hint, such as lc_kbd("mod+k"). "mod" renders Ctrl and reads ⌘ on Apple platforms once JS runs.
