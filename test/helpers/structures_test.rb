@@ -43,6 +43,26 @@ module Lostcoords::Ui
       assert dialogs.at_css("button[data-action='lc-dialog#close'][aria-label='Close First']")
     end
 
+    test "a sheet renders its element with the controller, detents and an optional handle" do
+      panel = fragment(@view.lc_sheet(id: "filters", popover: "auto", anchored: true, detents: "large", handle: true, class: "sm:w-80", data: { action: "lc-sheet:dismiss->filters#reset" }) { "Body" }).at_css("div")
+      assert_equal %w[lc-sheet lc-sheet-anchored sm:w-80], panel["class"].split
+      assert_equal "auto", panel["popover"]
+      assert_equal "lc-sheet", panel["data-controller"]
+      assert_equal "large", panel["data-lc-sheet-detents-value"]
+      assert_equal "lc-sheet:dismiss->filters#reset", panel["data-action"]
+      assert_equal "handle", panel.element_children.first["data-lc-sheet-target"]
+      assert_equal "Body", panel.text
+
+      modal = fragment(@view.lc_sheet(tag: :dialog, data: { controller: "picker" }) { "Body" }).at_css("dialog")
+      assert_nil modal["class"]
+      assert_equal "lc-sheet picker", modal["data-controller"]
+      assert_nil modal.at_css("[data-lc-sheet-target]")
+
+      framed = fragment(@view.lc_sheet(tag: :dialog, size: :lg, class: "[--lc-dialog-width:42rem]", aria: { label: "New expense" }) { "Body" }).at_css("dialog")
+      assert_equal @view.lc_dialog_class(size: :lg, extra: "[--lc-dialog-width:42rem]").split, framed["class"].split
+      assert_raises(ArgumentError) { @view.lc_sheet(size: :lg) }
+    end
+
     test "sheets preserve additional controllers and own detents" do
       sheet = fragment(@view.lc_dialog(id: "edit", title: "Edit", detents: "medium large", data: { controller: "validation" }) { "Body" })
       assert_equal "lc-sheet validation", sheet.at_css("dialog")["data-controller"]
@@ -77,12 +97,12 @@ module Lostcoords::Ui
     end
 
     test "selections and pills own interactive states without submitting forms" do
-      html = @view.lc_toggle_group(label: "Period", name: "period", value: "month", data: { controller: "analytics" }) do
+      html = @view.lc_toggle_group(label: "Period", value: "month", data: { controller: "analytics" }) do
         @view.safe_join([ @view.lc_toggle_group_item("Month", value: "month", selected: true), @view.lc_toggle_group_item("Year", value: "year") ])
       end
       group = fragment(html)
       assert_equal "lc-selection analytics", group.at_css("[role=radiogroup]")["data-controller"]
-      assert_equal "month", group.at_css("input[name=period]")["value"]
+      assert_equal "month", group.at_css("[role=radiogroup]")["data-lc-selection-value-value"]
       assert_equal [ "button", "button" ], group.css("button").map { |button| button["type"] }
       assert_equal [ "true", "false" ], group.css("button[role=radio]").map { |button| button["aria-checked"] }
       pill = fragment(@view.lc_toggle("Design", active: true, data: { action: "filters#change" }))
@@ -123,7 +143,9 @@ module Lostcoords::Ui
       assert_raises(ArgumentError) { @view.lc_popover_class(align: :left) }
       assert_raises(ArgumentError) { @view.lc_menu_option_class(tone: :loud) }
       assert_raises(ArgumentError) { @view.lc_glass_class(shape: :blob) }
-      assert_raises(ArgumentError) { @view.lc_sheet_data(detents: "huge") }
+      assert_raises(ArgumentError) { @view.lc_sheet(detents: "huge") }
+      assert_raises(ArgumentError) { @view.lc_sheet(tag: :section) }
+      assert_raises(ArgumentError) { @view.lc_sheet(tag: :dialog, anchored: true) }
       assert_raises(ArgumentError) { @view.lc_tabs(id: "t", label: "T") { |tabs| tabs.panel("a b") { "1" }; tabs.panel("a-b") { "2" } } }
       assert_raises(ArgumentError) { @view.lc_dialog(id: "", title: "Dialog") { "Body" } }
       assert_raises(ArgumentError) { @view.lc_dialog(id: "lc-sheet", title: "Sheet", detents: "short") { "Body" } }
@@ -135,6 +157,34 @@ module Lostcoords::Ui
       assert_raises(ArgumentError) { @view.lc_menu_option("Disabled link", href: "/", **{ "disabled" => true }) }
       assert_raises(ArgumentError) { @view.lc_toggle("Legacy size", size: :nav) }
       assert_raises(ArgumentError) { @view.lc_input(type: :checkbox) }
+    end
+
+    test "fieldsets name a group of controls and connect hints and errors" do
+      html = @view.lc_fieldset(legend: "Split", id: "split", hint: "Who pays", error: "Pick one", class: "gap-2") { @view.lc_toggle("Equal") }
+      fieldset = fragment(html).at_css("fieldset#split")
+      assert_equal "Split", fieldset.at_css("> legend").text
+      assert fieldset.at_css("> button[aria-pressed]")
+      assert_equal "split-hint split-error", fieldset["aria-describedby"]
+      assert_equal "true", fieldset["aria-invalid"]
+      assert_includes fieldset["class"].split, "gap-2"
+      refute_includes fieldset["class"].split, "gap-related"
+      assert_nil fragment(@view.lc_fieldset(legend: "Split", hint: "Who pays") { "" }).at_css("fieldset")["aria-describedby"]
+      assert_raises(ArgumentError) { @view.lc_fieldset(legend: " ") { "" } }
+
+      choices = fragment(@view.lc_choice_group(legend: "Plan", id: "plan", hint: "Change later") { @view.lc_radio("Free", name: "plan", value: "free") })
+      assert_equal "choice-group", choices.at_css("fieldset")["data-slot"]
+      assert_equal "choice-group-legend", choices.at_css("legend")["data-slot"]
+      assert_equal "plan-hint", choices.at_css("fieldset")["aria-describedby"]
+      assert choices.at_css("fieldset > div.flex-col input[type=radio]")
+    end
+
+    test "compact fieldsets match compact fields" do
+      fieldset = fragment(@view.lc_fieldset(legend: "Icon", size: :sm) { "" }).at_css("fieldset")
+      assert_equal "fieldset-legend", fieldset.at_css("legend")["data-slot"]
+      assert_includes fieldset["class"].split, "gap-tight"
+      assert_includes fieldset.at_css("legend")["class"].split, "text-caption"
+      assert_includes fieldset.at_css("legend")["class"].split, "mb-tight"
+      assert_raises(ArgumentError) { @view.lc_fieldset(legend: "Icon", size: :lg) { "" } }
     end
 
     private

@@ -1,4 +1,4 @@
 <%= lc_inline do %>
-  <%= lc_button_link_to "All projects", "/components/toggle.html", variant: :outline, size: :sm, aria: { current: "page" }, class: "bg-primary-soft border-primary text-primary" %>
-  <%= lc_button_link_to "Archived", "/components/badge.html", variant: :outline, size: :sm %>
+  <%= lc_toggle "All projects", href: "/components/toggle.html", active: true, size: :sm %>
+  <%= lc_toggle "Archived", href: "/components/badge.html", size: :sm %>
 <% end %>

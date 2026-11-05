@@ -1,0 +1,16 @@
+<%= lc_stack class: "w-full max-w-sm" do %>
+  <%= lc_fieldset legend: "Split", id: "EXAMPLE_ID-split", hint: "Everyone pays the same share unless you change it." do %>
+    <%= lc_inline do %>
+      <%= lc_toggle "Equally", active: true %>
+      <%= lc_toggle "By amount" %>
+      <%= lc_toggle "By share" %>
+    <% end %>
+  <% end %>
+  <%= lc_stack gap: :related do %>
+    <%= lc_text "This app can", size: :label, tone: :muted %>
+    <ul class="m-0 ps-5 list-disc text-muted-foreground">
+      <li>Read your groups</li>
+      <li>Add expenses</li>
+    </ul>
+  <% end %>
+<% end %>

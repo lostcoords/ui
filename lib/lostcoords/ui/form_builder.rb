@@ -62,8 +62,11 @@ module Lostcoords::Ui
     alias_method :rails_check_box, :check_box
     private :rails_check_box
 
+    # role: "switch" draws the checkbox as a switch, for a switch inside a custom label row.
     def check_box(method, options = {}, checked_value = "1", unchecked_value = "0")
-      super(method, control_options(method, options, "checkbox-input", @template.lc_checkbox_class), checked_value, unchecked_value)
+      switch = options[:role].to_s == "switch"
+      classes = switch ? @template.lc_switch_class : @template.lc_checkbox_class
+      super(method, control_options(method, options, switch ? "switch-input" : "checkbox-input", classes), checked_value, unchecked_value)
     end
     alias checkbox check_box
 
@@ -91,22 +94,24 @@ module Lostcoords::Ui
       super(method, text, options.merge(class: @template.lc_field_label_class(extra: options[:class])), &block)
     end
 
+    # submit and button take lc_button's variant:, tone:, size: and block: options.
     def submit(value = nil, options = {})
-      if value.is_a?(Hash)
-        options = value
-        value = nil
-      end
-      variant = options.delete(:variant) || :primary
-      size = options.delete(:size) || :md
-      data = { slot: "button", variant: variant, size: size }.merge(options.delete(:data) || {})
-      super(value, options.merge(class: @template.lc_button_class(variant: variant, size: size, extra: options[:class]), data: data))
+      value, options = nil, value if value.is_a?(Hash)
+      super(value, button_options(options))
+    end
+
+    def button(value = nil, options = {}, &block)
+      value, options = nil, value if value.is_a?(Hash)
+      super(value, button_options(options), &block)
     end
 
     # Label, control, hint and the attribute's errors in one field. `as:` names the control helper;
-    # `as: :select` takes `choices:` and Rails' select options such as `include_blank:`. A block renders
-    # a custom control and receives its attributes to splat with `**control`.
+    # `as: :select` takes `choices:` and Rails' select options such as `include_blank:`. `size: :sm`
+    # compacts the label and the control. A block renders a custom control and receives its attributes to
+    # splat with `**control`.
     def field(method, label: nil, hint: nil, as: :text_field, choices: nil, **options, &block)
-      @template.lc_field(label: label || human_name(method), id: field_id(method), hint: hint, error: errors_for(method)) do |control|
+      size = options[:size] == :sm ? :sm : :md
+      @template.lc_field(label: label || human_name(method), id: field_id(method), hint: hint, error: errors_for(method), size: size) do |control|
         next @template.capture(control, &block) if block
 
         attributes = @template.send(:lc_attributes, options.except(*SELECT_OPTIONS), control.to_hash.except(:id))
@@ -119,6 +124,16 @@ module Lostcoords::Ui
     end
 
     private
+      def button_options(options)
+        options = options.dup
+        variant = options.delete(:variant) || :primary
+        tone = options.delete(:tone) || :default
+        size = options.delete(:size) || :md
+        block = options.delete(:block) || false
+        data = { slot: "button", variant: variant, size: size }.merge(options.delete(:data) || {})
+        options.merge(class: @template.lc_button_class(variant: variant, tone: tone, size: size, block: block, extra: options[:class]), data: data)
+      end
+
       def without_field_error_wrapper
         previous = @template.instance_variable_get(:@lc_skip_field_error_wrapper)
         @template.instance_variable_set(:@lc_skip_field_error_wrapper, true)

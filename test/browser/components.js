@@ -15,8 +15,9 @@ async function _verifyComponents(page) {
       await page.goto(`${origin}/components/${component}.html`)
       await page.locator('[data-controller~="showcase"]').waitFor()
       await page.locator('#palette-picker-trigger[aria-label^="Color palette:"]').waitFor()
-      await page.waitForFunction(async () => {
-        const { application } = await import("controllers/application")
+      await page.waitForFunction(() => {
+        const application = window.Stimulus
+        if (!application) return false
         return [...document.querySelectorAll("[data-controller]")].every((element) =>
           element.dataset.controller
             .split(/\s+/)
@@ -146,19 +147,25 @@ async function _verifyComponents(page) {
     await selected.focus()
     await page.keyboard.press("ArrowRight")
     verify(
-      (await page.locator('input[name="view"]').inputValue()) === "year",
-      "Keyboard selection updates the native form value",
+      (await selected.getAttribute("data-value")) === "year",
+      "Keyboard selection moves the selected option",
     )
     verify((await selected.count()) === 1, "A toggle group keeps exactly one selected option")
 
-    await page.getByRole("radio", { name: "Annual", exact: true }).click()
+    const checkedBilling = () => page.locator('input[name="billing"]:checked').inputValue()
+    await page.locator('label[data-slot="toggle-group-item"]', { hasText: "Annual" }).click()
+    verify((await checkedBilling()) === "annual", "A named toggle group submits the checked radio")
+    const labelFill = (text) =>
+      page
+        .locator('label[data-slot="toggle-group-item"]', { hasText: text })
+        .evaluate((node) => getComputedStyle(node).backgroundColor)
     verify(
-      (await page.locator('input[name="billing"]').inputValue()) === "annual",
-      "A selected option submits its value",
+      (await labelFill("Annual")) !== (await labelFill("Monthly")),
+      "A native radio item shows its checked state",
     )
     await page.getByRole("button", { name: "Reset", exact: true }).click()
     verify(
-      (await page.locator('input[name="billing"]').inputValue()) === "monthly",
+      (await checkedBilling()) === "monthly",
       "Native form reset restores the initial selection",
     )
     verify(

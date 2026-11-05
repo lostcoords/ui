@@ -1,8 +1,12 @@
 <form class="flex flex-col items-center gap-4">
   <%= lc_toggle_group label: "Billing", name: "billing", value: "monthly" do %>
-    <%= lc_toggle_group_item "Monthly", value: "monthly", selected: true %>
+    <%= lc_toggle_group_item "Monthly", value: "monthly" %>
     <%= lc_toggle_group_item "Annual", value: "annual" %>
     <%= lc_toggle_group_item "Custom", value: "custom", disabled: true %>
+  <% end %>
+  <%= lc_inline role: "radiogroup", aria: { label: "Heard about us" } do %>
+    <%= lc_toggle "A friend", name: "source", value: "friend", size: :sm %>
+    <%= lc_toggle "Search", name: "source", value: "search", size: :sm %>
   <% end %>
   <%= lc_button "Reset", type: :reset, variant: :ghost, size: :sm %>
 </form>

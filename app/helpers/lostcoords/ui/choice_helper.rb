@@ -28,7 +28,8 @@ module Lostcoords::Ui
     end
 
     # A native checkbox. unchecked_value: submits a value when unchecked, like Rails' check_box; pass nil to omit it.
-    # A block adds content under the label, such as a preview inside a card: true tile.
+    # A block adds content under the label, such as a preview inside a card: true tile. A nil label renders the
+    # bare input for a row selector the row labels, which then needs aria: { label: }.
     def lc_checkbox(label, name: nil, value: "1", checked: false, unchecked_value: "0", hint: nil, card: false, **attributes, &block)
       lc_choice("checkbox", label, hint, card, name, unchecked_value, { type: "checkbox", name: name, value: value, checked: checked, class: lc_checkbox_class }, attributes, &block)
     end
@@ -42,28 +43,20 @@ module Lostcoords::Ui
       lc_choice("switch", label, hint, false, name, unchecked_value, { type: "checkbox", role: "switch", name: name, value: value, checked: checked, class: lc_switch_class }, attributes)
     end
 
-    # A fieldset of checkboxes, radios or switches with a legend, hint and error. With an id, the
-    # fieldset's aria-describedby points at the hint and error, as lc_field does for its control.
-    def lc_choice_group(legend:, id: nil, hint: nil, error: nil, **attributes, &block)
-      lc_label!(legend, :legend)
-      errors = Array(error).compact_blank
-      described = [ ("#{id}-hint" if id && hint.present?), ("#{id}-error" if id && errors.any?) ].compact.presence&.join(" ")
-      defaults = { id: id, class: lc_field_class(extra: "m-0 min-w-0 border-0 p-0"), aria: { invalid: (true if errors.any?), describedby: described }, data: { slot: "choice-group", invalid: (true if errors.any?) } }
-      tag.fieldset(**lc_attributes(defaults, attributes)) do
-        safe_join([
-          tag.legend(legend, class: lc_field_label_class(extra: "p-0"), data: { slot: "choice-group-legend" }),
-          tag.div(class: "flex flex-col gap-related", &block),
-          *lc_field_messages(id, hint, errors)
-        ])
+    # lc_fieldset with its checkboxes, radios or switches stacked.
+    def lc_choice_group(legend:, **options, &block)
+      lc_fieldset(legend: legend, **lc_attributes({ data: { slot: "choice-group" } }, options)) do
+        tag.div(class: "flex flex-col gap-related", &block)
       end
     end
 
     private
       def lc_choice(slot, label, hint, card, name, unchecked_value, defaults, attributes, &block)
-        lc_label!(label, :label)
         input = lc_attributes(defaults.merge(data: { slot: "#{slot}-input" }), attributes)
+        lc_label!(label || input.dig(:aria, :label), :label)
         hidden = hidden_field_tag(name, unchecked_value, id: nil, disabled: input[:disabled]) if name && !unchecked_value.nil?
-        lc_choice_label(slot, label, hint, safe_join([ hidden, tag.input(**input) ].compact), card: card, &block)
+        control = safe_join([ hidden, tag.input(**input) ].compact)
+        label.nil? ? control : lc_choice_label(slot, label, hint, control, card: card, &block)
       end
 
       # Shared with Lostcoords::Ui::FormBuilder, which renders its own inputs.

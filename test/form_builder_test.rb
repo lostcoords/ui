@@ -82,9 +82,58 @@ module Lostcoords::Ui
       assert html.at_css(".field_with_errors input#docs_project_name")
     end
 
+    test "card and gap make the form itself the card or stack" do
+      card = fragment(@view.lc_form_with(url: "/codes", method: :get, card: true, class: "max-w-md") { "" }).at_css("form")
+      assert_equal "card", card["data-slot"]
+      assert_equal "get", card["method"]
+      assert_empty %w[lc-card p-inset flex-col gap-inset max-w-md] - card["class"].split
+      stack = fragment(@view.lc_form_with(url: "/codes", gap: :content) { "" }).at_css("form")
+      assert_includes stack["class"].split, "gap-content"
+      assert_nil stack["data-slot"]
+      assert_nil fragment(@view.lc_form_with(url: "/codes") { "" }).at_css("form")["class"]
+    end
+
+    test "nested fields_for builders render library controls" do
+      html = form { |f| f.fields_for(:owner, DocsProject.invalid_example) { |owner| owner.text_field(:name, size: :sm) } }
+      input = html.at_css("input[name='docs_project[owner][name]']")
+      assert_includes input["class"].split, "h-control-sm"
+      assert_equal "input", input["data-slot"]
+    end
+
+    test "compact fields shrink the label and the control" do
+      html = form { |f| f.field(:email, as: :email_field, size: :sm) }
+      assert_includes html.at_css("[data-slot=field]")["class"].split, "gap-tight"
+      assert_includes html.at_css("label")["class"].split, "text-caption"
+      assert_includes html.at_css("input")["class"].split, "h-control-sm"
+    end
+
+    test "check boxes with the switch role draw as switches" do
+      switch = form { |f| f.check_box(:public, role: "switch") }.at_css("input[type=checkbox]")
+      assert_equal "switch-input", switch["data-slot"]
+      assert_includes switch["class"].split, "lc-switch"
+      refute_includes switch["class"].split, "lc-checkbox"
+    end
+
     test "submit buttons carry the button slots" do
       button = form { |f| f.submit("Save", variant: :secondary) }.at_css("input[type=submit]")
       assert_equal [ "button", "secondary", "md" ], %w[data-slot data-variant data-size].map { |name| button[name] }
+    end
+
+    test "submit and button take the button's tone, size and block options" do
+      submit = form { |f| f.submit("Save", block: true, class: "mt-2") }.at_css("input[type=submit]")
+      assert_equal @view.lc_button_class(block: true, extra: "mt-2"), submit["class"]
+
+      html = form do |f|
+        @view.safe_join([
+          f.button("Remove", type: :submit, variant: :ghost, tone: :destructive, size: :sm, name: "remove", value: "1"),
+          f.button(type: :submit, variant: :secondary) { @view.tag.strong("Add") }
+        ])
+      end
+      remove, add = html.css("button")
+      assert_equal @view.lc_button_class(variant: :ghost, tone: :destructive, size: :sm), remove["class"]
+      assert_equal [ "Remove", "remove", "1", "sm" ], [ remove.text, remove["name"], remove["value"], remove["data-size"] ]
+      assert_equal "Add", add.at_css("strong").text
+      assert_equal [ "submit", "secondary" ], [ add["type"], add["data-variant"] ]
     end
   end
 end
