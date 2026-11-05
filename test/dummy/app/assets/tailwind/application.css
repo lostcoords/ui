@@ -214,25 +214,17 @@ html[data-palette-split-open] {
 .palette-split-copy {
   position: absolute;
   inset: 0;
-  isolation: isolate;
+  overflow: clip;
 
-  /* Tints and dims every band under the frost; the hovered or chosen band
-     drops it, so the strip behind its name is only blurred. */
-  &::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: 2147483647;
-    background:
-      linear-gradient(color-mix(in oklab, var(--background) 18%, transparent))
-      rgb(0 0 0 / 0.2);
-    transition: opacity 320ms ease;
+  /* Bands sit frosted and dimmed until hovered or chosen. Filtering each
+     copy itself, rather than blurring through an overlay, applies at once
+     and keeps a band to a single layer. */
+  filter: blur(3px) brightness(0.8);
+  transition: filter 320ms ease;
+
+  .palette-split-band:is([data-hovered], [data-fate="chosen"]) > & {
+    filter: blur(0) brightness(1);
   }
-}
-
-/* Nesting can't select a pseudo-element, so this sits on its own. */
-.palette-split-band:is([data-hovered], [data-fate="chosen"]) > .palette-split-copy::after {
-  opacity: 0;
 }
 
 .palette-split-page {
@@ -256,14 +248,6 @@ html[data-palette-split-open] {
   z-index: auto;
 }
 
-/* How far the hovered band's frost has drawn back to the strip behind its
-   name, registered so it can transition. */
-@property --split-clear {
-  syntax: "<number>";
-  inherits: false;
-  initial-value: 0;
-}
-
 .palette-split-choice {
   --split-line: 50%;
 
@@ -272,25 +256,32 @@ html[data-palette-split-open] {
   cursor: pointer;
   background: transparent;
   outline: none;
-  transition:
-    backdrop-filter 320ms ease,
-    --split-clear 320ms ease;
 
-  --split-fade: rgb(0 0 0 / calc(1 - var(--split-clear)));
+  /* A strip of blur behind the hovered band's name keeps it readable over
+     the sharp copy, fading out above and below. */
+  &::before {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    top: var(--split-line);
+    height: 12rem;
+    translate: 0 -50%;
+    backdrop-filter: blur(3px);
+    mask: linear-gradient(transparent, #000 calc(50% - 1.75rem) calc(50% + 1.75rem), transparent);
 
-  mask: linear-gradient(
-    var(--split-fade) calc(var(--split-line) - 6rem),
-    #000 calc(var(--split-line) - 1.75rem),
-    #000 calc(var(--split-line) + 1.75rem),
-    var(--split-fade) calc(var(--split-line) + 6rem)
-  );
+    /* Hidden once faded, so only the hovered band keeps a backdrop blur. */
+    visibility: hidden;
+    opacity: 0;
+    transition:
+      opacity 320ms ease,
+      visibility 0s 320ms;
+  }
 
-  /* Every band is frosted. Hovering draws the frost back to a
-     strip behind the name, so it reads over the copied page; the chosen
-     band clears completely. */
-  .palette-split-band:not([data-fate="chosen"]) & { backdrop-filter: blur(3px); }
-
-  [data-hovered] & { --split-clear: 1; }
+  .palette-split-band[data-hovered]:not([data-fate="chosen"]) &::before {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 320ms ease;
+  }
 
   @media (orientation: portrait) { --split-line: var(--center); }
 }
@@ -311,6 +302,7 @@ html[data-palette-split-open] {
     left 420ms cubic-bezier(0.22, 1, 0.36, 1);
 
   [data-hovered] & { opacity: 1; }
+  [data-state="choosing"] & { opacity: 0; }
 
   @media (orientation: portrait) {
     top: var(--center);
