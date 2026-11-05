@@ -118,6 +118,7 @@ CSS_LITERAL_ALLOWED = {
   "app/assets/tailwind/lostcoords/ui/dialog.css" => %w[2px],
   "app/assets/tailwind/lostcoords/ui/emoji-picker.css" => %w[1px 2px 4px 6px 8px 14px 18px 32px 36px 40px 44px 96px 999px #000],
   "app/assets/tailwind/lostcoords/ui/glass.css" => %w[1px 12px 24px],
+  "app/assets/tailwind/lostcoords/ui/search.css" => %w[20px],
   "app/assets/tailwind/lostcoords/ui/sheet.css" => %w[#000 0px 1px 2px 40px 9999px rgb(]
 }.freeze
 

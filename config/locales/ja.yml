@@ -54,3 +54,11 @@ ja:
           objects: "もの"
           symbols: "記号"
           flags: "旗"
+      search:
+        trigger: "検索…"
+        clear: "検索をクリア"
+        cancel: "キャンセル"
+        empty: "見つかりませんでした"
+        results:
+          one: "%{count}件"
+          other: "%{count}件"

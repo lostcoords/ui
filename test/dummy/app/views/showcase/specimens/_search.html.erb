@@ -1,0 +1,11 @@
+<%# Rows rendered in the block are filtered in the browser. Pass src: to have your server answer each query instead. %>
+<%= lc_search label: "Search the workspace", placeholder: "Search projects and people…", id: "EXAMPLE_ID", shortcut: nil do %>
+  <%= lc_search_group "Projects" do %>
+    <%= lc_search_result "Fieldwork", "#fieldwork", detail: "A quieter identity for an outdoor journal.", icon: "sun", keywords: "brand identity" %>
+    <%= lc_search_result "Sunday House", "#sunday-house", detail: "A welcoming home for a neighborhood bakery.", icon: "home", keywords: "website" %>
+  <% end %>
+  <%= lc_search_group "People" do %>
+    <%= lc_search_result "Alex Lee", "#alex-lee", detail: "Designer", icon: "user" %>
+    <%= lc_search_result "Sam Kim", "#sam-kim", detail: "Developer", icon: "user" %>
+  <% end %>
+<% end %>

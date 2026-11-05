@@ -161,6 +161,9 @@
     --lc-scrim: color-mix(in oklab, var(--foreground) 55%, transparent);
     --lc-scrim-soft: color-mix(in oklab, var(--foreground) 12%, transparent);
     --lc-scrim-sheet: rgb(0 0 0 / 0.28);
+
+    /* Behind full-screen search: a light veil, so the blurred page still shows through. */
+    --lc-scrim-veil: color-mix(in oklab, var(--background) 35%, transparent);
     --lc-input-hover: color-mix(in oklab, var(--foreground) 13%, var(--accent));
 
     --lc-shadow-sm: 0 1px 2px rgb(0 0 0 / 0.05);
@@ -211,6 +214,7 @@
 
     --lc-scrim: rgb(0 0 0 / 0.6);
     --lc-scrim-soft: rgb(0 0 0 / 0.32);
+    --lc-scrim-veil: rgb(0 0 0 / 0.4);
 
     --lc-shadow-sm: 0 1px 2px rgb(0 0 0 / 0.2);
     --lc-shadow:

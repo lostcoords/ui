@@ -14,7 +14,7 @@ module DocsBlocks
     end
 
     def sources
-      controller = { application_header: "blocks_header", mobile_navigation: "blocks_mobile_navigation", global_search: "blocks_search" }[id]
+      controller = { application_header: "blocks_header", mobile_navigation: "blocks_mobile_navigation" }[id]
       [
         Source.new("app/views/blocks/examples/_#{id}.html.erb", "app/views/shared/_#{id}.html.erb", :erb),
         Source.new("app/assets/stylesheets/blocks/#{id}.css", "app/assets/stylesheets/#{id}.css", :css),
@@ -36,10 +36,6 @@ module DocsBlocks
       Block.new(:mobile_navigation, "Mobile navigation", "A floating navigation pill and an expanding stack of quick actions.", [
         "Choose a small set of primary destinations and replace the sample quick actions.",
         "Copy the bottom spacing and safe-area rules with the controls, so page content remains reachable. Test keyboard visibility on a real phone."
-      ]),
-      Block.new(:global_search, "Global search", "A search trigger that expands into a focused overlay with grouped results.", [
-        "This example filters sample results in the browser so it also works on the static documentation site.",
-        "Replace the sample results with your own data or a Turbo Frame endpoint. Keep permissions, ranking and fetching in your application."
       ])
     ]
   end

@@ -10,7 +10,7 @@ async function _verifySearch(page) {
   }
   const visible = () =>
     page.evaluate(() =>
-      [...document.querySelectorAll("[data-docs-search-target=result]")]
+      [...document.querySelectorAll("dialog[open] [data-slot=search-result]")]
         .filter((result) => result.checkVisibility())
         .map((result) => result.getAttribute("href")),
     )
@@ -18,17 +18,22 @@ async function _verifySearch(page) {
   const ready = () =>
     page.waitForFunction(async () => {
       const { application } = await import("controllers/application")
-      const element = document.querySelector("[data-controller~=docs-search]")
-      return application.getControllerForElementAndIdentifier(element, "docs-search")
+      return [
+        ...document.querySelectorAll(
+          "[data-controller~=docs-search], [data-controller~=lc-search]",
+        ),
+      ].every((element) =>
+        element.dataset.controller
+          .split(/\s+/)
+          .every((name) => application.getControllerForElementAndIdentifier(element, name)),
+      )
     })
   await page.goto(`${origin}/installation.html`)
   await ready()
   const trigger = page.getByRole("button", { name: "Search documentation" })
   await trigger.click()
-  const input = page.getByRole("searchbox", {
-    name: "Search components, helpers, guides and blocks",
-  })
-  await page.waitForFunction(() => document.querySelector("[data-docs-search-target=result]"))
+  const input = page.getByRole("searchbox", { name: "Search documentation" })
+  await page.waitForFunction(() => document.querySelector("dialog[open] [data-slot=search-result]"))
   verify(
     await input.evaluate((element) => element === document.activeElement),
     "Opening search focuses the field",
@@ -62,7 +67,7 @@ async function _verifySearch(page) {
   )
   verify(
     await page.evaluate(() =>
-      [...document.querySelectorAll("[data-docs-search-target=result] mark")].some((mark) =>
+      [...document.querySelectorAll("dialog[open] [data-slot=search-result] mark")].some((mark) =>
         /lazyloadcontrollersfrom/i.test(mark.textContent),
       ),
     ),
@@ -76,7 +81,14 @@ async function _verifySearch(page) {
   )
 
   await input.fill("zzzz nothing")
-  verify(await page.getByText("No matches.").isVisible(), "A query with no results says so")
+  verify(
+    await page.getByText("No results", { exact: true }).isVisible(),
+    "A query with no results says so",
+  )
+  verify(
+    (await page.getByRole("status").filter({ hasText: "0 results" }).count()) === 1,
+    "The result count is announced",
+  )
 
   await input.fill("switch themes")
   await page.keyboard.press("ArrowDown")
@@ -102,6 +114,47 @@ async function _verifySearch(page) {
     () => !document.querySelector("dialog[aria-label='Search documentation']").open,
   )
   verify(true, "Escape closes search")
+
+  // lc_search filtering the rows rendered in its block, on its own docs page.
+  await page.goto(`${origin}/components/search.html`)
+  await ready()
+  const example = page.getByRole("button", { name: "Search the workspace", exact: true })
+  await example.click()
+  const dialog = page.getByRole("dialog", { name: "Search the workspace", exact: true })
+  await dialog.waitFor()
+  const field = dialog.getByRole("searchbox")
+  verify(
+    (await dialog.locator("[data-slot=search-result]:visible").count()) === 4,
+    "An empty query shows every row in the block",
+  )
+  await field.fill("no-such-workspace-item")
+  verify(
+    await dialog.getByText("No results", { exact: true }).isVisible(),
+    "Filtering shows the empty note",
+  )
+  await field.fill("brand")
+  verify(
+    (await dialog.locator("[data-slot=search-result]:visible").allTextContents())
+      .join(" ")
+      .includes("Fieldwork") &&
+      (await dialog.locator("[data-slot=search-group]:visible").count()) === 1,
+    "Keywords match, and groups without a match hide",
+  )
+  await field.fill("alex")
+  await page.keyboard.press("Enter")
+  await page.waitForURL(/#alex-lee$/)
+  verify(true, "Enter opens the only result")
+  await dialog.waitFor({ state: "hidden" })
+  await page.keyboard.press("Shift+Tab")
+  await example.click()
+  await dialog.getByRole("button", { name: "Clear search", exact: true }).click()
+  verify((await field.inputValue()) === "", "Clear empties the field")
+  await page.keyboard.press("Escape")
+  await dialog.waitFor({ state: "hidden" })
+  verify(
+    await example.evaluate((node) => node === document.activeElement),
+    "Closing returns focus to the trigger",
+  )
 
   return checks
 }

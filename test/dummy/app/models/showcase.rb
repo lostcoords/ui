@@ -191,6 +191,9 @@ module Showcase
         Example.new(:toast, "Brief feedback", :panel),
         Example.new(:toast_region, "Over dialogs and sticky headers", :panel)
       ], %i[lc_toast lc_toast_region]),
+      Section.new(:search, "Search", "A full-screen search with grouped results.", [
+        Example.new(:search, "Filtered in the browser", :panel)
+      ], %i[lc_search lc_search_group lc_search_result]),
       Section.new(:collapsible, "Collapsible", "Content that expands in place.", [
         Example.new(:collapsible, "Expandable content", :bare)
       ]),

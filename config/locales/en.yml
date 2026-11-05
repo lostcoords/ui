@@ -54,3 +54,11 @@ en:
           objects: "Objects"
           symbols: "Symbols"
           flags: "Flags"
+      search:
+        trigger: "Search…"
+        clear: "Clear search"
+        cancel: "Cancel"
+        empty: "No results"
+        results:
+          one: "%{count} result"
+          other: "%{count} results"

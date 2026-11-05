@@ -74,7 +74,7 @@ Outside Rails, import the same files from `app/assets/tailwind/lostcoords/ui/` i
 `base.css` holds the document defaults that `ui.css` adds; skip it when the host owns its base styles.
 `core.css` holds the tokens, buttons, badges, avatars, cards, alerts, form controls, choices,
 toggles, layout, typography and navigation. The opt-in entries are `dialog` (with the phone sheet),
-`menu` (menus and popovers), `toast`, `tooltip`, `collapsible`, `code-block`,
+`menu` (menus and popovers), `toast`, `search`, `tooltip`, `collapsible`, `code-block`,
 `emoji-picker`, `table` and `prose`. A component whose entry is missing renders unstyled.
 
 Start one Stimulus application in the host, then register the controllers you use:
@@ -351,6 +351,35 @@ header and the documentation layout.
 `lc_dialog` handles modal content and the mobile sheet layout. Set `detents: "medium large"` or `"large"`
 to choose mobile height stops; the default is `"fit"`. Icon buttons, avatar groups, motion and mobile dialogs
 appear with their parent component examples.
+
+### Search
+
+`lc_search` renders a search trigger, a pill with the ⌘K hint that shrinks to an icon on phones, and
+the full-screen search it opens. Attributes go to the trigger, which is what sits in your layout.
+Build results from `lc_search_group` and `lc_search_result`.
+
+```erb
+<%= lc_search label: "Search", src: search_path %>
+
+<%# app/views/searches/show.html.erb, rendered without a layout for lc_search's requests %>
+<%= lc_search_group "Projects" do %>
+  <% @projects.each do |project| %>
+    <%= lc_search_result project.name, project_path(project), detail: project.client, icon: "folder" %>
+  <% end %>
+<% end %>
+```
+
+With `src:`, each pause in typing requests `src` with the query in `param` (`q` by default) and shows
+the HTML the server answers; that endpoint is yours, as a Turbo Frame's would be. Without
+JavaScript the field submits the same GET, so a full search page still works. Without `src:`, the
+rows rendered in the block are filtered in the browser by their text and `keywords:`. To search
+another way, handle `lc-search:query`, call `preventDefault()` and fill `event.detail.results` with
+the same helpers' markup, cloned from a `<template>`; the docs search does this with MiniSearch.
+
+The block also renders what shows before anything is typed. Arrow keys move through the results,
+Enter opens the first one, and choosing a result or pressing Escape closes search and returns focus.
+Groups without a visible result hide, a query with none shows the empty note, and a status region
+announces the count. Pass `shortcut: nil` to drop the page shortcut, and `id:` when a page has two searches.
 
 ### Keyboard
 

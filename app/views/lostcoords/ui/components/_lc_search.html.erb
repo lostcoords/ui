@@ -1,0 +1,25 @@
+<%# locals: (id:, label:, src:, param:, placeholder:, trigger:, shortcut:, attributes:, content:) %>
+<div class="contents" data-slot="search" data-controller="lc-search" data-action="turbo:before-cache@document->lc-search#reset" data-lc-search-src-value="<%= src %>" data-lc-search-param-value="<%= param %>" data-lc-search-one-value="<%= lc_t("lostcoords.ui.search.results.one", count: "%{count}") %>" data-lc-search-other-value="<%= lc_t("lostcoords.ui.search.results.other", count: "%{count}") %>">
+  <%= tag.button(**attributes) do %>
+    <%= lc_icon "magnifying-glass", options: { class: "size-4 shrink-0", "aria-hidden": true } %>
+    <span class="flex-1 truncate text-start max-sm:sr-only"><%= trigger %></span>
+    <% if shortcut %><%= lc_kbd shortcut, class: "hidden bg-transparent px-0 any-pointer-fine:sm:inline", aria: { hidden: true } %><% end %>
+  <% end %>
+  <dialog id="<%= id %>" class="lc-search" aria-label="<%= label %>" data-lc-search-target="dialog" data-action="close->lc-search#closed keydown->lc-search#navigate click->lc-search#dismiss">
+    <div class="lc-search-stack" data-lc-search-target="stack" data-lc-search-dismiss>
+      <%= tag.form action: src, method: :get, role: "search", class: "flex shrink-0 items-center gap-heading", data: { action: "submit->lc-search#submit" } do %>
+        <label class="<%= lc_glass_class(extra: "flex min-h-14 min-w-0 flex-1 cursor-text items-center gap-heading ps-5 pe-2 sm:min-h-16") %>" data-lc-search-target="bar">
+          <%= lc_icon "magnifying-glass", options: { class: "size-6 shrink-0 text-muted-foreground", "aria-hidden": true, "data-lc-search-target": "glyph" } %>
+          <input type="search" name="<%= param %>" class="lc-search-input min-w-0 flex-1 self-stretch border-0 bg-transparent text-base text-foreground outline-none placeholder:text-muted-foreground" aria-label="<%= label %>" placeholder="<%= placeholder %>" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search" data-lc-search-target="input" data-action="input->lc-search#input"<% if shortcut %> data-controller="lc-shortcut" data-lc-shortcut-keys-value="<%= shortcut %>"<% end %>>
+          <%= lc_icon_button lc_t("lostcoords.ui.search.clear"), icon: "x-circle", size: :sm, shape: :circle, hidden: true, data: { lc_search_target: "clear", action: "lc-search#clear" } %>
+        </label>
+        <%= lc_button lc_t("lostcoords.ui.search.cancel"), variant: :ghost, size: :sm, class: "sm:hidden", data: { lc_search_target: "cancel", action: "lc-search#close" } %>
+      <% end %>
+      <div class="<%= lc_glass_class(shape: :panel, extra: "lc-search-panel min-h-0 overflow-y-auto overscroll-contain p-related") %>" data-lc-search-target="panel" data-slot="search-panel">
+        <div data-lc-search-target="results" data-slot="search-results"><%= content %></div>
+        <p class="px-content py-10 text-center text-label text-muted-foreground" data-lc-search-target="empty" data-slot="search-empty" hidden><%= lc_t("lostcoords.ui.search.empty") %></p>
+      </div>
+      <p class="sr-only" role="status" aria-atomic="true" data-lc-search-target="status"></p>
+    </div>
+  </dialog>
+</div>

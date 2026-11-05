@@ -17,7 +17,6 @@ async function _verifyBlocks(page) {
   for (const [id, title] of [
     ["application_header", "Application header"],
     ["mobile_navigation", "Mobile navigation"],
-    ["global_search", "Global search"],
   ]) {
     await page.goto(`${origin}/blocks/${id}.html`)
     await page.locator('#palette-picker-trigger[aria-label^="Color palette:"]').waitFor()
@@ -64,42 +63,6 @@ async function _verifyBlocks(page) {
         await frame.getByRole("heading", { name: "Untitled project", exact: true }).isVisible(),
         "Quick action creates a local draft",
       )
-    }
-    if (id === "global_search") {
-      const trigger = frame.getByRole("button", { name: "Search workspace", exact: true })
-      await trigger.click()
-      const dialog = frame.getByRole("dialog", { name: "Search workspace", exact: true })
-      await dialog.waitFor()
-      const input = dialog.getByLabel("Search projects, people, and notes")
-      await input.fill("no-such-workspace-item")
-      verify(
-        await dialog.getByText("Nothing here just yet.", { exact: true }).isVisible(),
-        "Search shows an empty state",
-      )
-      await input.fill("Alex")
-      verify(
-        (await dialog.locator('[data-blocks-search-target="result"]:visible').count()) === 1,
-        "Search filters sample results",
-      )
-      await page.keyboard.press("ArrowDown")
-      await page.keyboard.press("Enter")
-      await dialog.waitFor({ state: "hidden" })
-      verify(
-        (await frame.locator('[data-blocks-search-target="selectionTitle"]').textContent()) ===
-          "Alex Lee",
-        "Keyboard result selection opens the chosen item",
-      )
-      verify(
-        await trigger.evaluate((node) => node === document.activeElement),
-        "Search restores trigger focus",
-      )
-      await page.keyboard.press("ControlOrMeta+k")
-      await dialog.waitFor()
-      await dialog.getByRole("button", { name: "Clear search", exact: true }).click()
-      verify((await input.inputValue()) === "", "Search clears the query")
-      await page.keyboard.press("Escape")
-      await dialog.waitFor({ state: "hidden" })
-      checks.push("Search shortcut and Escape work")
     }
     const theme = page.getByRole("button", { name: /Switch to (light|dark) theme/ })
     await theme.click()

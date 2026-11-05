@@ -13,7 +13,7 @@
       const theme = localStorage.getItem("lostcoords-ui:theme")
       if (theme === "dark" || (!theme && matchMedia("(prefers-color-scheme: dark)").matches)) document.documentElement.dataset.theme = "dark"
     </script>
-    <%= stylesheet_link_tag "tailwind", "blocks/application_header", "blocks/docs_shell", "blocks/global_search" %>
+    <%= stylesheet_link_tag "tailwind", "blocks/application_header", "blocks/docs_shell" %>
     <%= stylesheet_link_tag "components" if action_name == "components" %>
     <%= javascript_importmap_tags %>
   </head>

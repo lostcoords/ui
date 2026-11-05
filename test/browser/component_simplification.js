@@ -11,8 +11,8 @@ async function _verifyComponentSimplification(page) {
   verify(
     (await page
       .locator('aside nav[aria-label="Documentation"] a[href^="/components/"]')
-      .count()) === 37,
-    "The sidebar groups the catalog into 37 component and foundation pages",
+      .count()) === 38,
+    "The sidebar groups the catalog into 38 component and foundation pages",
   )
   await page.emulateMedia({ reducedMotion: "reduce" })
   try {

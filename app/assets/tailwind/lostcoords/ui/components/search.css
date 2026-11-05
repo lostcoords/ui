@@ -1,0 +1,5 @@
+/* lc_search, lc_search_group and lc_search_result. */
+@import "../search.css";
+@source "../../../../../helpers/lostcoords/ui/search_helper.rb";
+@source "../../../../../views/lostcoords/ui/components/_lc_search.html.erb";
+@source "../../../../../javascript/lostcoords/ui/controllers/lc_search_controller.js";

@@ -1,48 +1,8 @@
-<%# The docs reuse the Global search block's styles. /search.json downloads while the page is idle and MiniSearch indexes it in the browser. %>
-<div class="search-example group/search contents" data-controller="docs-search" data-docs-search-url-value="/search.json">
-  <%= tag.button type: "button", class: "search-example__trigger flex min-h-9 items-center gap-2.5 rounded-full bg-muted px-3 text-muted-foreground hover:bg-accent hover:text-foreground group-data-open/search:opacity-0 max-sm:size-9 max-sm:justify-center max-sm:px-0", data: lc_shortcut_data("mod+k", docs_search_target: "trigger", action: "docs-search#open"), aria: { label: "Search documentation", haspopup: "dialog" } do %>
-    <%= lc_icon "magnifying-glass", options: { class: "size-4 shrink-0", "aria-hidden": true } %>
-    <span class="hidden flex-1 text-start text-sm sm:block">Search docs…</span>
-    <%= lc_kbd "mod+k", class: "hidden bg-transparent px-0 sm:block", aria: { hidden: true } %>
+<%# lc_search with results from MiniSearch: docs-search answers lc-search:query and renders rows from the templates. %>
+<div class="contents" data-controller="docs-search" data-docs-search-url-value="/search.json" data-action="lc-search:query->docs-search#query">
+  <%= lc_search label: "Search documentation", placeholder: "Search components, helpers, guides…", trigger: "Search docs…", class: "lg:max-xl:w-48" %>
+  <template data-docs-search-target="group"><%= lc_search_group "Group" %></template>
+  <% DocsSearch::GROUPS.each do |group, icon| %>
+    <template data-docs-search-target="result" data-group="<%= group %>"><%= lc_search_result "Title", "#", detail: "", icon: icon %></template>
   <% end %>
-
-  <dialog class="search-example__dialog" aria-label="Search documentation" data-docs-search-target="dialog" data-action="close->docs-search#closed keydown->docs-search#navigate click->docs-search#dismiss">
-    <div class="search-example__stack" data-docs-search-target="stack" data-search-dismiss>
-      <div class="flex shrink-0 items-center gap-3">
-        <label class="<%= lc_glass_class(extra: "flex min-h-14 min-w-0 flex-1 cursor-text items-center gap-3 ps-5 pe-2 sm:min-h-16") %>" data-docs-search-target="bar">
-          <%= lc_icon "magnifying-glass", options: { class: "size-6 shrink-0 text-muted-foreground", "aria-hidden": true, "data-docs-search-target": "glyph" } %>
-          <input type="search" class="search-example__input min-w-0 flex-1 self-stretch border-0 bg-transparent text-base text-foreground placeholder:text-muted-foreground focus:outline-none" aria-label="Search components, helpers, guides and blocks" placeholder="Search components, helpers, guides…" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="go" data-docs-search-target="input" data-action="input->docs-search#filter compositionend->docs-search#filter" data-controller="lc-shortcut" data-lc-shortcut-keys-value="mod+k">
-          <%= lc_icon_button "Clear search", icon: "x-circle", size: :sm, hidden: true, data: { docs_search_target: "clear", action: "docs-search#clear" } %>
-        </label>
-        <%= lc_button "Cancel", variant: :ghost, size: :sm, class: "sm:hidden", data: { docs_search_target: "cancel", action: "docs-search#close" } %>
-      </div>
-      <div class="<%= lc_glass_class(shape: :panel, extra: "search-example__results min-h-0 overflow-y-auto overscroll-contain p-2") %>" data-docs-search-target="results">
-        <p class="px-3 pb-2 pt-3 text-xs text-muted-foreground empty:hidden" data-docs-search-target="summary" role="status"></p>
-        <div data-docs-search-target="list"></div>
-        <%# The controller fills these for each result; every row points at one of the icons drawn once below. %>
-        <template data-docs-search-target="groupTemplate">
-          <section class="py-2"><h2 class="px-3 pb-2 font-mono text-xs font-medium uppercase tracking-widest text-muted-foreground" data-field="name"></h2></section>
-        </template>
-        <template data-docs-search-target="resultTemplate">
-          <a class="search-example__result group/result flex min-h-14 w-full items-center gap-3 rounded-2xl px-3 py-2 text-start no-underline" data-docs-search-target="result">
-            <span class="<%= lc_icon_badge_class %>"><svg class="lc-icon size-[1em]" aria-hidden="true"><use data-field="icon"></use></svg></span>
-            <span class="flex min-w-0 flex-1 flex-col gap-0.5">
-              <span class="truncate text-sm font-semibold" data-field="title"></span>
-              <span class="line-clamp-2 text-xs text-muted-foreground [&_mark]:bg-transparent [&_mark]:font-semibold [&_mark]:text-foreground" data-field="detail"></span>
-            </span>
-            <svg class="lc-icon size-4 shrink-0 text-muted-foreground opacity-0 group-hover/result:opacity-100 group-focus-visible/result:opacity-100" aria-hidden="true"><use href="#docs-search-arrow-turn-down-left"></use></svg>
-          </a>
-        </template>
-        <svg hidden aria-hidden="true">
-          <% [ "arrow-turn-down-left", *DocsSearch::GROUPS.values ].each do |name| %>
-            <% svg = Nokogiri::HTML5.fragment(lc_icon(name)).at_css("svg") %>
-            <%= tag.symbol svg.children.to_html.html_safe, id: "docs-search-#{name}", **svg.attributes.slice("viewBox", "fill", "stroke", "stroke-width").transform_values(&:value) %>
-          <% end %>
-        </svg>
-        <div class="px-5 py-10 text-center" data-docs-search-target="empty" hidden>
-          <p class="font-semibold">No matches.</p><p class="pt-2 text-sm text-muted-foreground">Try a component name, a helper like <code>lc_button</code>, or a color role.</p>
-        </div>
-      </div>
-    </div>
-  </dialog>
 </div>

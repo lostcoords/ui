@@ -54,3 +54,11 @@ es:
           objects: "Objetos"
           symbols: "Símbolos"
           flags: "Banderas"
+      search:
+        trigger: "Buscar…"
+        clear: "Borrar búsqueda"
+        cancel: "Cancelar"
+        empty: "Sin resultados"
+        results:
+          one: "%{count} resultado"
+          other: "%{count} resultados"

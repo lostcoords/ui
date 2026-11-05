@@ -7,6 +7,7 @@ import EmojiPicker from "lostcoords/ui/controllers/lc_emoji_picker_controller"
 import Kbd from "lostcoords/ui/controllers/lc_kbd_controller"
 import Menu from "lostcoords/ui/controllers/lc_menu_controller"
 import Popover from "lostcoords/ui/controllers/lc_popover_controller"
+import Search from "lostcoords/ui/controllers/lc_search_controller"
 import Selection from "lostcoords/ui/controllers/lc_selection_controller"
 import Sheet from "lostcoords/ui/controllers/lc_sheet_controller"
 import Shortcut from "lostcoords/ui/controllers/lc_shortcut_controller"
@@ -26,6 +27,7 @@ const controllers = {
   "lc-kbd": Kbd,
   "lc-menu": Menu,
   "lc-popover": Popover,
+  "lc-search": Search,
   "lc-selection": Selection,
   "lc-sheet": Sheet,
   "lc-shortcut": Shortcut,

@@ -1,0 +1,96 @@
+/* lc_search: a pill trigger that opens a full-screen search over a
+   blurred page. The controller animates it open and closed. */
+@layer components {
+  .lc-search-trigger {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-related);
+    min-block-size: var(--spacing-control-sm);
+    padding-inline: var(--spacing-heading);
+    border: 0;
+    border-radius: var(--radius-pill);
+    background: var(--muted);
+    color: var(--muted-foreground);
+    font-size: var(--text-label);
+    cursor: pointer;
+    transition: background-color var(--lc-motion-control), color var(--lc-motion-control);
+
+    &:hover { background: var(--accent); color: var(--foreground); }
+
+    /* The bar grows out of the trigger, so the trigger steps aside while search is open. */
+    [data-slot="search"][data-open] & { opacity: 0; }
+
+    @media (width < 40rem) {
+      justify-content: center;
+      inline-size: var(--spacing-control-sm);
+      padding-inline: 0;
+    }
+
+    @media (width >= 40rem) { inline-size: calc(var(--spacing) * 64); }
+    @media (width >= 80rem) { inline-size: calc(var(--spacing) * 84); }
+  }
+
+  .lc-search {
+    position: fixed;
+    inset: 0;
+    inline-size: 100%;
+    max-inline-size: none;
+    block-size: 100%;
+    max-block-size: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+    background: transparent;
+    color: var(--foreground);
+
+    /* Safari drops custom properties inside -webkit-backdrop-filter, so the blur is literal. */
+    &::backdrop {
+      background: var(--lc-scrim-veil);
+      -webkit-backdrop-filter: blur(20px) saturate(160%);
+      backdrop-filter: blur(20px) saturate(160%);
+    }
+
+    @media (prefers-reduced-transparency: reduce) {
+      &::backdrop {
+        background: var(--background);
+        -webkit-backdrop-filter: none;
+        backdrop-filter: none;
+      }
+    }
+
+    /* Rows and groups carry display utilities, which outrank this layer unless it is important. */
+    [hidden] { display: none !important; }
+  }
+
+  .lc-search-stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-heading);
+    inline-size: min(calc(var(--spacing) * 160), calc(100% - var(--spacing) * 6));
+    block-size: 100%;
+    margin-inline: auto;
+    padding-block:
+      max(var(--spacing-heading), env(safe-area-inset-top))
+      max(var(--spacing-heading), env(safe-area-inset-bottom));
+
+    @media (width >= 40rem) { padding-block-start: 14vh; }
+  }
+
+  .lc-search-input::-webkit-search-cancel-button {
+    /* stylelint-disable-next-line property-no-vendor-prefix -- The clear button has an accessible label. */
+    -webkit-appearance: none;
+  }
+
+  .lc-search-panel {
+    --lc-glass-fill: color-mix(in oklab, var(--background) 82%, transparent);
+
+    @media (width >= 40rem) { max-block-size: min(60dvh, calc(var(--spacing) * 136)); }
+  }
+
+  .lc-search-result {
+    color: var(--foreground);
+
+    &:is(:hover, :focus-visible) { background: color-mix(in oklab, var(--foreground) 6%, transparent); }
+  }
+}
