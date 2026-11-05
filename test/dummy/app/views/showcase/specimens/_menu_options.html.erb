@@ -1,0 +1,15 @@
+<div class="flex flex-wrap items-center gap-content">
+  <%= lc_menu id: "EXAMPLE_ID-row-menu", label: "Actions for Alex", trigger: :icon do %>
+    <%= lc_menu_option "Rename", icon: "pencil" %>
+    <%= lc_menu_option "Move up", icon: "arrow-up", hint: "Second in the list" %>
+    <%= lc_menu_option "Copy link" %>
+    <%= lc_menu_option "Pinned", icon: "star", checkbox: true %>
+    <%= lc_menu_option "Remove", icon: "trash", href: "/components/menu.html", method: :delete, tone: :destructive %>
+  <% end %>
+  <%= lc_menu id: "EXAMPLE_ID-currency-menu", label: "Currency", align: :start do |menu| %>
+    <% menu.trigger { |attrs| lc_select_trigger "Euro", **attrs } %>
+    <%= lc_menu_option "Euro", hint: "EUR", leading: tag.span("€"), checked: true %>
+    <%= lc_menu_option "Japanese yen", hint: "JPY", leading: tag.span("¥"), checked: false %>
+    <%= lc_menu_option "US dollar", hint: "USD", leading: tag.span("$"), checked: false %>
+  <% end %>
+</div>

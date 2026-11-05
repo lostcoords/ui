@@ -1,0 +1,6 @@
+<%= lc_menu id: "EXAMPLE_ID-menu", label: "Member", align: :start do |menu| %>
+  <% menu.trigger(class: "min-w-44") { |attrs| lc_select_trigger "All members", **attrs } %>
+  <%= lc_menu_option "All members", checked: true %>
+  <%= lc_menu_option "Alex", checked: false %>
+  <%= lc_menu_option "Sam", checked: false %>
+<% end %>

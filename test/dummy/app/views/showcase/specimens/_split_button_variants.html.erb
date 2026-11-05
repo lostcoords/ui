@@ -1,0 +1,6 @@
+<% [ [ :secondary, :sm ], [ :outline, :md ], [ :ghost, :lg ] ].each do |variant, size| %>
+  <%= lc_split_button "Export", id: "EXAMPLE_ID-#{variant}", variant: variant, size: size, menu_label: "Export options" do %>
+    <%= lc_menu_option "Export as CSV" %>
+    <%= lc_menu_option "Export as PDF" %>
+  <% end %>
+<% end %>

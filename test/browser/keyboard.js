@@ -10,8 +10,9 @@ async function _verifyKeyboard(page) {
   }
   const visit = async (path) => {
     await page.goto(`${origin}${path}`)
-    await page.waitForFunction(async () => {
-      const { application } = await import("controllers/application")
+    await page.waitForFunction(() => {
+      const application = window.Stimulus
+      if (!application) return false
       return [...document.querySelectorAll("[data-controller]")].every((element) =>
         element.dataset.controller
           .split(/\s+/)

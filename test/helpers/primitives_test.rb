@@ -107,6 +107,105 @@ module Lostcoords::Ui
       assert_raises(ArgumentError) { @view.lc_icon_button("Close", icon: "x-mark", shape: :missing) }
     end
 
+    test "a destructive tone recolours a variant without changing its emphasis" do
+      ghost = fragment(@view.lc_button("Revoke", variant: :ghost, tone: "destructive")).at_css("button")
+      classes = ghost["class"].split
+      assert_equal "destructive", ghost["data-tone"]
+      assert_includes classes, "bg-transparent"
+      assert_includes classes, "text-destructive"
+      assert_not_includes classes, "text-muted-foreground"
+
+      solid = @view.lc_button_class(tone: :destructive).split
+      assert_includes solid, "[--lc-button-bg:color-mix(in_oklab,var(--destructive)_60%,black)]"
+      assert_not_includes solid, "[--lc-button-bg:var(--primary)]"
+      assert_nil fragment(@view.lc_button("Save")).at_css("button")["data-tone"]
+
+      assert_equal "destructive", fragment(@view.lc_button_link_to("Sign out", "/session", variant: :outline, tone: :destructive)).at_css("a")["data-tone"]
+      assert_includes fragment(@view.lc_button_to("Delete", "/entries/1", method: :delete, variant: :secondary, tone: :destructive)).at_css("button")["class"].split, "text-destructive"
+      ButtonHelper::BUTTON_VARIANTS.each_key { |variant| assert @view.lc_button_class(variant: variant, tone: :destructive) }
+      assert_raises(ArgumentError) { @view.lc_button("Save", tone: :warning) }
+    end
+
+    test "select triggers are buttons with a start-aligned label and a decorative trailing chevron" do
+      trigger = fragment(@view.lc_select_trigger("<All members>", size: :sm, block: true, aria: { expanded: false })).at_css("button")
+      assert_equal "button", trigger["type"]
+      assert_equal "select-trigger", trigger["data-slot"]
+      assert_equal "false", trigger["aria-expanded"]
+      assert_equal "<All members>", trigger.at_css("span.truncate").text
+      chevron = trigger.element_children.last
+      assert_equal "inline-end", chevron["data-icon"]
+      assert_equal "true", chevron["aria-hidden"]
+      classes = trigger["class"].split
+      assert_includes classes, "justify-start"
+      assert_includes classes, "h-control-sm"
+      assert_includes classes, "w-full"
+
+      html = @view.lc_select_trigger { @view.tag.strong("Alex") }
+      assert_equal %w[strong svg], fragment(html).at_css("button").element_children.map(&:name)
+      assert_raises(ArgumentError) { @view.lc_select_trigger("All", size: :xl) }
+    end
+
+    test "split buttons join an action and a menu toggle into one pill for every variant and size" do
+      ButtonHelper::BUTTON_VARIANTS.each_key do |variant|
+        ButtonHelper::BUTTON_SIZES.each_key do |size|
+          html = fragment(@view.lc_split_button("Export", id: "export", variant: variant, size: size) { @view.lc_menu_option("CSV") })
+          action = html.at_css("[data-slot=split-button] > button[data-slot=button]")["class"].split
+          toggle = html.at_css("[data-slot=split-button-toggle]")["class"].split
+          assert_includes action, "rounded-e-none"
+          assert_includes action, "border-e-0"
+          assert_includes toggle, "rounded-s-none"
+          assert_includes toggle, "w-control-#{size}"
+          assert_includes toggle, "h-control-#{size}"
+          assert_equal variant != :outline, toggle.include?("border-s-[color-mix(in_oklab,currentColor_24%,transparent)]"), variant
+          [ action, toggle ].each { |part| assert_not_includes part, "motion-safe:not-disabled:hover:-translate-y-px" }
+        end
+      end
+    end
+
+    test "split buttons wire their toggle to a menu and keep caller hooks on each part" do
+      html = fragment(@view.lc_split_button("Add", id: "add", href: "/new", icon: "plus", menu_label: "More ways to add", block: true,
+        class: "max-sm:hidden", data: { controller: "import" },
+        action: { class: "hook-primary", data: { turbo_frame: "body" }, aria: { expanded: false } },
+        toggle: { class: "hook-toggle", data: { action: "click->import#ready" } },
+        menu: { class: "hook-menu" }) { @view.lc_menu_option("Import a CSV") })
+
+      wrapper = html.at_css("[data-slot=split-button]")
+      assert_equal "lc-menu import", wrapper["data-controller"]
+      assert_includes wrapper["class"].split, "w-full"
+      assert_includes wrapper["class"].split, "max-sm:hidden"
+
+      action = wrapper.at_css("a")
+      assert_equal "/new", action["href"]
+      assert_equal "body", action["data-turbo-frame"]
+      assert_equal "false", action["aria-expanded"]
+      assert_includes action["class"].split, "hook-primary"
+      assert_equal "inline-start", action.at_css("svg")["data-icon"]
+
+      toggle = wrapper.at_css("button[data-slot=split-button-toggle]")
+      assert_equal "add-trigger", toggle["id"]
+      assert_equal "More ways to add", toggle["aria-label"]
+      assert_equal "menu", toggle["aria-haspopup"]
+      assert_equal "false", toggle["aria-expanded"]
+      assert_equal "add", toggle["aria-controls"]
+      assert_equal "trigger", toggle["data-lc-menu-target"]
+      assert_equal "lc-menu#toggle click->import#ready", toggle["data-action"]
+      assert_includes toggle["class"].split, "hook-toggle"
+      assert_equal "true", toggle.at_css("svg")["aria-hidden"]
+
+      menu = wrapper.at_css("#add")
+      assert_equal "menu", menu["role"]
+      assert_equal "add-trigger", menu["aria-labelledby"]
+      assert_equal "popover", menu["data-lc-menu-target"]
+      assert_includes menu["class"].split, "hook-menu"
+      assert_equal "Import a CSV", menu.at_css("[role=menuitem]").text.strip
+
+      assert_equal "button", fragment(@view.lc_split_button("Add", id: "b") { "" }).at_css("[data-slot=button]").name
+      assert_raises(ArgumentError) { @view.lc_split_button("Add", id: "") { "" } }
+      assert_raises(ArgumentError) { @view.lc_split_button("Add", id: "c", menu_label: " ") { "" } }
+      assert_raises(ArgumentError) { @view.lc_split_button("Add", id: "d", variant: :link) { "" } }
+      assert_raises(ArgumentError) { @view.lc_split_button("Add", id: "e", size: :xl) { "" } }
+    end
+
     test "badges and eyebrows support escaped text and captured content" do
       [ :lc_badge ].each do |name|
         assert_equal "<new>", fragment(@view.public_send(name, "<new>")).at_css("span").text
@@ -130,6 +229,15 @@ module Lostcoords::Ui
 
       html = @view.lc_avatar_stack(compact: true, id: "team") { @view.lc_avatar("AB") }
       assert_equal "AB", fragment(html).at_css("#team .lc-avatar-stack__row > .lc-avatar").text
+
+      button = fragment(@view.lc_avatar("AB", as: :button, aria: { label: "Change colour" })).at_css("button[type=button]")
+      assert_includes button["class"].split, "lc-avatar"
+      assert_equal "Change colour", button["aria-label"]
+      assert_raises(ArgumentError) { @view.lc_avatar("AB", as: :a) }
+
+      row = fragment(@view.lc_avatar_stack(row: { aria: { hidden: true }, data: { stack_target: "row" } }) { @view.lc_avatar("AB") }).at_css(".lc-avatar-stack__row")
+      assert_equal "true", row["aria-hidden"]
+      assert_equal "row", row["data-stack-target"]
     end
 
     test "surfaces capture content with merged attributes" do

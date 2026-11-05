@@ -1,0 +1,7 @@
+<div class="flex items-center gap-related min-h-control-md px-3 rounded-2xl bg-muted cursor-pointer" data-controller="lc-popover" data-action="click->lc-popover#toggleFromRow">
+  <button type="button" class="font-semibold" aria-haspopup="dialog" aria-expanded="false" data-lc-popover-target="trigger" data-action="lc-popover#toggle">Alex</button>
+  <span class="text-muted-foreground">Tap anywhere on the row</span>
+  <%= lc_popover id: "EXAMPLE_ID-row-popover", label: "How to pay Alex", trigger: false, align: :start do %>
+    <p class="m-0">Alex takes bank transfers.</p>
+  <% end %>
+</div>

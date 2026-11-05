@@ -240,7 +240,7 @@ async function _verifyControlSurfaces(page) {
         .locator(
           component === "button"
             ? "#example-1 [data-example-preview]"
-            : "#example-10 [data-example-preview]",
+            : "#example-11 [data-example-preview]",
         )
         .first()
       const buttons = stage.locator("button")
