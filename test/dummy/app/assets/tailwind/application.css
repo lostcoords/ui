@@ -125,6 +125,13 @@ html[data-palette-split-open] {
   overscroll-behavior: none;
 }
 
+/* Registered so it computes to pixels the controller can read. */
+@property --split-slant {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0;
+}
+
 .palette-split {
   --split-slant: min(18vh, 9vw);
 
@@ -207,6 +214,25 @@ html[data-palette-split-open] {
 .palette-split-copy {
   position: absolute;
   inset: 0;
+  isolation: isolate;
+
+  /* Tints and dims every band under the frost; the hovered or chosen band
+     drops it, so the strip behind its name is only blurred. */
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2147483647;
+    background:
+      linear-gradient(color-mix(in oklab, var(--background) 18%, transparent))
+      rgb(0 0 0 / 0.2);
+    transition: opacity 320ms ease;
+  }
+}
+
+/* Nesting can't select a pseudo-element, so this sits on its own. */
+.palette-split-band:is([data-hovered], [data-fate="chosen"]) > .palette-split-copy::after {
+  opacity: 0;
 }
 
 .palette-split-page {
@@ -248,7 +274,6 @@ html[data-palette-split-open] {
   outline: none;
   transition:
     backdrop-filter 320ms ease,
-    background-color 320ms ease,
     --split-clear 320ms ease;
 
   --split-fade: rgb(0 0 0 / calc(1 - var(--split-clear)));
@@ -260,13 +285,10 @@ html[data-palette-split-open] {
     var(--split-fade) calc(var(--split-line) + 6rem)
   );
 
-  /* Every band is frosted and dimmed. Hovering draws the frost back to a
+  /* Every band is frosted. Hovering draws the frost back to a
      strip behind the name, so it reads over the copied page; the chosen
      band clears completely. */
-  .palette-split-band:not([data-fate="chosen"]) & {
-    background: color-mix(in oklab, var(--background) 18%, transparent);
-    backdrop-filter: blur(3px) saturate(0.9) brightness(0.8);
-  }
+  .palette-split-band:not([data-fate="chosen"]) & { backdrop-filter: blur(3px); }
 
   [data-hovered] & { --split-clear: 1; }
 

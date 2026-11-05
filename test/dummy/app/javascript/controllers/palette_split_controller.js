@@ -43,38 +43,67 @@ export default class extends Controller {
     // The current palette takes focus so the keyboard starts there, but it
     // only lights up once the pointer or the arrow keys pick a band.
     this.focusShown = false
+    this.pointer = null
     this.currentChoice().focus()
     this.settle().then((settled) => {
       if (!settled) return
       this.setState("open")
-      const hovered = this.choiceTargets().findIndex((choice) =>
-        choice.matches(this.focusShown ? ":hover, :focus-visible" : ":hover"),
-      )
-      this.layout(hovered < 0 ? undefined : hovered)
+      // The bands drew in under the pointer, so look again at what it rests on.
+      this.layout(this.pointer ? this.bandUnder(this.pointer) : this.hovered)
     })
+  }
+
+  // Hover follows the band under the pointer only when the pointer moves.
+  // Resizing slides the edges under a resting pointer, and following those
+  // crossings would hand hover back and forth between neighbours.
+  point({ clientX, clientY }) {
+    if (this.pointer?.x === clientX && this.pointer?.y === clientY) return
+    this.pointer = { x: clientX, y: clientY }
+    this.hover(this.bandUnder(this.pointer))
+  }
+
+  // Hit-testing sees where the bands were before they started drawing in, so
+  // while they do, the pointer's band comes from their columns instead. Each
+  // edge leans by the slant, so undoing the lean at the pointer's height
+  // leaves a straight split to compare with the column edges.
+  bandUnder({ x, y }) {
+    if (this.state === "opening") {
+      const { width, height } = this.dialogTarget.getBoundingClientRect()
+      const slant = Number.parseFloat(
+        getComputedStyle(this.dialogTarget).getPropertyValue("--split-slant"),
+      )
+      const position = ((x - slant * (1 - (2 * y) / height)) / width) * 100
+      return this.edges.filter((edge) => edge <= position).length
+    }
+    const band = document.elementFromPoint(x, y)?.closest(".palette-split-band")
+    return band ? this.bandTargets.indexOf(band) : undefined
+  }
+
+  focus({ currentTarget }) {
+    if (this.focusShown) this.hover(this.choiceTargets().indexOf(currentTarget))
+  }
+
+  unhover() {
+    this.pointer = null
+    this.hover(undefined)
   }
 
   // While the bands are still drawing in, hovering marks the band without
   // resizing it, so its frost and label respond at once.
-  hover({ type, currentTarget }) {
-    if (type === "focus" && !this.focusShown) return
-    const index = this.choiceTargets().indexOf(currentTarget)
+  hover(index) {
+    if (index === this.hovered) return
     if (this.state === "open") this.layout(index)
     else if (this.state === "opening") this.markHovered(index)
   }
 
-  unhover() {
-    if (this.state === "open") this.layout()
-    else if (this.state === "opening") this.markHovered()
-  }
-
   choose({ currentTarget }) {
     if (this.state !== "open" && this.state !== "opening") return
-    const chosen = this.choiceTargets().indexOf(currentTarget)
+    const choices = this.choiceTargets()
+    const chosen = choices.indexOf(currentTarget)
     this.setState("choosing")
     this.setFates((index) => (index < chosen ? "left" : index > chosen ? "right" : "chosen"))
     // The bands already cover the page, so the palette can change underneath.
-    this.dispatch("choose", { detail: { id: currentTarget.value } })
+    this.dispatch("choose", { detail: { id: choices[chosen].value } })
     this.settle().then((settled) => settled && this.finish())
   }
 
@@ -111,6 +140,7 @@ export default class extends Controller {
 
   teardown() {
     this.state = "closed"
+    this.hovered = undefined
     delete this.dialogTarget.dataset.state
     window.removeEventListener("scroll", this.onScroll)
     window.removeEventListener("resize", this.onResize)
@@ -148,8 +178,10 @@ export default class extends Controller {
     const total = weights.reduce((sum, weight) => sum + weight, 0)
     const last = this.bandTargets.length - 1
     let start = 0
+    this.edges = []
     this.bandTargets.forEach((band, index) => {
       const end = start + (weights[index] / total) * 100
+      if (index < last) this.edges.push(end)
       band.style.setProperty("--from", index === 0 ? "calc(-1 * var(--split-slant))" : `${start}%`)
       band.style.setProperty("--to", index === last ? "calc(100% + var(--split-slant))" : `${end}%`)
       band.style.setProperty("--center", `${(start + end) / 2}%`)
@@ -159,6 +191,7 @@ export default class extends Controller {
   }
 
   markHovered(hovered) {
+    this.hovered = hovered
     this.bandTargets.forEach((band, index) => {
       band.toggleAttribute("data-hovered", index === hovered)
     })
