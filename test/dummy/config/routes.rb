@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   get "wada-license", to: "home#palette_license"
   get "installation", to: "home#installation"
   get "starter", to: "home#starter"
+  get "search", to: "home#search"
   get "theming", to: "home#theming"
   get "tokens", to: "home#theming"
   get "emoji-catalog", to: "home#emoji_catalog"

@@ -42,6 +42,10 @@ class HomeController < ApplicationController
     render plain: DocsReference.text, content_type: "text/plain"
   end
 
+  def search
+    render plain: DocsSearch.json, content_type: "application/json"
+  end
+
   def emoji_catalog
     render partial: "lostcoords/ui/components/emoji_picker_grid"
   end

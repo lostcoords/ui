@@ -52,7 +52,9 @@ namespace :lostcoords do
       dir.join("starter.css").write(fetch.("/starter.css"))
       dir.join("api.json").write(fetch.("/api.json"))
       dir.join("llms.txt").write(fetch.("/llms.txt"))
+      dir.join("search.json").write(fetch.("/search.json"))
       dir.join("wada-license.txt").write(fetch.("/wada-license.txt"))
+      dir.join("minisearch-license.txt").write(Rails.root.join("vendor/minisearch/LICENSE").read)
       dir.join("octicons-license.txt").write(Rails.root.join("vendor/octicons/LICENSE").read)
       dir.join("CNAME").write("ui.lostcoords.com\n")
 

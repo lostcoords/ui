@@ -50,6 +50,18 @@ class StaticExportTest < ActiveSupport::TestCase
       assert_equal Showcase.sections.size + 7 + DocsBlocks.all.size * 2, pages.size
       assert_equal DocsBlocks.all.size, reference.fetch("blocks").size
 
+      search = JSON.parse(File.read(File.join(directory, "search.json"))).fetch("documents")
+      assert_operator search.size, :>, Showcase.sections.size
+      assert search.any? { |document| document["text"].include?("lazyLoadControllersFrom") }, "Search indexes page text"
+      targets = Hash.new { |cache, path| cache[path] = Nokogiri::HTML(File.read(File.join(directory, path))) }
+      search.each do |document|
+        path, fragment = document["url"].split("#", 2)
+        assert File.file?(File.join(directory, path)), "Search links to a missing page: #{document["url"]}"
+        next unless fragment
+
+        assert targets[path].at_css("[id='#{fragment}']"), "Search links to a missing anchor: #{document["url"]}"
+      end
+
       pages.each do |page|
         relative = Pathname(page).relative_path_from(directory).to_s
         assert_equal File.read(page), File.read(File.join(second, relative)), "Non-repeatable export: #{relative}"
