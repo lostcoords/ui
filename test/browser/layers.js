@@ -10,8 +10,9 @@ async function _verifyLayers(page) {
   }
   const ready = (identifier) =>
     page.waitForFunction(
-      async (identifier) => {
-        const { application } = await import("controllers/application")
+      (identifier) => {
+        const application = window.Stimulus
+        if (!application) return false
         const element = document.querySelector(`[data-controller~="${identifier}"]`)
         return element && application.getControllerForElementAndIdentifier(element, identifier)
       },

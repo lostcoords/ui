@@ -46,6 +46,52 @@ module Lostcoords::Ui
       assert_equal "Close Create", dialog.at_css("header button")["aria-label"]
     end
 
+    test "a dialog without a trigger is opened and closed by the caller's controller" do
+      html = render(<<~ERB)
+        <%= lc_dialog id: "import", title: "Import", trigger: false, size: :lg, close_action: "import#close", close_label: "Discard import",
+              data: { import_target: "dialog" }, aria: { live: "polite" } do |dialog| %>
+          <%= dialog.actions do %><a href="/help">Help</a><% end %>
+          <%= dialog.footer do %><%= dialog.close %><% end %>
+        <% end %>
+      ERB
+      dialog = html.at_css("dialog")
+      assert_nil html.at_css("[data-controller~=lc-dialog]")
+      assert_nil html.at_css("[data-slot=dialog-trigger]")
+      assert_equal "dialog", dialog["data-import-target"]
+      assert_nil dialog["data-lc-dialog-target"]
+      assert_equal "polite", dialog["aria-live"]
+      assert_includes dialog["class"].split, "[--lc-dialog-width:40rem]"
+      dismiss = dialog.at_css("[data-slot=dialog-dismiss]")
+      assert_equal "import#close", dismiss["data-action"]
+      assert_equal "Discard import", dismiss["aria-label"]
+      assert_equal "import#close", dialog.at_css("[data-slot=dialog-close]")["data-action"]
+      assert_equal [ "a", "button" ], dialog.css("[data-slot=dialog-actions] > *").map(&:name)
+      assert_nil dialog.at_css("[data-slot=dialog-body] a[href='/help']")
+      assert_raises(ArgumentError) { @view.lc_dialog(id: "d", title: "D", size: :huge) { "Body" } }
+      titled = fragment(@view.lc_dialog(id: "merge", title: "Merge", description: "Pick one", trigger: false,
+        title_attributes: { id: "wrong", data: { merge_target: "title" } }, description_attributes: { data: { merge_target: "body" } }) { "Body" })
+      assert_equal "merge-title", titled.at_css("[data-merge-target=title]")["id"]
+      assert_equal "dialog-title", titled.at_css("h2")["data-slot"]
+      assert_equal "merge-description", titled.at_css("[data-merge-target=body]")["id"]
+    end
+
+    test "the confirm sheet renders once with a message slot and both accept tones" do
+      sheet = fragment(@view.lc_confirm_sheet).at_css("dialog")
+      assert_equal "lc-confirm-sheet", sheet["id"]
+      assert_equal "lc-confirm-sheet-message", sheet["aria-labelledby"]
+      assert sheet.at_css("#lc-confirm-sheet-message[data-slot=confirm-sheet-message]")
+      assert_equal "lc-confirm-sheet-description", sheet["aria-describedby"]
+      assert sheet.at_css("#lc-confirm-sheet-description[data-slot=confirm-sheet-description][hidden]")
+      assert_equal "true", sheet["data-turbo-permanent"]
+      assert_includes sheet["data-controller"].split, "lc-sheet"
+      assert_equal "dialog", sheet.at_css("form")["method"]
+      assert_equal "Cancel", sheet.at_css("button[value=cancel]").text
+      accepts = sheet.css("[data-slot=confirm-sheet-accept]")
+      assert_equal [ "primary", "destructive" ], accepts.map { |button| button["data-variant"] }
+      assert_equal [ false, true ], accepts.map { |button| button.key?("hidden") }
+      assert_equal [ "confirm", "confirm" ], accepts.map { |button| button["value"] }
+    end
+
     test "fields yield an object that splats into controls and accept several errors" do
       html = render('<%= lc_field label: "Name", id: "n", error: ["Too short", "Taken"] do |field| %><%= lc_input **field %><% end %>')
       input = html.at_css("input")
@@ -72,6 +118,11 @@ module Lostcoords::Ui
       checkbox = fragment(@view.lc_checkbox("Email me", name: "notify", unchecked_value: nil))
       assert_nil checkbox.at_css("input[type=hidden]")
       assert_equal "Email me", checkbox.at_css("label").text
+
+      bare = fragment(@view.lc_checkbox(nil, name: "rows[]", value: "a", unchecked_value: nil, form: "bulk", aria: { label: "Select lunch" }))
+      assert_nil bare.at_css("label")
+      assert_equal [ "bulk", "Select lunch" ], %w[form aria-label].map { |name| bare.at_css("input.lc-checkbox")[name] }
+      assert_raises(ArgumentError) { @view.lc_checkbox(nil, name: "rows[]") }
 
       radio = fragment(@view.lc_choice_group(legend: "Plan", error: "Pick one") { @view.lc_radio("Free", name: "plan", value: "free") })
       assert_equal "Plan", radio.at_css("fieldset legend").text

@@ -1,0 +1,14 @@
+<%# locals: (id:, attributes:) %>
+<%= lc_sheet(tag: :dialog, **attributes) do %>
+  <form method="dialog" class="flex flex-col gap-inset p-inset max-sm:pt-7" data-slot="confirm-sheet-content">
+    <div class="flex flex-col gap-tight max-sm:text-center">
+      <p id="<%= id %>-message" class="<%= lc_heading_class(size: :subheading) %>" data-slot="confirm-sheet-message"></p>
+      <p id="<%= id %>-description" class="<%= lc_text_class(size: :small, tone: :muted) %>" data-slot="confirm-sheet-description" hidden></p>
+    </div>
+    <div class="grid grid-cols-2 gap-related" data-slot="confirm-sheet-actions">
+      <button type="submit" value="cancel" class="<%= lc_button_class(variant: :secondary, block: true) %>" data-slot="confirm-sheet-cancel"><%= lc_t("lostcoords.ui.confirm.cancel") %></button>
+      <button type="submit" value="confirm" class="<%= lc_button_class(variant: :primary, block: true) %>" data-slot="confirm-sheet-accept" data-variant="primary"><%= lc_t("lostcoords.ui.confirm.accept") %></button>
+      <button type="submit" value="confirm" class="<%= lc_button_class(variant: :destructive, block: true) %>" data-slot="confirm-sheet-accept" data-variant="destructive" hidden><%= lc_t("lostcoords.ui.confirm.accept") %></button>
+    </div>
+  </form>
+<% end %>

@@ -1,7 +1,10 @@
 @layer components {
   @media (width < 40rem) {
     /* UIKit's 36×5 grabber. */
-    :is([data-lc-sheet-target~="handle"], dialog[data-controller~="lc-sheet"])::before {
+    :is(
+      [data-lc-sheet-target~="handle"],
+      :is(dialog[data-controller~="lc-sheet"], .lc-sheet):not(:has([data-lc-sheet-target~="handle"]))
+    )::before {
       content: "";
       display: block;
       inline-size: 2.25rem;
@@ -10,15 +13,37 @@
       background: color-mix(in oklab, var(--muted-foreground) 45%, transparent);
     }
   }
+
+  /* From sm up an anchored sheet is a popover under its trigger, opened by a
+     FloatingPanel ([data-open]); the positioned ancestor is the caller's. */
+  @media (width >= 40rem) {
+    .lc-sheet-anchored {
+      @apply lc-popover-shell;
+
+      display: none;
+      flex-direction: column;
+      position: absolute;
+      inset-block: calc(100% + --spacing(2)) auto;
+      inset-inline: auto 0;
+      z-index: var(--lc-z-popover);
+      inline-size: min(24rem, calc(100vw - --spacing(8)));
+      max-block-size: min(28rem, calc(100vh - --spacing(24)));
+      border-radius: var(--radius-3xl);
+
+      &[data-open] { display: flex; }
+    }
+  }
 }
 
 @layer modules {
-  /* Phones: every modal dialog is an iOS sheet (lc-sheet). It floats
-     inset with all corners round while it is short, and docks to the screen
-     edges as it reaches the large detent: --lc-sheet-p runs 0 → 1 between them.
-     Lives in this layer so it out-ranks a dialog's own frame. */
+  /* Phones: every modal dialog is an iOS sheet (lc-sheet), and so is any
+     .lc-sheet panel. It floats inset with all corners round while it is short,
+     and docks to the screen edges as it reaches the large detent: --lc-sheet-p
+     runs 0 → 1 between them. Lives in this layer so it out-ranks a panel's own
+     frame. A dialog is open while [open]; a .lc-sheet while :popover-open or
+     [data-open]. */
   @media (width < 40rem) {
-    dialog[data-controller~="lc-sheet"] {
+    :is(dialog[data-controller~="lc-sheet"], .lc-sheet) {
       --lc-sheet-p: 0;
       --lc-sheet-inset: 0.5rem;
       --lc-sheet-radius: 2.25rem;
@@ -54,7 +79,7 @@
         display var(--lc-sheet-duration) allow-discrete,
         overlay var(--lc-sheet-duration) allow-discrete;
 
-      &[open] {
+      &:is([open], :popover-open, .lc-sheet[data-open]) {
         transform: none;
 
         @starting-style { transform: translateY(var(--lc-sheet-offscreen)); }
@@ -78,7 +103,7 @@
           overlay var(--lc-sheet-duration) allow-discrete;
       }
 
-      &[open]::backdrop {
+      &:is([open], :popover-open)::backdrop {
         opacity: 1;
 
         @starting-style { opacity: 0; }
@@ -87,6 +112,14 @@
       @media (prefers-reduced-motion: reduce) {
         &::backdrop { transition: none; }
       }
+    }
+
+    .lc-sheet {
+      z-index: var(--lc-z-overlay);
+      display: none;
+      flex-direction: column;
+
+      &:is(:popover-open, [data-open]) { display: flex; }
     }
 
     /* Behind a large sheet the page shrinks back and rounds off, over black,

@@ -1,0 +1,9 @@
+<button type="button" class="<%= lc_button_class(variant: :secondary) %>" popovertarget="EXAMPLE_ID-filters">Filters</button>
+<%= lc_sheet id: "EXAMPLE_ID-filters", popover: "auto", role: "dialog", aria: { labelledby: "EXAMPLE_ID-filters-title" },
+      class: lc_glass_class(shape: :picker, extra: "sm:m-auto sm:w-80 sm:rounded-3xl text-foreground") do %>
+  <div class="grid gap-content p-inset">
+    <%= lc_heading "Filters", id: "EXAMPLE_ID-filters-title", size: :title %>
+    <p class="text-sm text-muted-foreground">A popover on desktop, a sheet you can swipe away on phones.</p>
+    <button type="button" class="<%= lc_button_class(block: true) %>" popovertarget="EXAMPLE_ID-filters" popovertargetaction="hide">Done</button>
+  </div>
+<% end %>

@@ -1,8 +1,10 @@
 /* Closed is the exit pose, so closing animates too; allow-discrete holds
-   display/overlay until it ends. FloatingPanel sets [data-open]. */
+   display/overlay until it ends. Open is FloatingPanel's [data-open] or a
+   native [popover]'s :popover-open. --lc-popover-from sets the closed pose;
+   origin-* utilities set where it grows from. */
 @utility lc-popover-shell {
   opacity: 0;
-  transform: translateY(--spacing(-1)) scale(0.98);
+  transform: var(--lc-popover-from, translateY(--spacing(-1)) scale(0.98));
   pointer-events: none;
   transition:
     opacity 160ms var(--lc-ease-out-expo),
@@ -10,14 +12,14 @@
     display 160ms allow-discrete,
     overlay 160ms allow-discrete;
 
-  &[data-open] {
+  &:is([data-open], :popover-open) {
     opacity: 1;
     transform: translateY(0) scale(1);
     pointer-events: auto;
 
     @starting-style {
       opacity: 0;
-      transform: translateY(--spacing(-1)) scale(0.98);
+      transform: var(--lc-popover-from, translateY(--spacing(-1)) scale(0.98));
     }
   }
 }

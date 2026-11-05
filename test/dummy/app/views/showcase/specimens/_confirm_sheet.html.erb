@@ -1,0 +1,8 @@
+<%# In the layout, once. %>
+<%= lc_confirm_sheet %>
+
+<%= lc_button_to "Delete project", "/projects/42", method: :delete, variant: :destructive, form: { data: { turbo_confirm: "Delete this project?", turbo_confirm_description: "Its pages and files are deleted for everyone.", controller: "confirm-demo", action: "confirm-demo#submit" } } %>
+<%= lc_button_to "Archive", "/projects/42/archival", form: { data: { turbo_confirm: "Archive this project?", turbo_confirm_accept: "Archive project", controller: "confirm-demo", action: "confirm-demo#submit" } } %>
+<%= lc_menu id: "EXAMPLE_ID-menu", label: "Membership" do %>
+  <%= lc_menu_option "Leave project", href: "/projects/42/membership", method: :delete, tone: :destructive, form: { data: { turbo_confirm: "Leave this project?", turbo_confirm_accept: "Leave", controller: "confirm-demo", action: "confirm-demo#submit" } } %>
+<% end %>

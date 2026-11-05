@@ -1,0 +1,11 @@
+<div data-controller="lc-dialog">
+  <%= lc_button "Show members", variant: :secondary, aria: { haspopup: "dialog", controls: "EXAMPLE_ID-members" }, data: { action: "lc-dialog#open" } %>
+  <%= lc_dialog id: "EXAMPLE_ID-members", title: "Members", trigger: false, size: :lg, detents: "large", data: { lc_dialog_target: "dialog" } do |dialog| %>
+    <%= dialog.actions do %>
+      <%= lc_button "Invite", size: :sm %>
+    <% end %>
+    <% %w[Aiko Ben Chiara Dmitri Emi Farah Goro Hana].each do |name| %>
+      <p class="<%= lc_text_class %>"><%= name %></p>
+    <% end %>
+  <% end %>
+</div>

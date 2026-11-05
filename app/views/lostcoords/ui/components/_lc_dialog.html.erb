@@ -1,16 +1,24 @@
-<%# locals: (id:, title:, description:, trigger:, attributes:, content:) %>
-<div data-controller="lc-dialog">
-  <button type="button" class="<%= lc_button_class(variant: :secondary) %>" aria-haspopup="dialog" aria-controls="<%= id %>" data-action="lc-dialog#open" data-slot="dialog-trigger"><%= trigger %></button>
-  <%= tag.dialog(**attributes) do %>
-    <div class="flex flex-col gap-inset p-inset" data-slot="dialog-content">
-      <header class="flex items-start justify-between gap-content" data-slot="dialog-header">
-        <div class="flex min-w-0 flex-col gap-tight">
-          <h2 id="<%= id %>-title" class="<%= lc_heading_class(size: :subheading) %>" data-slot="dialog-title"><%= title %></h2>
-          <% if description.present? %><p id="<%= id %>-description" class="<%= lc_text_class(size: :small, tone: :muted) %>" data-slot="dialog-description"><%= description %></p><% end %>
-        </div>
-        <button type="button" class="<%= lc_icon_button_class(size: :sm, shape: :circle, extra: "-me-related -mt-tight") %>" aria-label="<%= lc_t("lostcoords.ui.dialog.close", title: title) %>" data-action="lc-dialog#close"><%= lc_icon "x-mark", options: { "aria-hidden": true } %></button>
-      </header>
-      <%= content %>
-    </div>
-  <% end %>
-</div>
+<%# locals: (id:, title:, description:, trigger:, detents:, close_action:, close_label:, attributes:, actions:, content:) %>
+<% dialog = lc_sheet(tag: :dialog, detents: detents, **attributes) do %>
+  <div class="flex min-h-0 flex-col gap-inset p-inset sm:h-full sm:max-h-[inherit]" data-slot="dialog-content">
+    <header class="flex shrink-0 items-start justify-between gap-content" data-slot="dialog-header">
+      <div class="flex min-w-0 flex-col gap-tight">
+        <%= title %>
+        <%= description %>
+      </div>
+      <div class="flex shrink-0 items-center gap-related -me-related -mt-tight" data-slot="dialog-actions">
+        <%= actions %>
+        <button type="button" class="<%= lc_icon_button_class(size: :sm, shape: :circle) %>" aria-label="<%= close_label %>" data-action="<%= close_action %>" data-slot="dialog-dismiss"><%= lc_icon "x-mark", options: { "aria-hidden": true } %></button>
+      </div>
+    </header>
+    <div class="-mx-inset -mb-inset flex min-h-0 flex-1 flex-col gap-inset px-inset pb-inset sm:overflow-y-auto sm:overscroll-contain" data-slot="dialog-body"><%= content %></div>
+  </div>
+<% end %>
+<% if trigger %>
+  <div data-controller="lc-dialog">
+    <button type="button" class="<%= lc_button_class(variant: :secondary) %>" aria-haspopup="dialog" aria-controls="<%= id %>" data-action="lc-dialog#open" data-slot="dialog-trigger"><%= trigger %></button>
+    <%= dialog %>
+  </div>
+<% else %>
+  <%= dialog %>
+<% end %>
