@@ -1,0 +1,10 @@
+<%= lc_collapsible card: false, indicator: :chevron, class: "w-full max-w-80", summary_class: "rounded-2xl px-3 font-medium hover:bg-accent" do |collapsible| %>
+  <% collapsible.summary do %>
+    <span class="me-auto">Language</span>
+    <span class="font-normal text-muted-foreground">English</span>
+  <% end %>
+  <%= lc_toggle_group label: "Language", value: "en" do %>
+    <%= lc_toggle_group_item "English", value: "en", selected: true %>
+    <%= lc_toggle_group_item "日本語", value: "ja" %>
+  <% end %>
+<% end %>

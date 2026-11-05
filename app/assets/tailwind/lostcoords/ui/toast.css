@@ -1,15 +1,21 @@
 @layer components {
   /* lc-toast-region opens it as a popover; these rules also override the
-     popover defaults, which would centre it and hide it while closed. */
+     popover defaults, which would centre it and hide it while closed. A
+     mobile placement sets every edge, so it fully replaces the desktop one. */
   .lc-toast-region {
+    --_lc-toast-top: calc(var(--lc-toast-offset-top, var(--lc-toast-offset)) + env(safe-area-inset-top));
+    --_lc-toast-bottom: calc(var(--lc-toast-offset-bottom, var(--lc-toast-offset)) + env(safe-area-inset-bottom));
+
     position: fixed;
-    inset: auto var(--spacing-gutter) var(--spacing-gutter) auto;
+    inset-block: auto var(--_lc-toast-bottom);
+    inset-inline: auto var(--lc-toast-offset);
     z-index: var(--lc-z-toast);
     display: flex;
     flex-direction: column;
     align-items: flex-end;
     gap: var(--spacing-related);
-    max-inline-size: calc(100vw - var(--spacing-gutter) * 2);
+    inline-size: fit-content;
+    max-inline-size: calc(100vw - var(--lc-toast-offset) * 2);
     margin: 0;
     padding: 0;
     overflow: visible;
@@ -17,7 +23,31 @@
     background: none;
     color: inherit;
 
-    &:dir(rtl) { inset: auto auto var(--spacing-gutter) var(--spacing-gutter); }
+    &[data-placement^="top"] { inset-block: var(--_lc-toast-top) auto; }
+
+    &[data-placement$="center"] {
+      inset-inline: var(--lc-toast-offset);
+      margin-inline: auto;
+      align-items: center;
+    }
+
+    @media (width < 40rem) {
+      &[data-mobile-placement^="top"] { inset-block: var(--_lc-toast-top) auto; }
+      &[data-mobile-placement^="bottom"] { inset-block: auto var(--_lc-toast-bottom); }
+
+      &[data-mobile-placement$="center"] {
+        inset-inline: var(--lc-toast-offset);
+        margin-inline: auto;
+        align-items: center;
+      }
+
+      &[data-mobile-placement$="end"] {
+        inset-inline: auto var(--lc-toast-offset);
+        margin-inline: 0;
+        align-items: flex-end;
+      }
+    }
+
     &:empty { display: none; }
   }
 }

@@ -9,6 +9,8 @@ module Lostcoords::Ui
       "--foreground" => "Main text and headings",
       "--card" => "Cards and grouped content",
       "--card-foreground" => "Text on cards",
+      "--card-input" => "Fields on cards; defaults to --input",
+      "--card-secondary" => "Secondary buttons on cards; defaults to --secondary",
       "--popover" => "Menus, popovers and dialogs",
       "--popover-foreground" => "Text on menus, popovers and dialogs",
       "--primary" => "Primary actions, links, selected states and keyboard focus",
@@ -26,7 +28,7 @@ module Lostcoords::Ui
       "--input" => "Input and toggle fills",
       "--ring" => "Keyboard focus ring; unset, it follows --primary"
     }.freeze
-    FONTS = %w[--font-sans --font-display --font-mono --font-japanese].freeze
+    FONTS = %w[--font-sans --font-display --font-mono --font-eyebrow --font-japanese].freeze
 
     def self.names
       (COLORS.keys + FONTS).sort

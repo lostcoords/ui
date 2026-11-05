@@ -2,14 +2,20 @@
   /* Padding comes from --lc-inset, so a card that sets --lc-inset passes the
      same rhythm to everything inside it. */
 
-  /* Inputs keep their --input fill on cards. Fills that are muted on the page
-     (choice tiles, alerts, neutral badges, skeletons) switch to the page
-     background, and toggle group tracks to the accent fill, so they stay
-     visible on the muted card. */
-  .lc-card {
+  /* Fills that are muted on the page (choice tiles, alerts, neutral badges,
+     skeletons) switch to the page background, and toggle group tracks to the
+     accent fill, so they stay visible on the muted card. Fields and secondary
+     buttons take --card-input and --card-secondary. List rows are card
+     surfaces too. */
+  .lc-card, .lc-list-row {
     --lc-tile-bg: var(--background);
     --lc-track-bg: var(--accent);
+    --lc-field-bg: var(--card-input);
+    --secondary: var(--card-secondary);
     --lc-avatar-cutout: var(--lc-card-bg, var(--card));
+  }
+
+  .lc-card {
     background: var(--lc-card-bg, var(--card));
     color: var(--card-foreground);
     border: var(--lc-card-border, thin solid transparent);

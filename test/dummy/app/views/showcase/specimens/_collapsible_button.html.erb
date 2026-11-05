@@ -1,0 +1,9 @@
+<%= lc_collapsible card: false, indicator: :none, class: "w-full max-w-80", summary_class: lc_button_class(variant: :secondary, size: :sm, extra: "w-fit") do |collapsible| %>
+  <% collapsible.summary do %>
+    <%= lc_icon "user-plus", options: { "aria-hidden": true } %>
+    <span>Invite people</span>
+  <% end %>
+  <%= lc_field label: "Email", id: "EXAMPLE_ID-email" do |field| %>
+    <%= lc_input name: "email", type: :email, **field %>
+  <% end %>
+<% end %>

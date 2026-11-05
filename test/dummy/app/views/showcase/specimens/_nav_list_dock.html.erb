@@ -1,0 +1,7 @@
+<%# On phones, fix it to the bottom with your own classes. layout: :responsive is a dock below sm and a row from sm. %>
+<%= lc_nav_list label: "Group", layout: :dock, indicator: true, class: lc_glass_class(thick: true, extra: "w-full max-w-sm") do |nav| %>
+  <%= nav.link "Overview", "#overview", icon: "document-text", current: true %>
+  <%= nav.link "Members", "#members", icon: "users" %>
+  <%= nav.link "Activity", "#activity", icon: "clock" %>
+  <%= nav.link "Stats", "#stats", icon: "chart-bar" %>
+<% end %>

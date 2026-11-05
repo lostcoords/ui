@@ -35,6 +35,12 @@
       &[data-closing]::details-content { block-size: 0; }
     }
 
+    & > summary > [data-slot="collapsible-indicator"] {
+      transition: rotate 320ms var(--lc-ease-out-expo);
+    }
+
+    &[open]:not([data-closing]) > summary > [data-slot="collapsible-indicator"] { rotate: 180deg; }
+
     /* The global reduced-motion reset's *::after does not reach this pseudo. */
     @media (prefers-reduced-motion: reduce) {
       &::details-content { transition-duration: 0.01ms; }

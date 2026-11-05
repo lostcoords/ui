@@ -16,6 +16,15 @@ module Lostcoords::Ui
       end
     end
 
+    test "stacks and inline groups render as the element their content needs" do
+      list = Nokogiri::HTML.fragment(@view.lc_stack(as: :ul, gap: :related) { @view.tag.li("One") }).at_css("ul.gap-related li")
+      aside = Nokogiri::HTML.fragment(@view.lc_inline(as: "aside", aria: { label: "Filters" })).at_css("aside")
+
+      assert_equal "One", list.text
+      assert_equal "Filters", aside["aria-label"]
+      assert_raises(ArgumentError) { @view.lc_stack(as: :span) }
+    end
+
     test "named spacing accepts strings and caller utilities override defaults" do
       stack = fragment(@view.lc_stack(gap: "section", class: "gap-4") { "Content" }).at_css("div")
       assert_includes stack["class"].split, "gap-4"
@@ -58,6 +67,18 @@ module Lostcoords::Ui
       action = @view.tag.button("Add", type: "button")
       captured = fragment(@view.lc_section(title: "Expenses", actions: action) { "Body" })
       assert_equal "Add", captured.at_css('header button[type="button"]').text
+    end
+
+    test "section headers hold a heading row and glass takes an element" do
+      header = fragment(@view.lc_section_header(id: "head") { @view.lc_heading("Groups") }).at_css("header#head")
+      assert_equal @view.lc_section_header_class.split, header["class"].split
+      assert fragment(@view.lc_section_header(as: :div) { "" }).at_css("div")
+      assert fragment(@view.lc_section(title: "Groups") { "" }).at_css("section > header h2")
+
+      glass = fragment(@view.lc_glass(shape: :panel, as: :label, for: "q") { "Search" }).at_css("label[for=q][data-slot=glass]")
+      assert_includes glass["class"].split, "lc-glass"
+      assert_includes glass["class"].split, "rounded-3xl"
+      assert_raises(ArgumentError) { @view.lc_glass(as: :button) }
     end
 
     test "unknown spacing sizes blank titles and invalid heading levels are rejected" do

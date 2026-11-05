@@ -11,8 +11,8 @@ async function _verifyThemeRoles(page) {
     document.querySelector("#theme-color-table [data-token-value]")?.textContent.trim(),
   )
   verify(
-    (await page.locator("#theme-color-table [data-token]").count()) === 20,
-    "The everyday reference contains the twenty shadcn color roles",
+    (await page.locator("#theme-color-table [data-token]").count()) === 22,
+    "The everyday reference contains the twenty shadcn color roles and the two card surface roles",
   )
   verify(
     await page.locator("#style-settings").evaluate((element) => !element.closest("details")),
@@ -36,7 +36,7 @@ async function _verifyThemeRoles(page) {
     "Style settings filter by purpose",
   )
   verify(
-    (await page.locator("#theme-color-table [data-token]:visible").count()) === 20,
+    (await page.locator("#theme-color-table [data-token]:visible").count()) === 22,
     "Filtering style settings leaves everyday colors visible",
   )
   await page.locator("#foundation-token-filter").evaluate((element) => {

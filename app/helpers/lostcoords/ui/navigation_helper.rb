@@ -8,8 +8,38 @@ module Lostcoords::Ui
       primary: "text-primary decoration-current/40 hover:decoration-current"
     }.freeze
 
-    NAV_LINK = "flex min-w-0 items-center rounded-xl lc-squircle no-underline transition-colors duration-(--lc-motion-quick) " \
-      "text-muted-foreground hover:text-foreground aria-[current=page]:text-foreground"
+    NAV_LINK = "flex min-w-0 items-center gap-related rounded-xl lc-squircle no-underline transition-colors duration-(--lc-motion-quick) " \
+      "text-muted-foreground hover:text-foreground aria-[current=page]:text-foreground [&_svg]:shrink-0 " \
+      "group-data-[indicator]/nav:relative group-data-[indicator]/nav:aria-[current=page]:bg-transparent"
+
+    # Each layout styles the list and its links; the indicator fill follows the links' corners.
+    NAV_LAYOUTS = {
+      column: {
+        list: "m-0 flex list-none flex-col gap-px p-0",
+        link: "[&_svg]:size-4.5",
+        indicator: "rounded-xl lc-squircle"
+      },
+      row: {
+        list: "m-0 flex min-w-0 list-none flex-wrap items-center gap-tight p-0",
+        link: "shrink-0 justify-center [&_svg]:size-4.5",
+        indicator: "rounded-xl lc-squircle"
+      },
+      dock: {
+        list: "m-0 grid list-none grid-flow-col auto-cols-fr gap-0.5 rounded-pill p-tight",
+        link: "min-h-14 flex-col justify-center gap-0.5 rounded-pill px-0 text-caption font-semibold hover:bg-transparent [&_svg]:size-6",
+        indicator: "rounded-pill"
+      },
+      responsive: {
+        list: "m-0 list-none p-0 max-sm:grid max-sm:grid-flow-col max-sm:auto-cols-fr max-sm:gap-0.5 max-sm:rounded-pill max-sm:p-tight " \
+          "sm:flex sm:min-w-0 sm:flex-wrap sm:items-center sm:gap-tight",
+        link: "justify-center max-sm:min-h-14 max-sm:flex-col max-sm:gap-0.5 max-sm:rounded-pill max-sm:px-0 max-sm:text-caption " \
+          "max-sm:font-semibold max-sm:hover:bg-transparent max-sm:[&_svg]:size-6 sm:shrink-0 sm:[&_svg]:size-4.5",
+        indicator: "max-sm:rounded-pill sm:rounded-xl lc-squircle"
+      }
+    }.freeze
+    NAV_INDICATOR = "pointer-events-none absolute start-0 top-0 bg-(--lc-nav-indicator,var(--accent)) opacity-0 " \
+      "transition-[translate,width,height,opacity] duration-[400ms] ease-(--lc-ease-out-expo) motion-reduce:transition-none " \
+      "group-data-[indicator]/nav:opacity-100"
 
     # An inline text link. Prose inside lc_prose styles its links already.
     def lc_link_class(tone: :inherit, extra: nil)
@@ -27,17 +57,30 @@ module Lostcoords::Ui
       link_to(content, url, **lc_attributes({ class: lc_link_class(tone: tone), data: { slot: "link" } }, attributes))
     end
 
-    # compact: true is the quieter style for an "On this page" list.
-    def lc_nav_link_class(compact: false, extra: nil)
+    # compact: true is the quieter style for an "On this page" list, in the column layout only.
+    def lc_nav_link_class(compact: false, layout: :column, extra: nil)
+      layout = lc_option!(:layout, layout, NAV_LAYOUTS.keys)
+      raise ArgumentError, "compact: true needs layout: :column" if compact && layout != :column
+
       size = compact ? "py-tight text-small aria-[current=page]:font-medium" : "min-h-control-md px-3 py-1.5 text-label hover:bg-accent aria-[current=page]:bg-accent aria-[current=page]:font-semibold"
-      lc_tw(NAV_LINK, size, extra)
+      lc_tw(NAV_LINK, size, (NAV_LAYOUTS.dig(layout, :link) unless compact), extra)
     end
 
     # Yields a builder with link and group parts; links mark the current page with aria-current.
-    def lc_nav_list(label:, compact: false, **attributes, &block)
+    # layout: :row lays links in a line, :dock stacks each icon above its label in equal cells for a
+    # phone's bottom bar, and :responsive is a dock below sm and a row from sm. indicator: true slides
+    # one fill to the current link, starting where it was on the previous page.
+    def lc_nav_list(label:, compact: false, layout: :column, indicator: false, **attributes, &block)
       lc_label!(label, :label)
-      tag.nav(**lc_attributes({ aria: { label: label }, data: { slot: "nav-list", compact: (true if compact) } }, attributes)) do
-        tag.ul(capture(Parts::NavList.new(self, compact), &block), class: "m-0 flex list-none flex-col gap-px p-0")
+      layout = lc_option!(:layout, layout, NAV_LAYOUTS.keys)
+      raise ArgumentError, "compact: true needs layout: :column" if compact && layout != :column
+
+      data = { slot: "nav-list", compact: (true if compact), layout: (layout unless layout == :column), controller: ("lc-nav" if indicator) }.compact
+      tag.nav(**lc_attributes({ class: ("group/nav relative" if indicator), aria: { label: label }, data: data }, attributes)) do
+        safe_join([
+          (tag.span(class: lc_tw(NAV_INDICATOR, NAV_LAYOUTS.dig(layout, :indicator)), aria: { hidden: true }, data: { slot: "nav-indicator", lc_nav_target: "indicator" }) if indicator),
+          tag.ul(capture(Parts::NavList.new(self, compact, layout, indicator), &block), class: NAV_LAYOUTS.dig(layout, :list))
+        ].compact)
       end
     end
 
@@ -106,8 +149,8 @@ module Lostcoords::Ui
 
     # Yields a builder; each `tabs.panel "Label" do … end` adds a tab and its panel.
     # orientation: :vertical stacks the tabs beside the panels and moves them with Arrow Up and Down.
-    # activation: :manual moves focus with the arrows and selects with Enter or Space.
-    def lc_tabs(id:, label:, selected: nil, orientation: :horizontal, activation: :automatic, **attributes, &block)
+    # activation: :manual moves focus with the arrows and selects with Enter or Space. list: adds attributes to the tab list.
+    def lc_tabs(id:, label:, selected: nil, orientation: :horizontal, activation: :automatic, list: {}, **attributes, &block)
       lc_label!(id, :id)
       lc_label!(label, :label)
       orientation = lc_option!(:orientation, orientation, TABS_ORIENTATIONS.keys)
@@ -123,7 +166,9 @@ module Lostcoords::Ui
       key = ->(panel) { "#{id}-#{panel.value.gsub(/[^\w-]+/, '-')}" }
       ids = tabs.panels.map(&key)
       raise ArgumentError, "tab values #{tabs.panels.map(&:value).inspect} produce duplicate ids" unless ids.uniq.size == ids.size
-      list = tag.div(role: "tablist", aria: { label: label, orientation: (orientation if orientation == :vertical) }, class: lc_toggle_group_class(extra: layout[:list]), data: { slot: "tabs-list" }) do
+      list_attributes = lc_attributes({ class: lc_toggle_group_class(extra: layout[:list]), data: { slot: "tabs-list" } }, list,
+        { role: "tablist", aria: { label: label, orientation: (orientation if orientation == :vertical) } })
+      tablist = tag.div(**list_attributes) do
         safe_join(tabs.panels.map do |panel|
           active = panel.value == selected
           tag.button(panel.label, type: "button", role: "tab", id: "#{key.(panel)}-tab", tabindex: (active ? 0 : -1),
@@ -137,7 +182,7 @@ module Lostcoords::Ui
       end
       data = { slot: "tabs", controller: "lc-tabs", lc_tabs_activation_value: (activation.to_s if activation == :manual) }.compact
       tag.div(**lc_attributes({ id: id, class: layout[:root], data: data }, attributes)) do
-        safe_join([ list, *panels ])
+        safe_join([ tablist, *panels ])
       end
     end
   end

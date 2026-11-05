@@ -10,7 +10,13 @@
       <%= lc_text "Train tickets" %>
     <% end %>
   <% end %>
-  <%= lc_section title: "Members" do %>
+  <%= lc_stack as: :section, gap: :heading do %>
+    <%= lc_section_header do %>
+      <%= lc_stack gap: :tight do %>
+        <%= lc_heading "Members" %>
+        <%= lc_text "Everyone who can see this workspace.", size: :small, tone: :muted %>
+      <% end %>
+    <% end %>
     <%= lc_card do %>
       <%= lc_inline do %>
         <%= lc_avatar "AK", class: "bg-primary" %>

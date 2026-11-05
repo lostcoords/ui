@@ -21,5 +21,11 @@ module Lostcoords::Ui
     def lc_glass_class(shape: :bar, thick: false, extra: nil)
       lc_tw("lc-glass", GLASS_SHAPES.fetch(lc_option!(:shape, shape, GLASS_SHAPES.keys)), (GLASS_THICK if thick), extra)
     end
+
+    GLASS_ELEMENTS = %i[div span label section aside header footer nav].freeze
+
+    def lc_glass(shape: :bar, thick: false, as: :div, **attributes, &block)
+      tag.public_send(lc_option!(:as, as, GLASS_ELEMENTS), **lc_attributes({ class: lc_glass_class(shape: shape, thick: thick), data: { slot: "glass" } }, attributes), &block)
+    end
   end
 end

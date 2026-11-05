@@ -70,6 +70,7 @@
 
 @theme {
   --font-display: var(--font-sans);
+  --font-eyebrow: var(--font-mono);
   --font-japanese: "Hiragino Sans", "Yu Gothic", "YuGothic", "Meiryo", ui-sans-serif, system-ui, sans-serif;
 
   /* Type roles. Each sets size, line height, tracking and weight together. */
@@ -98,6 +99,10 @@
   --text-label--font-weight: 500;
   --text-caption: 0.75rem;
   --text-caption--line-height: 1rem;
+  --text-eyebrow: 0.75rem;
+  --text-eyebrow--line-height: 1rem;
+  --text-eyebrow--letter-spacing: 0.1em;
+  --text-eyebrow--font-weight: 500;
 
   --container-page: 75rem;
   --container-reading: 65ch;
@@ -136,6 +141,10 @@
     --lc-z-overlay: 60;
     --lc-z-toast: 70;
 
+    /* Distance from the screen edge to the toast region, on top of the safe area.
+       --lc-toast-offset-top and --lc-toast-offset-bottom override one edge. */
+    --lc-toast-offset: var(--lc-gutter);
+
     --background: oklch(100% 0 0deg);
     --foreground: oklch(23.1% 0 0deg);
 
@@ -148,6 +157,11 @@
     --primary-foreground: #fff;
     --secondary: var(--accent);
     --secondary-foreground: var(--foreground);
+
+    /* Fields and secondary buttons inside a card. Point them at another fill when --card
+       matches --input or --secondary, or they vanish on cards. */
+    --card-input: var(--input);
+    --card-secondary: var(--secondary);
     --muted: oklch(97.6% 0 0deg);
     --muted-foreground: oklch(48% 0 0deg);
     --accent: oklch(95.2% 0 0deg);

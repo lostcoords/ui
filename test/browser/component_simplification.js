@@ -11,8 +11,8 @@ async function _verifyComponentSimplification(page) {
   verify(
     (await page
       .locator('aside nav[aria-label="Documentation"] a[href^="/components/"]')
-      .count()) === 38,
-    "The sidebar groups the catalog into 38 component and foundation pages",
+      .count()) === 40,
+    "The sidebar groups the catalog into 40 component and foundation pages",
   )
   await page.emulateMedia({ reducedMotion: "reduce" })
   try {
@@ -79,8 +79,9 @@ async function _verifyComponentSimplification(page) {
     const stage = page.locator("#example-2 [data-example-preview]")
     const trigger = stage.locator('button[data-action="lc-dialog#open"]')
     const dialog = stage.locator("dialog")
-    await page.waitForFunction(async () => {
-      const { application } = await import("controllers/application")
+    await page.waitForFunction(() => {
+      const application = window.Stimulus
+      if (!application) return false
       const dialog = document.querySelector("#example-2 dialog")
       return dialog && application.getControllerForElementAndIdentifier(dialog, "lc-sheet")
     })

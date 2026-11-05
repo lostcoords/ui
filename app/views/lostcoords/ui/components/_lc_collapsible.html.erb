@@ -1,5 +1,5 @@
-<%# locals: (title:, attributes:, content:) %>
+<%# locals: (summary:, summary_attributes:, attributes:, content:) %>
 <%= tag.details(**attributes) do %>
-  <summary class="cursor-pointer text-label font-semibold"><%= title %></summary>
-  <div class="pt-heading"><%= content %></div>
+  <%= tag.summary(summary, **summary_attributes) %>
+  <div class="pt-heading" data-slot="collapsible-content"><%= content %></div>
 <% end %>

@@ -1,0 +1,4 @@
+<%# Centred at the bottom, and at the top on phones, clear of a bottom tab bar. %>
+<%= lc_toast_region id: "EXAMPLE_ID-toasts", placement: :bottom_center, mobile_placement: :top_center %>
+<template id="EXAMPLE_ID-toast"><%= lc_toast "Expense added." %></template>
+<%= lc_button "Add expense", data: { controller: "toast-demo", action: "toast-demo#show", toast_demo_template_value: "EXAMPLE_ID-toast", toast_demo_region_value: "EXAMPLE_ID-toasts" } %>

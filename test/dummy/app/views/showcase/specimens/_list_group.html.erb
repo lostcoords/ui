@@ -1,0 +1,19 @@
+<%= lc_list_section "Sign-in methods", id: "EXAMPLE_ID", footnote: "Keep at least one way to sign in.", class: "w-full max-w-md" do %>
+  <%= lc_list_group do %>
+    <%= lc_list_row "Email", subtitle: "ada@example.com", icon: "envelope" do %>
+      <%= lc_button "Change", variant: :secondary, size: :sm %>
+    <% end %>
+    <%= lc_list_row "Passkey", subtitle: "Not set up", icon: "key" do %>
+      <%= lc_button "Add", variant: :secondary, size: :sm %>
+    <% end %>
+    <%= lc_list_row "Sign-in alerts", subtitle: "Email me when a new device signs in", icon: "bell", tag: :label, class: "cursor-pointer" do %>
+      <input type="checkbox" role="switch" name="alerts" class="<%= lc_switch_class %>" checked>
+    <% end %>
+    <%= lc_list_row "Recovery codes", icon: "document-text", href: "#recovery-codes" do %>
+      <%= lc_icon "chevron-right", variant: :mini, options: { class: "size-5 text-muted-foreground rtl:rotate-180", "aria-hidden": true } %>
+    <% end %>
+    <%= lc_list_row padded: false do %>
+      <%= lc_list_item "Delete account", icon: "trash", tag: :button, type: "button", class: "w-full cursor-pointer rounded-[inherit] text-destructive transition-colors hover:bg-accent" %>
+    <% end %>
+  <% end %>
+<% end %>

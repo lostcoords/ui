@@ -10,6 +10,8 @@ module Lostcoords::Ui
       section: "gap-section"
     }.freeze
 
+    LAYOUT_ELEMENTS = %i[div section article aside header footer nav main form fieldset ul ol li].freeze
+
     CONTAINER_SIZES = {
       page: "lc-container-page max-w-page",
       reading: "max-w-reading",
@@ -36,12 +38,13 @@ module Lostcoords::Ui
       lc_inline_class(extra: lc_tw("min-h-control-md justify-between", extra))
     end
 
-    def lc_stack(gap: :content, **attributes, &block)
-      tag.div(**lc_attributes({ class: lc_stack_class(gap: gap) }, attributes), &block)
+    # as: picks the element, such as :section, :ul or :form, for layout that carries meaning.
+    def lc_stack(gap: :content, as: :div, **attributes, &block)
+      tag.public_send(lc_option!(:as, as, LAYOUT_ELEMENTS), **lc_attributes({ class: lc_stack_class(gap: gap) }, attributes), &block)
     end
 
-    def lc_inline(gap: :related, **attributes, &block)
-      tag.div(**lc_attributes({ class: lc_inline_class(gap: gap) }, attributes), &block)
+    def lc_inline(gap: :related, as: :div, **attributes, &block)
+      tag.public_send(lc_option!(:as, as, LAYOUT_ELEMENTS), **lc_attributes({ class: lc_inline_class(gap: gap) }, attributes), &block)
     end
 
     def lc_container(size: :page, **attributes, &block)
@@ -54,9 +57,14 @@ module Lostcoords::Ui
       tag.section(**lc_attributes({ class: lc_stack_class(gap: :heading) }, attributes)) do
         heading = lc_heading(title, level: level, size: :heading)
         action_content = actions.respond_to?(:call) ? capture(&actions) : actions
-        header = tag.header(class: lc_section_header_class) { safe_join([ heading, action_content ].compact) }
+        header = lc_section_header { safe_join([ heading, action_content ].compact) }
         safe_join([ header, lc_stack(&block) ])
       end
+    end
+
+    # The heading row of a section whose heading needs more than a title, such as a lede under it.
+    def lc_section_header(as: :header, **attributes, &block)
+      tag.public_send(lc_option!(:as, as, %i[header div]), **lc_attributes({ class: lc_section_header_class }, attributes), &block)
     end
   end
 end

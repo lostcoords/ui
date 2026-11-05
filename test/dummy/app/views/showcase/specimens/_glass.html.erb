@@ -1,0 +1,6 @@
+<div class="relative isolate grid h-64 w-full place-items-center overflow-hidden rounded-3xl bg-linear-to-br from-success/40 via-warning/40 to-primary/30 p-6">
+  <%= lc_glass as: :label, class: "flex w-full max-w-sm items-center gap-related min-h-control-lg px-content" do %>
+    <%= lc_icon "magnifying-glass", options: { class: "size-5 text-muted-foreground", "aria-hidden": true } %>
+    <input type="search" class="min-w-0 flex-1 bg-transparent outline-none" placeholder="Search expenses" aria-label="Search expenses">
+  <% end %>
+</div>

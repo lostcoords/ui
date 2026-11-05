@@ -6,7 +6,7 @@ require "open3"
 module Lostcoords::Ui
   class TokensTest < ActiveSupport::TestCase
     test "the public color settings describe roles and omit rendering aliases" do
-      assert_equal %w[background foreground card card-foreground popover popover-foreground primary primary-foreground secondary secondary-foreground muted muted-foreground accent accent-foreground destructive success warning border input ring], Tokens::COLORS.keys.map { |name| name.delete_prefix("--") }
+      assert_equal %w[background foreground card card-foreground card-input card-secondary popover popover-foreground primary primary-foreground secondary secondary-foreground muted muted-foreground accent accent-foreground destructive success warning border input ring], Tokens::COLORS.keys.map { |name| name.delete_prefix("--") }
       assert_empty TOKENS.grep(/\A--(?:color-|lch-)/)
       theme = File.read(Tokens::THEME_PATH)
       Tokens::COLORS.each_key { |name| assert_match(/#{Regexp.escape(name)}(?::|,)/, theme) }
