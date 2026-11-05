@@ -106,7 +106,7 @@ async function _verifyKeyboard(page) {
   await options.first().focus()
   await page.keyboard.press("ArrowLeft")
   verify(
-    (await options.last().getAttribute("aria-pressed")) === "true" &&
+    (await options.last().getAttribute("aria-checked")) === "true" &&
       (await options.evaluateAll((nodes) => nodes.filter((node) => node.tabIndex === 0).length)) ===
         1,
     "Toggle group arrows wrap and keep one Tab stop",
@@ -229,6 +229,63 @@ async function _verifyKeyboard(page) {
     "Shortcuts outside an open modal dialog stay quiet",
   )
   await page.evaluate(() => document.getElementById("shortcut-modal").remove())
+
+  // Option on a Mac turns letters into other characters: Option+N reports key "Dead", code "KeyN".
+  await page.evaluate(() => {
+    window.shortcutRuns = 0
+    const button = document.createElement("button")
+    button.id = "alt-shortcut"
+    button.textContent = "New"
+    button.dataset.controller = "lc-shortcut"
+    button.dataset.lcShortcutKeysValue = "alt+n"
+    button.addEventListener("click", () => window.shortcutRuns++)
+    const hint = document.createElement("kbd")
+    hint.id = "shift-hint"
+    hint.dataset.controller = "lc-kbd"
+    hint.dataset.lcKbdKeysValue = "mod+shift+p"
+    document.querySelector("main").append(button, hint)
+  })
+  await page.waitForFunction(
+    () => document.getElementById("alt-shortcut").hasAttribute("aria-keyshortcuts"),
+    null,
+    { polling: 100 },
+  )
+  const pressOption = (code, key) =>
+    page.evaluate(
+      ({ code, key }) =>
+        document.dispatchEvent(
+          new KeyboardEvent("keydown", {
+            key,
+            code,
+            altKey: true,
+            bubbles: true,
+            cancelable: true,
+          }),
+        ),
+      { code, key },
+    )
+  await pressOption("KeyN", "Dead")
+  verify(
+    (await page.evaluate(() => window.shortcutRuns)) === 1,
+    "An alt shortcut fires when Option turns the letter into a dead key",
+  )
+  await pressOption("KeyM", "µ")
+  verify(
+    (await page.evaluate(() => window.shortcutRuns)) === 1,
+    "An alt shortcut ignores other physical keys",
+  )
+  await page.evaluate(() => {
+    const button = document.getElementById("alt-shortcut")
+    document.querySelector("main").prepend(button)
+  })
+  await page.waitForTimeout(100)
+  await pressOption("KeyN", "Dead")
+  verify(
+    (await page.evaluate(() => window.shortcutRuns)) === 2,
+    "A shortcut keeps working after its element moves",
+  )
+  const hint = await page.locator("#shift-hint").textContent()
+  verify(/⇧|Shift/.test(hint) && /P$/.test(hint), "Key hints show Shift with a letter")
 
   // The component picker's typeahead.
   await visit("/components.html")

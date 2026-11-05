@@ -95,6 +95,10 @@ async function _verifyComponentSimplification(page) {
       "Mobile dialogs retain native modal semantics",
     )
     await page.bringToFront()
+    // Measure once the sheet has finished sliding in, or the drag starts at a stale position.
+    await dialog.evaluate((dialog) =>
+      Promise.all(dialog.getAnimations().map((animation) => animation.finished)),
+    )
     const rect = await dialog.boundingBox()
     await page.mouse.move(rect.x + rect.width / 2, rect.y + 8)
     await page.mouse.down()

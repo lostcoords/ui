@@ -168,7 +168,7 @@
         {
           "title": "Mobile height options",
           "url": "https://ui.lostcoords.com/components/dialog.html",
-          "erb": "<%= lc_dialog id: \"my-component-sheet\", title: \"Notes\", detents: \"medium large\" do %>\n  <%= lc_textarea name: \"notes\", rows: 8, aria: { label: \"Notes\" }, placeholder: \"Write something…\" %>\n<% end %>"
+          "erb": "<%= lc_dialog id: \"my-component-sheet\", title: \"Notes\", detents: \"medium large\" do %>\n  <%= lc_textarea name: \"notes\", rows: 16, aria: { label: \"Notes\" }, placeholder: \"Write something…\" %>\n<% end %>"
         },
         {
           "title": "Compact dialog",
@@ -934,7 +934,7 @@
         {
           "title": "Mobile height options",
           "url": "https://ui.lostcoords.com/components/dialog.html",
-          "erb": "<%= lc_dialog id: \"my-component-sheet\", title: \"Notes\", detents: \"medium large\" do %>\n  <%= lc_textarea name: \"notes\", rows: 8, aria: { label: \"Notes\" }, placeholder: \"Write something…\" %>\n<% end %>"
+          "erb": "<%= lc_dialog id: \"my-component-sheet\", title: \"Notes\", detents: \"medium large\" do %>\n  <%= lc_textarea name: \"notes\", rows: 16, aria: { label: \"Notes\" }, placeholder: \"Write something…\" %>\n<% end %>"
         },
         {
           "title": "Textarea",
@@ -1261,7 +1261,7 @@
         {
           "path": "app/javascript/controllers/blocks_header_controller.js",
           "language": "javascript",
-          "source": "import { Controller } from \"@hotwired/stimulus\"\n\nexport default class extends Controller {\n  connect() {\n    this.scroll()\n  }\n\n  scroll() {\n    this.element.toggleAttribute(\"data-scrolled\", window.scrollY > 8)\n  }\n}"
+          "source": "import { Controller } from \"@hotwired/stimulus\"\n\nexport default class extends Controller {\n  connect() {\n    this.scroll()\n  }\n\n  // An open modal pins the body, so scrollY reads 0 until it closes; keep the\n  // state the page had rather than fading the glass out behind the dialog.\n  scroll() {\n    if (document.body.dataset.modalScrollLock === \"true\") return\n    this.element.toggleAttribute(\"data-scrolled\", window.scrollY > 8)\n  }\n}"
         }
       ]
     },

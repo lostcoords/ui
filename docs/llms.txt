@@ -316,7 +316,7 @@ Mobile height options: https://ui.lostcoords.com/components/dialog.html
 
 ```erb
 <%= lc_dialog id: "my-component-sheet", title: "Notes", detents: "medium large" do %>
-  <%= lc_textarea name: "notes", rows: 8, aria: { label: "Notes" }, placeholder: "Write something…" %>
+  <%= lc_textarea name: "notes", rows: 16, aria: { label: "Notes" }, placeholder: "Write something…" %>
 <% end %>
 ```
 
@@ -1963,7 +1963,7 @@ Mobile height options: https://ui.lostcoords.com/components/dialog.html
 
 ```erb
 <%= lc_dialog id: "my-component-sheet", title: "Notes", detents: "medium large" do %>
-  <%= lc_textarea name: "notes", rows: 8, aria: { label: "Notes" }, placeholder: "Write something…" %>
+  <%= lc_textarea name: "notes", rows: 16, aria: { label: "Notes" }, placeholder: "Write something…" %>
 <% end %>
 ```
 
@@ -2666,7 +2666,10 @@ export default class extends Controller {
     this.scroll()
   }
 
+  // An open modal pins the body, so scrollY reads 0 until it closes; keep the
+  // state the page had rather than fading the glass out behind the dialog.
   scroll() {
+    if (document.body.dataset.modalScrollLock === "true") return
     this.element.toggleAttribute("data-scrolled", window.scrollY > 8)
   }
 }

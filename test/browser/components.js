@@ -142,7 +142,7 @@ async function _verifyComponents(page) {
     const selected = page
       .locator('main section[id^="example-"]')
       .first()
-      .locator('[data-lc-selection-target="option"][aria-pressed="true"]')
+      .locator('[data-lc-selection-target="option"][aria-checked="true"]')
     await selected.focus()
     await page.keyboard.press("ArrowRight")
     verify(
@@ -151,7 +151,7 @@ async function _verifyComponents(page) {
     )
     verify((await selected.count()) === 1, "A toggle group keeps exactly one selected option")
 
-    await page.getByRole("button", { name: "Annual", exact: true }).click()
+    await page.getByRole("radio", { name: "Annual", exact: true }).click()
     verify(
       (await page.locator('input[name="billing"]').inputValue()) === "annual",
       "A selected option submits its value",
@@ -162,7 +162,7 @@ async function _verifyComponents(page) {
       "Native form reset restores the initial selection",
     )
     verify(
-      await page.getByRole("button", { name: "Custom", exact: true }).isDisabled(),
+      await page.getByRole("radio", { name: "Custom", exact: true }).isDisabled(),
       "Disabled choices stay disabled",
     )
 

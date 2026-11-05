@@ -20,7 +20,7 @@ module Lostcoords::Ui
       assert_equal "docs_project_name-hint docs_project_name-error", input["aria-describedby"]
       assert_equal "Name can't be blank", html.at_css("[data-slot=field-error]").text
       assert_equal "Name", html.at_css("label[for=docs_project_name]").text
-      assert_nil html.at_css(".field_with_errors:not(:has([data-slot]))")
+      assert_nil html.at_css(".field_with_errors"), "the field shows its own error"
     end
 
     test "valid attributes are not marked invalid" do
@@ -73,7 +73,13 @@ module Lostcoords::Ui
       assert_equal "switch-input", switch["data-slot"]
       assert_equal "docs_project_public-error", switch["aria-describedby"]
       assert_equal "Public must be on", html.at_css("#docs_project_public-error").text
+      assert_nil html.at_css(".field_with_errors"), "no block wrapper inside the inline choice label"
       assert_includes html.at_css("#public_choice")["class"].split, "lc-checkbox"
+    end
+
+    test "other form builders keep Rails' error wrapper" do
+      html = fragment(@view.form_with(model: DocsProject.invalid_example, url: "/projects") { |f| f.text_field(:name) })
+      assert html.at_css(".field_with_errors input#docs_project_name")
     end
 
     test "submit buttons carry the button slots" do

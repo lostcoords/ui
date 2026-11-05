@@ -21,7 +21,7 @@ its gem version, so publishing a library update does not upgrade consumers.
 ## Install
 
 ```ruby
-gem "lostcoords-ui", "~> 0.6.0"
+gem "lostcoords-ui", "~> 0.7.0"
 ```
 
 The engine adds its rendering helpers to host views, its JavaScript to the asset paths and its pins to
@@ -242,7 +242,7 @@ Use `--lc-card-bg`, `--lc-card-border`, `--lc-card-radius` and `--lc-card-shadow
 Badge, icon badge, Alert and Toast share `neutral`, `primary`, `success`, `warning` and `destructive` tones.
 
 `lc_toggle` renders a pressed button. Use `lc_toggle_group` with `lc_toggle_group_item` for mutually exclusive
-choices and a native submitted value. Navigation uses `lc_button_link_to` and `aria-current`, so links keep their native behavior.
+choices and a native submitted value; it is a radiogroup of radio buttons to assistive technology. Navigation uses `lc_button_link_to` and `aria-current`, so links keep their native behavior.
 `lc_collapsible` expands content through a native `<details>` element. `lc_alert` renders persistent inline feedback;
 `lc_toast` adds timed dismissal.
 
@@ -360,7 +360,7 @@ Every interactive component works from the keyboard without extra code:
 |---|---|
 | Menu | Arrow Down or Up on the button opens on the first or last item. Arrows move and wrap, Home and End jump, a letter jumps to the next item that starts with it, Enter or Space activates, Escape closes and returns focus. |
 | Tabs | Arrows along the tab list's orientation, Home and End. Automatic tabs select on focus; manual tabs on Enter or Space. |
-| Toggle group | One Tab stop. All four arrows move and select, wrapping; Left and Right follow the text direction. |
+| Toggle group | One Tab stop. All four arrows move and select, wrapping, as native radios do; Left and Right follow the text direction. |
 | Emoji picker | Arrow Down from the search enters the grid, arrows move through it by row, Arrow Up from the top row returns to the search, and Enter in the search picks the best match. The grid is one Tab stop. |
 | Dialogs, sheets, popovers, menus, tooltips | Escape closes the topmost one and returns focus to what opened it; an open tooltip closes before the menu or dialog around it. Escape in a search field with text clears it first. |
 
@@ -404,6 +404,11 @@ ordered by `--lc-z-popover`, `--lc-z-overlay` and `--lc-z-toast`.
 <%# From a controller or job %>
 <%= turbo_stream.append "toasts" do %><%= lc_toast "Project saved." %><% end %>
 ```
+
+While a modal dialog or sheet is open the page behind it can't scroll: the body is pinned with
+`position: fixed` and marked `data-modal-scroll-lock="true"`, so `window.scrollY` reads 0 until it
+closes. Scroll-driven chrome, such as a header that fills in once the page scrolls, should keep its
+state while that attribute is set; the body's `--lc-scroll-lock-y` holds the real offset.
 
 Two in-page layers remain: `z-sticky` keeps app chrome such as a sticky header above content, and
 `z-raised` lifts an element over its neighbours. Put `isolate` on the main content area, so any z-index
@@ -614,6 +619,9 @@ bin/rails server            # the dummy app in test/dummy
 bin/rails tailwindcss:build
 bin/test
 bin/lint
+npx playwright install chromium   # once
+bin/browser-test            # every suite in test/browser, headless, against its own docs server
+bin/browser-test sheets     # one suite; BASE_URL=https://ui.localhost reuses a running server
 ```
 
 The icon catalog and its MIT license live in `vendor/heroicons`. Regenerate them from the pinned

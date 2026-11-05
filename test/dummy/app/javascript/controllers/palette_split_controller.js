@@ -40,23 +40,32 @@ export default class extends Controller {
     // measure() laid the bands out folded, so this change transitions.
     this.setState("opening")
     this.setFates(() => "open")
+    // The current palette takes focus so the keyboard starts there, but it
+    // only lights up once the pointer or the arrow keys pick a band.
+    this.focusShown = false
     this.currentChoice().focus()
     this.settle().then((settled) => {
       if (!settled) return
       this.setState("open")
       const hovered = this.choiceTargets().findIndex((choice) =>
-        choice.matches(":hover, :focus-visible"),
+        choice.matches(this.focusShown ? ":hover, :focus-visible" : ":hover"),
       )
       this.layout(hovered < 0 ? undefined : hovered)
     })
   }
 
-  hover({ currentTarget }) {
-    if (this.state === "open") this.layout(this.choiceTargets().indexOf(currentTarget))
+  // While the bands are still drawing in, hovering marks the band without
+  // resizing it, so its frost and label respond at once.
+  hover({ type, currentTarget }) {
+    if (type === "focus" && !this.focusShown) return
+    const index = this.choiceTargets().indexOf(currentTarget)
+    if (this.state === "open") this.layout(index)
+    else if (this.state === "opening") this.markHovered(index)
   }
 
   unhover() {
     if (this.state === "open") this.layout()
+    else if (this.state === "opening") this.markHovered()
   }
 
   choose({ currentTarget }) {
@@ -90,6 +99,7 @@ export default class extends Controller {
     }[event.key]
     if (next === undefined) return
     event.preventDefault()
+    this.focusShown = true
     choices[(next + choices.length) % choices.length].focus()
   }
 
@@ -143,10 +153,15 @@ export default class extends Controller {
       band.style.setProperty("--from", index === 0 ? "calc(-1 * var(--split-slant))" : `${start}%`)
       band.style.setProperty("--to", index === last ? "calc(100% + var(--split-slant))" : `${end}%`)
       band.style.setProperty("--center", `${(start + end) / 2}%`)
-      band.toggleAttribute("data-hovered", index === hovered)
       start = end
     })
-    this.dialogTarget.toggleAttribute("data-hovering", hovered !== undefined)
+    this.markHovered(hovered)
+  }
+
+  markHovered(hovered) {
+    this.bandTargets.forEach((band, index) => {
+      band.toggleAttribute("data-hovered", index === hovered)
+    })
   }
 
   setFates(fate) {

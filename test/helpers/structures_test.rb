@@ -81,10 +81,10 @@ module Lostcoords::Ui
         @view.safe_join([ @view.lc_toggle_group_item("Month", value: "month", selected: true), @view.lc_toggle_group_item("Year", value: "year") ])
       end
       group = fragment(html)
-      assert_equal "lc-selection analytics", group.at_css("[role=group]")["data-controller"]
+      assert_equal "lc-selection analytics", group.at_css("[role=radiogroup]")["data-controller"]
       assert_equal "month", group.at_css("input[name=period]")["value"]
       assert_equal [ "button", "button" ], group.css("button").map { |button| button["type"] }
-      assert_equal [ "true", "false" ], group.css("button").map { |button| button["aria-pressed"] }
+      assert_equal [ "true", "false" ], group.css("button[role=radio]").map { |button| button["aria-checked"] }
       pill = fragment(@view.lc_toggle("Design", active: true, data: { action: "filters#change" }))
       assert_equal "lc-toggle", pill.at_css("button")["data-controller"]
       assert_equal "click->lc-toggle#toggle filters#change", pill.at_css("button")["data-action"]

@@ -155,8 +155,11 @@ export default class extends Controller {
     if (this.gesture?.dragging) this.track(event.clientY, event.timeStamp)
   }
 
-  onPointerUp() {
+  // A mouse drag that ends off the sheet is followed by a click on the
+  // <dialog> itself, which reads as a backdrop click and would close it.
+  onPointerUp(event) {
     this.stopMouseTracking()
+    if (this.gesture && Math.abs(event.clientY - this.gesture.startY) > 4) swallowNextClick()
     this.onTouchEnd()
   }
 
@@ -419,4 +422,13 @@ export default class extends Controller {
   get isSheet() {
     return isSheetViewport()
   }
+}
+
+function swallowNextClick() {
+  const swallow = (event) => {
+    event.preventDefault()
+    event.stopImmediatePropagation()
+  }
+  window.addEventListener("click", swallow, { capture: true, once: true })
+  setTimeout(() => window.removeEventListener("click", swallow, { capture: true }), 0)
 }

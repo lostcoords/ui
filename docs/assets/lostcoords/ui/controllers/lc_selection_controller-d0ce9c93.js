@@ -9,7 +9,7 @@ export default class extends Controller {
     const selected = this.options.find((option) =>
       this.hasValueValue
         ? option.dataset.value === this.valueValue
-        : option.getAttribute("aria-pressed") === "true",
+        : option.getAttribute("aria-checked") === "true",
     )
     this.initialOption = selected || this.options[0]
     this.apply(this.initialOption)
@@ -41,7 +41,7 @@ export default class extends Controller {
 
   apply(selected) {
     for (const option of this.optionTargets) {
-      option.setAttribute("aria-pressed", String(option === selected))
+      option.setAttribute("aria-checked", String(option === selected))
       option.tabIndex = option === selected ? 0 : -1
     }
     if (this.hasInputTarget) this.inputTarget.value = selected?.dataset.value || ""

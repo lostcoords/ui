@@ -74,6 +74,8 @@ async function _verifyMotion(page) {
     )
     verify(
       await root.locator('[data-copy-state="copied"]').evaluate((node) => {
+        // A visibility transition reads hidden on its first frame, so settle it first.
+        for (const animation of node.getAnimations()) animation.finish()
         const style = getComputedStyle(node)
         return style.visibility === "visible" && style.transitionProperty.includes("opacity")
       }),

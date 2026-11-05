@@ -7,12 +7,13 @@ module Lostcoords::Ui
       "lc-press inline-flex items-center justify-center gap-1.5 whitespace-nowrap " \
       "h-control-sm rounded-xl border-0 bg-transparent " \
       "px-3 font-sans text-label cursor-pointer no-underline " \
-      "text-muted-foreground hover:text-foreground " \
+      "text-muted-foreground not-disabled:hover:text-foreground " \
       "aria-selected:bg-background aria-selected:text-foreground " \
+      "aria-checked:bg-background aria-checked:text-foreground " \
       "aria-pressed:bg-background aria-pressed:text-foreground " \
       "aria-[current]:not-aria-[current=false]:bg-background aria-[current]:not-aria-[current=false]:text-foreground " \
       "transition-[background-color,color,box-shadow,transform] duration-(--lc-motion-quick) ease-(--lc-ease-out) " \
-      "disabled:opacity-40 disabled:pointer-events-none " \
+      "disabled:cursor-not-allowed disabled:text-[color-mix(in_oklab,var(--foreground)_38%,transparent)] " \
       "[&_svg]:size-[1.1em] [&_svg]:shrink-0"
 
     TOGGLE_GROUP_ITEM_ACTIVE = "bg-background text-foreground hover:text-foreground"

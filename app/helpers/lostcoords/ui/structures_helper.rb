@@ -35,10 +35,12 @@ module Lostcoords::Ui
       end
     end
 
+    # One choice from a few options, as a segmented control. Arrows move and select, like native radios,
+    # so it is a radiogroup of radio buttons to assistive technology.
     def lc_toggle_group(label:, name: nil, value: nil, **attributes, &block)
       lc_label!(label, :label)
-      defaults = { class: lc_toggle_group_class, role: "group", aria: { label: label }, data: { slot: "toggle-group", controller: "lc-selection", action: "click->lc-selection#select keydown->lc-selection#navigate", lc_selection_value_value: value } }
-      tag.div(**lc_attributes(defaults, attributes, { role: "group", aria: { label: label } })) do
+      defaults = { class: lc_toggle_group_class, role: "radiogroup", aria: { label: label }, data: { slot: "toggle-group", controller: "lc-selection", action: "click->lc-selection#select keydown->lc-selection#navigate", lc_selection_value_value: value } }
+      tag.div(**lc_attributes(defaults, attributes, { role: "radiogroup", aria: { label: label } })) do
         safe_join([ (hidden_field_tag(name, value, data: { lc_selection_target: "input" }) if name), (capture(&block) if block) ].compact)
       end
     end
@@ -46,8 +48,8 @@ module Lostcoords::Ui
     def lc_toggle_group_item(label = nil, value: nil, selected: false, **attributes, &block)
       value ||= label
       lc_label!(value, :value)
-      defaults = { class: lc_toggle_group_item_class, type: "button", aria: { pressed: selected }, data: { slot: "toggle-group-item", lc_selection_target: "option", value: value } }
-      required = { type: "button", data: { lc_selection_target: "option", value: value } }
+      defaults = { class: lc_toggle_group_item_class, aria: { checked: selected }, data: { slot: "toggle-group-item" } }
+      required = { type: "button", role: "radio", data: { lc_selection_target: "option", value: value } }
       tag.button(block ? capture(&block) : label, **lc_attributes(defaults, attributes, required))
     end
 

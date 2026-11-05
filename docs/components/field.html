@@ -13,7 +13,7 @@
       const theme = localStorage.getItem("lostcoords-ui:theme")
       if (theme === "dark" || (!theme && matchMedia("(prefers-color-scheme: dark)").matches)) document.documentElement.dataset.theme = "dark"
     </script>
-    <link rel="stylesheet" href="../assets/tailwind-4f85ffe7.css" />
+    <link rel="stylesheet" href="../assets/tailwind-b0decd1e.css" />
 <link rel="stylesheet" href="../assets/blocks/application_header-114f372e.css" />
 <link rel="stylesheet" href="../assets/blocks/docs_shell-8bd5856e.css" />
     
@@ -29,8 +29,8 @@
     "lostcoords/ui/controllers/lc_kbd_controller": "../assets/lostcoords/ui/controllers/lc_kbd_controller-83cd1787.js",
     "lostcoords/ui/controllers/lc_menu_controller": "../assets/lostcoords/ui/controllers/lc_menu_controller-171f985f.js",
     "lostcoords/ui/controllers/lc_popover_controller": "../assets/lostcoords/ui/controllers/lc_popover_controller-00b603b0.js",
-    "lostcoords/ui/controllers/lc_selection_controller": "../assets/lostcoords/ui/controllers/lc_selection_controller-5bd0019b.js",
-    "lostcoords/ui/controllers/lc_sheet_controller": "../assets/lostcoords/ui/controllers/lc_sheet_controller-116874a7.js",
+    "lostcoords/ui/controllers/lc_selection_controller": "../assets/lostcoords/ui/controllers/lc_selection_controller-d0ce9c93.js",
+    "lostcoords/ui/controllers/lc_sheet_controller": "../assets/lostcoords/ui/controllers/lc_sheet_controller-1dd39749.js",
     "lostcoords/ui/controllers/lc_shortcut_controller": "../assets/lostcoords/ui/controllers/lc_shortcut_controller-82108a21.js",
     "lostcoords/ui/controllers/lc_tabs_controller": "../assets/lostcoords/ui/controllers/lc_tabs_controller-9f1d494f.js",
     "lostcoords/ui/controllers/lc_toast_controller": "../assets/lostcoords/ui/controllers/lc_toast_controller-80577e17.js",
@@ -49,8 +49,8 @@
     "controllers/lc_kbd_controller": "../assets/lostcoords/ui/controllers/lc_kbd_controller-83cd1787.js",
     "controllers/lc_menu_controller": "../assets/lostcoords/ui/controllers/lc_menu_controller-171f985f.js",
     "controllers/lc_popover_controller": "../assets/lostcoords/ui/controllers/lc_popover_controller-00b603b0.js",
-    "controllers/lc_selection_controller": "../assets/lostcoords/ui/controllers/lc_selection_controller-5bd0019b.js",
-    "controllers/lc_sheet_controller": "../assets/lostcoords/ui/controllers/lc_sheet_controller-116874a7.js",
+    "controllers/lc_selection_controller": "../assets/lostcoords/ui/controllers/lc_selection_controller-d0ce9c93.js",
+    "controllers/lc_sheet_controller": "../assets/lostcoords/ui/controllers/lc_sheet_controller-1dd39749.js",
     "controllers/lc_shortcut_controller": "../assets/lostcoords/ui/controllers/lc_shortcut_controller-82108a21.js",
     "controllers/lc_tabs_controller": "../assets/lostcoords/ui/controllers/lc_tabs_controller-9f1d494f.js",
     "controllers/lc_toast_controller": "../assets/lostcoords/ui/controllers/lc_toast_controller-80577e17.js",
@@ -71,12 +71,12 @@
     "controllers/application": "../assets/controllers/application-2a5be8ca.js",
     "controllers/block_preview_controller": "../assets/controllers/block_preview_controller-53c37654.js",
     "controllers/block_stage_controller": "../assets/controllers/block_stage_controller-828c99a5.js",
-    "controllers/blocks_header_controller": "../assets/controllers/blocks_header_controller-e160e4c1.js",
+    "controllers/blocks_header_controller": "../assets/controllers/blocks_header_controller-ea06a62f.js",
     "controllers/blocks_mobile_navigation_controller": "../assets/controllers/blocks_mobile_navigation_controller-f3c310d5.js",
     "controllers/blocks_search_controller": "../assets/controllers/blocks_search_controller-dc1c3dc6.js",
     "controllers/component_picker_controller": "../assets/controllers/component_picker_controller-73ac8278.js",
     "controllers": "../assets/controllers/index-954e2bb9.js",
-    "controllers/palette_split_controller": "../assets/controllers/palette_split_controller-65968d3c.js",
+    "controllers/palette_split_controller": "../assets/controllers/palette_split_controller-60c1893a.js",
     "controllers/showcase_controller": "../assets/controllers/showcase_controller-20d1c9a0.js",
     "controllers/toast_demo_controller": "../assets/controllers/toast_demo_controller-3d20af24.js"
   }
@@ -87,12 +87,12 @@
 <link rel="modulepreload" href="../assets/controllers/application-2a5be8ca.js">
 <link rel="modulepreload" href="../assets/controllers/block_preview_controller-53c37654.js">
 <link rel="modulepreload" href="../assets/controllers/block_stage_controller-828c99a5.js">
-<link rel="modulepreload" href="../assets/controllers/blocks_header_controller-e160e4c1.js">
+<link rel="modulepreload" href="../assets/controllers/blocks_header_controller-ea06a62f.js">
 <link rel="modulepreload" href="../assets/controllers/blocks_mobile_navigation_controller-f3c310d5.js">
 <link rel="modulepreload" href="../assets/controllers/blocks_search_controller-dc1c3dc6.js">
 <link rel="modulepreload" href="../assets/controllers/component_picker_controller-73ac8278.js">
 <link rel="modulepreload" href="../assets/controllers/index-954e2bb9.js">
-<link rel="modulepreload" href="../assets/controllers/palette_split_controller-65968d3c.js">
+<link rel="modulepreload" href="../assets/controllers/palette_split_controller-60c1893a.js">
 <link rel="modulepreload" href="../assets/controllers/showcase_controller-20d1c9a0.js">
 <link rel="modulepreload" href="../assets/controllers/toast_demo_controller-3d20af24.js">
 <script type="module">import "application"</script>
@@ -350,7 +350,7 @@
     
     <div class="flex min-h-48 flex-wrap items-center justify-center gap-4 rounded-2xl bg-muted p-6 sm:p-10 [--lc-tile-bg:var(--background)] [--lc-track-bg:var(--accent)] [--lc-avatar-cutout:var(--muted)]" data-example-preview data-stage="panel">
       <form class="flex w-full max-w-sm flex-col gap-content" action="#" accept-charset="UTF-8" method="post">
-  <div class="lc-field grid min-w-0 gap-related has-aria-invalid:[&amp;&gt;label]:text-destructive" data-slot="field" data-invalid="true"><label for="docs_project_name" class="block font-sans text-label font-semibold text-muted-foreground transition-colors duration-(--lc-motion-quick) ease-(--lc-ease-out)" data-slot="field-label">Name</label><div class="field_with_errors"><input class="w-full max-w-full min-w-0 px-3 font-sans text-base bg-(--lc-field-bg,var(--input)) text-foreground placeholder:text-muted-foreground border border-transparent rounded-xl lc-squircle outline-none transition-[border-color,box-shadow] duration-(--lc-motion-quick) ease-(--lc-ease-out) focus:shadow-[0_0_0_calc(var(--spacing)*0.5)_var(--ring,color-mix(in_oklab,var(--primary)_50%,transparent))] aria-invalid:border-destructive aria-invalid:shadow-[0_0_0_3px_color-mix(in_oklab,var(--destructive)_16%,transparent)] h-control-md" aria-describedby="docs_project_name-hint docs_project_name-error" aria-invalid="true" data-slot="input" type="text" name="docs_project[name]" id="docs_project_name" /></div><p id="docs_project_name-hint" class="m-0 text-small text-muted-foreground" data-slot="field-description">Shown to members.</p><p id="docs_project_name-error" class="m-0 text-small text-destructive" role="alert" data-slot="field-error">Name can&#39;t be blank</p></div>
+  <div class="lc-field grid min-w-0 gap-related has-aria-invalid:[&amp;&gt;label]:text-destructive" data-slot="field" data-invalid="true"><label for="docs_project_name" class="block font-sans text-label font-semibold text-muted-foreground transition-colors duration-(--lc-motion-quick) ease-(--lc-ease-out)" data-slot="field-label">Name</label><input class="w-full max-w-full min-w-0 px-3 font-sans text-base bg-(--lc-field-bg,var(--input)) text-foreground placeholder:text-muted-foreground border border-transparent rounded-xl lc-squircle outline-none transition-[border-color,box-shadow] duration-(--lc-motion-quick) ease-(--lc-ease-out) focus:shadow-[0_0_0_calc(var(--spacing)*0.5)_var(--ring,color-mix(in_oklab,var(--primary)_50%,transparent))] aria-invalid:border-destructive aria-invalid:shadow-[0_0_0_3px_color-mix(in_oklab,var(--destructive)_16%,transparent)] h-control-md" aria-describedby="docs_project_name-hint docs_project_name-error" aria-invalid="true" data-slot="input" type="text" name="docs_project[name]" id="docs_project_name" /><p id="docs_project_name-hint" class="m-0 text-small text-muted-foreground" data-slot="field-description">Shown to members.</p><p id="docs_project_name-error" class="m-0 text-small text-destructive" role="alert" data-slot="field-error">Name can&#39;t be blank</p></div>
   <div class="lc-field grid min-w-0 gap-related has-aria-invalid:[&amp;&gt;label]:text-destructive" data-slot="field"><label for="docs_project_email" class="block font-sans text-label font-semibold text-muted-foreground transition-colors duration-(--lc-motion-quick) ease-(--lc-ease-out)" data-slot="field-label">Email</label><input class="w-full max-w-full min-w-0 px-3 font-sans text-base bg-(--lc-field-bg,var(--input)) text-foreground placeholder:text-muted-foreground border border-transparent rounded-xl lc-squircle outline-none transition-[border-color,box-shadow] duration-(--lc-motion-quick) ease-(--lc-ease-out) focus:shadow-[0_0_0_calc(var(--spacing)*0.5)_var(--ring,color-mix(in_oklab,var(--primary)_50%,transparent))] aria-invalid:border-destructive aria-invalid:shadow-[0_0_0_3px_color-mix(in_oklab,var(--destructive)_16%,transparent)] h-control-md" data-slot="input" type="email" value="team@example.com" name="docs_project[email]" id="docs_project_email" /></div>
   <label class="lc-choice inline-flex min-w-0 items-start gap-related text-body text-foreground cursor-pointer has-disabled:cursor-not-allowed has-disabled:opacity-60" data-slot="switch" for="docs_project_public"><span class="flex h-lh items-center"><input name="docs_project[public]" type="hidden" value="0" /><input role="switch" class="lc-switch shrink-0 m-0 cursor-pointer disabled:cursor-not-allowed disabled:opacity-40" data-slot="switch-input" type="checkbox" value="1" checked="checked" name="docs_project[public]" id="docs_project_public" /></span><span class="flex min-w-0 flex-1 flex-col gap-tight"><span>Public</span><span class="text-small text-muted-foreground">Anyone with the link can view.</span></span></label>
   <input type="submit" name="commit" value="Save project" class="inline-flex items-center justify-center gap-related rounded-pill font-sans whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform,translate,scale,filter] duration-(--lc-motion-control) ease-(--lc-ease-out) motion-safe:not-disabled:hover:-translate-y-px motion-safe:not-disabled:active:translate-y-px active:shadow-none disabled:cursor-not-allowed disabled:shadow-none disabled:[--lc-button-bg:color-mix(in_oklab,var(--foreground)_10%,transparent)] disabled:text-[color-mix(in_oklab,var(--foreground)_38%,transparent)] [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 h-control-md px-4 has-[&gt;[data-icon=inline-start]]:ps-3.5 has-[&gt;[data-icon=inline-end]]:pe-3.5 text-label border border-transparent [--lc-button-bg:var(--primary)] [--lc-button-ink:var(--primary-foreground)] bg-(--lc-button-bg) text-(--lc-button-ink) not-disabled:hover:bg-[color-mix(in_oklab,var(--lc-button-bg,var(--secondary))_94%,var(--lc-button-ink,var(--foreground)))] not-disabled:active:bg-[color-mix(in_oklab,var(--lc-button-bg,var(--secondary))_94%,var(--lc-button-ink,var(--foreground)))]" data-slot="button" data-variant="primary" data-size="md" data-disable-with="Save project" />

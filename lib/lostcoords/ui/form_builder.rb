@@ -1,4 +1,13 @@
 module Lostcoords::Ui
+  # Rails wraps a field with errors in <div class="field_with_errors">. Controls this builder renders show
+  # errors themselves, so the wrapper is skipped while it renders; other forms keep Rails' behaviour.
+  module SkipsFieldErrorWrapper
+    def error_wrapping(html_tag)
+      @template_object.instance_variable_get(:@lc_skip_field_error_wrapper) ? html_tag : super
+    end
+  end
+  ActionView::Helpers::Tags::Base.prepend(SkipsFieldErrorWrapper)
+
   # Rails form builder that renders the library's controls and connects model errors to them.
   #
   #   <%= lc_form_with model: @project do |form| %>
@@ -15,6 +24,21 @@ module Lostcoords::Ui
       text_field email_field password_field telephone_field phone_field url_field search_field number_field
       date_field time_field datetime_field datetime_local_field month_field week_field
     ].freeze
+
+    # Every helper that renders a control, wrapped so Rails' error wrapper stays out of its markup.
+    WRAPPED = [ *field_helpers, :select, :collection_select, :grouped_collection_select, :time_zone_select,
+      :collection_check_boxes, :collection_radio_buttons, :switch, :choice ].uniq - %i[label fields_for fields hidden_field]
+
+    module WithoutFieldErrorWrapper
+      WRAPPED.each do |helper|
+        module_eval <<~RUBY, __FILE__, __LINE__ + 1
+          def #{helper}(...)
+            without_field_error_wrapper { super(...) }
+          end
+        RUBY
+      end
+    end
+    prepend WithoutFieldErrorWrapper
 
     INPUTS.each do |selector|
       define_method(selector) do |method, options = {}|
@@ -95,6 +119,14 @@ module Lostcoords::Ui
     end
 
     private
+      def without_field_error_wrapper
+        previous = @template.instance_variable_get(:@lc_skip_field_error_wrapper)
+        @template.instance_variable_set(:@lc_skip_field_error_wrapper, true)
+        yield
+      ensure
+        @template.instance_variable_set(:@lc_skip_field_error_wrapper, previous)
+      end
+
       def control_size!(options)
         options[:size].is_a?(Symbol) || options[:size].is_a?(String) && options[:size].match?(/\A[a-z]+\z/) ? options.delete(:size).to_sym : :md
       end

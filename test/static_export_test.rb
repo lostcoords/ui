@@ -5,13 +5,38 @@ require "open3"
 require "json"
 require "tmpdir"
 require "uri"
+require "digest"
 
 class StaticExportTest < ActiveSupport::TestCase
+  SOURCES = "{app,lib,config,test/dummy/app,test/dummy/config}/**/*"
+
+  # The two passes run in separate processes, so an edit between them would look like a non-repeatable
+  # export. A pass whose sources changed underneath it is retried instead.
+  def export_twice
+    3.times do
+      before = source_digest
+      directory = Dir.mktmpdir
+      second = Dir.mktmpdir
+      outputs = [ directory, second ].map do |target|
+        Open3.capture3({ "RAILS_ENV" => "development" }, "bin/rails", "lostcoords:ui:showcase[#{target}]", chdir: Lostcoords::Ui::Engine.root)
+      end
+      return [ directory, second, outputs ] if source_digest == before
+
+      FileUtils.rm_rf([ directory, second ])
+    end
+    flunk "Sources kept changing during the export"
+  end
+
+  def source_digest
+    Dir.chdir(Lostcoords::Ui::Engine.root) do
+      Digest::SHA256.hexdigest(Dir[SOURCES].select { |path| File.file?(path) && !path.include?("/builds/") }.sort.map { |path| "#{path}:#{File.mtime(path).to_f}" }.join("\n"))
+    end
+  end
+
   test "the exported pages resolve their assets and local navigation without Rails" do
-    Dir.mktmpdir do |directory|
-      root = Lostcoords::Ui::Engine.root
-      output, error, status = Open3.capture3({ "RAILS_ENV" => "development" }, "bin/rails", "lostcoords:ui:showcase[#{directory}]", chdir: root)
-      assert status.success?, "#{output}\n#{error}"
+    directory, second, outputs = export_twice
+    begin
+      outputs.each { |output, error, status| assert status.success?, "#{output}\n#{error}" }
       assert_equal "ui.lostcoords.com\n", File.read(File.join(directory, "CNAME"))
       reference = JSON.parse(File.read(File.join(directory, "api.json")))
       assert_equal Lostcoords::Ui::Components.all.size, reference.fetch("components").size
@@ -25,13 +50,9 @@ class StaticExportTest < ActiveSupport::TestCase
       assert_equal Showcase.sections.size + 7 + DocsBlocks.all.size * 2, pages.size
       assert_equal DocsBlocks.all.size, reference.fetch("blocks").size
 
-      Dir.mktmpdir do |second|
-        _, error, status = Open3.capture3({ "RAILS_ENV" => "development" }, "bin/rails", "lostcoords:ui:showcase[#{second}]", chdir: root)
-        assert status.success?, error
-        pages.each do |page|
-          relative = Pathname(page).relative_path_from(directory).to_s
-          assert_equal File.read(page), File.read(File.join(second, relative)), "Non-repeatable export: #{relative}"
-        end
+      pages.each do |page|
+        relative = Pathname(page).relative_path_from(directory).to_s
+        assert_equal File.read(page), File.read(File.join(second, relative)), "Non-repeatable export: #{relative}"
       end
 
       pages.each do |page|
@@ -54,6 +75,8 @@ class StaticExportTest < ActiveSupport::TestCase
           assert File.file?(target), "Broken export link: #{path} in #{page}"
         end
       end
+    ensure
+      FileUtils.rm_rf([ directory, second ])
     end
   end
 end

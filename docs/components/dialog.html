@@ -13,7 +13,7 @@
       const theme = localStorage.getItem("lostcoords-ui:theme")
       if (theme === "dark" || (!theme && matchMedia("(prefers-color-scheme: dark)").matches)) document.documentElement.dataset.theme = "dark"
     </script>
-    <link rel="stylesheet" href="../assets/tailwind-4f85ffe7.css" />
+    <link rel="stylesheet" href="../assets/tailwind-b0decd1e.css" />
 <link rel="stylesheet" href="../assets/blocks/application_header-114f372e.css" />
 <link rel="stylesheet" href="../assets/blocks/docs_shell-8bd5856e.css" />
     
@@ -29,8 +29,8 @@
     "lostcoords/ui/controllers/lc_kbd_controller": "../assets/lostcoords/ui/controllers/lc_kbd_controller-83cd1787.js",
     "lostcoords/ui/controllers/lc_menu_controller": "../assets/lostcoords/ui/controllers/lc_menu_controller-171f985f.js",
     "lostcoords/ui/controllers/lc_popover_controller": "../assets/lostcoords/ui/controllers/lc_popover_controller-00b603b0.js",
-    "lostcoords/ui/controllers/lc_selection_controller": "../assets/lostcoords/ui/controllers/lc_selection_controller-5bd0019b.js",
-    "lostcoords/ui/controllers/lc_sheet_controller": "../assets/lostcoords/ui/controllers/lc_sheet_controller-116874a7.js",
+    "lostcoords/ui/controllers/lc_selection_controller": "../assets/lostcoords/ui/controllers/lc_selection_controller-d0ce9c93.js",
+    "lostcoords/ui/controllers/lc_sheet_controller": "../assets/lostcoords/ui/controllers/lc_sheet_controller-1dd39749.js",
     "lostcoords/ui/controllers/lc_shortcut_controller": "../assets/lostcoords/ui/controllers/lc_shortcut_controller-82108a21.js",
     "lostcoords/ui/controllers/lc_tabs_controller": "../assets/lostcoords/ui/controllers/lc_tabs_controller-9f1d494f.js",
     "lostcoords/ui/controllers/lc_toast_controller": "../assets/lostcoords/ui/controllers/lc_toast_controller-80577e17.js",
@@ -49,8 +49,8 @@
     "controllers/lc_kbd_controller": "../assets/lostcoords/ui/controllers/lc_kbd_controller-83cd1787.js",
     "controllers/lc_menu_controller": "../assets/lostcoords/ui/controllers/lc_menu_controller-171f985f.js",
     "controllers/lc_popover_controller": "../assets/lostcoords/ui/controllers/lc_popover_controller-00b603b0.js",
-    "controllers/lc_selection_controller": "../assets/lostcoords/ui/controllers/lc_selection_controller-5bd0019b.js",
-    "controllers/lc_sheet_controller": "../assets/lostcoords/ui/controllers/lc_sheet_controller-116874a7.js",
+    "controllers/lc_selection_controller": "../assets/lostcoords/ui/controllers/lc_selection_controller-d0ce9c93.js",
+    "controllers/lc_sheet_controller": "../assets/lostcoords/ui/controllers/lc_sheet_controller-1dd39749.js",
     "controllers/lc_shortcut_controller": "../assets/lostcoords/ui/controllers/lc_shortcut_controller-82108a21.js",
     "controllers/lc_tabs_controller": "../assets/lostcoords/ui/controllers/lc_tabs_controller-9f1d494f.js",
     "controllers/lc_toast_controller": "../assets/lostcoords/ui/controllers/lc_toast_controller-80577e17.js",
@@ -71,12 +71,12 @@
     "controllers/application": "../assets/controllers/application-2a5be8ca.js",
     "controllers/block_preview_controller": "../assets/controllers/block_preview_controller-53c37654.js",
     "controllers/block_stage_controller": "../assets/controllers/block_stage_controller-828c99a5.js",
-    "controllers/blocks_header_controller": "../assets/controllers/blocks_header_controller-e160e4c1.js",
+    "controllers/blocks_header_controller": "../assets/controllers/blocks_header_controller-ea06a62f.js",
     "controllers/blocks_mobile_navigation_controller": "../assets/controllers/blocks_mobile_navigation_controller-f3c310d5.js",
     "controllers/blocks_search_controller": "../assets/controllers/blocks_search_controller-dc1c3dc6.js",
     "controllers/component_picker_controller": "../assets/controllers/component_picker_controller-73ac8278.js",
     "controllers": "../assets/controllers/index-954e2bb9.js",
-    "controllers/palette_split_controller": "../assets/controllers/palette_split_controller-65968d3c.js",
+    "controllers/palette_split_controller": "../assets/controllers/palette_split_controller-60c1893a.js",
     "controllers/showcase_controller": "../assets/controllers/showcase_controller-20d1c9a0.js",
     "controllers/toast_demo_controller": "../assets/controllers/toast_demo_controller-3d20af24.js"
   }
@@ -87,12 +87,12 @@
 <link rel="modulepreload" href="../assets/controllers/application-2a5be8ca.js">
 <link rel="modulepreload" href="../assets/controllers/block_preview_controller-53c37654.js">
 <link rel="modulepreload" href="../assets/controllers/block_stage_controller-828c99a5.js">
-<link rel="modulepreload" href="../assets/controllers/blocks_header_controller-e160e4c1.js">
+<link rel="modulepreload" href="../assets/controllers/blocks_header_controller-ea06a62f.js">
 <link rel="modulepreload" href="../assets/controllers/blocks_mobile_navigation_controller-f3c310d5.js">
 <link rel="modulepreload" href="../assets/controllers/blocks_search_controller-dc1c3dc6.js">
 <link rel="modulepreload" href="../assets/controllers/component_picker_controller-73ac8278.js">
 <link rel="modulepreload" href="../assets/controllers/index-954e2bb9.js">
-<link rel="modulepreload" href="../assets/controllers/palette_split_controller-65968d3c.js">
+<link rel="modulepreload" href="../assets/controllers/palette_split_controller-60c1893a.js">
 <link rel="modulepreload" href="../assets/controllers/showcase_controller-20d1c9a0.js">
 <link rel="modulepreload" href="../assets/controllers/toast_demo_controller-3d20af24.js">
 <script type="module">import "application"</script>
@@ -367,7 +367,7 @@
         <button type="button" class="lc-press inline-grid place-items-center shrink-0 border-0 bg-transparent text-muted-foreground cursor-pointer no-underline transition-[background-color,color,transform,scale] duration-(--lc-motion-quick) ease-(--lc-ease-out) not-disabled:hover:text-(--lc-button-ink,var(--foreground)) not-disabled:hover:bg-[color-mix(in_oklab,var(--lc-button-bg,var(--secondary))_94%,var(--lc-button-ink,var(--foreground)))] not-disabled:active:bg-[color-mix(in_oklab,var(--lc-button-bg,var(--secondary))_94%,var(--lc-button-ink,var(--foreground)))] disabled:cursor-not-allowed disabled:shadow-none disabled:[--lc-button-bg:color-mix(in_oklab,var(--foreground)_10%,transparent)] disabled:text-[color-mix(in_oklab,var(--foreground)_38%,transparent)] [&amp;_svg]:block [&amp;_svg]:shrink-0 rounded-pill size-control-sm [&amp;_svg]:size-4 -me-related -mt-tight" aria-label="Close Notes" data-action="lc-dialog#close"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" class="lc-icon" data-slot="icon" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/></svg></button>
       </header>
       
-  <textarea name="notes" class="w-full max-w-full min-w-0 px-3 font-sans text-base bg-(--lc-field-bg,var(--input)) text-foreground placeholder:text-muted-foreground border border-transparent rounded-xl lc-squircle outline-none transition-[border-color,box-shadow] duration-(--lc-motion-quick) ease-(--lc-ease-out) focus:shadow-[0_0_0_calc(var(--spacing)*0.5)_var(--ring,color-mix(in_oklab,var(--primary)_50%,transparent))] aria-invalid:border-destructive aria-invalid:shadow-[0_0_0_3px_color-mix(in_oklab,var(--destructive)_16%,transparent)] min-h-28 py-2 resize-y" data-slot="textarea" rows="8" aria-label="Notes" placeholder="Write something…">
+  <textarea name="notes" class="w-full max-w-full min-w-0 px-3 font-sans text-base bg-(--lc-field-bg,var(--input)) text-foreground placeholder:text-muted-foreground border border-transparent rounded-xl lc-squircle outline-none transition-[border-color,box-shadow] duration-(--lc-motion-quick) ease-(--lc-ease-out) focus:shadow-[0_0_0_calc(var(--spacing)*0.5)_var(--ring,color-mix(in_oklab,var(--primary)_50%,transparent))] aria-invalid:border-destructive aria-invalid:shadow-[0_0_0_3px_color-mix(in_oklab,var(--destructive)_16%,transparent)] min-h-28 py-2 resize-y" data-slot="textarea" rows="16" aria-label="Notes" placeholder="Write something…">
 </textarea>
 
     </div>
@@ -380,7 +380,7 @@
   </div>
   <div class="relative">
     <pre id="example-2-code-content" class="m-0 overflow-x-auto ps-inset pe-16 pb-inset font-mono text-[0.8125rem] text-muted-foreground [tab-size:2] pt-inset [--lc-code-block-padding:--spacing(10)] " style="" tabindex="0" role="region" aria-label="Mobile height options code"><code data-language="erb"><span class="text-(--syntax-keyword)" data-syntax="keyword">&lt;%=</span> <span class="text-(--syntax-call)" data-syntax="call">lc_dialog</span> <span class="text-(--syntax-symbol)" data-syntax="symbol">id:</span> <span class="text-(--syntax-string)" data-syntax="string">&quot;</span><span class="text-(--syntax-string)" data-syntax="string">example-2-sheet</span><span class="text-(--syntax-string)" data-syntax="string">&quot;</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">title:</span> <span class="text-(--syntax-string)" data-syntax="string">&quot;</span><span class="text-(--syntax-string)" data-syntax="string">Notes</span><span class="text-(--syntax-string)" data-syntax="string">&quot;</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">detents:</span> <span class="text-(--syntax-string)" data-syntax="string">&quot;</span><span class="text-(--syntax-string)" data-syntax="string">medium large</span><span class="text-(--syntax-string)" data-syntax="string">&quot;</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">do</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">%&gt;</span>
-  <span class="text-(--syntax-keyword)" data-syntax="keyword">&lt;%=</span> <span class="text-(--syntax-call)" data-syntax="call">lc_textarea</span> <span class="text-(--syntax-symbol)" data-syntax="symbol">name:</span> <span class="text-(--syntax-string)" data-syntax="string">&quot;</span><span class="text-(--syntax-string)" data-syntax="string">notes</span><span class="text-(--syntax-string)" data-syntax="string">&quot;</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">rows:</span> <span class="text-(--syntax-symbol)" data-syntax="symbol">8</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">aria:</span> { <span class="text-(--syntax-symbol)" data-syntax="symbol">label:</span> <span class="text-(--syntax-string)" data-syntax="string">&quot;</span><span class="text-(--syntax-string)" data-syntax="string">Notes</span><span class="text-(--syntax-string)" data-syntax="string">&quot;</span> }, <span class="text-(--syntax-symbol)" data-syntax="symbol">placeholder:</span> <span class="text-(--syntax-string)" data-syntax="string">&quot;</span><span class="text-(--syntax-string)" data-syntax="string">Write something…</span><span class="text-(--syntax-string)" data-syntax="string">&quot;</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">%&gt;</span>
+  <span class="text-(--syntax-keyword)" data-syntax="keyword">&lt;%=</span> <span class="text-(--syntax-call)" data-syntax="call">lc_textarea</span> <span class="text-(--syntax-symbol)" data-syntax="symbol">name:</span> <span class="text-(--syntax-string)" data-syntax="string">&quot;</span><span class="text-(--syntax-string)" data-syntax="string">notes</span><span class="text-(--syntax-string)" data-syntax="string">&quot;</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">rows:</span> <span class="text-(--syntax-symbol)" data-syntax="symbol">16</span>, <span class="text-(--syntax-symbol)" data-syntax="symbol">aria:</span> { <span class="text-(--syntax-symbol)" data-syntax="symbol">label:</span> <span class="text-(--syntax-string)" data-syntax="string">&quot;</span><span class="text-(--syntax-string)" data-syntax="string">Notes</span><span class="text-(--syntax-string)" data-syntax="string">&quot;</span> }, <span class="text-(--syntax-symbol)" data-syntax="symbol">placeholder:</span> <span class="text-(--syntax-string)" data-syntax="string">&quot;</span><span class="text-(--syntax-string)" data-syntax="string">Write something…</span><span class="text-(--syntax-string)" data-syntax="string">&quot;</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">%&gt;</span>
 <span class="text-(--syntax-keyword)" data-syntax="keyword">&lt;%</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">end</span> <span class="text-(--syntax-keyword)" data-syntax="keyword">%&gt;</span></code></pre>
     
   </div>

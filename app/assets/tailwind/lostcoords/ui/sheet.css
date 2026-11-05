@@ -1,65 +1,5 @@
 @layer components {
   @media (width < 40rem) {
-    .lc-sheet {
-      position: fixed;
-
-      /* Anchored from the top edge at the screen height it opened at
-         (lc-sheet), then lifted by its own height. In-app browsers
-         (Brave, Chrome) resize the page under the keyboard; anything hung
-         from the bottom edge jumps a frame as they do, but the top holds. */
-      inset: var(--lc-sheet-floor, 100dvh) 0 auto;
-      translate: 0 -100%;
-      margin: 0;
-      inline-size: 100%;
-      max-block-size: calc(var(--lc-sheet-floor, 100dvh) * 0.9);
-      overflow-y: auto;
-      overscroll-behavior: contain;
-      padding-block-end: max(env(safe-area-inset-bottom), 1rem);
-      border: 1px solid var(--lc-glass-edge);
-      border-start-start-radius: var(--radius-3xl);
-      border-start-end-radius: var(--radius-3xl);
-
-      /* Published as a variable, not just applied, because the sticky chrome
-         that rides on top of the sheet — the grabber bar, the pinned action
-         row — has to paint the *same* surface or it reads as a seam. In dark
-         mode the sheet is a lightened paper-2/paper-3 mix while --background is
-         0.045 lightness darker, which is exactly the band you could see. */
-      --lc-sheet-bg: var(--background);
-      @supports (background: light-dark(white, black)) {
-        --lc-sheet-bg: light-dark(var(--background), color-mix(in oklab, var(--muted) 92%, var(--accent)));
-      }
-      background: var(--lc-sheet-bg);
-      color: var(--foreground);
-      box-shadow: 0 -12px 40px -12px color-mix(in oklab, var(--foreground) 45%, transparent);
-      transform: translateY(var(--lc-sheet-offscreen));
-      transition:
-        transform var(--lc-sheet-duration) var(--lc-ease-sheet),
-        display var(--lc-sheet-duration) allow-discrete,
-        overlay var(--lc-sheet-duration) allow-discrete;
-    }
-
-    /* Popover-API reveal (currency): top layer drives display, so showPopover()/
-       hidePopover() animate the slide both ways, with a native ::backdrop. */
-    .lc-sheet[popover] { display: none; flex-direction: column; max-block-size: min(calc(var(--lc-sheet-floor, 100svh) * 0.72), 34rem); }
-    .lc-sheet[popover]:popover-open {
-      display: flex;
-      transform: translateY(0);
-
-      @starting-style { transform: translateY(var(--lc-sheet-offscreen)); }
-    }
-    .lc-sheet[popover]::backdrop {
-      background: var(--lc-scrim);
-      backdrop-filter: blur(2px);
-      opacity: 0;
-      transition:
-        opacity var(--lc-sheet-duration) var(--lc-ease-sheet),
-        display var(--lc-sheet-duration) allow-discrete,
-        overlay var(--lc-sheet-duration) allow-discrete;
-
-      @media (prefers-reduced-motion: reduce) { transition: none; }
-    }
-    .lc-sheet[popover]:popover-open::backdrop { opacity: 1; @starting-style { opacity: 0; } }
-
     /* UIKit's 36×5 grabber. */
     :is([data-lc-sheet-target~="handle"], dialog[data-controller~="lc-sheet"])::before {
       content: "";
@@ -87,7 +27,7 @@
 
       position: fixed;
 
-      /* Anchored from the top edge, like .lc-sheet: the keyboard covers it and
+      /* Anchored from the top edge: the keyboard covers it and
          nothing moves. */
       inset: calc(var(--lc-sheet-floor, 100dvh) - var(--lc-sheet-gap)) 0 auto;
       translate: 0 -100%;

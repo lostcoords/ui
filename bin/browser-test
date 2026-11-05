@@ -1,0 +1,93 @@
+#!/usr/bin/env node
+// Runs the browser suites in test/browser against the docs app in a headless
+// Chromium of its own, so nothing depends on a desktop browser or its tabs.
+//
+//   bin/browser-test               every suite
+//   bin/browser-test layers sheets the named suites
+//   BASE_URL=https://ui.localhost bin/browser-test   reuse a running docs server
+//
+// Each suite is a file holding one `async function _name(page)` that returns
+// the checks it passed and throws on the first failure. Every suite gets a
+// fresh browser context, so state such as storage or emulated media can't leak.
+// First run: npx playwright install chromium
+
+import { spawn } from "node:child_process"
+import { readdirSync, readFileSync } from "node:fs"
+import { dirname, join } from "node:path"
+import { fileURLToPath } from "node:url"
+import { chromium } from "playwright"
+
+const root = join(dirname(fileURLToPath(import.meta.url)), "..")
+const suitesDir = join(root, "test/browser")
+const names = process.argv.slice(2).length
+  ? process.argv.slice(2)
+  : readdirSync(suitesDir)
+      .filter((file) => file.endsWith(".js") && !file.startsWith("_"))
+      .map((file) => file.replace(/\.js$/, ""))
+      .sort()
+
+const port = process.env.PORT || "3123"
+let server = null
+let baseUrl = process.env.BASE_URL
+
+async function waitForServer(url, timeout = 90_000) {
+  const deadline = Date.now() + timeout
+  while (Date.now() < deadline) {
+    try {
+      if ((await fetch(url)).ok) return
+    } catch {}
+    await new Promise((resolve) => setTimeout(resolve, 500))
+  }
+  throw new Error(`The docs app did not answer at ${url}`)
+}
+
+function loadSuite(name) {
+  const source = readFileSync(join(suitesDir, `${name}.js`), "utf8")
+  const entry = source.match(/async function (\w+)\s*\(/)?.[1]
+  if (!entry) throw new Error(`${name}.js has no async function`)
+  return new Function(`${source}\nreturn ${entry}`)()
+}
+
+if (!baseUrl) {
+  baseUrl = `http://127.0.0.1:${port}`
+  server = spawn(
+    "bin/rails",
+    ["server", "-p", port, "-b", "127.0.0.1", "-P", "tmp/pids/browser-test.pid"],
+    { cwd: root, env: { ...process.env, RAILS_ENV: "development" }, stdio: "ignore" },
+  )
+  process.on("exit", () => server.kill())
+}
+
+let failed = 0
+const browser = await chromium.launch()
+try {
+  if (server) await waitForServer(baseUrl)
+  for (const name of names) {
+    const context = await browser.newContext({
+      ignoreHTTPSErrors: true,
+      viewport: { width: 1440, height: 900 },
+    })
+    const page = await context.newPage()
+    const started = Date.now()
+    try {
+      await page.goto(baseUrl)
+      const checks = await loadSuite(name)(page)
+      const count = Array.isArray(checks) ? `${checks.length} checks` : "done"
+      console.log(`ok    ${name} (${count}, ${((Date.now() - started) / 1000).toFixed(1)}s)`)
+    } catch (error) {
+      failed++
+      const lines = String(error.message || error)
+        .replace(/\x1b\[[0-9;]*m/g, "")
+        .split("\n")
+        .filter((line) => !line.includes("locator resolved to"))
+      console.log(`FAIL  ${name}: ${lines[0]}`)
+      for (const line of lines.slice(1, 8)) console.log(`        ${line}`)
+    } finally {
+      await context.close()
+    }
+  }
+} finally {
+  await browser.close()
+  server?.kill()
+}
+process.exit(failed ? 1 : 0)

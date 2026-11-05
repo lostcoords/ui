@@ -230,7 +230,17 @@ html[data-palette-split-open] {
   z-index: auto;
 }
 
+/* How far the hovered band's frost has drawn back to the strip behind its
+   name, registered so it can transition. */
+@property --split-clear {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
+
 .palette-split-choice {
+  --split-line: 50%;
+
   position: absolute;
   inset: 0;
   cursor: pointer;
@@ -238,13 +248,29 @@ html[data-palette-split-open] {
   outline: none;
   transition:
     backdrop-filter 320ms ease,
-    background-color 320ms ease;
+    background-color 320ms ease,
+    --split-clear 320ms ease;
 
-  /* While one band is hovered, the others frost over so it stands out. */
-  [data-hovering] .palette-split-band:not([data-hovered]) & {
+  --split-fade: rgb(0 0 0 / calc(1 - var(--split-clear)));
+
+  mask: linear-gradient(
+    var(--split-fade) calc(var(--split-line) - 6rem),
+    #000 calc(var(--split-line) - 1.75rem),
+    #000 calc(var(--split-line) + 1.75rem),
+    var(--split-fade) calc(var(--split-line) + 6rem)
+  );
+
+  /* Every band is frosted and dimmed. Hovering draws the frost back to a
+     strip behind the name, so it reads over the copied page; the chosen
+     band clears completely. */
+  .palette-split-band:not([data-fate="chosen"]) & {
     background: color-mix(in oklab, var(--background) 18%, transparent);
-    backdrop-filter: blur(3px) saturate(0.92);
+    backdrop-filter: blur(3px) saturate(0.9) brightness(0.8);
   }
+
+  [data-hovered] & { --split-clear: 1; }
+
+  @media (orientation: portrait) { --split-line: var(--center); }
 }
 
 .palette-split-label {
@@ -259,16 +285,16 @@ html[data-palette-split-open] {
   white-space: nowrap;
   opacity: 0;
   transition:
-    opacity var(--lc-motion-quick) ease,
+    opacity 320ms ease,
     left 420ms cubic-bezier(0.22, 1, 0.36, 1);
 
-  [data-state="open"] [data-hovered] & { opacity: 1; }
+  [data-hovered] & { opacity: 1; }
 
   @media (orientation: portrait) {
     top: var(--center);
     left: 50%;
     transition:
-      opacity var(--lc-motion-quick) ease,
+      opacity 320ms ease,
       top 420ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 }
