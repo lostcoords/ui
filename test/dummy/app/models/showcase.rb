@@ -69,7 +69,8 @@ module Showcase
         Example.new(:icon_button, "Icon buttons", :panel),
         Example.new(:select_trigger, "Select trigger", :panel),
         Example.new(:split_button, "Split button", :panel),
-        Example.new(:split_button_variants, "Split button variants and sizes", :panel)
+        Example.new(:split_button_variants, "Split button variants and sizes", :panel),
+        Example.new(:button_expanded, "Expanded swap and decorative span", :panel)
       ], %i[lc_button lc_button_link_to lc_button_to lc_icon_button lc_icon_button_link_to lc_icon_button_to lc_icon lc_select_trigger lc_split_button]),
       Section.new(:copy_button, "Copy button", "Copy text or a live field value with animated confirmation and accessible feedback.", [
         Example.new(:copy_button, "Labels, icons and disabled controls", :panel),
@@ -174,6 +175,7 @@ module Showcase
       Section.new(:toggle_group, "Toggle group", "Mutually exclusive choices with keyboard navigation and form values.", [
         Example.new(:toggle_group, "Mutually exclusive choices", :panel),
         Example.new(:toggle_group_links, "Navigation links", :panel),
+        Example.new(:toggle_group_pills, "Wrapping pills", :panel),
         Example.new(:toggle_group_form, "Form values, native radios and reset", :panel)
       ], %i[lc_toggle_group lc_toggle_group_item]),
       Section.new(:kbd, "Keyboard shortcut", "Page-wide keys that focus or press an element, and the hints that show them.", [
@@ -187,8 +189,8 @@ module Showcase
       ]),
       Section.new(:menu, "Menu", "Actions in a floating panel.", [
         Example.new(:row_menu, "Actions", :panel),
-        Example.new(:menu_options, "Icon trigger, hints and choices", :panel)
-      ], %i[lc_menu lc_menu_option]),
+        Example.new(:menu_options, "Icon trigger, hints, choices and groups", :panel)
+      ], %i[lc_menu lc_menu_option lc_menu_group]),
       Section.new(:popover, "Popover", "Content anchored to a trigger.", [
         Example.new(:open_popover, "Anchored content", :panel),
         Example.new(:row_popover, "Opened from a row", :panel)
@@ -219,8 +221,9 @@ module Showcase
         Example.new(:collapsible_button, "Button summary", :panel)
       ]),
       Section.new(:list_group, "List group", "Grouped rows of settings, with a heading and footnote.", [
-        Example.new(:list_group, "Settings", :bare)
-      ], %i[lc_list_section lc_list_group lc_list_row lc_list_item]),
+        Example.new(:list_group, "Settings", :bare),
+        Example.new(:list_field, "Form rows", :panel)
+      ], %i[lc_list_section lc_list_group lc_list_row lc_list_item lc_list_field]),
       Section.new(:emoji, "Emoji picker", "Search, categories and skin tones.", [
         Example.new(:html, "Emoji picker", :panel)
       ], %i[lc_emoji_picker])
