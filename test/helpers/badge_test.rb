@@ -32,6 +32,24 @@ module Lostcoords::Ui
       assert_equal [ 6.5, 10, 12, 14 ], %i[sm md lg xl].map { |size| icon_badge_size(@view.lc_icon_badge_class(size: size)) }
     end
 
+    test "spacing steps size avatars and icon badges between the named sizes" do
+      assert_equal [ 7, 11 ], [ 7, 11 ].map { |size| avatar_size(@view.lc_avatar_class(size: size)) }
+      assert_equal [ 6, 7, 11 ], [ 6, 7, 11 ].map { |size| icon_badge_size(@view.lc_icon_badge_class(size: size)) }
+      assert_raises(ArgumentError) { @view.lc_avatar("AB", size: 9) }
+      assert_raises(ArgumentError) { @view.lc_icon_badge("🍜", size: 9) }
+    end
+
+    test "a plain icon badge drops the tile and enlarges the glyph" do
+      classes = @view.lc_icon_badge_class(size: :lg, shape: :plain, tone: :success).split
+
+      assert_includes classes, "bg-transparent"
+      assert_includes classes, "rounded-none"
+      assert_includes classes, "text-success"
+      assert_includes classes, "[--lc-icon-badge-font-scale-default:0.875]"
+      assert_not_includes classes, "bg-success-soft"
+      assert_not_includes classes, "[--lc-icon-badge-font-scale-default:0.5]"
+    end
+
     test "initials and icons scale from the effective size unless a font size is pinned" do
       avatar = @view.lc_avatar_class(size: :lg)
       badge = @view.lc_icon_badge_class(size: :lg)

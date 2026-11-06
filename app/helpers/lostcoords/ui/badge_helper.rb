@@ -12,10 +12,16 @@ module Lostcoords::Ui
       sm: "[--lc-icon-badge-size-default:--spacing(6.5)] [--lc-icon-badge-font-scale-default:0.5]",
       md: "",
       lg: "[--lc-icon-badge-size-default:--spacing(12)] [--lc-icon-badge-font-scale-default:0.5]",
-      xl: "[--lc-icon-badge-size-default:--spacing(14)] [--lc-icon-badge-font-scale-default:0.5]"
+      xl: "[--lc-icon-badge-size-default:--spacing(14)] [--lc-icon-badge-font-scale-default:0.5]",
+      # Steps on the spacing scale, as in size-7, for row glyphs between the named sizes.
+      6 => "[--lc-icon-badge-size-default:--spacing(6)] [--lc-icon-badge-font-scale-default:0.5]",
+      7 => "[--lc-icon-badge-size-default:--spacing(7)] [--lc-icon-badge-font-scale-default:0.5]",
+      11 => "[--lc-icon-badge-size-default:--spacing(11)] [--lc-icon-badge-font-scale-default:0.5]"
     }.freeze
 
-    ICON_BADGE_SHAPES = { square: "lc-squircle rounded-2xl", circle: "rounded-full" }.freeze
+    # plain drops the tile: the emoji or icon is the badge, as at the start of a list row.
+    ICON_BADGE_SHAPES = { square: "lc-squircle rounded-2xl", circle: "rounded-full", plain: "rounded-none" }.freeze
+    ICON_BADGE_PLAIN = "bg-transparent [--lc-icon-badge-font-scale-default:0.875]"
 
     AVATAR_BASE =
       "lc-avatar grid place-items-center shrink-0 rounded-full font-medium tracking-[var(--lc-avatar-tracking,0.05em)] " \
@@ -32,7 +38,10 @@ module Lostcoords::Ui
       md: "",
       lg: "[--lc-avatar-size-default:--spacing(12)] [--lc-avatar-font-scale-default:0.333]",
       xl: "[--lc-avatar-size-default:--spacing(24)] [--lc-avatar-font-scale-default:0.208]",
-      xxl: "[--lc-avatar-size-default:--spacing(28)] [--lc-avatar-font-scale-default:0.25]"
+      xxl: "[--lc-avatar-size-default:--spacing(28)] [--lc-avatar-font-scale-default:0.25]",
+      # Steps on the spacing scale, as in size-7, between the named sizes.
+      7 => "[--lc-avatar-size-default:--spacing(7)]",
+      11 => "[--lc-avatar-size-default:--spacing(11)] [--lc-avatar-font-scale-default:0.35]"
     }.freeze
 
     AVATAR_INK = "[--lc-avatar-color:var(--foreground)]"
@@ -73,11 +82,12 @@ module Lostcoords::Ui
 
     TOGGLE_BASE =
       "inline-flex items-center justify-center gap-related rounded-pill " \
-      "border border-transparent bg-input " \
+      "border border-transparent bg-(--lc-field-bg,var(--input)) " \
       "font-sans text-muted-foreground whitespace-nowrap cursor-pointer no-underline " \
       "transition-[background-color,border-color,color,transform] duration-(--lc-motion-quick) ease-(--lc-ease-out) " \
       "lc-press hover:text-foreground " \
       "aria-pressed:bg-primary-soft aria-pressed:border-primary aria-pressed:text-primary aria-pressed:shadow-none " \
+      "aria-checked:bg-primary-soft aria-checked:border-primary aria-checked:text-primary aria-checked:shadow-none " \
       "aria-[current]:not-aria-[current=false]:bg-primary-soft aria-[current]:not-aria-[current=false]:border-primary " \
       "aria-[current]:not-aria-[current=false]:text-primary aria-[current]:not-aria-[current=false]:shadow-none " \
       "has-checked:bg-primary-soft has-checked:border-primary has-checked:text-primary has-checked:shadow-none " \
@@ -93,7 +103,7 @@ module Lostcoords::Ui
       shape = lc_option!(:shape, shape, ICON_BADGE_SHAPES.keys)
       tone = lc_option!(:tone, tone, BADGE_TONES.keys)
       lc_tw(ICON_BADGE_BASE, ICON_BADGE_SIZES.fetch(size), ICON_BADGE_SHAPES.fetch(shape),
-        (tone == :neutral ? "bg-tile text-foreground" : BADGE_TONES.fetch(tone)), extra)
+        (tone == :neutral ? "bg-tile text-foreground" : BADGE_TONES.fetch(tone)), (ICON_BADGE_PLAIN if shape == :plain), extra)
     end
 
     def lc_avatar_class(size: :md, ink: false, linked: false, extra: nil)

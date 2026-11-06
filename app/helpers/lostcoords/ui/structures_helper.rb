@@ -2,10 +2,11 @@ module Lostcoords::Ui
   module StructuresHelper
     INPUT_TYPES = %i[text search email password tel url number date time datetime-local month week].freeze
 
-    def lc_input(name: nil, value: nil, type: :text, size: :md, **attributes)
+    # plain: true drops the fill, border, padding and height, for a control in an lc_list_field row.
+    def lc_input(name: nil, value: nil, type: :text, size: :md, plain: false, **attributes)
       type = lc_option!(:type, type, INPUT_TYPES)
-      size = lc_option!(:size, size, TailwindHelper::CONTROL_SIZES.keys)
-      tag.input(**lc_attributes({ type: type, name: name, value: value, class: lc_input_class(size: size), data: { slot: "input" } }, attributes))
+      data = { slot: "input", plain: (true if plain) }.compact
+      tag.input(**lc_attributes({ type: type, name: name, value: value, class: lc_input_class(size: size, plain: plain), data: data }, attributes))
     end
 
     def lc_textarea(content = nil, name: nil, **attributes, &block)
@@ -58,15 +59,19 @@ module Lostcoords::Ui
     # name: makes native radios inside labels, which bring their own arrows, form value and reset;
     # as: :nav makes links, the current one marked with aria-current; otherwise radio buttons whose
     # selection lives in the lc-selection controller.
-    def lc_toggle_group(label:, name: nil, value: nil, as: :div, **attributes, &block)
+    # variant: :pills lays the items out as wrapping toggle pills, sized by size:, instead of a segmented track.
+    def lc_toggle_group(label:, name: nil, value: nil, as: :div, variant: :segmented, size: :md, **attributes, &block)
       lc_label!(label, :label)
       as = lc_option!(:as, as, %i[div nav])
+      variant = lc_option!(:variant, variant, %i[segmented pills])
+      size = lc_option!(:size, size, ButtonHelper::BUTTON_SIZES.keys)
+      raise ArgumentError, "size: sizes pills; a segmented toggle group has one size" if variant == :segmented && size != :md
       raise ArgumentError, "a nav toggle group marks its current link; it takes no name: or value:" if as == :nav && (name || value)
 
       mode = as == :nav ? :links : (name ? :radios : :buttons)
-      content = lc_within_toggle_group({ mode: mode, name: name, value: value&.to_s }) { capture(&block) if block }
+      content = lc_within_toggle_group({ mode: mode, name: name, value: value&.to_s, variant: variant, size: size }) { capture(&block) if block }
 
-      defaults = { class: lc_toggle_group_class, data: { slot: "toggle-group" } }
+      defaults = { class: (variant == :pills ? lc_inline_class : lc_toggle_group_class), data: { slot: "toggle-group" } }
       case mode
       when :links
         tag.nav(content, **lc_attributes(defaults, attributes, { aria: { label: label } }))
@@ -81,7 +86,7 @@ module Lostcoords::Ui
     # Takes href: and current: in a nav group, value: and checked: in a named group, and value: and
     # selected: in a button group; arguments from another kind of group raise.
     def lc_toggle_group_item(label = nil, value: nil, selected: nil, checked: nil, href: nil, current: nil, input: {}, **attributes, &block)
-      group = @_lc_toggle_group || { mode: :buttons }
+      group = @_lc_toggle_group || { mode: :buttons, variant: :segmented }
       given = { value: value, selected: selected, checked: checked, href: href, current: current }.compact.keys
       allowed = { links: %i[href current], radios: %i[value checked], buttons: %i[value selected] }.fetch(group[:mode])
       stray = given - allowed
@@ -89,11 +94,11 @@ module Lostcoords::Ui
       raise ArgumentError, "an item of a nav toggle group needs href:" if group[:mode] == :links && !href
 
       content = block ? capture(&block) : label
-      defaults = { class: lc_toggle_group_item_class, data: { slot: "toggle-group-item" } }
+      defaults = { class: (group[:variant] == :pills ? lc_toggle_class(size: group[:size]) : lc_toggle_group_item_class), data: { slot: "toggle-group-item" } }
       return lc_toggle_link(content, href, current, defaults, attributes) if group[:mode] == :links
 
       value ||= label
-      lc_label!(value, :value)
+      raise ArgumentError, "a toggle group item needs a value: or a label" if value.nil?
       if group[:mode] == :radios
         checked = group[:value] == value.to_s if checked.nil?
         return lc_toggle_radio(content, group[:name], value, checked, input, defaults, attributes)
