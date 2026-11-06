@@ -45,6 +45,20 @@ async function _verifyDialogs(page) {
   await page.waitForFunction((selector) => !document.querySelector(selector).open, members)
   verify(true, "a dialog without a built-in trigger closes through the caller's controller")
 
+  const invite = "dialog[id$='-invite']"
+  await page.getByRole("button", { name: "Invite with your own trigger" }).click()
+  await page.waitForFunction((selector) => document.querySelector(selector).open, invite)
+  const inviteWidth = await page.evaluate(
+    (selector) => document.querySelector(selector).offsetWidth,
+    invite,
+  )
+  verify(
+    inviteWidth === 512,
+    "a custom trigger opens the dialog, and data-dialog-size content widens it to 32rem",
+  )
+  await page.locator(`${invite} [data-slot=dialog-dismiss]`).click()
+  await page.waitForFunction((selector) => !document.querySelector(selector).open, invite)
+
   const sheet = "#lc-confirm-sheet"
   const deleteButton = page.getByRole("button", { name: "Delete project", exact: true })
   await deleteButton.scrollIntoViewIfNeeded()

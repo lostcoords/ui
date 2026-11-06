@@ -60,7 +60,7 @@ module Lostcoords::Ui
       assert_equal "dialog", dialog["data-import-target"]
       assert_nil dialog["data-lc-dialog-target"]
       assert_equal "polite", dialog["aria-live"]
-      assert_includes dialog["class"].split, "[--lc-dialog-width:40rem]"
+      assert_includes dialog["class"].split, "lc-dialog-lg"
       dismiss = dialog.at_css("[data-slot=dialog-dismiss]")
       assert_equal "import#close", dismiss["data-action"]
       assert_equal "Discard import", dismiss["aria-label"]
@@ -73,6 +73,18 @@ module Lostcoords::Ui
       assert_equal "merge-title", titled.at_css("[data-merge-target=title]")["id"]
       assert_equal "dialog-title", titled.at_css("h2")["data-slot"]
       assert_equal "merge-description", titled.at_css("[data-merge-target=body]")["id"]
+    end
+
+    test "a dialog's custom trigger carries the wiring and replaces the default button" do
+      html = render('<%= lc_dialog id: "ledger", title: "Ledger" do |dialog| %><% dialog.trigger(class: "p-0") { |attrs| tag.button("€12", type: "button", **attrs) } %>Body<% end %>')
+      wrapper = html.at_css("[data-controller=lc-dialog]")
+      trigger = wrapper.at_css("> button")
+      assert_equal [ "€12", "dialog", "ledger", "lc-dialog#open", "p-0" ], [ trigger.text, trigger["aria-haspopup"], trigger["aria-controls"], trigger["data-action"], trigger["class"] ]
+      assert_nil html.at_css("[data-slot=dialog-trigger]")
+      assert_equal "dialog", html.at_css("dialog#ledger")["data-lc-dialog-target"]
+      assert_raises(ActionView::Template::Error, ArgumentError) do
+        render('<%= lc_dialog id: "x", title: "X", trigger: false do |dialog| %><% dialog.trigger { |attrs| tag.button("X", **attrs) } %><% end %>')
+      end
     end
 
     test "the confirm sheet renders once with a message slot and both accept tones" do

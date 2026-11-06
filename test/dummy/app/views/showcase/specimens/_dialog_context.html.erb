@@ -1,3 +1,10 @@
 <%= lc_dialog id: "EXAMPLE_ID-context", title: "Quick details", trigger: "Open compact dialog", kind: :context do %>
   <p class="text-sm text-muted-foreground">A compact dialog for a short, focused task.</p>
 <% end %>
+
+<%= lc_dialog id: "EXAMPLE_ID-invite", title: "Invite people", kind: :context do |dialog| %>
+  <% dialog.trigger { |attrs| lc_button "Invite with your own trigger", variant: :ghost, **attrs } %>
+  <div class="flex flex-col gap-content" data-dialog-size="md">
+    <p class="text-sm text-muted-foreground">This step marks itself data-dialog-size="md", so the compact dialog widens to 32rem while it shows.</p>
+  </div>
+<% end %>

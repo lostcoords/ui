@@ -1,4 +1,4 @@
-<%# locals: (id:, title:, description:, trigger:, detents:, close_action:, close_label:, attributes:, actions:, content:) %>
+<%# locals: (id:, title:, description:, trigger:, rendered_trigger:, detents:, close_action:, close_label:, attributes:, actions:, content:) %>
 <% dialog = lc_sheet(tag: :dialog, detents: detents, **attributes) do %>
   <div class="flex min-h-0 flex-col gap-inset p-inset sm:h-full sm:max-h-[inherit]" data-slot="dialog-content">
     <header class="flex shrink-0 items-start justify-between gap-content" data-slot="dialog-header">
@@ -16,7 +16,11 @@
 <% end %>
 <% if trigger %>
   <div data-controller="lc-dialog">
-    <button type="button" class="<%= lc_button_class(variant: :secondary) %>" aria-haspopup="dialog" aria-controls="<%= id %>" data-action="lc-dialog#open" data-slot="dialog-trigger"><%= trigger %></button>
+    <% if rendered_trigger %>
+      <%= rendered_trigger %>
+    <% else %>
+      <button type="button" class="<%= lc_button_class(variant: :secondary) %>" aria-haspopup="dialog" aria-controls="<%= id %>" data-action="lc-dialog#open" data-slot="dialog-trigger"><%= trigger %></button>
+    <% end %>
     <%= dialog %>
   </div>
 <% else %>

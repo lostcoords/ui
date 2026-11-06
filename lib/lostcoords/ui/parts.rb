@@ -72,13 +72,29 @@ module Lostcoords::Ui
       def to_hash = @control
     end
 
+    # trigger yields the attributes that wire an element to open the panel, merged with the ones passed
+    # to it, and the element it renders replaces the default trigger. Shared by menus and dialogs.
+    module CustomTrigger
+      attr_reader :rendered_trigger
+
+      def trigger(**attributes, &block)
+        raise ArgumentError, "trigger needs a block that renders the trigger element" unless block
+
+        @rendered_trigger = view.capture(view.send(:lc_attributes, attributes, {}, @wiring), &block)
+        nil
+      end
+    end
+
     class Dialog < Base
+      include CustomTrigger
+
       attr_reader :header_actions
 
       def initialize(view, id, close_action = "lc-dialog#close")
         super(view)
         @id = id
         @close_action = close_action
+        @wiring = { aria: { haspopup: "dialog", controls: id }, data: { action: "lc-dialog#open" } }
       end
 
       # Content placed in the header, before the close button. Renders nothing where it is called.
@@ -179,21 +195,12 @@ module Lostcoords::Ui
       end
     end
 
-    # menu.trigger yields the attributes that wire an element as the panel's trigger, merged with
-    # the ones passed to it, and the element it renders replaces the default trigger.
     class Panel < Base
-      attr_reader :rendered_trigger
+      include CustomTrigger
 
       def initialize(view, wiring)
         super(view)
         @wiring = wiring
-      end
-
-      def trigger(**attributes, &block)
-        raise ArgumentError, "trigger needs a block that renders the trigger element" unless block
-
-        @rendered_trigger = view.capture(view.send(:lc_attributes, attributes, {}, @wiring), &block)
-        nil
       end
     end
 

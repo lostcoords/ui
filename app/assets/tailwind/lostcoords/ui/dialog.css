@@ -48,6 +48,23 @@
       }
     }
 
+    /* The size scale. Content marked data-dialog-size switches the dialog to that size while it is
+       inside, so the :has() rules come after the size classes and win over them. */
+    --lc-dialog-sm: 24rem;
+    --lc-dialog-md: 32rem;
+    --lc-dialog-lg: 40rem;
+    --lc-dialog-xl: 64rem;
+
+    &.lc-dialog-context { --lc-dialog-width: 22rem; }
+    &.lc-dialog-sm { --lc-dialog-width: var(--lc-dialog-sm); }
+    &.lc-dialog-md { --lc-dialog-width: var(--lc-dialog-md); }
+    &.lc-dialog-lg { --lc-dialog-width: var(--lc-dialog-lg); }
+    &.lc-dialog-xl { --lc-dialog-width: var(--lc-dialog-xl); }
+    &:has([data-dialog-size="sm"]) { --lc-dialog-width: var(--lc-dialog-sm); }
+    &:has([data-dialog-size="md"]) { --lc-dialog-width: var(--lc-dialog-md); }
+    &:has([data-dialog-size="lg"]) { --lc-dialog-width: var(--lc-dialog-lg); }
+    &:has([data-dialog-size="xl"]) { --lc-dialog-width: var(--lc-dialog-xl); }
+
     &.lc-dialog-context[open]::backdrop {
       background: var(--lc-scrim-soft);
       backdrop-filter: none;
