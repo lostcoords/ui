@@ -13,7 +13,7 @@
       const theme = localStorage.getItem("lostcoords-ui:theme")
       if (theme === "dark" || (!theme && matchMedia("(prefers-color-scheme: dark)").matches)) document.documentElement.dataset.theme = "dark"
     </script>
-    <link rel="stylesheet" href="../assets/tailwind-8956bb63.css" />
+    <link rel="stylesheet" href="../assets/tailwind-671abb00.css" />
 <link rel="stylesheet" href="../assets/blocks/application_header-114f372e.css" />
 <link rel="stylesheet" href="../assets/blocks/docs_shell-8bd5856e.css" />
     
@@ -29,7 +29,7 @@
     "lostcoords/ui/controllers/lc_menu_controller": "../assets/lostcoords/ui/controllers/lc_menu_controller-c2a19d16.js",
     "lostcoords/ui/controllers/lc_nav_controller": "../assets/lostcoords/ui/controllers/lc_nav_controller-af65a23f.js",
     "lostcoords/ui/controllers/lc_popover_controller": "../assets/lostcoords/ui/controllers/lc_popover_controller-00b603b0.js",
-    "lostcoords/ui/controllers/lc_search_controller": "../assets/lostcoords/ui/controllers/lc_search_controller-736e2b49.js",
+    "lostcoords/ui/controllers/lc_search_controller": "../assets/lostcoords/ui/controllers/lc_search_controller-9164d2cd.js",
     "lostcoords/ui/controllers/lc_selection_controller": "../assets/lostcoords/ui/controllers/lc_selection_controller-cc36bc56.js",
     "lostcoords/ui/controllers/lc_sheet_controller": "../assets/lostcoords/ui/controllers/lc_sheet_controller-1638338d.js",
     "lostcoords/ui/controllers/lc_shortcut_controller": "../assets/lostcoords/ui/controllers/lc_shortcut_controller-82108a21.js",
@@ -51,7 +51,7 @@
     "controllers/lc_menu_controller": "../assets/lostcoords/ui/controllers/lc_menu_controller-c2a19d16.js",
     "controllers/lc_nav_controller": "../assets/lostcoords/ui/controllers/lc_nav_controller-af65a23f.js",
     "controllers/lc_popover_controller": "../assets/lostcoords/ui/controllers/lc_popover_controller-00b603b0.js",
-    "controllers/lc_search_controller": "../assets/lostcoords/ui/controllers/lc_search_controller-736e2b49.js",
+    "controllers/lc_search_controller": "../assets/lostcoords/ui/controllers/lc_search_controller-9164d2cd.js",
     "controllers/lc_selection_controller": "../assets/lostcoords/ui/controllers/lc_selection_controller-cc36bc56.js",
     "controllers/lc_sheet_controller": "../assets/lostcoords/ui/controllers/lc_sheet_controller-1638338d.js",
     "controllers/lc_shortcut_controller": "../assets/lostcoords/ui/controllers/lc_shortcut_controller-82108a21.js",
@@ -121,7 +121,7 @@
       </nav>
     <div class="ms-auto flex items-center gap-related">
       <div class="contents" data-controller="docs-search" data-docs-search-url-value="/search.json" data-action="lc-search:query->docs-search#query">
-  <div class="contents" data-slot="search" data-controller="lc-search" data-action="turbo:before-cache@document->lc-search#reset" data-lc-search-src-value="" data-lc-search-param-value="q" data-lc-search-one-value="%{count} result" data-lc-search-other-value="%{count} results">
+  <div class="contents" data-slot="search" data-controller="lc-search" data-action="turbo:before-cache@document->lc-search#reset" data-lc-search-src-value="" data-lc-search-param-value="q" data-lc-search-empty-value="No results" data-lc-search-one-value="%{count} result" data-lc-search-other-value="%{count} results">
   <button class="lc-search-trigger lg:max-xl:w-48" aria-label="Search documentation" aria-haspopup="dialog" aria-controls="lc-search" type="button" data-lc-search-target="trigger" data-action="lc-search#open" data-slot="search-trigger" data-controller="lc-shortcut" data-lc-shortcut-keys-value="mod+k">
     <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" class="lc-icon size-4 shrink-0" data-slot="icon" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/></svg>
     <span class="flex-1 truncate text-start max-sm:sr-only">Search docs…</span>
@@ -138,6 +138,7 @@
 </form>      <div class="lc-glass rounded-3xl lc-search-panel min-h-0 overflow-y-auto overscroll-contain p-related" data-lc-search-target="panel" data-slot="search-panel">
         <div data-lc-search-target="results" data-slot="search-results"></div>
         <p class="px-content py-10 text-center text-label text-muted-foreground" data-lc-search-target="empty" data-slot="search-empty" hidden>No results</p>
+        
       </div>
       <p class="sr-only" role="status" aria-atomic="true" data-lc-search-target="status"></p>
     </div>
@@ -403,7 +404,7 @@
   <div class="flex min-w-0 flex-col gap-content">
     
     <div class="flex min-h-48 flex-wrap items-center justify-center gap-4 rounded-2xl bg-muted p-6 sm:p-10 [--lc-tile-bg:var(--background)] [--lc-track-bg:var(--accent)] [--lc-avatar-cutout:var(--muted)]" data-example-preview data-stage="panel">
-      <nav class="group/nav relative lc-glass rounded-full border-(--lc-glass-bar-edge) max-md:[--lc-glass-fill:color-mix(in_oklab,var(--background)_90%,transparent)] dark:max-md:[--lc-glass-fill:color-mix(in_oklab,var(--muted)_92%,transparent)] w-full max-w-sm" aria-label="Group" data-slot="nav-list" data-layout="dock" data-controller="lc-nav"><span class="pointer-events-none absolute start-0 top-0 bg-(--lc-nav-indicator,var(--accent)) opacity-0 transition-[translate,width,height,opacity] duration-[400ms] ease-(--lc-ease-out-expo) motion-reduce:transition-none group-data-[indicator]/nav:opacity-100 rounded-pill" aria-hidden="true" data-slot="nav-indicator" data-lc-nav-target="indicator"></span><ul class="m-0 grid list-none grid-flow-col auto-cols-fr gap-0.5 rounded-pill p-tight">
+      <nav class="group/nav relative lc-glass rounded-full border-(--lc-glass-bar-edge) max-md:[--lc-glass-fill:color-mix(in_oklab,var(--background)_90%,transparent)] dark:max-md:[--lc-glass-fill:color-mix(in_oklab,var(--muted)_92%,transparent)] w-full max-w-sm" aria-label="Group" data-slot="nav-list" data-layout="dock" data-controller="lc-nav"><span class="pointer-events-none absolute start-0 top-0 opacity-0 transition-[translate,width,height,opacity] duration-[400ms] ease-(--lc-ease-out-expo) motion-reduce:transition-none group-data-[indicator]/nav:opacity-100 rounded-pill bg-(--lc-nav-dock-indicator,var(--lc-nav-indicator,var(--accent)))" aria-hidden="true" data-slot="nav-indicator" data-lc-nav-target="indicator"></span><ul class="m-0 grid list-none grid-flow-col auto-cols-fr gap-0.5 rounded-pill p-tight">
   <li class="contents" data-slot="nav-item"><a class="flex min-w-0 items-center lc-squircle no-underline transition-colors duration-(--lc-motion-quick) text-muted-foreground hover:text-foreground aria-[current=page]:text-foreground [&amp;_svg]:shrink-0 group-data-[indicator]/nav:relative group-data-[indicator]/nav:aria-[current=page]:bg-transparent py-1.5 aria-[current=page]:bg-accent aria-[current=page]:font-semibold min-h-14 flex-col justify-center gap-0.5 rounded-pill px-0 text-caption font-semibold hover:bg-transparent [&amp;_svg]:size-6" aria-current="page" data-slot="nav-link" data-lc-nav-target="link" data-action="lc-nav#select" href="#overview"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" class="lc-icon" data-slot="icon" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/></svg><span>Overview</span></a></li>
   <li class="contents" data-slot="nav-item"><a class="flex min-w-0 items-center lc-squircle no-underline transition-colors duration-(--lc-motion-quick) text-muted-foreground hover:text-foreground aria-[current=page]:text-foreground [&amp;_svg]:shrink-0 group-data-[indicator]/nav:relative group-data-[indicator]/nav:aria-[current=page]:bg-transparent py-1.5 aria-[current=page]:bg-accent aria-[current=page]:font-semibold min-h-14 flex-col justify-center gap-0.5 rounded-pill px-0 text-caption font-semibold hover:bg-transparent [&amp;_svg]:size-6" data-slot="nav-link" data-lc-nav-target="link" data-action="lc-nav#select" href="#members"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" class="lc-icon" data-slot="icon" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z"/></svg><span>Members</span></a></li>
   <li class="contents" data-slot="nav-item"><a class="flex min-w-0 items-center lc-squircle no-underline transition-colors duration-(--lc-motion-quick) text-muted-foreground hover:text-foreground aria-[current=page]:text-foreground [&amp;_svg]:shrink-0 group-data-[indicator]/nav:relative group-data-[indicator]/nav:aria-[current=page]:bg-transparent py-1.5 aria-[current=page]:bg-accent aria-[current=page]:font-semibold min-h-14 flex-col justify-center gap-0.5 rounded-pill px-0 text-caption font-semibold hover:bg-transparent [&amp;_svg]:size-6" data-slot="nav-link" data-lc-nav-target="link" data-action="lc-nav#select" href="#activity"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" class="lc-icon" data-slot="icon" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg><span>Activity</span></a></li>
