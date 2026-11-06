@@ -1,0 +1,9 @@
+<%= lc_inline do %>
+  <%= lc_button "New entry", icon: "plus", expanded_icon: "x-mark", size: :sm, aria: { expanded: false } %>
+  <%= lc_button "New entry", icon: "plus", expanded_icon: "x-mark", size: :sm, aria: { expanded: true } %>
+  <label class="grid place-items-center gap-related rounded-3xl bg-muted p-inset text-small text-muted-foreground">
+    Drop a receipt here
+    <%= lc_button "Browse files", as: :span, size: :sm, aria: { hidden: true } %>
+    <input type="file" class="sr-only">
+  </label>
+<% end %>

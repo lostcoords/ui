@@ -5,3 +5,5 @@
 <%= lc_icon_button_link_to "Back to buttons", "/components/button.html", icon: "chevron-left", shape: :square %>
 <%= lc_icon_button "Account", size: :lg do %><span class="<%= lc_avatar_class %>">AL</span><% end %>
 <%= lc_icon_button_to "Reload buttons", "/components/button.html", icon: "arrow-path", method: :get, form: { class: "contents" } %>
+<%= lc_icon_button "Edit", icon: "pencil", variant: :secondary %>
+<%= lc_icon_button "Delete file", icon: "trash", variant: :outline, tone: :destructive %>

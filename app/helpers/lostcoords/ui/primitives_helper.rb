@@ -1,7 +1,22 @@
 module Lostcoords::Ui
   module PrimitivesHelper
-    def lc_button(content = nil, variant: :primary, tone: :default, size: :md, block: false, icon: nil, icon_position: :start, **attributes, &content_block)
-      tag.button(lc_button_content(content, icon, icon_position, &content_block), **lc_button_attributes(variant, tone, size, block, { type: "button" }, attributes))
+    BUTTON_EXPANDED_SWAP = "[&>[data-slot=button-expanded-icon]]:hidden aria-expanded:[&>[data-slot=button-label]]:sr-only aria-expanded:[&>[data-slot=button-expanded-icon]]:block"
+
+    # as: :span renders the look without a control, for a decorative button inside a larger target
+    # such as a file drop zone's label. expanded_icon: swaps the content for that icon while
+    # aria-expanded is true; the content stays as the accessible name.
+    def lc_button(content = nil, variant: :primary, tone: :default, size: :md, block: false, icon: nil, icon_position: :start, as: :button, expanded_icon: nil, **attributes, &content_block)
+      as = lc_option!(:as, as, %i[button span])
+      content = lc_button_content(content, icon, icon_position, &content_block)
+      if expanded_icon
+        content = safe_join([
+          tag.span(content, class: "inline-flex items-center gap-related", data: { slot: "button-label" }),
+          lc_icon(expanded_icon, options: { "aria-hidden": true, "data-slot": "button-expanded-icon" })
+        ])
+        attributes = lc_attributes({ class: BUTTON_EXPANDED_SWAP }, attributes)
+      end
+      attributes = lc_button_attributes(variant, tone, size, block, (as == :button ? { type: "button" } : {}), attributes)
+      tag.public_send(as, content, **attributes)
     end
 
     def lc_button_link_to(content = nil, url = nil, variant: :primary, tone: :default, size: :md, block: false, icon: nil, icon_position: :start, **attributes, &content_block)
@@ -71,20 +86,20 @@ module Lostcoords::Ui
       tag.div(safe_join([ primary, toggle, popover ]), **lc_attributes(defaults, attributes))
     end
 
-    def lc_icon_button(label, icon: nil, size: :md, shape: :circle, **attributes, &content)
-      attributes = lc_icon_button_attributes(label, size, shape, { type: "button" }, attributes)
+    def lc_icon_button(label, icon: nil, size: :md, shape: :circle, variant: :ghost, tone: :default, **attributes, &content)
+      attributes = lc_icon_button_attributes(label, size, shape, variant, tone, { type: "button" }, attributes)
       tag.button(lc_icon_button_content(icon, &content), **attributes)
     end
 
-    def lc_icon_button_link_to(label, url, icon: nil, size: :md, shape: :circle, **attributes, &content)
-      attributes = lc_icon_button_attributes(label, size, shape, {}, attributes)
+    def lc_icon_button_link_to(label, url, icon: nil, size: :md, shape: :circle, variant: :ghost, tone: :default, **attributes, &content)
+      attributes = lc_icon_button_attributes(label, size, shape, variant, tone, {}, attributes)
       raise ArgumentError, "Links cannot be disabled; use lc_icon_button for a disabled control" if attributes[:disabled]
 
       link_to(lc_icon_button_content(icon, &content), url, attributes)
     end
 
-    def lc_icon_button_to(label, url, icon: nil, size: :md, shape: :circle, **attributes, &content)
-      button_to(lc_icon_button_content(icon, &content), url, lc_icon_button_attributes(label, size, shape, {}, attributes))
+    def lc_icon_button_to(label, url, icon: nil, size: :md, shape: :circle, variant: :ghost, tone: :default, **attributes, &content)
+      button_to(lc_icon_button_content(icon, &content), url, lc_icon_button_attributes(label, size, shape, variant, tone, {}, attributes))
     end
 
     def lc_badge(content = nil, tone: :neutral, shape: :rounded, **attributes, &block)
@@ -188,10 +203,11 @@ module Lostcoords::Ui
         lc_attributes(defaults.merge(class: lc_button_class(variant: variant, tone: tone, size: size, block: block), data: data), attributes)
       end
 
-      def lc_icon_button_attributes(label, size, shape, defaults, attributes)
+      def lc_icon_button_attributes(label, size, shape, variant, tone, defaults, attributes)
         size = lc_option!(:size, size, ButtonHelper::ICON_BUTTON_SIZES.keys)
         shape = lc_option!(:shape, shape, ButtonHelper::ICON_BUTTON_SHAPES.keys)
-        defaults = defaults.merge(class: lc_icon_button_class(size: size, shape: shape), aria: { label: label }, data: { slot: "icon-button", size: size })
+        data = { slot: "icon-button", size: size, variant: (variant.to_sym unless variant.to_sym == :ghost), tone: (tone.to_sym unless tone.to_sym == :default) }.compact
+        defaults = defaults.merge(class: lc_icon_button_class(size: size, shape: shape, variant: variant, tone: tone), aria: { label: label }, data: data)
         attributes = lc_attributes(defaults, attributes)
         accessible_label = attributes.fetch(:"aria-label", attributes.dig(:aria, :label))
         raise ArgumentError, "lc_icon_button requires a nonblank accessible label" if label.blank? || accessible_label.blank?

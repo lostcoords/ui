@@ -164,5 +164,27 @@ async function _verifyButtons(page) {
     "split buttons join for secondary, outline and ghost at every size",
   )
 
+  const swap = await preview("New entry").evaluate((stage) => {
+    const [closed, open] = stage.querySelectorAll("button")
+    const shown = (button, slot) =>
+      getComputedStyle(button.querySelector(`[data-slot=${slot}]`)).display !== "none" &&
+      button.querySelector(`[data-slot=${slot}]`).getBoundingClientRect().width > 1
+    return {
+      closedLabel: shown(closed, "button-label"),
+      closedIcon: shown(closed, "button-expanded-icon"),
+      openLabel: shown(open, "button-label"),
+      openIcon: shown(open, "button-expanded-icon"),
+      openName: open.textContent.trim(),
+    }
+  })
+  verify(
+    swap.closedLabel &&
+      !swap.closedIcon &&
+      !swap.openLabel &&
+      swap.openIcon &&
+      swap.openName === "New entry",
+    `an expanded button swaps its label for the icon and keeps its name: ${JSON.stringify(swap)}`,
+  )
+
   return checks
 }

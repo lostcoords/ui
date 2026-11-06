@@ -1,4 +1,4 @@
-<%= lc_collapsible card: false, indicator: :none, class: "w-full max-w-80", summary_class: lc_button_class(variant: :secondary, size: :sm, extra: "w-fit") do |collapsible| %>
+<%= lc_collapsible card: false, button: { variant: :secondary, size: :sm }, summary_class: "w-fit", class: "w-full max-w-80" do |collapsible| %>
   <% collapsible.summary do %>
     <%= lc_icon "user-plus", options: { "aria-hidden": true } %>
     <span>Invite people</span>

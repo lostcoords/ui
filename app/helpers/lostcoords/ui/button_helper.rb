@@ -34,16 +34,17 @@ module Lostcoords::Ui
     }.freeze
 
     BUTTON_DESTRUCTIVE_INK = "text-destructive [--lc-button-ink:var(--destructive)]"
+    BUTTON_DESTRUCTIVE_SOFT = "[--lc-button-bg:color-mix(in_oklab,var(--destructive)_12%,var(--background))]"
 
     # A tone recolours a variant without changing its emphasis, so a destructive action can stay quiet.
     BUTTON_TONES = {
       default: BUTTON_VARIANTS.transform_values { "" },
       destructive: {
         primary: "[--lc-button-bg:color-mix(in_oklab,var(--destructive)_60%,black)] [--lc-button-ink:#fff]",
-        secondary: BUTTON_DESTRUCTIVE_INK,
+        secondary: "#{BUTTON_DESTRUCTIVE_INK} #{BUTTON_DESTRUCTIVE_SOFT}",
         outline: "#{BUTTON_DESTRUCTIVE_INK} border-[color-mix(in_oklab,var(--destructive)_32%,var(--border))]",
         glass: BUTTON_DESTRUCTIVE_INK,
-        ghost: "#{BUTTON_DESTRUCTIVE_INK} [--lc-button-bg:color-mix(in_oklab,var(--destructive)_12%,var(--background))]",
+        ghost: "#{BUTTON_DESTRUCTIVE_INK} #{BUTTON_DESTRUCTIVE_SOFT}",
         destructive: ""
       }
     }.freeze
@@ -127,13 +128,19 @@ module Lostcoords::Ui
       lc_tw(SELECT_TRIGGER_BASE, TailwindHelper::CONTROL_SIZES.fetch(size), ("w-full" if block), extra)
     end
 
-    def lc_icon_button_class(shape: :square, size: :md, extra: nil)
+    # The base is already a ghost button, so variant: :ghost adds nothing; tone: recolours any variant.
+    def lc_icon_button_class(shape: :square, size: :md, variant: :ghost, tone: :default, extra: nil)
       shape = lc_option!(:shape, shape, ICON_BUTTON_SHAPES.keys)
       size = lc_option!(:size, size, ICON_BUTTON_SIZES.keys)
+      variant = lc_option!(:variant, variant, BUTTON_VARIANTS.keys)
+      tone = lc_option!(:tone, tone, BUTTON_TONES.keys)
       lc_tw(
         ICON_BUTTON_BASE,
         ICON_BUTTON_SHAPES.fetch(shape),
         ICON_BUTTON_SIZES.fetch(size),
+        (lc_glass_class(shape: :bar) if variant == :glass),
+        (BUTTON_VARIANTS.fetch(variant) unless variant == :ghost),
+        BUTTON_TONES.fetch(tone).fetch(variant),
         extra
       )
     end

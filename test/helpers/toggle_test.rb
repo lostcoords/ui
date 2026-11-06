@@ -82,6 +82,33 @@ module Lostcoords::Ui
       assert_raises(ArgumentError) { @view.lc_toggle_group_item("Link", href: "/") }
     end
 
+    test "a pills toggle group wraps toggle pills and accepts an empty value" do
+      html = fragment(@view.lc_toggle_group(label: "Category", name: "category", value: "", variant: :pills) do
+        @view.safe_join([ @view.lc_toggle_group_item("Leave unchanged", value: ""), @view.lc_toggle_group_item("Food", value: "food") ])
+      end)
+      group = html.at_css("[role=radiogroup]")
+      assert_includes group["class"].split, "flex-wrap"
+      assert_not_includes group["class"].split, "bg-track"
+      assert html.css("label").all? { it["class"].split.include?("rounded-pill") }
+      assert_equal [ "", "food" ], html.css("input").map { it["value"] }
+      assert html.at_css("input[value='']").key?("checked")
+
+      buttons = fragment(@view.lc_toggle_group(label: "Size", variant: :pills) { @view.lc_toggle_group_item("S", value: "s", selected: true) })
+      assert_equal "true", buttons.at_css("button[role=radio]")["aria-checked"]
+      assert_includes buttons.at_css("button")["class"].split, "rounded-pill"
+      small = fragment(@view.lc_toggle_group(label: "Size", variant: :pills, size: :sm) { @view.lc_toggle_group_item("S", value: "s") })
+      assert_equal @view.lc_toggle_class(size: :sm), small.at_css("button")["class"]
+      assert_raises(ArgumentError) { @view.lc_toggle_group(label: "Size", size: :sm) { "" } }
+      assert_raises(ArgumentError) { @view.lc_toggle_group(label: "Size", variant: :cards) { "" } }
+      assert_raises(ArgumentError) { @view.lc_toggle_group(label: "Size") { @view.lc_toggle_group_item { "S" } } }
+    end
+
+    test "a collapsible with button: styles its summary as that button" do
+      summary = fragment(@view.lc_collapsible(title: "Invite", card: false, button: { variant: :secondary, size: :sm }, summary_class: "w-fit") { "Form" }).at_css("summary")
+      assert_equal @view.lc_tw(@view.lc_button_class(variant: :secondary, size: :sm), "list-none [&::-webkit-details-marker]:hidden w-fit"), summary["class"]
+      assert_raises(ArgumentError) { @view.lc_collapsible(title: "Invite", button: { block: true }) }
+    end
+
     test "tabs pass list attributes to the tab list" do
       html = fragment(@view.lc_tabs(id: "t", label: "Graph", list: { class: "justify-self-start", data: { turbo_permanent: true } }) { |tabs| tabs.panel("A") { "1" } })
       list = html.at_css("[role=tablist]")

@@ -55,7 +55,7 @@ module Lostcoords::Ui
       end
 
       def lc_option!(name, value, allowed)
-        normalized = value.to_sym if value.is_a?(String) || value.is_a?(Symbol)
+        normalized = value.is_a?(Integer) ? value : (value.to_sym if value.is_a?(String) || value.is_a?(Symbol))
         return normalized if allowed.include?(normalized)
 
         raise ArgumentError, "Invalid #{name}: #{value.inspect}. Expected one of: #{allowed.map(&:inspect).join(', ')}"

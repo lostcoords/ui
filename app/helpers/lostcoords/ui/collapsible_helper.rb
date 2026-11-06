@@ -6,15 +6,18 @@ module Lostcoords::Ui
     # card: false drops the card surface. summary_class: styles the summary, such as a button class.
     # indicator: :chevron swaps the native marker for a chevron that turns as it opens; it follows the
     # summary's content, so push it to the end with me-auto on a summary element.
-    def lc_collapsible(title: nil, open: false, card: true, summary_class: nil, indicator: :marker, **attributes, &block)
+    # button: { variant:, tone:, size: } styles the summary as that lc_button and drops the native marker.
+    def lc_collapsible(title: nil, open: false, card: true, summary_class: nil, indicator: :marker, button: nil, **attributes, &block)
       indicator = lc_option!(:indicator, indicator, COLLAPSIBLE_INDICATORS)
+      indicator = :none if button && indicator == :marker
+      raise ArgumentError, "button: takes variant:, tone: and size:" if button && (button.keys - %i[variant tone size]).any?
       parts = Parts::Collapsible.new(self)
       content = capture(parts, &block) if block
       summary = parts.summary_content || title
       raise ArgumentError, "lc_collapsible needs a title: or a summary part" if summary.blank?
       summary = tag.span(summary, class: "me-auto") if indicator == :chevron && parts.summary_content.nil?
 
-      summary_classes = lc_tw("cursor-pointer text-label font-semibold",
+      summary_classes = lc_tw((button ? lc_button_class(**button) : "cursor-pointer text-label font-semibold"),
         ("list-none [&::-webkit-details-marker]:hidden" unless indicator == :marker),
         ("flex min-h-control-md items-center gap-related" if indicator == :chevron), summary_class)
       chevron = lc_icon("chevron-down", variant: :mini, options: { class: "size-4 shrink-0 text-muted-foreground", aria: { hidden: true }, data: { slot: "collapsible-indicator" } }) if indicator == :chevron

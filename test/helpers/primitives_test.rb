@@ -43,6 +43,27 @@ module Lostcoords::Ui
       assert_equal "Save", fragment(html).at_css('button[type="submit"] strong').text
     end
 
+    test "a span button keeps the look without being a control" do
+      span = fragment(@view.lc_button("Browse", as: :span, size: :sm, aria: { hidden: true })).at_css("span")
+      assert_equal @view.lc_button_class(size: :sm), span["class"]
+      assert_equal "true", span["aria-hidden"]
+      assert_equal "button", span["data-slot"]
+      assert_nil span["type"]
+      assert_raises(ArgumentError) { @view.lc_button("Browse", as: :a) }
+    end
+
+    test "a button with expanded_icon keeps its label as the name and swaps in the icon while expanded" do
+      button = fragment(@view.lc_button("Add", icon: "plus", expanded_icon: "x-mark", size: :sm, class: "group/add", aria: { expanded: false })).at_css("button")
+      label = button.at_css("[data-slot=button-label]")
+      assert_equal "Add", label.text.strip
+      assert label.at_css("svg[data-icon=inline-start]")
+      swap = button.at_css("svg[data-slot=button-expanded-icon]")
+      assert_equal "true", swap["aria-hidden"]
+      assert_includes button["class"].split, "[&>[data-slot=button-expanded-icon]]:hidden"
+      assert_includes button["class"].split, "aria-expanded:[&>[data-slot=button-label]]:sr-only"
+      assert_includes button["class"].split, "group/add"
+    end
+
     test "public button variants and sizes are strict and accept strings" do
       html = @view.lc_button("Remove", variant: "destructive", size: "sm")
       assert_includes fragment(html).at_css("button")["class"].split, "[--lc-button-bg:color-mix(in_oklab,var(--destructive)_60%,black)]"
