@@ -8,8 +8,12 @@
   <% end %>
   <%= lc_menu id: "EXAMPLE_ID-currency-menu", label: "Currency", align: :start do |menu| %>
     <% menu.trigger { |attrs| lc_select_trigger "Euro", **attrs } %>
-    <%= lc_menu_option "Euro", hint: "EUR", leading: tag.span("€"), checked: true %>
-    <%= lc_menu_option "Japanese yen", hint: "JPY", leading: tag.span("¥"), checked: false %>
-    <%= lc_menu_option "US dollar", hint: "USD", leading: tag.span("$"), checked: false %>
+    <%= lc_menu_group "Suggested", id: "EXAMPLE_ID-suggested" do %>
+      <%= lc_menu_option "Euro", hint: "EUR", leading: tag.span("€"), checked: true %>
+      <%= lc_menu_option "Japanese yen", hint: "JPY", leading: tag.span("¥"), checked: false %>
+    <% end %>
+    <%= lc_menu_group "Other", id: "EXAMPLE_ID-other" do %>
+      <%= lc_menu_option "US dollar", hint: "USD", leading: tag.span("$"), checked: false %>
+    <% end %>
   <% end %>
 </div>

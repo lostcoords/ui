@@ -26,7 +26,9 @@
       border-color var(--lc-motion-control) var(--lc-ease-out),
       box-shadow var(--lc-motion-control) var(--lc-ease-out);
 
-    &:has([data-tone="destructive"], [aria-invalid="true"]) {
+    /* A closed menu or popover inside the card (a row's "Remove" option) is
+       not the card's own control, so it doesn't tint the edge. */
+    &:has(:is([data-tone="destructive"], [aria-invalid="true"]):not([data-slot="menu"] *, [data-slot="popover"] *)) {
       border-color: color-mix(in oklab, var(--destructive) 30%, var(--border));
     }
   }

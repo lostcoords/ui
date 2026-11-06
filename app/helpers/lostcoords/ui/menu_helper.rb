@@ -35,6 +35,9 @@ module Lostcoords::Ui
 
     MENU_TRIGGERS = %i[button icon].freeze
 
+    MENU_GROUP_BASE = "col-span-full grid grid-cols-subgrid gap-y-px"
+    MENU_GROUP_LABEL = "col-span-full px-3 pt-2 pb-1"
+
     def lc_popover_class(align: :end, extra: nil)
       lc_glass_class(shape: :menu, extra: lc_tw(POPOVER_BASE, MENU_POPOVER_ALIGN.fetch(lc_option!(:align, align, MENU_POPOVER_ALIGN.keys)), extra))
     end
@@ -96,6 +99,14 @@ module Lostcoords::Ui
       else
         tag.button(content, **lc_attributes(defaults.merge(type: "button"), attributes))
       end
+    end
+
+    # A labelled run of options inside a menu panel. Its options stay on the menu's columns.
+    def lc_menu_group(label, id:, **attributes, &block)
+      lc_label!(label, :label)
+      lc_label!(id, :id)
+      heading = lc_text(label, size: :eyebrow, tone: :muted, as: :div, id: "#{id}-label", class: MENU_GROUP_LABEL, role: "presentation")
+      tag.div(safe_join([ heading, capture(&block) ]), **lc_attributes({ class: MENU_GROUP_BASE, data: { slot: "menu-group" } }, attributes, { id: id, role: "group", aria: { labelledby: "#{id}-label" } }))
     end
 
     private

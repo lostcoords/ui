@@ -1,0 +1,14 @@
+<%= lc_list_group class: "w-full max-w-md" do %>
+  <%= lc_list_field "Description", icon: "pencil", id: "EXAMPLE_ID-description" do %>
+    <%= lc_input plain: true, id: "EXAMPLE_ID-description", name: "description", placeholder: "Dinner at Ichiran" %>
+  <% end %>
+  <%= lc_list_field "Paid by", icon: "user", tag: :fieldset do %>
+    <div class="flex flex-wrap items-center gap-related min-w-0">
+      <%= lc_toggle "Ada", size: :sm, active: true %>
+      <%= lc_toggle "Grace", size: :sm %>
+    </div>
+  <% end %>
+  <%= lc_list_field "Date", icon: "calendar", id: "EXAMPLE_ID-date" do %>
+    <%= lc_input type: :date, plain: true, id: "EXAMPLE_ID-date", name: "date", value: "2026-11-06" %>
+  <% end %>
+<% end %>

@@ -141,6 +141,19 @@ module Lostcoords::Ui
       assert_nil html.at_css("#cat button[data-slot=select-trigger]")
     end
 
+    test "menu groups label their options and keep them on the menu's columns" do
+      html = fragment(@view.lc_menu(id: "currency", label: "Currency") do
+        @view.lc_menu_group("Suggested", id: "suggested", class: "pt-1", data: { kind: "geo" }) { @view.lc_menu_option("Euro", checked: true) }
+      end)
+      group = html.at_css("#currency > [role=group]")
+      assert_equal [ "suggested", "suggested-label", "menu-group", "geo" ], [ group["id"], group["aria-labelledby"], group["data-slot"], group["data-kind"] ]
+      assert_includes group["class"].split, "grid-cols-subgrid"
+      assert_includes group["class"].split, "pt-1"
+      assert_equal "Suggested", group.at_css("#suggested-label").text
+      assert_equal "Euro", group.at_css("[role=menuitemradio]").text.strip
+      assert_raises(ArgumentError) { @view.lc_menu_group("", id: "x") { "" } }
+    end
+
     test "wrapper attributes style the panel's root and keep its controller" do
       html = fragment(@view.lc_menu(id: "payer", label: "Payer", wrapper_attributes: { class: "flex min-w-0", data: { controller: "picker", role: "from" } }) { "" })
       root = html.at_css("div:has(> #payer)")

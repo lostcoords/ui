@@ -146,5 +146,26 @@ module Lostcoords::Ui
       assert_raises(ArgumentError) { @view.lc_list_section("Heading", level: 7) }
       assert_raises(ArgumentError) { @view.lc_list_section("") }
     end
+
+    test "list fields label one control, or name a group of controls with a legend" do
+      field = render('<%= lc_list_field "Note", icon: "pencil", id: "note" do %><%= lc_input plain: true, id: "note", name: "note" %><% end %>').at_css("[data-slot=list-field]")
+      assert_includes field["class"].split, "lc-list-row"
+      label = field.at_css("label[for=note]")
+      assert label.at_css("svg[aria-hidden=true]")
+      assert_equal "Note", label.at_css("[data-slot=list-field-text]").text
+      input = field.at_css("input#note")
+      assert_equal "true", input["data-plain"]
+      refute_includes input["class"].split, "h-control-md"
+
+      group = render('<%= lc_list_field "Paid by", icon: "user", tag: :fieldset do %><div>chips</div><% end %>').at_css("fieldset")
+      assert_equal "Paid by", group.at_css("legend.sr-only").text
+      assert_equal "true", group.at_css("[data-slot=list-field-label]")["aria-hidden"]
+
+      inline = render('<%= lc_list_field "Split", tag: :span, surface: false do %>Equal<% end %>').at_css("span[data-slot=list-field]")
+      refute_includes inline["class"].split, "lc-list-row"
+      assert_nil @view.lc_input(name: "q")[/data-plain/]
+      assert_raises(ArgumentError) { @view.lc_list_field("Paid by", id: "x", tag: :fieldset) }
+      assert_raises(ArgumentError) { @view.lc_list_field("Row", tag: :li) }
+    end
   end
 end

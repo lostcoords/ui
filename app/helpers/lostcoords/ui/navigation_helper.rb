@@ -27,14 +27,14 @@ module Lostcoords::Ui
       dock: {
         list: "m-0 grid list-none grid-flow-col auto-cols-fr gap-0.5 rounded-pill p-tight",
         link: "min-h-14 flex-col justify-center gap-0.5 rounded-pill px-0 text-caption font-semibold hover:bg-transparent [&_svg]:size-6",
-        indicator: "rounded-pill"
+        indicator: "rounded-pill bg-(--lc-nav-dock-indicator,var(--lc-nav-indicator,var(--accent)))"
       },
       responsive: {
         list: "m-0 list-none p-0 max-sm:grid max-sm:grid-flow-col max-sm:auto-cols-fr max-sm:gap-0.5 max-sm:rounded-pill max-sm:p-tight " \
           "sm:flex sm:min-w-0 sm:flex-wrap sm:items-center sm:gap-tight",
         link: "justify-center max-sm:min-h-14 max-sm:flex-col max-sm:gap-0.5 max-sm:rounded-pill max-sm:px-0 max-sm:text-caption " \
           "max-sm:font-semibold max-sm:hover:bg-transparent max-sm:[&_svg]:size-6 sm:shrink-0 sm:[&_svg]:size-4.5",
-        indicator: "max-sm:rounded-pill sm:rounded-xl lc-squircle"
+        indicator: "max-sm:rounded-pill max-sm:bg-(--lc-nav-dock-indicator,var(--lc-nav-indicator,var(--accent))) sm:rounded-xl lc-squircle"
       }
     }.freeze
     NAV_INDICATOR = "pointer-events-none absolute start-0 top-0 bg-(--lc-nav-indicator,var(--accent)) opacity-0 " \

@@ -29,6 +29,11 @@ module Lostcoords::Ui
       "focus:shadow-[0_0_0_calc(var(--spacing)*0.5)_var(--ring,color-mix(in_oklab,var(--primary)_50%,transparent))] " \
       "aria-invalid:border-destructive aria-invalid:shadow-[0_0_0_3px_color-mix(in_oklab,var(--destructive)_16%,transparent)]"
 
+    # Text and nothing else: for a control inside a row that shows focus itself, such as lc_list_field.
+    INPUT_PLAIN =
+      "w-full max-w-full min-w-0 min-h-9 p-0 border-0 bg-transparent font-sans text-base text-foreground " \
+      "placeholder:text-muted-foreground aria-invalid:placeholder:text-destructive outline-none"
+
     FIELD_BASE = "lc-field grid min-w-0 has-aria-invalid:[&>label]:text-destructive"
     FIELD_SIZES = { sm: "gap-tight", md: "gap-related" }.freeze
     # Field labels use the text roles; TypographyHelper loads after this file, so its sizes are read at call time.
@@ -58,8 +63,11 @@ module Lostcoords::Ui
       lc_tw(TOGGLE_GROUP_ITEM_BASE, (TOGGLE_GROUP_ITEM_ACTIVE if active), extra)
     end
 
-    def lc_input_class(size: :md, extra: nil)
-      lc_tw(INPUT_BASE, TailwindHelper::CONTROL_SIZES.fetch(lc_option!(:size, size, TailwindHelper::CONTROL_SIZES.keys)), extra)
+    def lc_input_class(size: :md, plain: false, extra: nil)
+      size = lc_option!(:size, size, TailwindHelper::CONTROL_SIZES.keys)
+      return lc_tw(INPUT_PLAIN, extra) if plain
+
+      lc_tw(INPUT_BASE, TailwindHelper::CONTROL_SIZES.fetch(size), extra)
     end
 
 

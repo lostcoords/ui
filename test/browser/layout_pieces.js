@@ -189,5 +189,22 @@ async function _verifyLayoutPieces(page) {
   })
   verify(field === "rgb(4, 5, 6)", "fields in cards follow --card-input")
 
+  const edges = await page.evaluate(() => {
+    const card = document.createElement("div")
+    card.className = "lc-card"
+    card.style.transition = "none"
+    document.body.append(card)
+    const edge = () => getComputedStyle(card).borderTopColor
+    const plain = edge()
+    card.innerHTML = '<div data-slot="menu"><button data-tone="destructive">Remove</button></div>'
+    const menu = edge()
+    card.innerHTML = '<button data-tone="destructive">Delete</button>'
+    const own = edge()
+    card.remove()
+    return { plain, menu, own }
+  })
+  verify(edges.menu === edges.plain, "a destructive option in a card's closed menu leaves the edge alone")
+  verify(edges.own !== edges.plain, "a destructive control in the card tints its edge")
+
   return checks
 }
