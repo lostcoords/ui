@@ -19,9 +19,16 @@ export default class extends Controller {
     "results",
     "result",
     "empty",
+    "prompt",
     "status",
   ]
-  static values = { src: String, param: { type: String, default: "q" }, one: String, other: String }
+  static values = {
+    src: String,
+    param: { type: String, default: "q" },
+    empty: String,
+    one: String,
+    other: String,
+  }
 
   connect() {
     this.animations = []
@@ -139,6 +146,7 @@ export default class extends Controller {
     this.request = request
     const url = new URL(this.srcValue, location.href)
     url.searchParams.set(this.paramValue, query)
+    this.busy(true)
     this.loading = fetch(url, { headers: { Accept: "text/html" }, signal: request.signal })
       .then((response) => {
         if (!response.ok) throw new Error(`${url} answered ${response.status}`)
@@ -146,13 +154,24 @@ export default class extends Controller {
       })
       .then((html) => {
         if (this.request !== request) return
-        this.resultsTarget.innerHTML = html
         this.loaded = query
+        this.busy(false)
+        this.resultsTarget.innerHTML = html
       })
       .catch((error) => {
-        if (error.name !== "AbortError") console.error(error)
+        if (error.name === "AbortError") return
+        console.error(error)
+        if (this.request === request) this.busy(false)
       })
     return this.loading
+  }
+
+  // While the server answers, the empty and prompt notes wait, so they never flash before results.
+  busy(pending) {
+    this.pending = pending
+    if (pending) this.panelTarget.setAttribute("aria-busy", "true")
+    else this.panelTarget.removeAttribute("aria-busy")
+    this.refresh()
   }
 
   filter(query) {
@@ -183,8 +202,8 @@ export default class extends Controller {
     return this.resultTargets.filter((result) => result.checkVisibility())
   }
 
-  // Groups without a visible result hide, the empty note shows for a query with no results,
-  // and the status announces the count.
+  // Groups without a visible result hide, the empty note shows for a query with no results, the
+  // prompt for no query and nothing to show, and the status announces the count.
   refresh() {
     for (const group of this.resultsTarget.querySelectorAll("[data-slot=search-group]")) {
       group.hidden = ![...group.querySelectorAll("[data-slot=search-result]")].some(
@@ -195,8 +214,13 @@ export default class extends Controller {
       (result) => !result.hidden && !result.closest("[hidden]"),
     ).length
     const query = this.query
-    this.emptyTarget.hidden = count > 0 || !query
-    this.panelTarget.hidden = count === 0 && this.emptyTarget.hidden
+    const settled = !this.pending && count === 0
+    this.emptyTarget.hidden = !(settled && query)
+    if (!this.emptyTarget.hidden)
+      this.emptyTarget.textContent = this.emptyValue.replace("%{query}", query)
+    if (this.hasPromptTarget) this.promptTarget.hidden = !(settled && !query)
+    const note = !this.emptyTarget.hidden || (this.hasPromptTarget && !this.promptTarget.hidden)
+    this.panelTarget.hidden = count === 0 && !note
     this.statusTarget.textContent = query
       ? (count === 1 ? this.oneValue : this.otherValue).replace("%{count}", count)
       : ""

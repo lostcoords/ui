@@ -11,17 +11,21 @@ module Lostcoords::Ui
     # - The block: rows rendered there are filtered in the browser by their text and keywords.
     # - Your own code: handle lc-search:query, call preventDefault and fill event.detail.results.
     #
-    # The block also renders what shows before anything is typed. Pass id: when a page has two searches,
-    # and shortcut: nil to drop the page shortcut.
-    def lc_search(label:, src: nil, param: "q", placeholder: label, trigger: lc_t("lostcoords.ui.search.trigger"), shortcut: "mod+k", id: "lc-search", **attributes, &block)
+    # The block also renders what shows before anything is typed. empty: is the note for a query with
+    # no results, where %{query} stands for the query, and prompt: the note shown before anything is
+    # typed when there is nothing else to show. Pass id: when a page has two searches, and shortcut: nil
+    # to drop the page shortcut.
+    def lc_search(label:, src: nil, param: "q", placeholder: label, trigger: lc_t("lostcoords.ui.search.trigger"), empty: lc_t("lostcoords.ui.search.empty"), prompt: nil,
+      shortcut: "mod+k", id: "lc-search", **attributes, &block)
       lc_label!(label, :label)
       lc_label!(trigger, :trigger)
       lc_label!(param, :param)
       lc_label!(id, :id)
+      lc_label!(empty, :empty)
       defaults = { class: "lc-search-trigger", aria: { label: label } }
       data = { lc_search_target: "trigger", action: "lc-search#open", slot: "search-trigger" }
       required = { type: "button", aria: { haspopup: "dialog", controls: id }, data: shortcut ? lc_shortcut_data(shortcut, data) : data }
-      render "lostcoords/ui/components/lc_search", id:, label:, src:, param:, placeholder:, trigger:, shortcut:,
+      render "lostcoords/ui/components/lc_search", id:, label:, src:, param:, placeholder:, trigger:, empty:, prompt: prompt.presence, shortcut:,
         attributes: lc_attributes(defaults, attributes, required), content: (capture(&block) if block)
     end
 

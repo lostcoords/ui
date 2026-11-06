@@ -75,5 +75,15 @@ module Lostcoords::Ui
       assert_raises(ArgumentError) { @view.lc_search_result("", "/x") }
       assert_raises(ArgumentError) { @view.lc_search_result("Title", "") }
     end
+
+    test "search carries its empty note and prompt" do
+      fragment = Nokogiri::HTML.fragment(@view.lc_search(label: "Search", src: "/search", empty: "No results for %{query}", prompt: "Search your groups"))
+      assert_equal "No results for %{query}", fragment.at_css("[data-slot=search]")["data-lc-search-empty-value"]
+      prompt = fragment.at_css("[data-slot=search-prompt][data-lc-search-target=prompt]")
+      assert_equal "Search your groups", prompt.text
+      assert prompt.key?("hidden")
+      assert_nil Nokogiri::HTML.fragment(@view.lc_search(label: "Search")).at_css("[data-slot=search-prompt]")
+      assert_raises(ArgumentError) { @view.lc_search(label: "Search", empty: "") }
+    end
   end
 end

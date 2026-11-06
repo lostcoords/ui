@@ -130,8 +130,8 @@ async function _verifySearch(page) {
   )
   await field.fill("no-such-workspace-item")
   verify(
-    await dialog.getByText("No results", { exact: true }).isVisible(),
-    "Filtering shows the empty note",
+    await dialog.getByText("Nothing matches no-such-workspace-item", { exact: true }).isVisible(),
+    "Filtering shows the empty note with the query",
   )
   await field.fill("brand")
   verify(
@@ -155,6 +155,50 @@ async function _verifySearch(page) {
   verify(
     await example.evaluate((node) => node === document.activeElement),
     "Closing returns focus to the trigger",
+  )
+
+  // The same search answered by a server: the notes wait for the answer instead of flashing.
+  let answer = null
+  await page.route(
+    (url) => url.pathname === "/remote-search",
+    async (route) => {
+      await new Promise((resolve) => (answer = resolve))
+      const query = new URL(route.request().url()).searchParams.get("q")
+      await route.fulfill({
+        contentType: "text/html",
+        body:
+          query === "field"
+            ? '<a data-slot="search-result" data-lc-search-target="result" href="#fieldwork">Fieldwork</a>'
+            : "",
+      })
+    },
+  )
+  await page.evaluate(() => {
+    document.querySelector(
+      "[data-slot=search]:has(dialog[aria-label='Search the workspace'])",
+    ).dataset.lcSearchSrcValue = "/remote-search"
+  })
+  await example.click()
+  await field.fill("nothing-here")
+  await page.waitForFunction(() =>
+    document.querySelector("dialog[open] [data-slot=search-panel][aria-busy=true]"),
+  )
+  verify(
+    !(await dialog.locator("[data-slot=search-empty]").isVisible()),
+    "While the server answers, the empty note waits",
+  )
+  answer()
+  await dialog.getByText("Nothing matches nothing-here", { exact: true }).waitFor()
+  verify(true, "An empty answer shows the empty note")
+  await field.fill("field")
+  await page.waitForFunction(() =>
+    document.querySelector("dialog[open] [data-slot=search-panel][aria-busy=true]"),
+  )
+  answer()
+  await dialog.locator("a[href='#fieldwork']").waitFor()
+  verify(
+    !(await dialog.locator("[data-slot=search-empty]").isVisible()),
+    "Results from the server replace the note",
   )
 
   return checks

@@ -1,5 +1,5 @@
-<%# locals: (id:, label:, src:, param:, placeholder:, trigger:, shortcut:, attributes:, content:) %>
-<div class="contents" data-slot="search" data-controller="lc-search" data-action="turbo:before-cache@document->lc-search#reset" data-lc-search-src-value="<%= src %>" data-lc-search-param-value="<%= param %>" data-lc-search-one-value="<%= lc_t("lostcoords.ui.search.results.one", count: "%{count}") %>" data-lc-search-other-value="<%= lc_t("lostcoords.ui.search.results.other", count: "%{count}") %>">
+<%# locals: (id:, label:, src:, param:, placeholder:, trigger:, empty:, prompt:, shortcut:, attributes:, content:) %>
+<div class="contents" data-slot="search" data-controller="lc-search" data-action="turbo:before-cache@document->lc-search#reset" data-lc-search-src-value="<%= src %>" data-lc-search-param-value="<%= param %>" data-lc-search-empty-value="<%= empty %>" data-lc-search-one-value="<%= lc_t("lostcoords.ui.search.results.one", count: "%{count}") %>" data-lc-search-other-value="<%= lc_t("lostcoords.ui.search.results.other", count: "%{count}") %>">
   <%= tag.button(**attributes) do %>
     <%= lc_icon "magnifying-glass", options: { class: "size-4 shrink-0", "aria-hidden": true } %>
     <span class="flex-1 truncate text-start max-sm:sr-only"><%= trigger %></span>
@@ -17,7 +17,8 @@
       <% end %>
       <div class="<%= lc_glass_class(shape: :panel, extra: "lc-search-panel min-h-0 overflow-y-auto overscroll-contain p-related") %>" data-lc-search-target="panel" data-slot="search-panel">
         <div data-lc-search-target="results" data-slot="search-results"><%= content %></div>
-        <p class="px-content py-10 text-center text-label text-muted-foreground" data-lc-search-target="empty" data-slot="search-empty" hidden><%= lc_t("lostcoords.ui.search.empty") %></p>
+        <p class="px-content py-10 text-center text-label text-muted-foreground" data-lc-search-target="empty" data-slot="search-empty" hidden><%= empty.sub("%{query}", "") %></p>
+        <% if prompt %><p class="px-content py-10 text-center text-label text-muted-foreground" data-lc-search-target="prompt" data-slot="search-prompt" hidden><%= prompt %></p><% end %>
       </div>
       <p class="sr-only" role="status" aria-atomic="true" data-lc-search-target="status"></p>
     </div>
