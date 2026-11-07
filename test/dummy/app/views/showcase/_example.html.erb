@@ -1,5 +1,5 @@
-<section id="<%= id %>" class="<%= lc_stack_class(gap: :heading, extra: "group/heading scroll-mt-28") %>">
-  <header class="<%= lc_section_header_class %>"><h3 class="<%= lc_heading_class(size: :subheading) %>"><a href="#<%= id %>" class="inline-flex items-center gap-2"><%= title %><span class="text-muted-foreground opacity-0 transition-opacity group-hover/heading:opacity-100 group-has-focus-visible/heading:opacity-100" aria-hidden="true">#</span></a></h3></header>
+<section id="<%= id %>" class="<%= lc_stack_class(gap: :heading, extra: "lc-anchor-target") %>">
+  <%= lc_section_header do %><%= lc_heading title, level: 3, size: :subheading, anchor: id %><% end %>
   <%= lc_stack do %>
     <% if example.note %><p class="text-pretty text-sm text-muted-foreground"><%= example.note %></p><% end %>
     <%# The panel sets the context a card sets, so muted fills, choice tiles and avatar cutouts look as they do on a card. %>

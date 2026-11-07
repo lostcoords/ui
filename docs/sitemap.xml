@@ -10,6 +10,7 @@
   <url><loc>https://ui.lostcoords.com/blocks/mobile_navigation/preview</loc></url>
   <url><loc>https://ui.lostcoords.com/components</loc></url>
   <url><loc>https://ui.lostcoords.com/components/alert</loc></url>
+  <url><loc>https://ui.lostcoords.com/components/app_header</loc></url>
   <url><loc>https://ui.lostcoords.com/components/avatar</loc></url>
   <url><loc>https://ui.lostcoords.com/components/badge</loc></url>
   <url><loc>https://ui.lostcoords.com/components/breadcrumb</loc></url>
@@ -21,6 +22,8 @@
   <url><loc>https://ui.lostcoords.com/components/copy_button</loc></url>
   <url><loc>https://ui.lostcoords.com/components/description_list</loc></url>
   <url><loc>https://ui.lostcoords.com/components/dialog</loc></url>
+  <url><loc>https://ui.lostcoords.com/components/dock</loc></url>
+  <url><loc>https://ui.lostcoords.com/components/docs_shell</loc></url>
   <url><loc>https://ui.lostcoords.com/components/emoji</loc></url>
   <url><loc>https://ui.lostcoords.com/components/empty_state</loc></url>
   <url><loc>https://ui.lostcoords.com/components/field</loc></url>
@@ -46,6 +49,7 @@
   <url><loc>https://ui.lostcoords.com/components/tabs</loc></url>
   <url><loc>https://ui.lostcoords.com/components/textarea</loc></url>
   <url><loc>https://ui.lostcoords.com/components/toast</loc></url>
+  <url><loc>https://ui.lostcoords.com/components/toc</loc></url>
   <url><loc>https://ui.lostcoords.com/components/toggle</loc></url>
   <url><loc>https://ui.lostcoords.com/components/toggle_group</loc></url>
   <url><loc>https://ui.lostcoords.com/components/tooltip</loc></url>

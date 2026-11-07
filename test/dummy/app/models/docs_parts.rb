@@ -7,7 +7,8 @@ module DocsParts
   # Builder class => [ helper that yields it, block variable the examples use ]
   OWNERS = {
     "Card" => [ :lc_card, "card" ], "Dialog" => [ :lc_dialog, "dialog" ], "Alert" => [ :lc_alert, "alert" ],
-    "Tabs" => [ :lc_tabs, "tabs" ], "NavList" => [ :lc_nav_list, "nav" ], "DescriptionList" => [ :lc_description_list, "list" ]
+    "Tabs" => [ :lc_tabs, "tabs" ], "NavList" => [ :lc_nav_list, "nav" ], "DescriptionList" => [ :lc_description_list, "list" ],
+    "Toc" => [ :lc_toc, "toc" ], "AppHeader" => [ :lc_app_header, "header" ], "Dock" => [ :lc_dock, "dock" ], "DockMenu" => [ :lc_dock, "menu" ]
   }.freeze
 
   Part = Data.define(:receiver, :name, :parameters) do
@@ -23,7 +24,7 @@ module DocsParts
       owner, receiver = OWNERS[node.constant_path.slice]
       next unless owner
 
-      parts[owner] = public_methods_in(node).map { |method| Part.new(receiver, method.name, method.parameters&.slice) }
+      (parts[owner] ||= []).concat public_methods_in(node).map { |method| Part.new(receiver, method.name, method.parameters&.slice) }
     end
   end
 

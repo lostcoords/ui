@@ -1,21 +1,10 @@
-<div class="mobile-example min-h-screen" data-controller="blocks-mobile-navigation" data-action="resize@window->blocks-mobile-navigation#keyboard focusin@document->blocks-mobile-navigation#keyboard focusout@document->blocks-mobile-navigation#keyboard">
+<div class="min-h-screen" data-controller="blocks-mobile-navigation">
   <header class="mx-auto flex max-w-2xl items-center justify-between gap-4 px-5 pt-7 pb-6 sm:px-8">
     <a href="#projects" class="flex min-h-11 items-center gap-2 font-semibold" data-action="blocks-mobile-navigation#home"><%= lc_icon "square-3-stack-3d", options: { class: "size-5", "aria-hidden": true } %> Studio</a>
     <%= lc_avatar "AL", class: "bg-primary-soft text-primary", aria: { label: "Alex Lee" } %>
   </header>
 
-  <nav class="mobile-example__tabs" aria-label="Studio sections">
-    <div class="<%= lc_glass_class(thick: true, extra: "relative isolate grid grid-flow-col auto-cols-fr gap-1 p-1") %>">
-      <span class="mobile-example__indicator" data-blocks-mobile-navigation-target="indicator" aria-hidden="true"></span>
-      <% [ [ "Projects", "projects", "rectangle-stack" ], [ "Notes", "notes", "document-text" ], [ "People", "people", "users" ] ].each do |label, id, icon| %>
-        <a href="#<%= id %>" class="mobile-example__tab" <%= 'aria-current=page' if id == "projects" %> data-blocks-mobile-navigation-target="link" data-action="blocks-mobile-navigation#select">
-          <%= lc_icon icon, options: { class: "size-5", "aria-hidden": true } %><span><%= label %></span>
-        </a>
-      <% end %>
-    </div>
-  </nav>
-
-  <main class="mobile-example__main isolate mx-auto flex max-w-2xl flex-col gap-7 px-5 pt-3 sm:px-8">
+  <main class="isolate mx-auto flex max-w-2xl flex-col gap-7 px-5 pt-3 sm:px-8">
     <div class="flex flex-col gap-2"><%= lc_text "A space to make things", size: :caption, tone: :muted %><h1 class="text-4xl font-semibold tracking-tight">Your little studio.</h1><p class="text-muted-foreground">A few good ideas, and room for a few more.</p></div>
     <p class="text-sm text-muted-foreground" role="status" aria-live="polite" data-blocks-mobile-navigation-target="status"></p>
 
@@ -50,19 +39,17 @@
     </section>
   </main>
 
-  <div class="mobile-example__dock" data-controller="lc-menu" data-lc-menu-lift-value="false">
-    <button type="button" class="mobile-example__trigger <%= lc_glass_class(shape: :disc, thick: true) %>" aria-label="Create something" aria-haspopup="menu" aria-expanded="false" aria-controls="studio-create-menu" data-lc-menu-target="trigger" data-action="lc-menu#toggle">
-      <%= lc_icon "plus", options: { class: "size-7", "aria-hidden": true } %>
-    </button>
-    <div id="studio-create-menu" class="mobile-example__actions" role="menu" aria-label="Create something" data-lc-menu-target="popover">
-      <button type="button" class="mobile-example__scrim" aria-label="Close create menu" tabindex="-1" data-action="lc-menu#close"></button>
-      <% [ [ "New project", "rectangle-stack", "projects" ], [ "Add a note", "pencil-square", "notes" ] ].each_with_index do |(label, icon, destination), index| %>
-        <button type="button" role="menuitem" class="mobile-example__action <%= lc_glass_class(shape: :disc, thick: true) %>" style="--action-index: <%= index + 1 %>" data-action="blocks-mobile-navigation#add lc-menu#close" data-blocks-mobile-navigation-destination-param="<%= destination %>">
-          <span class="mobile-example__action-label"><%= label %></span><%= lc_icon icon, options: { class: "size-6", "aria-hidden": true } %>
-        </button>
+  <%= lc_dock do |dock| %>
+    <%= dock.nav label: "Studio sections" do |nav| %>
+      <% [ [ "Projects", "projects", "rectangle-stack" ], [ "Notes", "notes", "document-text" ], [ "People", "people", "users" ] ].each do |label, id, icon| %>
+        <%= nav.link label, "##{id}", icon:, current: id == "projects", data: { action: "blocks-mobile-navigation#select" } %>
       <% end %>
-    </div>
-  </div>
+    <% end %>
+    <%= dock.menu label: "Create something", id: "studio-create-menu" do |menu| %>
+      <%= menu.action "New project", icon: "rectangle-stack", data: { action: "blocks-mobile-navigation#add", blocks_mobile_navigation_destination_param: "projects" } %>
+      <%= menu.action "Add a note", icon: "pencil-square", data: { action: "blocks-mobile-navigation#add", blocks_mobile_navigation_destination_param: "notes" } %>
+    <% end %>
+  <% end %>
 
   <template data-blocks-mobile-navigation-target="draft">
     <%= lc_card class: "flex flex-col gap-3" do %><%= lc_badge "Draft" %><h3 class="text-lg font-semibold" data-draft-title></h3><p class="text-sm text-muted-foreground">A fresh start. Make it your own.</p><% end %>

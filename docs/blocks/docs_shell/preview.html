@@ -6,15 +6,16 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
     <title>Documentation layout · Block preview</title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2028%2028%22%20fill%3D%22none%22%3E%20%3Cstyle%3Epath%7Bstroke%3A%23111%7D%40media%20%28prefers-color-scheme%3Adark%29%7Bpath%7Bstroke%3A%23fff%7D%7D%3C%2Fstyle%3E%20%3Cpath%20d%3D%22M7%203v18h18M3%207h18v18M14%209v10M9%2014h10%22%20stroke-width%3D%222%22%2F%3E%3C%2Fsvg%3E">
-    <link rel="stylesheet" href="/assets/tailwind-e97fa27e.css" />
-<link rel="stylesheet" href="/assets/blocks/docs_shell-8bd5856e.css" />
+    <link rel="stylesheet" href="/assets/tailwind-25a6e1ad.css" />
     <script type="importmap" data-turbo-track="reload">{
   "imports": {
-    "lostcoords/ui": "/assets/lostcoords/ui/index-bd937739.js",
+    "lostcoords/ui": "/assets/lostcoords/ui/index-cbd11bae.js",
+    "lostcoords/ui/controllers/lc_app_header_controller": "/assets/lostcoords/ui/controllers/lc_app_header_controller-057c2c2a.js",
     "lostcoords/ui/controllers/lc_code_block_controller": "/assets/lostcoords/ui/controllers/lc_code_block_controller-0a27362b.js",
     "lostcoords/ui/controllers/lc_collapsible_controller": "/assets/lostcoords/ui/controllers/lc_collapsible_controller-e723312e.js",
     "lostcoords/ui/controllers/lc_copy_controller": "/assets/lostcoords/ui/controllers/lc_copy_controller-d436312d.js",
     "lostcoords/ui/controllers/lc_dialog_controller": "/assets/lostcoords/ui/controllers/lc_dialog_controller-993d9a42.js",
+    "lostcoords/ui/controllers/lc_dock_controller": "/assets/lostcoords/ui/controllers/lc_dock_controller-0e45af8e.js",
     "lostcoords/ui/controllers/lc_emoji_picker_controller": "/assets/lostcoords/ui/controllers/lc_emoji_picker_controller-c3f9d5d9.js",
     "lostcoords/ui/controllers/lc_kbd_controller": "/assets/lostcoords/ui/controllers/lc_kbd_controller-83cd1787.js",
     "lostcoords/ui/controllers/lc_menu_controller": "/assets/lostcoords/ui/controllers/lc_menu_controller-c2a19d16.js",
@@ -28,6 +29,7 @@
     "lostcoords/ui/controllers/lc_tabs_controller": "/assets/lostcoords/ui/controllers/lc_tabs_controller-9f1d494f.js",
     "lostcoords/ui/controllers/lc_toast_controller": "/assets/lostcoords/ui/controllers/lc_toast_controller-80577e17.js",
     "lostcoords/ui/controllers/lc_toast_region_controller": "/assets/lostcoords/ui/controllers/lc_toast_region_controller-cba89595.js",
+    "lostcoords/ui/controllers/lc_toc_controller": "/assets/lostcoords/ui/controllers/lc_toc_controller-29ad3321.js",
     "lostcoords/ui/controllers/lc_toggle_controller": "/assets/lostcoords/ui/controllers/lc_toggle_controller-c1f00ec9.js",
     "lostcoords/ui/controllers/lc_tooltip_controller": "/assets/lostcoords/ui/controllers/lc_tooltip_controller-dca69acd.js",
     "application": "/assets/application-a9592715.js",
@@ -35,10 +37,12 @@
     "@hotwired/stimulus": "/assets/stimulus.min-7ea3d58b.js",
     "@hotwired/stimulus-loading": "/assets/stimulus-loading-25917588.js",
     "minisearch": "/assets/minisearch-4b8cd157.js",
+    "controllers/lc_app_header_controller": "/assets/lostcoords/ui/controllers/lc_app_header_controller-057c2c2a.js",
     "controllers/lc_code_block_controller": "/assets/lostcoords/ui/controllers/lc_code_block_controller-0a27362b.js",
     "controllers/lc_collapsible_controller": "/assets/lostcoords/ui/controllers/lc_collapsible_controller-e723312e.js",
     "controllers/lc_copy_controller": "/assets/lostcoords/ui/controllers/lc_copy_controller-d436312d.js",
     "controllers/lc_dialog_controller": "/assets/lostcoords/ui/controllers/lc_dialog_controller-993d9a42.js",
+    "controllers/lc_dock_controller": "/assets/lostcoords/ui/controllers/lc_dock_controller-0e45af8e.js",
     "controllers/lc_emoji_picker_controller": "/assets/lostcoords/ui/controllers/lc_emoji_picker_controller-c3f9d5d9.js",
     "controllers/lc_kbd_controller": "/assets/lostcoords/ui/controllers/lc_kbd_controller-83cd1787.js",
     "controllers/lc_menu_controller": "/assets/lostcoords/ui/controllers/lc_menu_controller-c2a19d16.js",
@@ -52,6 +56,7 @@
     "controllers/lc_tabs_controller": "/assets/lostcoords/ui/controllers/lc_tabs_controller-9f1d494f.js",
     "controllers/lc_toast_controller": "/assets/lostcoords/ui/controllers/lc_toast_controller-80577e17.js",
     "controllers/lc_toast_region_controller": "/assets/lostcoords/ui/controllers/lc_toast_region_controller-cba89595.js",
+    "controllers/lc_toc_controller": "/assets/lostcoords/ui/controllers/lc_toc_controller-29ad3321.js",
     "controllers/lc_toggle_controller": "/assets/lostcoords/ui/controllers/lc_toggle_controller-c1f00ec9.js",
     "controllers/lc_tooltip_controller": "/assets/lostcoords/ui/controllers/lc_tooltip_controller-dca69acd.js",
     "lostcoords/ui/helpers/catalog_picker": "/assets/lostcoords/ui/helpers/catalog_picker-c9ff3c51.js",
@@ -69,8 +74,7 @@
     "controllers/application": "/assets/controllers/application-f811edf3.js",
     "controllers/block_preview_controller": "/assets/controllers/block_preview_controller-53c37654.js",
     "controllers/block_stage_controller": "/assets/controllers/block_stage_controller-828c99a5.js",
-    "controllers/blocks_header_controller": "/assets/controllers/blocks_header_controller-ea06a62f.js",
-    "controllers/blocks_mobile_navigation_controller": "/assets/controllers/blocks_mobile_navigation_controller-f3c310d5.js",
+    "controllers/blocks_mobile_navigation_controller": "/assets/controllers/blocks_mobile_navigation_controller-ccb437f5.js",
     "controllers/component_picker_controller": "/assets/controllers/component_picker_controller-73ac8278.js",
     "controllers/confirm_demo_controller": "/assets/controllers/confirm_demo_controller-94f72afd.js",
     "controllers/docs_search_controller": "/assets/controllers/docs_search_controller-0b42ad02.js",
@@ -88,8 +92,7 @@
 <link rel="modulepreload" href="/assets/controllers/application-f811edf3.js">
 <link rel="modulepreload" href="/assets/controllers/block_preview_controller-53c37654.js">
 <link rel="modulepreload" href="/assets/controllers/block_stage_controller-828c99a5.js">
-<link rel="modulepreload" href="/assets/controllers/blocks_header_controller-ea06a62f.js">
-<link rel="modulepreload" href="/assets/controllers/blocks_mobile_navigation_controller-f3c310d5.js">
+<link rel="modulepreload" href="/assets/controllers/blocks_mobile_navigation_controller-ccb437f5.js">
 <link rel="modulepreload" href="/assets/controllers/component_picker_controller-73ac8278.js">
 <link rel="modulepreload" href="/assets/controllers/confirm_demo_controller-94f72afd.js">
 <link rel="modulepreload" href="/assets/controllers/docs_search_controller-0b42ad02.js">
@@ -100,49 +103,38 @@
 <script type="module">import "application"</script>
   </head>
   <body class="antialiased" data-controller="block-preview">
-    <div class="docs-shell mx-auto flex max-w-360 gap-10 px-5 sm:px-8 lg:px-10">
-  <aside tabindex="0" aria-label="Documentation sidebar" data-controller="lc-scroll-keeper" data-lc-scroll-keeper-key-value="docs-sidebar" class="docs-shell__sidebar sticky top-20 hidden h-[calc(100dvh-5rem)] w-52 shrink-0 overflow-y-auto py-8 pe-4 lg:block">
-    <nav class="" aria-label="Guides" data-slot="nav-list"><ul class="m-0 flex list-none flex-col gap-px p-0">  <li class="flex flex-col gap-tight not-first:pt-section" data-slot="nav-group"><span class="px-3 pb-tight text-caption font-semibold text-foreground" aria-hidden="true" data-slot="nav-group-title">Getting started</span><ul class="m-0 flex list-none flex-col gap-px p-0" aria-label="Getting started">
+    <div class="lc-docs-shell mx-auto flex w-full max-w-360 gap-10 px-5 sm:px-8 lg:px-10" data-slot="docs-shell"><aside tabindex="0" aria-label="Documentation sidebar" class="sticky top-(--lc-sticky-offset,0rem) hidden h-[calc(100dvh-var(--lc-sticky-offset,0rem))] shrink-0 overflow-y-auto lc-docs-shell__sidebar w-52 py-8 pe-4 lg:block" data-slot="docs-shell-sidebar" data-controller="lc-scroll-keeper" data-lc-scroll-keeper-key-value="lc-docs-shell"><nav class="" aria-label="Guides" data-slot="nav-list"><ul class="m-0 flex list-none flex-col gap-px p-0">  <li class="flex flex-col gap-tight not-first:pt-section" data-slot="nav-group"><span class="px-3 pb-tight text-caption font-semibold text-foreground" aria-hidden="true" data-slot="nav-group-title">Getting started</span><ul class="m-0 flex list-none flex-col gap-px p-0" aria-label="Getting started">
     <li data-slot="nav-item"><a class="flex min-w-0 items-center gap-related rounded-xl lc-squircle no-underline transition-colors duration-(--lc-motion-quick) text-muted-foreground hover:text-foreground aria-[current=page]:text-foreground [&amp;_svg]:shrink-0 group-data-[indicator]/nav:relative group-data-[indicator]/nav:aria-[current=page]:bg-transparent min-h-control-md px-3 py-1.5 text-label hover:bg-accent aria-[current=page]:bg-accent aria-[current=page]:font-semibold [&amp;_svg]:size-4.5" aria-current="page" data-slot="nav-link" href="#introduction">Introduction</a></li>
     <li data-slot="nav-item"><a class="flex min-w-0 items-center gap-related rounded-xl lc-squircle no-underline transition-colors duration-(--lc-motion-quick) text-muted-foreground hover:text-foreground aria-[current=page]:text-foreground [&amp;_svg]:shrink-0 group-data-[indicator]/nav:relative group-data-[indicator]/nav:aria-[current=page]:bg-transparent min-h-control-md px-3 py-1.5 text-label hover:bg-accent aria-[current=page]:bg-accent aria-[current=page]:font-semibold [&amp;_svg]:size-4.5" data-slot="nav-link" href="#install">Install</a></li>
 </ul></li>  <li class="flex flex-col gap-tight not-first:pt-section" data-slot="nav-group"><span class="px-3 pb-tight text-caption font-semibold text-foreground" aria-hidden="true" data-slot="nav-group-title">Guides</span><ul class="m-0 flex list-none flex-col gap-px p-0" aria-label="Guides">
     <li data-slot="nav-item"><a class="flex min-w-0 items-center gap-related rounded-xl lc-squircle no-underline transition-colors duration-(--lc-motion-quick) text-muted-foreground hover:text-foreground aria-[current=page]:text-foreground [&amp;_svg]:shrink-0 group-data-[indicator]/nav:relative group-data-[indicator]/nav:aria-[current=page]:bg-transparent min-h-control-md px-3 py-1.5 text-label hover:bg-accent aria-[current=page]:bg-accent aria-[current=page]:font-semibold [&amp;_svg]:size-4.5" data-slot="nav-link" href="#accounts">Accounts</a></li>
     <li data-slot="nav-item"><a class="flex min-w-0 items-center gap-related rounded-xl lc-squircle no-underline transition-colors duration-(--lc-motion-quick) text-muted-foreground hover:text-foreground aria-[current=page]:text-foreground [&amp;_svg]:shrink-0 group-data-[indicator]/nav:relative group-data-[indicator]/nav:aria-[current=page]:bg-transparent min-h-control-md px-3 py-1.5 text-label hover:bg-accent aria-[current=page]:bg-accent aria-[current=page]:font-semibold [&amp;_svg]:size-4.5" data-slot="nav-link" href="#billing">Billing</a></li>
     <li data-slot="nav-item"><a class="flex min-w-0 items-center gap-related rounded-xl lc-squircle no-underline transition-colors duration-(--lc-motion-quick) text-muted-foreground hover:text-foreground aria-[current=page]:text-foreground [&amp;_svg]:shrink-0 group-data-[indicator]/nav:relative group-data-[indicator]/nav:aria-[current=page]:bg-transparent min-h-control-md px-3 py-1.5 text-label hover:bg-accent aria-[current=page]:bg-accent aria-[current=page]:font-semibold [&amp;_svg]:size-4.5" data-slot="nav-link" href="#webhooks">Webhooks</a></li>
-</ul></li></ul></nav>
-  </aside>
-  <main id="main" class="isolate min-w-0 flex-1 py-5 lg:py-10 ">
-    <details class="group/nav relative z-raised rounded-2xl lc-squircle bg-muted lg:hidden">
-      <summary class="flex min-h-12 cursor-pointer list-none items-center justify-between gap-content px-4 text-label [&::-webkit-details-marker]:hidden">Guides<svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" class="lc-icon size-4 transition-transform group-open/nav:rotate-180" data-slot="icon" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg></summary>
-      <div class="max-h-[60dvh] overflow-y-auto p-3 pt-0"><nav class="" aria-label="Guides" data-slot="nav-list"><ul class="m-0 flex list-none flex-col gap-px p-0">  <li class="flex flex-col gap-tight not-first:pt-section" data-slot="nav-group"><span class="px-3 pb-tight text-caption font-semibold text-foreground" aria-hidden="true" data-slot="nav-group-title">Getting started</span><ul class="m-0 flex list-none flex-col gap-px p-0" aria-label="Getting started">
+</ul></li></ul></nav></aside><main id="main" class="isolate min-w-0 flex-1 py-5 lg:py-10" data-slot="docs-shell-main"><details class="group/menu relative z-raised rounded-2xl lc-squircle bg-muted lg:hidden" data-slot="docs-shell-menu"><summary class="flex min-h-12 cursor-pointer list-none items-center justify-between gap-content px-4 text-label [&amp;::-webkit-details-marker]:hidden">Guides<svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" class="lc-icon size-4 transition-transform duration-(--lc-motion-quick) group-open/menu:rotate-180" data-slot="icon" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg></summary><div class="max-h-[60dvh] overflow-y-auto p-3 pt-0"><nav class="" aria-label="Guides" data-slot="nav-list"><ul class="m-0 flex list-none flex-col gap-px p-0">  <li class="flex flex-col gap-tight not-first:pt-section" data-slot="nav-group"><span class="px-3 pb-tight text-caption font-semibold text-foreground" aria-hidden="true" data-slot="nav-group-title">Getting started</span><ul class="m-0 flex list-none flex-col gap-px p-0" aria-label="Getting started">
     <li data-slot="nav-item"><a class="flex min-w-0 items-center gap-related rounded-xl lc-squircle no-underline transition-colors duration-(--lc-motion-quick) text-muted-foreground hover:text-foreground aria-[current=page]:text-foreground [&amp;_svg]:shrink-0 group-data-[indicator]/nav:relative group-data-[indicator]/nav:aria-[current=page]:bg-transparent min-h-control-md px-3 py-1.5 text-label hover:bg-accent aria-[current=page]:bg-accent aria-[current=page]:font-semibold [&amp;_svg]:size-4.5" aria-current="page" data-slot="nav-link" href="#introduction">Introduction</a></li>
     <li data-slot="nav-item"><a class="flex min-w-0 items-center gap-related rounded-xl lc-squircle no-underline transition-colors duration-(--lc-motion-quick) text-muted-foreground hover:text-foreground aria-[current=page]:text-foreground [&amp;_svg]:shrink-0 group-data-[indicator]/nav:relative group-data-[indicator]/nav:aria-[current=page]:bg-transparent min-h-control-md px-3 py-1.5 text-label hover:bg-accent aria-[current=page]:bg-accent aria-[current=page]:font-semibold [&amp;_svg]:size-4.5" data-slot="nav-link" href="#install">Install</a></li>
 </ul></li>  <li class="flex flex-col gap-tight not-first:pt-section" data-slot="nav-group"><span class="px-3 pb-tight text-caption font-semibold text-foreground" aria-hidden="true" data-slot="nav-group-title">Guides</span><ul class="m-0 flex list-none flex-col gap-px p-0" aria-label="Guides">
     <li data-slot="nav-item"><a class="flex min-w-0 items-center gap-related rounded-xl lc-squircle no-underline transition-colors duration-(--lc-motion-quick) text-muted-foreground hover:text-foreground aria-[current=page]:text-foreground [&amp;_svg]:shrink-0 group-data-[indicator]/nav:relative group-data-[indicator]/nav:aria-[current=page]:bg-transparent min-h-control-md px-3 py-1.5 text-label hover:bg-accent aria-[current=page]:bg-accent aria-[current=page]:font-semibold [&amp;_svg]:size-4.5" data-slot="nav-link" href="#accounts">Accounts</a></li>
     <li data-slot="nav-item"><a class="flex min-w-0 items-center gap-related rounded-xl lc-squircle no-underline transition-colors duration-(--lc-motion-quick) text-muted-foreground hover:text-foreground aria-[current=page]:text-foreground [&amp;_svg]:shrink-0 group-data-[indicator]/nav:relative group-data-[indicator]/nav:aria-[current=page]:bg-transparent min-h-control-md px-3 py-1.5 text-label hover:bg-accent aria-[current=page]:bg-accent aria-[current=page]:font-semibold [&amp;_svg]:size-4.5" data-slot="nav-link" href="#billing">Billing</a></li>
     <li data-slot="nav-item"><a class="flex min-w-0 items-center gap-related rounded-xl lc-squircle no-underline transition-colors duration-(--lc-motion-quick) text-muted-foreground hover:text-foreground aria-[current=page]:text-foreground [&amp;_svg]:shrink-0 group-data-[indicator]/nav:relative group-data-[indicator]/nav:aria-[current=page]:bg-transparent min-h-control-md px-3 py-1.5 text-label hover:bg-accent aria-[current=page]:bg-accent aria-[current=page]:font-semibold [&amp;_svg]:size-4.5" data-slot="nav-link" href="#webhooks">Webhooks</a></li>
-</ul></li></ul></nav></div>
-    </details>
-    <div class="pt-6 lg:pt-0">
+</ul></li></ul></nav></div></details><div class="pt-6 lg:pt-0">
   <div class="flex min-w-0 flex-col gap-section">
     <header id="introduction" class="flex min-w-0 flex-col gap-heading">
       <nav aria-label="Breadcrumb" data-slot="breadcrumb"><ol class="m-0 flex min-w-0 list-none flex-wrap items-center gap-tight p-0 text-small"><li class="inline-flex min-w-0 items-center gap-tight" data-slot="breadcrumb-item"><a class="rounded-sm text-muted-foreground no-underline underline-offset-4 hover:text-foreground hover:underline" href="#introduction">Docs</a><svg viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg" class="lc-icon size-4 shrink-0 text-muted-foreground rtl:rotate-180" data-slot="icon" aria-hidden="true"><path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/></svg></li><li class="inline-flex min-w-0 items-center gap-tight" data-slot="breadcrumb-item"><span class="truncate font-medium text-foreground" aria-current="page">Introduction</span></li></ol></nav>
       <h1 class="lc-heading m-0 text-foreground text-title">Introduction</h1>
       <p class="lc-text m-0 text-body text-muted-foreground">Everything you need to connect your workspace.</p>
     </header>
-    <section class="flex min-w-0 flex-col gap-heading" id="requirements"><header class="flex min-w-0 flex-wrap items-center gap-related min-h-control-md justify-between"><h2 class="lc-heading m-0 text-foreground text-heading">Requirements</h2></header><div class="flex min-w-0 flex-col gap-content">
+    <section class="flex min-w-0 flex-col gap-heading lc-anchor-target" id="requirements"><header class="flex min-w-0 flex-wrap items-center gap-related min-h-control-md justify-between"><h2 class="lc-heading m-0 text-foreground text-heading"><a href="#requirements" class="lc-anchor" data-slot="heading-anchor">Requirements</a></h2></header><div class="flex min-w-0 flex-col gap-content">
       <p class="lc-text m-0 text-small text-muted-foreground">An account with owner access and an API key from your settings.</p>
-</div></section>    <section class="flex min-w-0 flex-col gap-heading" id="next"><header class="flex min-w-0 flex-wrap items-center gap-related min-h-control-md justify-between"><h2 class="lc-heading m-0 text-foreground text-heading">Next steps</h2></header><div class="flex min-w-0 flex-col gap-content">
+      <h3 class="lc-heading m-0 text-foreground text-subheading lc-anchor-target" id="keys"><a href="#keys" class="lc-anchor" data-slot="heading-anchor">API keys</a></h3>
+      <p class="lc-text m-0 text-small text-muted-foreground">Create a key for each environment and keep it out of your repository.</p>
+</div></section>    <section class="flex min-w-0 flex-col gap-heading lc-anchor-target" id="next"><header class="flex min-w-0 flex-wrap items-center gap-related min-h-control-md justify-between"><h2 class="lc-heading m-0 text-foreground text-heading"><a href="#next" class="lc-anchor" data-slot="heading-anchor">Next steps</a></h2></header><div class="flex min-w-0 flex-col gap-content">
       <p class="lc-text m-0 text-body text-foreground">Read the <a class="rounded-sm underline underline-offset-4 decoration-1 transition-colors duration-(--lc-motion-quick) text-inherit decoration-current/40 hover:decoration-current" data-slot="link" href="#install">install guide</a> to make your first request.</p>
 </div></section>    <nav aria-label="Pages" class="flex items-stretch gap-related justify-between" data-slot="pager"><span class="flex-1" aria-hidden="true"></span><a rel="next" data-slot="pager-next" class="flex min-w-0 flex-1 basis-0 flex-col gap-tight rounded-2xl lc-squircle bg-card p-content no-underline text-inherit transition-colors hover:bg-accent sm:max-w-80 ms-auto items-end text-end" href="#install"><span class="inline-flex items-center gap-tight text-caption text-muted-foreground">Next<svg viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg" class="lc-icon size-4 shrink-0 rtl:rotate-180" data-slot="icon" aria-hidden="true"><path fill-rule="evenodd" d="M3 10a.75.75 0 0 1 .75-.75h10.638L10.23 5.29a.75.75 0 1 1 1.04-1.08l5.5 5.25a.75.75 0 0 1 0 1.08l-5.5 5.25a.75.75 0 1 1-1.04-1.08l4.158-3.96H3.75A.75.75 0 0 1 3 10Z" clip-rule="evenodd"/></svg></span> <span class="max-w-full truncate text-label">Install</span></a></nav>
-</div></div>
-  </main>
-    <aside class="sticky top-20 hidden h-[calc(100dvh-5rem)] w-40 shrink-0 overflow-y-auto py-12 ps-4 xl:block"><nav class="" aria-label="On this page" data-slot="nav-list" data-compact="true"><ul class="m-0 flex list-none flex-col gap-px p-0">  <li data-slot="nav-item"><a class="flex min-w-0 items-center gap-related rounded-xl lc-squircle no-underline transition-colors duration-(--lc-motion-quick) text-muted-foreground hover:text-foreground aria-[current=page]:text-foreground [&amp;_svg]:shrink-0 group-data-[indicator]/nav:relative group-data-[indicator]/nav:aria-[current=page]:bg-transparent py-tight text-small aria-[current=page]:font-medium" data-slot="nav-link" href="#introduction">Overview</a></li>
-  <li data-slot="nav-item"><a class="flex min-w-0 items-center gap-related rounded-xl lc-squircle no-underline transition-colors duration-(--lc-motion-quick) text-muted-foreground hover:text-foreground aria-[current=page]:text-foreground [&amp;_svg]:shrink-0 group-data-[indicator]/nav:relative group-data-[indicator]/nav:aria-[current=page]:bg-transparent py-tight text-small aria-[current=page]:font-medium" data-slot="nav-link" href="#requirements">Requirements</a></li>
-  <li class="ps-content" data-slot="nav-item"><a class="flex min-w-0 items-center gap-related rounded-xl lc-squircle no-underline transition-colors duration-(--lc-motion-quick) text-muted-foreground hover:text-foreground aria-[current=page]:text-foreground [&amp;_svg]:shrink-0 group-data-[indicator]/nav:relative group-data-[indicator]/nav:aria-[current=page]:bg-transparent py-tight text-small aria-[current=page]:font-medium" data-slot="nav-link" href="#next">Next steps</a></li>
-</ul></nav></aside>
-</div>
-
+</div></div></main><aside class="sticky top-(--lc-sticky-offset,0rem) hidden h-[calc(100dvh-var(--lc-sticky-offset,0rem))] shrink-0 overflow-y-auto w-44 py-12 ps-4 xl:block" data-slot="docs-shell-contents"><nav class="relative" aria-label="On this page" data-slot="toc" data-controller="lc-toc"><span class="pointer-events-none absolute -start-px top-0 h-0 w-0.5 rounded-pill bg-primary opacity-0 transition-[translate,height,opacity] duration-300 ease-(--lc-ease-out-expo) motion-reduce:transition-none" aria-hidden="true" data-slot="toc-indicator" data-lc-toc-target="indicator"></span><ul class="m-0 flex list-none flex-col border-s border-border p-0">  <li data-slot="toc-item"><a class="relative block py-tight ps-content pe-tight text-small text-muted-foreground no-underline transition-colors duration-(--lc-motion-quick) hover:text-foreground aria-[current=location]:font-medium aria-[current=location]:text-foreground" data-slot="toc-link" data-lc-toc-target="link" data-action="lc-toc#select" href="#requirements">Requirements</a></li>
+  <li data-slot="toc-item"><a class="relative block py-tight pe-tight text-small text-muted-foreground no-underline transition-colors duration-(--lc-motion-quick) hover:text-foreground aria-[current=location]:font-medium aria-[current=location]:text-foreground ps-[calc(var(--spacing-content)*2)]" data-slot="toc-link" data-lc-toc-target="link" data-action="lc-toc#select" href="#keys">API keys</a></li>
+  <li data-slot="toc-item"><a class="relative block py-tight ps-content pe-tight text-small text-muted-foreground no-underline transition-colors duration-(--lc-motion-quick) hover:text-foreground aria-[current=location]:font-medium aria-[current=location]:text-foreground" data-slot="toc-link" data-lc-toc-target="link" data-action="lc-toc#select" href="#next">Next steps</a></li>
+</ul></nav></aside></div>
 
   </body>
 </html>

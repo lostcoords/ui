@@ -159,6 +159,19 @@ module Showcase
         Example.new(:nav_list_row, "Row with a sliding indicator", :bare),
         Example.new(:nav_list_dock, "Dock", :panel)
       ]),
+      Section.new(:toc, "Table of contents", "An \"On this page\" list that marks the section the reader has scrolled to.", [
+        Example.new(:toc, "Links you list", :panel),
+        Example.new(:toc_headings, "From rendered headings", :bare)
+      ]),
+      Section.new(:app_header, "App header", "A sticky glass header with your brand, navigation and actions.", [
+        Example.new(:app_header, "Header", :bare)
+      ]),
+      Section.new(:docs_shell, "Docs shell", "A documentation layout: sidebar, page and an \"On this page\" column, with a menu on phones.", [
+        Example.new(:docs_shell, "Documentation page", :bare)
+      ]),
+      Section.new(:dock, "Dock", "A floating bar of primary destinations and quick actions at the bottom of a phone screen.", [
+        Example.new(:dock, "Dock with actions", :panel)
+      ]),
       Section.new(:pager, "Pager", "Previous and next links between pages in a sequence.", [
         Example.new(:pager, "Pager", :bare),
         Example.new(:pager_compact, "Compact", :panel)

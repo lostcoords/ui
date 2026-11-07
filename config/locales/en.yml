@@ -20,6 +20,15 @@ en:
         label: "Actions"
       popover:
         trigger: "Open popover"
+      toc:
+        label: "On this page"
+      docs_shell:
+        menu: "Menu"
+        sidebar: "Documentation sidebar"
+      app_header:
+        navigation: "Main"
+      dock:
+        close: "Close %{label}"
       breadcrumb:
         label: "Breadcrumb"
       code_block:

@@ -1,0 +1,14 @@
+<%= lc_app_header class: "static w-full p-0 sm:p-0" do |header| %>
+  <%= header.brand "#", label: "Studio home" do %>
+    <span class="grid size-8 place-items-center rounded-xl bg-foreground text-background"><%= lc_icon "square-3-stack-3d", options: { class: "size-4.5", "aria-hidden": true } %></span>
+    Studio
+  <% end %>
+  <%= header.nav label: "Workspace", class: "max-sm:hidden" do |nav| %>
+    <%= nav.link "Overview", "#", current: true %>
+    <%= nav.link "Projects", "#" %>
+  <% end %>
+  <%= header.actions do %>
+    <%= lc_icon_button "Search", icon: "magnifying-glass", size: :sm %>
+    <%= lc_avatar "AL", size: :sm, class: "bg-primary-soft text-primary" %>
+  <% end %>
+<% end %>

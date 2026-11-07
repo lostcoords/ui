@@ -15,7 +15,7 @@ class BlocksTest < ActionDispatch::IntegrationTest
       get block.preview_url
       assert_response :success
       assert_includes response.body, "data-controller=\"block-preview\""
-      assert_includes response.body, "#{block.id}"
+      assert_includes response.body, "<title>#{block.title} · Block preview</title>"
       refute_includes response.body, "data-controller=\"showcase\""
     end
   end
@@ -35,7 +35,7 @@ class BlocksTest < ActionDispatch::IntegrationTest
     reference.fetch("blocks").each do |block|
       assert block.fetch("docs_only")
       assert_equal DocsBlocks.find(block.fetch("id")).sources.map { it.language.to_s }, block.fetch("files").map { |file| file.fetch("language") }
-      assert_equal %w[erb css], block.fetch("files").first(2).map { |file| file.fetch("language") }
+      assert_equal "erb", block.fetch("files").first.fetch("language")
     end
     assert_equal Lostcoords::Ui::Components.all.size, reference.fetch("components").size
 

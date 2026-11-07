@@ -1,30 +1,37 @@
-<%= render layout: "blocks/examples/docs_shell", locals: { navigation: render("showcase/navigation"), menu_label: "Components", width: "max-w-4xl" } do %>
+<% contents = lc_toc do |toc| %>
+  <%= toc.link "Before you start", "#requirements" %>
+  <%= toc.link "1. Add the gem", "#gem" %>
+  <%= toc.link "2. Add the stylesheet", "#styles" %>
+  <%= toc.link "3. Load the assets", "#javascript" %>
+  <%= toc.link "4. Use a component", "#first-component" %>
+<% end %>
+<%= lc_docs_shell navigation: render("showcase/navigation"), contents:, menu_label: "Components", main: { class: "max-w-4xl" } do %>
 <div class="<%= lc_stack_class(gap: :section) %>">
   <header class="<%= lc_stack_class(gap: :heading) %>">
     <%= lc_heading "Installation", level: 1, size: :title %>
     <p class="<%= lc_text_class(tone: :muted, extra: "text-pretty") %>">Set up the gem once. Then call any component directly from ERB.</p>
   </header>
-  <%= lc_section title: "Before you start", id: "requirements", class: "scroll-mt-28" do %>
+  <%= lc_section title: "Before you start", id: "requirements", anchor: true do %>
     <p class="<%= lc_text_class(size: :small, tone: :muted, extra: "text-pretty") %>">Use Rails 8 or later with Propshaft, importmap, Stimulus and <code>tailwindcss-rails</code> 4.4 or later. Tailwind CSS v4 is required: it compiles the component styles and the utilities in your views. A Rails app created with Tailwind includes this setup.</p>
   <% end %>
-  <%= lc_section title: "1. Add the gem", id: "gem", class: "scroll-mt-28" do %>
+  <%= lc_section title: "1. Add the gem", id: "gem", anchor: true do %>
     <p class="<%= lc_text_class(size: :small, tone: :muted) %>">Add this to your <code>Gemfile</code>, then run <code>bundle install</code>.</p>
-    <%= render "showcase/source_code", source: 'gem "lostcoords-ui", "~> 0.5.0"', language: :ruby, id: "install-gem", label: "Gemfile entry" %>
+    <%= render "showcase/source_code", source: %(gem "lostcoords-ui", "~> #{Lostcoords::Ui::VERSION.split(".").first(2).join(".")}.0"), language: :ruby, id: "install-gem", label: "Gemfile entry" %>
     <p class="<%= lc_text_class(size: :small, tone: :muted, extra: "text-pretty") %>">The engine makes all <code>lc_*</code> helpers available to views. There are no per-component Ruby or JavaScript imports. Commit <code>Gemfile.lock</code> to pin the version your app uses.</p>
   <% end %>
-  <%= lc_section title: "2. Add the stylesheet", id: "styles", class: "scroll-mt-28" do %>
+  <%= lc_section title: "2. Add the stylesheet", id: "styles", anchor: true do %>
     <p class="<%= lc_text_class(size: :small, tone: :muted, extra: "text-pretty") %>">For a new app, save the <a href="/starter.css" download="application.css" class="<%= lc_link_class %>">starter stylesheet</a> as <code>app/assets/tailwind/application.css</code>. The engine import includes the default light and dark theme.</p>
     <%= render "showcase/source_code", source: DocsInstallation.stylesheet, language: :css, id: "install-starter", label: "Starter stylesheet" %>
     <p class="<%= lc_text_class(size: :small, tone: :muted, extra: "text-pretty") %>">For an existing app, add the starter's layer order and typography plugin if needed. Keep your Tailwind imports and add the engine import:</p>
     <%= render "showcase/source_code", source: '@import "../builds/tailwind/lostcoords_ui.css";', language: :css, id: "install-styles", label: "Engine stylesheet import" %>
     <p class="<%= lc_text_class(size: :small, tone: :muted, extra: "text-pretty") %>">Run <code>bin/rails tailwindcss:build</code>. The build generates that import path from the installed gem. Components work with the defaults immediately. To customize colors or fonts, add overrides after the import using the <a href="/theming.html" class="<%= lc_link_class %>">theming guide</a>.</p>
   <% end %>
-  <%= lc_section title: "3. Load the assets", id: "javascript", class: "scroll-mt-28" do %>
+  <%= lc_section title: "3. Load the assets", id: "javascript", anchor: true do %>
     <p class="<%= lc_text_class(size: :small, tone: :muted, extra: "text-pretty") %>">Your layout needs the compiled Tailwind stylesheet and importmap tags. Keep your existing tags if they already load these assets.</p>
     <%= render "showcase/source_code", source: DocsInstallation::LAYOUT, id: "install-layout", label: "Layout asset tags" %>
     <p class="<%= lc_text_class(size: :small, tone: :muted, extra: "text-pretty") %>">The engine adds its Stimulus pins to the importmap. Load controllers with <code>lazyLoadControllersFrom("controllers", application)</code> in <code>controllers/index.js</code>, so each page downloads only the controllers it uses. To ship less CSS, import <code>core.css</code> and the components you use instead of the whole library; the README lists the entries.</p>
   <% end %>
-  <%= lc_section title: "4. Use a component", id: "first-component", class: "scroll-mt-28" do %>
+  <%= lc_section title: "4. Use a component", id: "first-component", anchor: true do %>
     <%= render "showcase/source_code", source: DocsInstallation::FIRST_COMPONENT, id: "install-first-component", label: "First component" %>
     <p class="<%= lc_text_class(size: :small, tone: :muted, extra: "text-pretty") %>">Helpers render native HTML. Use <code>class:</code> for additional utilities, <code>data:</code> and <code>aria:</code> for attributes, and blocks for custom content. Browse the <a href="/components/button.html" class="<%= lc_link_class %>">button examples</a> to see variants, sizes, links and Rails forms.</p>
   <% end %>

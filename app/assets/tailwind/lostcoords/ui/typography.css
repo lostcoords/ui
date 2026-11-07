@@ -12,6 +12,32 @@
     overflow-wrap: anywhere;
   }
 
+  /* Headings and sections a link can point to. --lc-sticky-offset is the height
+     of sticky chrome, such as lc_app_header, so the target lands below it. */
+  :where(.lc-anchor-target) {
+    scroll-margin-block-start: calc(var(--lc-sticky-offset, 0rem) + var(--lc-anchor-gap, 1.5rem));
+  }
+
+  /* A heading that links to itself. The mark shows on hover and keyboard focus. */
+  :where(.lc-anchor) {
+    color: inherit;
+    text-decoration: none;
+    border-radius: var(--radius-sm);
+  }
+
+  .lc-anchor::after {
+    content: "#" / "";
+    margin-inline-start: 0.4em;
+    color: var(--muted-foreground);
+    opacity: 0;
+    transition: opacity var(--lc-motion-quick) ease;
+  }
+
+  .lc-anchor:hover::after,
+  .lc-anchor:focus-visible::after {
+    opacity: 1;
+  }
+
   :where(.lc-eyebrow) {
     font-family: var(--font-eyebrow);
     text-transform: uppercase;

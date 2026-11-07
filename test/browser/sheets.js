@@ -31,7 +31,7 @@ async function _verifySheets(page) {
     })
     await pause(700)
     const medium = await page.evaluate(() => ({
-      glass: getComputedStyle(document.querySelector("body > header .header-example__glass"))
+      glass: getComputedStyle(document.querySelector("body > header .lc-app-header__glass"))
         .opacity,
       page: document.documentElement.hasAttribute("data-lc-sheet-page"),
       transform: getComputedStyle(document.body).transform,

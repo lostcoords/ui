@@ -24,8 +24,8 @@ async function _verifyLayoutPieces(page) {
     }, bar)
 
   await visit("nav_list")
-  const row = 'nav[data-slot=nav-list][data-layout="row"]'
-  const dock = 'nav[data-slot=nav-list][data-layout="dock"]'
+  const row = 'main nav[data-slot=nav-list][data-layout="row"]'
+  const dock = 'main nav[data-slot=nav-list][data-layout="dock"]'
   await indicatorOnCurrent(row)
   verify(true, "the indicator covers the current link once placed")
   await page.waitForFunction(

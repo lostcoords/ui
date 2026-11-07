@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
     <title><%= @block.title %> · Block preview</title>
     <%= showcase_favicon_tag %>
-    <%= stylesheet_link_tag "tailwind", "blocks/#{@block.id}" %>
+    <%= stylesheet_link_tag "tailwind", *("blocks/#{@block.id}" if @block.stylesheet?) %>
     <%= javascript_importmap_tags %>
   </head>
   <body class="antialiased" data-controller="block-preview">

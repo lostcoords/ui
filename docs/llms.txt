@@ -467,6 +467,25 @@ https://ui.lostcoords.com/components/button.html#lc_icon
 lc_icon(name, variant: :outline, options: {}, path_options: {})
 ```
 
+Header: https://ui.lostcoords.com/components/app_header.html
+
+```erb
+<%= lc_app_header class: "static w-full p-0 sm:p-0" do |header| %>
+  <%= header.brand "#", label: "Studio home" do %>
+    <span class="grid size-8 place-items-center rounded-xl bg-foreground text-background"><%= lc_icon "square-3-stack-3d", options: { class: "size-4.5", "aria-hidden": true } %></span>
+    Studio
+  <% end %>
+  <%= header.nav label: "Workspace", class: "max-sm:hidden" do |nav| %>
+    <%= nav.link "Overview", "#", current: true %>
+    <%= nav.link "Projects", "#" %>
+  <% end %>
+  <%= header.actions do %>
+    <%= lc_icon_button "Search", icon: "magnifying-glass", size: :sm %>
+    <%= lc_avatar "AL", size: :sm, class: "bg-primary-soft text-primary" %>
+  <% end %>
+<% end %>
+```
+
 Custom icons and content: https://ui.lostcoords.com/components/button.html
 
 ```erb
@@ -923,7 +942,7 @@ Responsive containers: https://ui.lostcoords.com/components/foundations.html
 https://ui.lostcoords.com/components/foundations.html#lc_section
 
 ```ruby
-lc_section(title:, level: 2, actions: nil, **attributes, &block)
+lc_section(title:, level: 2, actions: nil, anchor: false, **attributes, &block)
 ```
 
 Page rhythm: https://ui.lostcoords.com/components/foundations.html
@@ -986,6 +1005,21 @@ Responsive containers: https://ui.lostcoords.com/components/foundations.html
         <% end %>
       <% end %>
     </div>
+  <% end %>
+<% end %>
+```
+
+Documentation page: https://ui.lostcoords.com/components/docs_shell.html
+
+```erb
+<% navigation = lc_nav_list label: "Guides" do |nav| %>
+  <%= nav.link "Introduction", "#", current: true %>
+  <%= nav.link "Install", "#" %>
+<% end %>
+<% contents = lc_toc { |toc| toc.link "Requirements", "#requirements" } %>
+<%= lc_docs_shell navigation:, contents:, menu_label: "Guides", class: "px-0 sm:px-0 lg:px-0", main: { id: nil } do %>
+  <%= lc_section title: "Requirements", id: "requirements", anchor: true do %>
+    <%= lc_text "An account with owner access.", size: :small, tone: :muted %>
   <% end %>
 <% end %>
 ```
@@ -1447,6 +1481,21 @@ nav.link(label = nil, url = nil, icon: nil, current: false, indent: false, **att
 nav.group(title, **attributes, &block)
 ```
 
+Documentation page: https://ui.lostcoords.com/components/docs_shell.html
+
+```erb
+<% navigation = lc_nav_list label: "Guides" do |nav| %>
+  <%= nav.link "Introduction", "#", current: true %>
+  <%= nav.link "Install", "#" %>
+<% end %>
+<% contents = lc_toc { |toc| toc.link "Requirements", "#requirements" } %>
+<%= lc_docs_shell navigation:, contents:, menu_label: "Guides", class: "px-0 sm:px-0 lg:px-0", main: { id: nil } do %>
+  <%= lc_section title: "Requirements", id: "requirements", anchor: true do %>
+    <%= lc_text "An account with owner access.", size: :small, tone: :muted %>
+  <% end %>
+<% end %>
+```
+
 Sidebar: https://ui.lostcoords.com/components/nav_list.html
 
 ```erb
@@ -1495,6 +1544,56 @@ Dock: https://ui.lostcoords.com/components/nav_list.html
   <%= nav.link "Activity", "#activity", icon: "clock" %>
   <%= nav.link "Stats", "#stats", icon: "chart-bar" %>
 <% end %>
+```
+
+## lc_toc
+
+https://ui.lostcoords.com/components/toc.html#lc_toc
+
+```ruby
+lc_toc(label: lc_t("lostcoords.ui.toc.label"), headings: nil, levels: 2..3, **attributes, &block)
+toc.link(label, url, indent: false, **attributes)
+```
+
+Documentation page: https://ui.lostcoords.com/components/docs_shell.html
+
+```erb
+<% navigation = lc_nav_list label: "Guides" do |nav| %>
+  <%= nav.link "Introduction", "#", current: true %>
+  <%= nav.link "Install", "#" %>
+<% end %>
+<% contents = lc_toc { |toc| toc.link "Requirements", "#requirements" } %>
+<%= lc_docs_shell navigation:, contents:, menu_label: "Guides", class: "px-0 sm:px-0 lg:px-0", main: { id: nil } do %>
+  <%= lc_section title: "Requirements", id: "requirements", anchor: true do %>
+    <%= lc_text "An account with owner access.", size: :small, tone: :muted %>
+  <% end %>
+<% end %>
+```
+
+Links you list: https://ui.lostcoords.com/components/toc.html
+
+```erb
+<%= lc_toc class: "w-full max-w-56" do |toc| %>
+  <%= toc.link "Overview", "#overview" %>
+  <%= toc.link "Usage", "#usage" %>
+  <%= toc.link "Sizes", "#sizes", indent: true %>
+  <%= toc.link "API reference", "#api" %>
+<% end %>
+```
+
+From rendered headings: https://ui.lostcoords.com/components/toc.html
+
+```erb
+<% article = capture do %>
+  <h2 id="getting-started">Getting started</h2>
+  <p>Markdown renderers such as Kiln give every heading an id.</p>
+  <h3 id="install">Install</h3>
+  <p>The list and the links come from the same HTML.</p>
+<% end %>
+<div class="flex w-full flex-col gap-section sm:flex-row-reverse sm:items-start">
+  <%= lc_toc headings: article, class: "w-full sm:max-w-44" %>
+  <%= lc_prose(anchors: true) { article } %>
+</div>
 ```
 
 ## lc_pager
@@ -2122,6 +2221,25 @@ Hover and press: https://ui.lostcoords.com/components/foundations.html
 <%= lc_icon_button "Add item", icon: "plus" %>
 ```
 
+Header: https://ui.lostcoords.com/components/app_header.html
+
+```erb
+<%= lc_app_header class: "static w-full p-0 sm:p-0" do |header| %>
+  <%= header.brand "#", label: "Studio home" do %>
+    <span class="grid size-8 place-items-center rounded-xl bg-foreground text-background"><%= lc_icon "square-3-stack-3d", options: { class: "size-4.5", "aria-hidden": true } %></span>
+    Studio
+  <% end %>
+  <%= header.nav label: "Workspace", class: "max-sm:hidden" do |nav| %>
+    <%= nav.link "Overview", "#", current: true %>
+    <%= nav.link "Projects", "#" %>
+  <% end %>
+  <%= header.actions do %>
+    <%= lc_icon_button "Search", icon: "magnifying-glass", size: :sm %>
+    <%= lc_avatar "AL", size: :sm, class: "bg-primary-soft text-primary" %>
+  <% end %>
+<% end %>
+```
+
 Icon buttons: https://ui.lostcoords.com/components/button.html
 
 ```erb
@@ -2312,6 +2430,25 @@ Page rhythm: https://ui.lostcoords.com/components/foundations.html
         <% end %>
       <% end %>
     <% end %>
+  <% end %>
+<% end %>
+```
+
+Header: https://ui.lostcoords.com/components/app_header.html
+
+```erb
+<%= lc_app_header class: "static w-full p-0 sm:p-0" do |header| %>
+  <%= header.brand "#", label: "Studio home" do %>
+    <span class="grid size-8 place-items-center rounded-xl bg-foreground text-background"><%= lc_icon "square-3-stack-3d", options: { class: "size-4.5", "aria-hidden": true } %></span>
+    Studio
+  <% end %>
+  <%= header.nav label: "Workspace", class: "max-sm:hidden" do |nav| %>
+    <%= nav.link "Overview", "#", current: true %>
+    <%= nav.link "Projects", "#" %>
+  <% end %>
+  <%= header.actions do %>
+    <%= lc_icon_button "Search", icon: "magnifying-glass", size: :sm %>
+    <%= lc_avatar "AL", size: :sm, class: "bg-primary-soft text-primary" %>
   <% end %>
 <% end %>
 ```
@@ -2674,7 +2811,7 @@ Validation feedback: https://ui.lostcoords.com/components/card.html
 https://ui.lostcoords.com/components/foundations.html#lc_prose
 
 ```ruby
-lc_prose(**attributes, &block)
+lc_prose(anchors: false, **attributes, &block)
 ```
 
 Reading content: https://ui.lostcoords.com/components/foundations.html
@@ -2713,6 +2850,21 @@ Japanese reading: https://ui.lostcoords.com/components/foundations.html
   <p>予定が変わったら、<a href="#reading-japanese-note">グループにひとこと</a>。少しの共有で、旅がもっと気軽になります。</p>
   <blockquote id="reading-japanese-note"><p>何もしない時間も、旅の楽しみのひとつです。</p></blockquote>
 <% end %>
+```
+
+From rendered headings: https://ui.lostcoords.com/components/toc.html
+
+```erb
+<% article = capture do %>
+  <h2 id="getting-started">Getting started</h2>
+  <p>Markdown renderers such as Kiln give every heading an id.</p>
+  <h3 id="install">Install</h3>
+  <p>The list and the links come from the same HTML.</p>
+<% end %>
+<div class="flex w-full flex-col gap-section sm:flex-row-reverse sm:items-start">
+  <%= lc_toc headings: article, class: "w-full sm:max-w-44" %>
+  <%= lc_prose(anchors: true) { article } %>
+</div>
 ```
 
 ## lc_search
@@ -2808,6 +2960,89 @@ Popover sheet: https://ui.lostcoords.com/components/dialog.html
     <button type="button" class="<%= lc_button_class(block: true) %>" popovertarget="my-component-filters" popovertargetaction="hide">Done</button>
   </div>
 <% end %>
+```
+
+## lc_docs_shell
+
+https://ui.lostcoords.com/components/docs_shell.html#lc_docs_shell
+
+```ruby
+lc_docs_shell(navigation:, contents: nil, menu_label: lc_t("lostcoords.ui.docs_shell.menu"), sidebar_label: lc_t("lostcoords.ui.docs_shell.sidebar"), main: {}, **attributes, &block)
+```
+
+Documentation page: https://ui.lostcoords.com/components/docs_shell.html
+
+```erb
+<% navigation = lc_nav_list label: "Guides" do |nav| %>
+  <%= nav.link "Introduction", "#", current: true %>
+  <%= nav.link "Install", "#" %>
+<% end %>
+<% contents = lc_toc { |toc| toc.link "Requirements", "#requirements" } %>
+<%= lc_docs_shell navigation:, contents:, menu_label: "Guides", class: "px-0 sm:px-0 lg:px-0", main: { id: nil } do %>
+  <%= lc_section title: "Requirements", id: "requirements", anchor: true do %>
+    <%= lc_text "An account with owner access.", size: :small, tone: :muted %>
+  <% end %>
+<% end %>
+```
+
+## lc_app_header
+
+https://ui.lostcoords.com/components/app_header.html#lc_app_header
+
+```ruby
+lc_app_header(bar: {}, **attributes, &block)
+header.brand(url = "/", label:, **attributes, &block)
+header.nav(label: view.send(:lc_t, "lostcoords.ui.app_header.navigation"), **attributes, &block)
+header.actions(**attributes, &block)
+```
+
+Header: https://ui.lostcoords.com/components/app_header.html
+
+```erb
+<%= lc_app_header class: "static w-full p-0 sm:p-0" do |header| %>
+  <%= header.brand "#", label: "Studio home" do %>
+    <span class="grid size-8 place-items-center rounded-xl bg-foreground text-background"><%= lc_icon "square-3-stack-3d", options: { class: "size-4.5", "aria-hidden": true } %></span>
+    Studio
+  <% end %>
+  <%= header.nav label: "Workspace", class: "max-sm:hidden" do |nav| %>
+    <%= nav.link "Overview", "#", current: true %>
+    <%= nav.link "Projects", "#" %>
+  <% end %>
+  <%= header.actions do %>
+    <%= lc_icon_button "Search", icon: "magnifying-glass", size: :sm %>
+    <%= lc_avatar "AL", size: :sm, class: "bg-primary-soft text-primary" %>
+  <% end %>
+<% end %>
+```
+
+## lc_dock
+
+https://ui.lostcoords.com/components/dock.html#lc_dock
+
+```ruby
+lc_dock(**attributes, &block)
+dock.nav(label:, **attributes, &block)
+dock.menu(label:, icon: "plus", id: nil, **attributes, &block)
+menu.action(label, icon:, **attributes)
+```
+
+Dock with actions: https://ui.lostcoords.com/components/dock.html
+
+```erb
+<%# The transformed frame holds the dock's fixed parts for this preview; in an app they sit on the screen. %>
+<div class="relative h-80 w-full max-w-sm overflow-hidden rounded-3xl bg-background transform-gpu">
+  <%= lc_dock do |dock| %>
+    <%= dock.nav label: "Sections" do |nav| %>
+      <%= nav.link "Home", "#", icon: "home", current: true %>
+      <%= nav.link "Notes", "#", icon: "document-text" %>
+      <%= nav.link "People", "#", icon: "users" %>
+    <% end %>
+    <%= dock.menu label: "Create", id: "dock-specimen-menu" do |menu| %>
+      <%= menu.action "New note", icon: "pencil-square" %>
+      <%= menu.action "New project", icon: "rectangle-stack" %>
+    <% end %>
+  <% end %>
+</div>
 ```
 
 ## lc_input
@@ -3499,7 +3734,7 @@ Tooltips: https://ui.lostcoords.com/components/tooltip.html
 https://ui.lostcoords.com/components/foundations.html#lc_heading
 
 ```ruby
-lc_heading(content = nil, level: 2, size: :heading, trim: false, **attributes, &block)
+lc_heading(content = nil, level: 2, size: :heading, trim: false, anchor: false, **attributes, &block)
 ```
 
 Text styles: https://ui.lostcoords.com/components/foundations.html
@@ -3792,6 +4027,21 @@ Copy from an element: https://ui.lostcoords.com/components/copy_button.html
 <% end %>
 ```
 
+Documentation page: https://ui.lostcoords.com/components/docs_shell.html
+
+```erb
+<% navigation = lc_nav_list label: "Guides" do |nav| %>
+  <%= nav.link "Introduction", "#", current: true %>
+  <%= nav.link "Install", "#" %>
+<% end %>
+<% contents = lc_toc { |toc| toc.link "Requirements", "#requirements" } %>
+<%= lc_docs_shell navigation:, contents:, menu_label: "Guides", class: "px-0 sm:px-0 lg:px-0", main: { id: nil } do %>
+  <%= lc_section title: "Requirements", id: "requirements", anchor: true do %>
+    <%= lc_text "An account with owner access.", size: :small, tone: :muted %>
+  <% end %>
+<% end %>
+```
+
 Empty state: https://ui.lostcoords.com/components/empty_state.html
 
 ```erb
@@ -3935,65 +4185,82 @@ https://ui.lostcoords.com/blocks/application_header.html
 
 Replace the sample brand, links and account actions with your application's content.
 
-Keep navigation destinations as links and account actions in the menu. The header's layout and scroll behavior live in the example files.
+lc_app_header handles the glass and the scroll behavior. Keep destinations in header.nav and account actions in a menu inside header.actions.
 
 app/views/shared/_application_header.html.erb
 
 ```erb
-<%# locals: (brand:, home: "/", home_label:, links: [], label: "Main", width: "max-w-5xl", navigation_class: "sm:flex") %>
-<%# links: [[label, url, current], …]. The block's content renders the actions at the end of the bar. %>
-<header class="header-example sticky top-0 z-sticky px-3 pt-3 pb-4 sm:px-6" data-controller="blocks-header" data-action="scroll@window->blocks-header#scroll">
-  <div class="relative isolate mx-auto flex min-h-16 <%= width %> items-center gap-related px-3 py-2 sm:gap-content sm:px-5">
-    <span class="header-example__glass <%= lc_glass_class(thick: true, extra: "pointer-events-none absolute inset-0 -z-10") %>" aria-hidden="true"></span>
-    <a href="<%= home %>" class="flex min-h-11 shrink-0 items-center gap-related pe-2 font-semibold tracking-tight no-underline text-inherit" aria-label="<%= home_label %>"><%= brand %></a>
-    <% if links.any? %>
-      <nav class="hidden items-center gap-tight <%= navigation_class %>" aria-label="<%= label %>">
-        <% links.each do |text, url, current| %>
-          <%= lc_button_link_to text, url, variant: :ghost, size: :sm, class: "aria-[current=page]:bg-accent", aria: { current: ("page" if current) } %>
-        <% end %>
-      </nav>
+<div class="min-h-screen">
+  <%= lc_app_header bar: { class: "max-w-5xl" } do |header| %>
+    <%= header.brand "#overview", label: "Studio home" do %>
+      <span class="grid size-8 place-items-center rounded-xl bg-foreground text-background"><%= lc_icon "square-3-stack-3d", options: { class: "size-4.5", "aria-hidden": true } %></span>
+      Studio
     <% end %>
-    <div class="ms-auto flex items-center gap-related"><%= yield %></div>
-  </div>
-</header>
-```
+    <%= header.nav label: "Workspace", class: "max-sm:hidden" do |nav| %>
+      <%= nav.link "Overview", "#overview", current: true %>
+      <%= nav.link "Projects", "#projects" %>
+      <%= nav.link "People", "#people" %>
+    <% end %>
+    <%= header.actions do %>
+      <span class="hidden sm:inline-flex"><%= lc_badge "Personal workspace" %></span>
+      <div class="relative" data-controller="lc-menu">
+        <button class="<%= lc_icon_button_class(shape: :circle, size: :sm) %>" type="button" aria-label="Account menu" aria-haspopup="menu" aria-expanded="false" aria-controls="header-account-menu" data-lc-menu-target="trigger" data-action="lc-menu#toggle">
+          <%= lc_avatar "AL", size: :sm, class: "bg-primary-soft text-primary" %>
+        </button>
+        <div id="header-account-menu" class="<%= lc_menu_popover_class %>" role="menu" aria-label="Account" data-lc-menu-target="popover">
+          <%= lc_menu_option "Alex Lee · Personal workspace", href: "#people" %>
+          <%= lc_menu_option "Workspace overview", href: "#overview" %>
+          <%= lc_menu_option "See projects", href: "#projects" %>
+        </div>
+      </div>
+      <div class="relative sm:hidden" data-controller="lc-menu">
+        <%= lc_icon_button "Workspace menu", icon: "bars-3", size: :sm, aria: { haspopup: "menu", expanded: false, controls: "header-workspace-menu" }, data: { lc_menu_target: "trigger", action: "lc-menu#toggle" } %>
+        <div id="header-workspace-menu" class="<%= lc_menu_popover_class %>" role="menu" aria-label="Workspace" data-lc-menu-target="popover">
+          <%= lc_menu_option "Overview", href: "#overview" %>
+          <%= lc_menu_option "Projects", href: "#projects" %>
+          <%= lc_menu_option "People", href: "#people" %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+  <main class="isolate mx-auto flex max-w-4xl flex-col gap-12 px-5 pt-8 pb-16 sm:px-8 sm:pt-12">
+    <section id="overview" class="lc-anchor-target flex flex-col gap-6">
+      <div class="flex flex-col gap-3">
+        <%= lc_text "Your workspace, at a glance", size: :caption, tone: :muted %>
+        <h1 class="text-4xl font-semibold tracking-tight sm:text-5xl">Room for good work.</h1>
+        <p class="max-w-lg text-muted-foreground">A little space for your projects, your people, and whatever comes next.</p>
+      </div>
+      <div class="grid gap-4 sm:grid-cols-3">
+        <% [ [ "Projects in motion", "06", "rectangle-stack" ], [ "Your collaborators", "12", "users" ], [ "This week’s milestones", "03", "flag" ] ].each do |label, number, icon| %>
+          <%= lc_card class: "flex flex-col gap-6" do %>
+            <div class="flex items-center justify-between gap-3"><span class="text-sm text-muted-foreground"><%= label %></span><%= lc_icon icon, options: { class: "size-5 shrink-0 text-muted-foreground", "aria-hidden": true } %></div>
+            <p class="text-4xl font-semibold tracking-tight tabular-nums"><%= number %></p>
+          <% end %>
+        <% end %>
+      </div>
+    </section>
 
-app/assets/stylesheets/application_header.css
+    <section id="projects" class="lc-anchor-target flex flex-col gap-4">
+      <div class="flex min-h-11 items-center justify-between gap-3"><h2 class="text-xl font-semibold">In the studio</h2><%= lc_badge "3 featured" %></div>
+      <% [ [ "Brand refresh", "A fresh look for a familiar idea.", "swatch", :primary, "In progress" ], [ "Summer collection", "Objects made for everyday moments.", "sun", :neutral, "Taking shape" ], [ "Field notes", "Small observations, collected together.", "book-open", :primary, "Ready to share" ] ].each do |title, description, icon, tone, status| %>
+        <%= lc_card class: "flex items-center gap-4" do %>
+          <%= lc_icon_badge shape: :circle, icon: icon, tone: tone, size: :sm%>
+          <div class="flex min-w-0 flex-1 flex-col gap-1"><h3 class="font-semibold"><%= title %></h3><p class="text-sm text-muted-foreground"><%= description %></p></div>
+          <span class="hidden text-xs text-muted-foreground sm:block"><%= status %></span>
+        <% end %>
+      <% end %>
+    </section>
 
-```css
-.header-example__glass {
-  opacity: 0;
-  transition: opacity 300ms ease;
-}
-
-.header-example[data-scrolled] .header-example__glass {
-  opacity: 1;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .header-example__glass {
-    transition: none;
-  }
-}
-```
-
-app/javascript/controllers/blocks_header_controller.js
-
-```javascript
-import { Controller } from "@hotwired/stimulus"
-
-export default class extends Controller {
-  connect() {
-    this.scroll()
-  }
-
-  // An open modal pins the body, so scrollY reads 0 until it closes; keep the
-  // state the page had rather than fading the glass out behind the dialog.
-  scroll() {
-    if (document.body.dataset.modalScrollLock === "true") return
-    this.element.toggleAttribute("data-scrolled", window.scrollY > 8)
-  }
-}
+    <section id="people" class="lc-anchor-target flex flex-col gap-4">
+      <h2 class="text-xl font-semibold">Good company</h2>
+      <%= lc_card class: "flex flex-col gap-5" do %>
+        <% [ [ "AL", "Alex Lee", "Designer" ], [ "SK", "Sam Kim", "Writer" ], [ "JR", "Jamie Reed", "Maker" ] ].each do |initials, name, role| %>
+          <div class="flex items-center gap-3"><%= lc_avatar initials, class: "bg-background text-muted-foreground" %><div class="flex-1"><p class="text-sm font-semibold"><%= name %></p><p class="text-sm text-muted-foreground"><%= role %></p></div><%= lc_badge "Available", tone: :primary, class: "rounded-full text-sm" %></div>
+        <% end %>
+      <% end %>
+    </section>
+  </main>
+</div>
 ```
 
 ### Documentation layout
@@ -4001,43 +4268,47 @@ export default class extends Controller {
 A sidebar, page content and an "On this page" list, with a collapsible menu on phones.
 https://ui.lostcoords.com/blocks/docs_shell.html
 
-Render it as a layout: pass the sidebar and contents lists as locals and the page as the block. This documentation site uses it for every guide and component page.
+lc_docs_shell takes the sidebar as navigation: and an lc_toc as contents:, with the page as its block. This documentation site uses it for every guide and component page.
 
-Mark the current page with current: true so the sidebar sets aria-current. The contents list appears from the xl breakpoint.
+Mark the current page with current: true so the sidebar sets aria-current. The contents list appears from the xl breakpoint and marks the section you have scrolled to.
 
 app/views/shared/_docs_shell.html.erb
 
 ```erb
-<%# locals: (navigation:, contents: nil, menu_label: "Menu", width: nil) %>
-<%# navigation: the sidebar, usually lc_nav_list. contents: an optional "On this page" list for wide screens. %>
-<div class="docs-shell mx-auto flex max-w-360 gap-10 px-5 sm:px-8 lg:px-10">
-  <aside tabindex="0" aria-label="Documentation sidebar" data-controller="lc-scroll-keeper" data-lc-scroll-keeper-key-value="docs-sidebar" class="docs-shell__sidebar sticky top-20 hidden h-[calc(100dvh-5rem)] w-52 shrink-0 overflow-y-auto py-8 pe-4 lg:block">
-    <%= navigation %>
-  </aside>
-  <main id="main" class="isolate min-w-0 flex-1 py-5 lg:py-10 <%= width %>">
-    <details class="group/nav relative z-raised rounded-2xl lc-squircle bg-muted lg:hidden">
-      <summary class="flex min-h-12 cursor-pointer list-none items-center justify-between gap-content px-4 text-label [&::-webkit-details-marker]:hidden"><%= menu_label %><%= lc_icon "chevron-down", options: { class: "size-4 transition-transform group-open/nav:rotate-180", "aria-hidden": true } %></summary>
-      <div class="max-h-[60dvh] overflow-y-auto p-3 pt-0"><%= navigation %></div>
-    </details>
-    <div class="pt-6 lg:pt-0"><%= yield %></div>
-  </main>
-  <% if contents %>
-    <aside class="sticky top-20 hidden h-[calc(100dvh-5rem)] w-40 shrink-0 overflow-y-auto py-12 ps-4 xl:block"><%= contents %></aside>
+<% navigation = lc_nav_list label: "Guides" do |nav| %>
+  <%= nav.group "Getting started" do %>
+    <%= nav.link "Introduction", "#introduction", current: true %>
+    <%= nav.link "Install", "#install" %>
   <% end %>
-</div>
-```
-
-app/assets/stylesheets/docs_shell.css
-
-```css
-/* The sidebar scrolls on its own without a visible scrollbar. */
-.docs-shell__sidebar {
-  scrollbar-width: none;
-}
-
-.docs-shell__sidebar::-webkit-scrollbar {
-  display: none;
-}
+  <%= nav.group "Guides" do %>
+    <%= nav.link "Accounts", "#accounts" %>
+    <%= nav.link "Billing", "#billing" %>
+    <%= nav.link "Webhooks", "#webhooks" %>
+  <% end %>
+<% end %>
+<% contents = lc_toc do |toc| %>
+  <%= toc.link "Requirements", "#requirements" %>
+  <%= toc.link "API keys", "#keys", indent: true %>
+  <%= toc.link "Next steps", "#next" %>
+<% end %>
+<%= lc_docs_shell navigation:, contents:, menu_label: "Guides" do %>
+  <%= lc_stack gap: :section do %>
+    <header id="introduction" class="<%= lc_stack_class(gap: :heading) %>">
+      <%= lc_breadcrumb [ [ "Docs", "#introduction" ], "Introduction" ] %>
+      <%= lc_heading "Introduction", level: 1, size: :title %>
+      <%= lc_text "Everything you need to connect your workspace.", tone: :muted %>
+    </header>
+    <%= lc_section title: "Requirements", id: "requirements", anchor: true do %>
+      <%= lc_text "An account with owner access and an API key from your settings.", size: :small, tone: :muted %>
+      <%= lc_heading "API keys", level: 3, size: :subheading, id: "keys", anchor: true %>
+      <%= lc_text "Create a key for each environment and keep it out of your repository.", size: :small, tone: :muted %>
+    <% end %>
+    <%= lc_section title: "Next steps", id: "next", anchor: true do %>
+      <%= lc_text do %>Read the <%= lc_link "install guide", "#install" %> to make your first request.<% end %>
+    <% end %>
+    <%= lc_pager next: [ "Install", "#install" ] %>
+  <% end %>
+<% end %>
 ```
 
 ### Mobile navigation
@@ -4047,29 +4318,18 @@ https://ui.lostcoords.com/blocks/mobile_navigation.html
 
 Choose a small set of primary destinations and replace the sample quick actions.
 
-Copy the bottom spacing and safe-area rules with the controls, so page content remains reachable. Test keyboard visibility on a real phone.
+lc_dock keeps the safe-area spacing, reserves room at the end of the page and hides while the keyboard is open. The panel switching in this preview is the example's own controller.
 
 app/views/shared/_mobile_navigation.html.erb
 
 ```erb
-<div class="mobile-example min-h-screen" data-controller="blocks-mobile-navigation" data-action="resize@window->blocks-mobile-navigation#keyboard focusin@document->blocks-mobile-navigation#keyboard focusout@document->blocks-mobile-navigation#keyboard">
+<div class="min-h-screen" data-controller="blocks-mobile-navigation">
   <header class="mx-auto flex max-w-2xl items-center justify-between gap-4 px-5 pt-7 pb-6 sm:px-8">
     <a href="#projects" class="flex min-h-11 items-center gap-2 font-semibold" data-action="blocks-mobile-navigation#home"><%= lc_icon "square-3-stack-3d", options: { class: "size-5", "aria-hidden": true } %> Studio</a>
     <%= lc_avatar "AL", class: "bg-primary-soft text-primary", aria: { label: "Alex Lee" } %>
   </header>
 
-  <nav class="mobile-example__tabs" aria-label="Studio sections">
-    <div class="<%= lc_glass_class(thick: true, extra: "relative isolate grid grid-flow-col auto-cols-fr gap-1 p-1") %>">
-      <span class="mobile-example__indicator" data-blocks-mobile-navigation-target="indicator" aria-hidden="true"></span>
-      <% [ [ "Projects", "projects", "rectangle-stack" ], [ "Notes", "notes", "document-text" ], [ "People", "people", "users" ] ].each do |label, id, icon| %>
-        <a href="#<%= id %>" class="mobile-example__tab" <%= 'aria-current=page' if id == "projects" %> data-blocks-mobile-navigation-target="link" data-action="blocks-mobile-navigation#select">
-          <%= lc_icon icon, options: { class: "size-5", "aria-hidden": true } %><span><%= label %></span>
-        </a>
-      <% end %>
-    </div>
-  </nav>
-
-  <main class="mobile-example__main isolate mx-auto flex max-w-2xl flex-col gap-7 px-5 pt-3 sm:px-8">
+  <main class="isolate mx-auto flex max-w-2xl flex-col gap-7 px-5 pt-3 sm:px-8">
     <div class="flex flex-col gap-2"><%= lc_text "A space to make things", size: :caption, tone: :muted %><h1 class="text-4xl font-semibold tracking-tight">Your little studio.</h1><p class="text-muted-foreground">A few good ideas, and room for a few more.</p></div>
     <p class="text-sm text-muted-foreground" role="status" aria-live="polite" data-blocks-mobile-navigation-target="status"></p>
 
@@ -4104,19 +4364,17 @@ app/views/shared/_mobile_navigation.html.erb
     </section>
   </main>
 
-  <div class="mobile-example__dock" data-controller="lc-menu" data-lc-menu-lift-value="false">
-    <button type="button" class="mobile-example__trigger <%= lc_glass_class(shape: :disc, thick: true) %>" aria-label="Create something" aria-haspopup="menu" aria-expanded="false" aria-controls="studio-create-menu" data-lc-menu-target="trigger" data-action="lc-menu#toggle">
-      <%= lc_icon "plus", options: { class: "size-7", "aria-hidden": true } %>
-    </button>
-    <div id="studio-create-menu" class="mobile-example__actions" role="menu" aria-label="Create something" data-lc-menu-target="popover">
-      <button type="button" class="mobile-example__scrim" aria-label="Close create menu" tabindex="-1" data-action="lc-menu#close"></button>
-      <% [ [ "New project", "rectangle-stack", "projects" ], [ "Add a note", "pencil-square", "notes" ] ].each_with_index do |(label, icon, destination), index| %>
-        <button type="button" role="menuitem" class="mobile-example__action <%= lc_glass_class(shape: :disc, thick: true) %>" style="--action-index: <%= index + 1 %>" data-action="blocks-mobile-navigation#add lc-menu#close" data-blocks-mobile-navigation-destination-param="<%= destination %>">
-          <span class="mobile-example__action-label"><%= label %></span><%= lc_icon icon, options: { class: "size-6", "aria-hidden": true } %>
-        </button>
+  <%= lc_dock do |dock| %>
+    <%= dock.nav label: "Studio sections" do |nav| %>
+      <% [ [ "Projects", "projects", "rectangle-stack" ], [ "Notes", "notes", "document-text" ], [ "People", "people", "users" ] ].each do |label, id, icon| %>
+        <%= nav.link label, "##{id}", icon:, current: id == "projects", data: { action: "blocks-mobile-navigation#select" } %>
       <% end %>
-    </div>
-  </div>
+    <% end %>
+    <%= dock.menu label: "Create something", id: "studio-create-menu" do |menu| %>
+      <%= menu.action "New project", icon: "rectangle-stack", data: { action: "blocks-mobile-navigation#add", blocks_mobile_navigation_destination_param: "projects" } %>
+      <%= menu.action "Add a note", icon: "pencil-square", data: { action: "blocks-mobile-navigation#add", blocks_mobile_navigation_destination_param: "notes" } %>
+    <% end %>
+  <% end %>
 
   <template data-blocks-mobile-navigation-target="draft">
     <%= lc_card class: "flex flex-col gap-3" do %><%= lc_badge "Draft" %><h3 class="text-lg font-semibold" data-draft-title></h3><p class="text-sm text-muted-foreground">A fresh start. Make it your own.</p><% end %>
@@ -4124,201 +4382,14 @@ app/views/shared/_mobile_navigation.html.erb
 </div>
 ```
 
-app/assets/stylesheets/mobile_navigation.css
-
-```css
-.mobile-example {
-  --dock-gap: max(1rem, env(safe-area-inset-right, 0px));
-  --dock-bottom: max(0.75rem, env(safe-area-inset-bottom, 0px));
-  --dock-size: 4rem;
-}
-
-.mobile-example__main {
-  padding-block-end: calc(var(--dock-bottom) + var(--dock-size) + 2rem);
-}
-
-.mobile-example__tabs {
-  position: fixed;
-  z-index: var(--lc-z-sticky);
-  inset-inline: max(1rem, env(safe-area-inset-left, 0px)) calc(var(--dock-gap) + var(--dock-size) + 0.75rem);
-  bottom: var(--dock-bottom);
-}
-
-.mobile-example__tab {
-  position: relative;
-  display: flex;
-  min-width: 0;
-  min-height: 3.5rem;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.25rem;
-  border-radius: 999px;
-  color: var(--muted-foreground);
-  font-size: 0.6875rem;
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.mobile-example__tab[aria-current="page"] {
-  color: var(--primary);
-}
-
-.mobile-example__indicator {
-  position: absolute;
-  z-index: -1;
-  inset-block: 0.25rem;
-  inset-inline-start: 0;
-  border-radius: 999px;
-  background: color-mix(in oklab, var(--foreground) 7%, transparent);
-  transition: translate 380ms var(--lc-ease-sheet, ease), width 380ms var(--lc-ease-sheet, ease);
-}
-
-.mobile-example__dock {
-  position: fixed;
-  z-index: calc(var(--lc-z-sticky) + 1);
-  inset-inline-end: var(--dock-gap);
-  bottom: var(--dock-bottom);
-}
-
-.mobile-example__trigger,
-.mobile-example__action {
-  display: grid;
-  width: var(--dock-size);
-  height: var(--dock-size);
-  place-items: center;
-  padding: 0;
-  color: var(--primary);
-  cursor: pointer;
-}
-
-.mobile-example__trigger {
-  position: relative;
-  z-index: 2;
-}
-
-.mobile-example__trigger svg {
-  transition: rotate 300ms var(--lc-ease-sheet, ease);
-}
-
-.mobile-example__trigger[aria-expanded="true"] svg {
-  rotate: 135deg;
-}
-
-.mobile-example__actions {
-  visibility: hidden;
-  pointer-events: none;
-}
-
-.mobile-example__actions[data-open] {
-  visibility: visible;
-}
-
-.mobile-example__scrim {
-  position: fixed;
-  inset: 0;
-  border: 0;
-  background: color-mix(in oklab, var(--foreground) 18%, transparent);
-  opacity: 0;
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
-  transition: opacity 220ms ease;
-}
-
-.mobile-example__actions[data-open] .mobile-example__scrim {
-  pointer-events: auto;
-  opacity: 1;
-}
-
-.mobile-example__action {
-  position: absolute;
-  z-index: 1;
-  inset: 0;
-  width: 3.5rem;
-  height: 3.5rem;
-  margin: 0.25rem;
-  color: var(--foreground);
-  opacity: 0;
-  transform: scale(0.4);
-  transition: transform 300ms ease, opacity 150ms ease;
-}
-
-.mobile-example__actions[data-open] .mobile-example__action {
-  pointer-events: auto;
-  opacity: 1;
-  transform: translateY(calc(var(--action-index) * -4.5rem)) scale(1);
-  transition: transform 420ms cubic-bezier(0.34, 1.45, 0.64, 1), opacity 160ms ease;
-  transition-delay: calc((var(--action-index) - 1) * 40ms);
-}
-
-.mobile-example__action-label {
-  position: absolute;
-  inset-inline-end: calc(100% + 0.75rem);
-  width: max-content;
-  max-width: calc(100vw - 7rem);
-  padding: 0.5rem 0.875rem;
-  border-radius: 999px;
-  background: var(--background);
-  box-shadow: var(--lc-shadow);
-  color: var(--foreground);
-  font-size: 0.875rem;
-  font-weight: 600;
-}
-
-.mobile-example[data-keyboard] .mobile-example__tabs,
-.mobile-example[data-keyboard] .mobile-example__dock {
-  display: none;
-}
-
-@media (width >= 40rem) {
-  .mobile-example__tabs {
-    position: relative;
-    inset: auto;
-    width: max-content;
-    margin-inline: auto;
-    margin-block-end: 1.5rem;
-  }
-
-  .mobile-example__tab {
-    min-width: 7rem;
-    min-height: 2.75rem;
-    flex-direction: row;
-    gap: 0.5rem;
-    font-size: 0.875rem;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .mobile-example__indicator,
-  .mobile-example__trigger svg,
-  .mobile-example__scrim,
-  .mobile-example__action,
-  .mobile-example__actions[data-open] .mobile-example__action {
-    transition: none;
-  }
-}
-```
-
 app/javascript/controllers/blocks_mobile_navigation_controller.js
 
 ```javascript
 import { Controller } from "@hotwired/stimulus"
 
+// The preview's sections are panels on one page, so the dock's links switch panels instead of visiting pages.
 export default class extends Controller {
-  static targets = ["link", "panel", "indicator", "status", "projects", "notes", "draft"]
-
-  connect() {
-    this.resizeObserver = new ResizeObserver(() => this.placeIndicator())
-    this.linkTargets.forEach((link) => this.resizeObserver.observe(link))
-    this.onViewportResize = () => this.keyboard()
-    window.visualViewport?.addEventListener("resize", this.onViewportResize)
-    this.placeIndicator()
-  }
-
-  disconnect() {
-    this.resizeObserver.disconnect()
-    window.visualViewport?.removeEventListener("resize", this.onViewportResize)
-  }
+  static targets = ["panel", "status", "projects", "notes", "draft"]
 
   select(event) {
     event.preventDefault()
@@ -4327,22 +4398,16 @@ export default class extends Controller {
 
   home(event) {
     event.preventDefault()
-    this.show("projects")
+    this.open("projects")
+  }
+
+  // Clicking the dock link moves its indicator and shows the panel.
+  open(id) {
+    this.element.querySelector(`[data-slot=dock] a[href="#${id}"]`)?.click()
   }
 
   show(id) {
-    for (const link of this.linkTargets) {
-      if (link.hash === `#${id}`) link.setAttribute("aria-current", "page")
-      else link.removeAttribute("aria-current")
-    }
     for (const panel of this.panelTargets) panel.hidden = panel.id !== id
-    this.placeIndicator()
-  }
-
-  placeIndicator() {
-    const active = this.linkTargets.find((link) => link.getAttribute("aria-current") === "page")
-    this.indicatorTarget.style.translate = `${active.offsetLeft}px 0`
-    this.indicatorTarget.style.width = `${active.offsetWidth}px`
   }
 
   add({ params: { destination } }) {
@@ -4351,14 +4416,8 @@ export default class extends Controller {
     draft.querySelector("[data-draft-title]").textContent = title
     const list = destination === "projects" ? this.projectsTarget : this.notesTarget
     list.prepend(draft)
-    this.show(destination)
+    this.open(destination)
     this.statusTarget.textContent = `${title} added. Your next idea starts here.`
-  }
-
-  keyboard() {
-    const typing = document.activeElement?.matches("input, textarea, [contenteditable=true]")
-    const inset = window.innerHeight - (window.visualViewport?.height ?? window.innerHeight)
-    this.element.toggleAttribute("data-keyboard", typing && inset > 150)
   }
 }
 ```

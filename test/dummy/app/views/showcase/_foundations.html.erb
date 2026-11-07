@@ -1,5 +1,5 @@
 <%= lc_stack gap: :section do %>
-  <%= lc_section title: "Choose a role, then arrange the content" do %>
+  <%= lc_section title: "Choose a role, then arrange the content", id: "roles", anchor: true do %>
     <%= lc_text tone: :muted do %>
       Text styles pair size, line height, weight and tracking. Heading level describes the document structure;
       <code>size:</code> describes its appearance. Parents set space between children with stacks, inline groups and sections.
@@ -30,14 +30,14 @@
       <% end %>
     </div>
   <% end %>
-  <%= lc_section title: "Use reading styles for articles" do %>
+  <%= lc_section title: "Use reading styles for articles", id: "reading", anchor: true do %>
     <%= lc_text tone: :muted do %>
       <code>lc_prose</code> styles rendered HTML with a 65ch reading measure, 1.75 line height and proportional block spacing.
       Enable <code>@plugin "@tailwindcss/typography";</code> in the host Tailwind input. The standalone Rails CLI includes the plugin.
       Mark embedded controls or cards <code>not-prose</code> to keep their component styles.
     <% end %>
   <% end %>
-  <%= lc_section title: "Theme colors", id: "tokens" do %>
+  <%= lc_section title: "Theme colors", id: "tokens", anchor: true do %>
     <%= lc_text tone: :muted do %>
       These eleven colors are the everyday theme settings. Defaults work without overrides.
       Names describe their purpose: <code>bg-muted</code> for a card, <code>text-muted-foreground</code> for a hint,
@@ -50,7 +50,7 @@
     <% end %>
     <%= render "showcase/token_table", tokens: DocsFoundations::COLORS, id: "theme-color-table" %>
   <% end %>
-  <%= lc_section title: "Typography, spacing and appearance", id: "style-settings" do %>
+  <%= lc_section title: "Typography, spacing and appearance", id: "style-settings", anchor: true do %>
     <%= lc_stack do %>
       <%= lc_text size: :small, tone: :muted do %>
         Use these settings when you need to change typography, spacing or rendering details.

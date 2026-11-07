@@ -20,6 +20,15 @@ es:
         label: "Acciones"
       popover:
         trigger: "Abrir panel"
+      toc:
+        label: "En esta página"
+      docs_shell:
+        menu: "Menú"
+        sidebar: "Barra lateral de la documentación"
+      app_header:
+        navigation: "Principal"
+      dock:
+        close: "Cerrar %{label}"
       breadcrumb:
         label: "Ruta de navegación"
       code_block:

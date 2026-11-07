@@ -1,7 +1,9 @@
+import AppHeader from "lostcoords/ui/controllers/lc_app_header_controller"
 import CodeBlock from "lostcoords/ui/controllers/lc_code_block_controller"
 import Collapsible from "lostcoords/ui/controllers/lc_collapsible_controller"
 import Copy from "lostcoords/ui/controllers/lc_copy_controller"
 import Dialog from "lostcoords/ui/controllers/lc_dialog_controller"
+import Dock from "lostcoords/ui/controllers/lc_dock_controller"
 import EmojiPicker from "lostcoords/ui/controllers/lc_emoji_picker_controller"
 import Kbd from "lostcoords/ui/controllers/lc_kbd_controller"
 import Menu from "lostcoords/ui/controllers/lc_menu_controller"
@@ -15,14 +17,17 @@ import Shortcut from "lostcoords/ui/controllers/lc_shortcut_controller"
 import Tabs from "lostcoords/ui/controllers/lc_tabs_controller"
 import Toast from "lostcoords/ui/controllers/lc_toast_controller"
 import ToastRegion from "lostcoords/ui/controllers/lc_toast_region_controller"
+import Toc from "lostcoords/ui/controllers/lc_toc_controller"
 import Toggle from "lostcoords/ui/controllers/lc_toggle_controller"
 import Tooltip from "lostcoords/ui/controllers/lc_tooltip_controller"
 
 const controllers = {
+  "lc-app-header": AppHeader,
   "lc-collapsible": Collapsible,
   "lc-code-block": CodeBlock,
   "lc-copy": Copy,
   "lc-dialog": Dialog,
+  "lc-dock": Dock,
   "lc-emoji-picker": EmojiPicker,
   "lc-kbd": Kbd,
   "lc-menu": Menu,
@@ -34,6 +39,7 @@ const controllers = {
   "lc-sheet": Sheet,
   "lc-shortcut": Shortcut,
   "lc-tabs": Tabs,
+  "lc-toc": Toc,
   "lc-toast": Toast,
   "lc-toast-region": ToastRegion,
   "lc-toggle": Toggle,

@@ -1,0 +1,4 @@
+/* lc_app_header, lc_docs_shell and lc_dock. */
+@import "../shell.css";
+@source "../../../../../helpers/lostcoords/ui/shell_helper.rb";
+@source "../../../../../javascript/lostcoords/ui/controllers/lc_{app_header,dock}_controller.js";

@@ -1,17 +1,34 @@
-<%# locals: (navigation:, contents: nil, menu_label: "Menu", width: nil) %>
-<%# navigation: the sidebar, usually lc_nav_list. contents: an optional "On this page" list for wide screens. %>
-<div class="docs-shell mx-auto flex max-w-360 gap-10 px-5 sm:px-8 lg:px-10">
-  <aside tabindex="0" aria-label="Documentation sidebar" data-controller="lc-scroll-keeper" data-lc-scroll-keeper-key-value="docs-sidebar" class="docs-shell__sidebar sticky top-20 hidden h-[calc(100dvh-5rem)] w-52 shrink-0 overflow-y-auto py-8 pe-4 lg:block">
-    <%= navigation %>
-  </aside>
-  <main id="main" class="isolate min-w-0 flex-1 py-5 lg:py-10 <%= width %>">
-    <details class="group/nav relative z-raised rounded-2xl lc-squircle bg-muted lg:hidden">
-      <summary class="flex min-h-12 cursor-pointer list-none items-center justify-between gap-content px-4 text-label [&::-webkit-details-marker]:hidden"><%= menu_label %><%= lc_icon "chevron-down", options: { class: "size-4 transition-transform group-open/nav:rotate-180", "aria-hidden": true } %></summary>
-      <div class="max-h-[60dvh] overflow-y-auto p-3 pt-0"><%= navigation %></div>
-    </details>
-    <div class="pt-6 lg:pt-0"><%= yield %></div>
-  </main>
-  <% if contents %>
-    <aside class="sticky top-20 hidden h-[calc(100dvh-5rem)] w-40 shrink-0 overflow-y-auto py-12 ps-4 xl:block"><%= contents %></aside>
+<% navigation = lc_nav_list label: "Guides" do |nav| %>
+  <%= nav.group "Getting started" do %>
+    <%= nav.link "Introduction", "#introduction", current: true %>
+    <%= nav.link "Install", "#install" %>
   <% end %>
-</div>
+  <%= nav.group "Guides" do %>
+    <%= nav.link "Accounts", "#accounts" %>
+    <%= nav.link "Billing", "#billing" %>
+    <%= nav.link "Webhooks", "#webhooks" %>
+  <% end %>
+<% end %>
+<% contents = lc_toc do |toc| %>
+  <%= toc.link "Requirements", "#requirements" %>
+  <%= toc.link "API keys", "#keys", indent: true %>
+  <%= toc.link "Next steps", "#next" %>
+<% end %>
+<%= lc_docs_shell navigation:, contents:, menu_label: "Guides" do %>
+  <%= lc_stack gap: :section do %>
+    <header id="introduction" class="<%= lc_stack_class(gap: :heading) %>">
+      <%= lc_breadcrumb [ [ "Docs", "#introduction" ], "Introduction" ] %>
+      <%= lc_heading "Introduction", level: 1, size: :title %>
+      <%= lc_text "Everything you need to connect your workspace.", tone: :muted %>
+    </header>
+    <%= lc_section title: "Requirements", id: "requirements", anchor: true do %>
+      <%= lc_text "An account with owner access and an API key from your settings.", size: :small, tone: :muted %>
+      <%= lc_heading "API keys", level: 3, size: :subheading, id: "keys", anchor: true %>
+      <%= lc_text "Create a key for each environment and keep it out of your repository.", size: :small, tone: :muted %>
+    <% end %>
+    <%= lc_section title: "Next steps", id: "next", anchor: true do %>
+      <%= lc_text do %>Read the <%= lc_link "install guide", "#install" %> to make your first request.<% end %>
+    <% end %>
+    <%= lc_pager next: [ "Install", "#install" ] %>
+  <% end %>
+<% end %>

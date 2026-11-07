@@ -24,10 +24,17 @@ module Lostcoords::Ui
       lc_tw(KBD_BASE, extra)
     end
 
-    def lc_heading(content = nil, level: 2, size: :heading, trim: false, **attributes, &block)
+    # anchor: true links the heading to itself, so readers can copy a link to it; it needs id:.
+    # anchor: "section-id" links it to an element around it instead, such as its <section>.
+    def lc_heading(content = nil, level: 2, size: :heading, trim: false, anchor: false, **attributes, &block)
       raise ArgumentError, "Invalid level: #{level.inspect}. Expected an integer from 1 to 6" unless (1..6).include?(level) && level.is_a?(Integer)
 
-      tag.public_send("h#{level}", content, **lc_attributes({ class: lc_heading_class(size: size, trim: trim) }, attributes), &block)
+      target = anchor == true ? attributes[:id].to_s : anchor.presence&.to_s
+      raise ArgumentError, "anchor: true needs an id" if anchor == true && target.blank?
+
+      content = capture(&block) if block
+      content = tag.a(content, href: "##{target}", class: "lc-anchor", data: { slot: "heading-anchor" }) if target
+      tag.public_send("h#{level}", content, **lc_attributes({ class: lc_heading_class(size: size, trim: trim, extra: ("lc-anchor-target" if anchor == true)) }, attributes))
     end
 
     # as: picks the element, such as :span inside a row or :h3 for a heading set in a text role.

@@ -57,7 +57,8 @@ app's theme and keep your Tailwind theme declarations after the imports.
 `core.css` holds the tokens, buttons, badges, avatars, cards, alerts, form controls, choices,
 toggles, layout, typography and navigation. The opt-in entries are `dialog` (with the phone sheet),
 `menu` (menus and popovers), `toast`, `search`, `tooltip`, `collapsible`, `code-block`,
-`emoji-picker`, `table` and `prose`. A component whose entry is missing renders unstyled.
+`emoji-picker`, `table`, `prose` and `shell` (`lc_app_header`, `lc_docs_shell` and `lc_dock`; the dock's action
+menu also needs `menu`). A component whose entry is missing renders unstyled.
 
 The gem's stylesheets write into the `components` and `modules` layers, so the host declares that layer order.
 The theme defines the `dark:` variant with `html[data-theme="dark"]`. Each entry carries its own `@source` lines, so Tailwind
@@ -184,6 +185,25 @@ The gem is Rails-only. It loads through its Rails engine, and the standalone Act
   application and the engine's asset setup above.
 
 Rails apps that load the gem through Bundler need no edits.
+
+New components and options:
+
+- **`lc_toc` is an "On this page" list that follows the reader.** It marks the section scrolled to with
+  `aria-current="location"` and slides an indicator to it. Pass links with `toc.link "Usage", "#usage"`, or
+  rendered HTML with `lc_toc(headings: html)` to list its `h2` and `h3` that carry an id.
+- **Headings and sections can link to themselves.** `lc_heading "Usage", id: "usage", anchor: true` and
+  `lc_section title: "Usage", id: "usage", anchor: true` wrap the title in a link with a `#` mark on hover.
+  `anchor: "section-id"` links a heading to an element around it. `lc_prose(anchors: true)` does the same for
+  rendered Markdown, whose headings Kiln gives ids.
+- **Anchored targets clear sticky chrome.** `.lc-anchor-target` sets a scroll margin of `--lc-sticky-offset`,
+  which `lc_app_header` sets to `5rem` while it renders. Override the property if your header is taller.
+- **`lc_app_header`, `lc_docs_shell` and `lc_dock` move from the Blocks examples into the gem**, in the new
+  `shell` stylesheet entry, with the `lc-app-header` and `lc-dock` controllers. `lc_app_header` yields
+  `header.brand`, `header.nav` and `header.actions`. `lc_docs_shell(navigation:, contents:)` lays out a sidebar,
+  the page and an `lc_toc`. `lc_dock` yields `dock.nav` and `dock.menu`, reserves its height at the end of the
+  page and hides while the on-screen keyboard is open. If you copied the Application header, Documentation
+  layout or Mobile navigation block, you can replace the copy with the helper and delete its stylesheet and
+  controller.
 
 ## Changes in 0.8.2
 
@@ -531,8 +551,31 @@ on the scroll container to keep its position across Turbo visits and reloads. Co
 `data-lc-scroll-keeper-key-value` share one position for the browser tab. Without a saved position,
 it scrolls the `aria-current="page"` link into view.
 
-This documentation site is built with these components and two copyable blocks: the application
-header and the documentation layout.
+Page chrome lives in the `shell` stylesheet entry. `lc_app_header` is a sticky glass header,
+`lc_docs_shell` lays out a documentation page, and `lc_toc` lists the page's sections and marks the one
+the reader has scrolled to. This documentation site is built with them.
+
+```erb
+<%= lc_app_header do |header| %>
+  <%= header.brand root_path, label: "Acme home" do %><%= image_tag "logo.svg", alt: "" %> Acme<% end %>
+  <%= header.nav class: "max-sm:hidden" do |nav| %>
+    <%= nav.link "Guides", guides_path, current: true %>
+  <% end %>
+  <%= header.actions do %><%= lc_icon_button "Search", icon: "magnifying-glass", size: :sm %><% end %>
+<% end %>
+
+<% contents = lc_toc do |toc| %>
+  <%= toc.link "Usage", "#usage" %>
+  <%= toc.link "Sizes", "#sizes", indent: true %>
+<% end %>
+<%= lc_docs_shell navigation: render("guides/sidebar"), contents: do %>
+  <%= lc_section title: "Usage", id: "usage", anchor: true do %>…<% end %>
+<% end %>
+```
+
+For rendered Markdown, such as a Kiln `.md` view, pass the HTML to both: `lc_prose(anchors: true) { html }`
+links its headings, and `lc_toc(headings: html)` lists them. On phones, `lc_dock` floats `dock.nav` and a
+`dock.menu` of quick actions at the bottom of the screen; render it last, since it reserves its height there.
 
 ```erb
 <%= lc_menu id: "member-actions", label: "Actions for #{member.name}", trigger: :icon do %>

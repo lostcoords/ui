@@ -1,4 +1,4 @@
-<%= render layout: "blocks/examples/docs_shell", locals: { navigation: render("showcase/navigation"), menu_label: "Components" } do %>
+<%= lc_docs_shell navigation: render("showcase/navigation"), menu_label: "Components" do %>
   <div class="<%= lc_stack_class(gap: :section) %>">
     <header class="<%= lc_stack_class(gap: :heading) %>">
       <%= lc_heading "Components", level: 1, size: :title %>

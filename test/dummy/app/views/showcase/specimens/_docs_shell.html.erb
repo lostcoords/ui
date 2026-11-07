@@ -1,0 +1,10 @@
+<% navigation = lc_nav_list label: "Guides" do |nav| %>
+  <%= nav.link "Introduction", "#", current: true %>
+  <%= nav.link "Install", "#" %>
+<% end %>
+<% contents = lc_toc { |toc| toc.link "Requirements", "#requirements" } %>
+<%= lc_docs_shell navigation:, contents:, menu_label: "Guides", class: "px-0 sm:px-0 lg:px-0", main: { id: nil } do %>
+  <%= lc_section title: "Requirements", id: "requirements", anchor: true do %>
+    <%= lc_text "An account with owner access.", size: :small, tone: :muted %>
+  <% end %>
+<% end %>

@@ -6,15 +6,16 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
     <title>Mobile navigation · Block preview</title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2028%2028%22%20fill%3D%22none%22%3E%20%3Cstyle%3Epath%7Bstroke%3A%23111%7D%40media%20%28prefers-color-scheme%3Adark%29%7Bpath%7Bstroke%3A%23fff%7D%7D%3C%2Fstyle%3E%20%3Cpath%20d%3D%22M7%203v18h18M3%207h18v18M14%209v10M9%2014h10%22%20stroke-width%3D%222%22%2F%3E%3C%2Fsvg%3E">
-    <link rel="stylesheet" href="/assets/tailwind-e97fa27e.css" />
-<link rel="stylesheet" href="/assets/blocks/mobile_navigation-6f86ba27.css" />
+    <link rel="stylesheet" href="/assets/tailwind-25a6e1ad.css" />
     <script type="importmap" data-turbo-track="reload">{
   "imports": {
-    "lostcoords/ui": "/assets/lostcoords/ui/index-bd937739.js",
+    "lostcoords/ui": "/assets/lostcoords/ui/index-cbd11bae.js",
+    "lostcoords/ui/controllers/lc_app_header_controller": "/assets/lostcoords/ui/controllers/lc_app_header_controller-057c2c2a.js",
     "lostcoords/ui/controllers/lc_code_block_controller": "/assets/lostcoords/ui/controllers/lc_code_block_controller-0a27362b.js",
     "lostcoords/ui/controllers/lc_collapsible_controller": "/assets/lostcoords/ui/controllers/lc_collapsible_controller-e723312e.js",
     "lostcoords/ui/controllers/lc_copy_controller": "/assets/lostcoords/ui/controllers/lc_copy_controller-d436312d.js",
     "lostcoords/ui/controllers/lc_dialog_controller": "/assets/lostcoords/ui/controllers/lc_dialog_controller-993d9a42.js",
+    "lostcoords/ui/controllers/lc_dock_controller": "/assets/lostcoords/ui/controllers/lc_dock_controller-0e45af8e.js",
     "lostcoords/ui/controllers/lc_emoji_picker_controller": "/assets/lostcoords/ui/controllers/lc_emoji_picker_controller-c3f9d5d9.js",
     "lostcoords/ui/controllers/lc_kbd_controller": "/assets/lostcoords/ui/controllers/lc_kbd_controller-83cd1787.js",
     "lostcoords/ui/controllers/lc_menu_controller": "/assets/lostcoords/ui/controllers/lc_menu_controller-c2a19d16.js",
@@ -28,6 +29,7 @@
     "lostcoords/ui/controllers/lc_tabs_controller": "/assets/lostcoords/ui/controllers/lc_tabs_controller-9f1d494f.js",
     "lostcoords/ui/controllers/lc_toast_controller": "/assets/lostcoords/ui/controllers/lc_toast_controller-80577e17.js",
     "lostcoords/ui/controllers/lc_toast_region_controller": "/assets/lostcoords/ui/controllers/lc_toast_region_controller-cba89595.js",
+    "lostcoords/ui/controllers/lc_toc_controller": "/assets/lostcoords/ui/controllers/lc_toc_controller-29ad3321.js",
     "lostcoords/ui/controllers/lc_toggle_controller": "/assets/lostcoords/ui/controllers/lc_toggle_controller-c1f00ec9.js",
     "lostcoords/ui/controllers/lc_tooltip_controller": "/assets/lostcoords/ui/controllers/lc_tooltip_controller-dca69acd.js",
     "application": "/assets/application-a9592715.js",
@@ -35,10 +37,12 @@
     "@hotwired/stimulus": "/assets/stimulus.min-7ea3d58b.js",
     "@hotwired/stimulus-loading": "/assets/stimulus-loading-25917588.js",
     "minisearch": "/assets/minisearch-4b8cd157.js",
+    "controllers/lc_app_header_controller": "/assets/lostcoords/ui/controllers/lc_app_header_controller-057c2c2a.js",
     "controllers/lc_code_block_controller": "/assets/lostcoords/ui/controllers/lc_code_block_controller-0a27362b.js",
     "controllers/lc_collapsible_controller": "/assets/lostcoords/ui/controllers/lc_collapsible_controller-e723312e.js",
     "controllers/lc_copy_controller": "/assets/lostcoords/ui/controllers/lc_copy_controller-d436312d.js",
     "controllers/lc_dialog_controller": "/assets/lostcoords/ui/controllers/lc_dialog_controller-993d9a42.js",
+    "controllers/lc_dock_controller": "/assets/lostcoords/ui/controllers/lc_dock_controller-0e45af8e.js",
     "controllers/lc_emoji_picker_controller": "/assets/lostcoords/ui/controllers/lc_emoji_picker_controller-c3f9d5d9.js",
     "controllers/lc_kbd_controller": "/assets/lostcoords/ui/controllers/lc_kbd_controller-83cd1787.js",
     "controllers/lc_menu_controller": "/assets/lostcoords/ui/controllers/lc_menu_controller-c2a19d16.js",
@@ -52,6 +56,7 @@
     "controllers/lc_tabs_controller": "/assets/lostcoords/ui/controllers/lc_tabs_controller-9f1d494f.js",
     "controllers/lc_toast_controller": "/assets/lostcoords/ui/controllers/lc_toast_controller-80577e17.js",
     "controllers/lc_toast_region_controller": "/assets/lostcoords/ui/controllers/lc_toast_region_controller-cba89595.js",
+    "controllers/lc_toc_controller": "/assets/lostcoords/ui/controllers/lc_toc_controller-29ad3321.js",
     "controllers/lc_toggle_controller": "/assets/lostcoords/ui/controllers/lc_toggle_controller-c1f00ec9.js",
     "controllers/lc_tooltip_controller": "/assets/lostcoords/ui/controllers/lc_tooltip_controller-dca69acd.js",
     "lostcoords/ui/helpers/catalog_picker": "/assets/lostcoords/ui/helpers/catalog_picker-c9ff3c51.js",
@@ -69,8 +74,7 @@
     "controllers/application": "/assets/controllers/application-f811edf3.js",
     "controllers/block_preview_controller": "/assets/controllers/block_preview_controller-53c37654.js",
     "controllers/block_stage_controller": "/assets/controllers/block_stage_controller-828c99a5.js",
-    "controllers/blocks_header_controller": "/assets/controllers/blocks_header_controller-ea06a62f.js",
-    "controllers/blocks_mobile_navigation_controller": "/assets/controllers/blocks_mobile_navigation_controller-f3c310d5.js",
+    "controllers/blocks_mobile_navigation_controller": "/assets/controllers/blocks_mobile_navigation_controller-ccb437f5.js",
     "controllers/component_picker_controller": "/assets/controllers/component_picker_controller-73ac8278.js",
     "controllers/confirm_demo_controller": "/assets/controllers/confirm_demo_controller-94f72afd.js",
     "controllers/docs_search_controller": "/assets/controllers/docs_search_controller-0b42ad02.js",
@@ -88,8 +92,7 @@
 <link rel="modulepreload" href="/assets/controllers/application-f811edf3.js">
 <link rel="modulepreload" href="/assets/controllers/block_preview_controller-53c37654.js">
 <link rel="modulepreload" href="/assets/controllers/block_stage_controller-828c99a5.js">
-<link rel="modulepreload" href="/assets/controllers/blocks_header_controller-ea06a62f.js">
-<link rel="modulepreload" href="/assets/controllers/blocks_mobile_navigation_controller-f3c310d5.js">
+<link rel="modulepreload" href="/assets/controllers/blocks_mobile_navigation_controller-ccb437f5.js">
 <link rel="modulepreload" href="/assets/controllers/component_picker_controller-73ac8278.js">
 <link rel="modulepreload" href="/assets/controllers/confirm_demo_controller-94f72afd.js">
 <link rel="modulepreload" href="/assets/controllers/docs_search_controller-0b42ad02.js">
@@ -100,28 +103,13 @@
 <script type="module">import "application"</script>
   </head>
   <body class="antialiased" data-controller="block-preview">
-    <div class="mobile-example min-h-screen" data-controller="blocks-mobile-navigation" data-action="resize@window->blocks-mobile-navigation#keyboard focusin@document->blocks-mobile-navigation#keyboard focusout@document->blocks-mobile-navigation#keyboard">
+    <div class="min-h-screen" data-controller="blocks-mobile-navigation">
   <header class="mx-auto flex max-w-2xl items-center justify-between gap-4 px-5 pt-7 pb-6 sm:px-8">
     <a href="#projects" class="flex min-h-11 items-center gap-2 font-semibold" data-action="blocks-mobile-navigation#home"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" class="lc-icon size-5" data-slot="icon" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6.429 9.75 2.25 12l4.179 2.25m0-4.5 5.571 3 5.571-3m-11.142 0L2.25 7.5 12 2.25l9.75 5.25-4.179 2.25m0 0L21.75 12l-4.179 2.25m0 0 4.179 2.25L12 21.75 2.25 16.5l4.179-2.25m11.142 0-5.571 3-5.571-3"/></svg> Studio</a>
     <span class="lc-avatar grid place-items-center shrink-0 rounded-full font-medium tracking-[var(--lc-avatar-tracking,0.05em)] size-[var(--lc-avatar-size,var(--lc-avatar-size-default,--spacing(8)))] text-[length:var(--lc-avatar-font-size,calc(var(--lc-avatar-size,var(--lc-avatar-size-default,--spacing(8)))*var(--lc-avatar-font-scale,var(--lc-avatar-font-scale-default,0.375))))] border-[length:var(--lc-avatar-border,0px)] border-[color:var(--lc-avatar-cutout,var(--background))] bg-primary-soft text-primary" data-slot="avatar" aria-label="Alex Lee">AL</span>
   </header>
 
-  <nav class="mobile-example__tabs" aria-label="Studio sections">
-    <div class="lc-glass rounded-full border-(--lc-glass-bar-edge) max-md:[--lc-glass-fill:color-mix(in_oklab,var(--background)_90%,transparent)] dark:max-md:[--lc-glass-fill:color-mix(in_oklab,var(--muted)_92%,transparent)] relative isolate grid grid-flow-col auto-cols-fr gap-1 p-1">
-      <span class="mobile-example__indicator" data-blocks-mobile-navigation-target="indicator" aria-hidden="true"></span>
-        <a href="#projects" class="mobile-example__tab" aria-current=page data-blocks-mobile-navigation-target="link" data-action="blocks-mobile-navigation#select">
-          <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" class="lc-icon size-5" data-slot="icon" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 6.878V6a2.25 2.25 0 0 1 2.25-2.25h7.5A2.25 2.25 0 0 1 18 6v.878m-12 0c.235-.083.487-.128.75-.128h10.5c.263 0 .515.045.75.128m-12 0A2.25 2.25 0 0 0 4.5 9v.878m13.5-3A2.25 2.25 0 0 1 19.5 9v.878m0 0a2.246 2.246 0 0 0-.75-.128H5.25c-.263 0-.515.045-.75.128m15 0A2.25 2.25 0 0 1 21 12v6a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18v-6c0-.98.626-1.813 1.5-2.122"/></svg><span>Projects</span>
-        </a>
-        <a href="#notes" class="mobile-example__tab"  data-blocks-mobile-navigation-target="link" data-action="blocks-mobile-navigation#select">
-          <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" class="lc-icon size-5" data-slot="icon" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/></svg><span>Notes</span>
-        </a>
-        <a href="#people" class="mobile-example__tab"  data-blocks-mobile-navigation-target="link" data-action="blocks-mobile-navigation#select">
-          <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" class="lc-icon size-5" data-slot="icon" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z"/></svg><span>People</span>
-        </a>
-    </div>
-  </nav>
-
-  <main class="mobile-example__main isolate mx-auto flex max-w-2xl flex-col gap-7 px-5 pt-3 sm:px-8">
+  <main class="isolate mx-auto flex max-w-2xl flex-col gap-7 px-5 pt-3 sm:px-8">
     <div class="flex flex-col gap-2"><p class="lc-text m-0 text-caption text-muted-foreground">A space to make things</p><h1 class="text-4xl font-semibold tracking-tight">Your little studio.</h1><p class="text-muted-foreground">A few good ideas, and room for a few more.</p></div>
     <p class="text-sm text-muted-foreground" role="status" aria-live="polite" data-blocks-mobile-navigation-target="status"></p>
 
@@ -161,26 +149,19 @@
 </div>    </section>
   </main>
 
-  <div class="mobile-example__dock" data-controller="lc-menu" data-lc-menu-lift-value="false">
-    <button type="button" class="mobile-example__trigger lc-glass rounded-full max-md:[--lc-glass-fill:color-mix(in_oklab,var(--background)_90%,transparent)] dark:max-md:[--lc-glass-fill:color-mix(in_oklab,var(--muted)_92%,transparent)]" aria-label="Create something" aria-haspopup="menu" aria-expanded="false" aria-controls="studio-create-menu" data-lc-menu-target="trigger" data-action="lc-menu#toggle">
-      <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" class="lc-icon size-7" data-slot="icon" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
-    </button>
-    <div id="studio-create-menu" class="mobile-example__actions" role="menu" aria-label="Create something" data-lc-menu-target="popover">
-      <button type="button" class="mobile-example__scrim" aria-label="Close create menu" tabindex="-1" data-action="lc-menu#close"></button>
-        <button type="button" role="menuitem" class="mobile-example__action lc-glass rounded-full max-md:[--lc-glass-fill:color-mix(in_oklab,var(--background)_90%,transparent)] dark:max-md:[--lc-glass-fill:color-mix(in_oklab,var(--muted)_92%,transparent)]" style="--action-index: 1" data-action="blocks-mobile-navigation#add lc-menu#close" data-blocks-mobile-navigation-destination-param="projects">
-          <span class="mobile-example__action-label">New project</span><svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" class="lc-icon size-6" data-slot="icon" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 6.878V6a2.25 2.25 0 0 1 2.25-2.25h7.5A2.25 2.25 0 0 1 18 6v.878m-12 0c.235-.083.487-.128.75-.128h10.5c.263 0 .515.045.75.128m-12 0A2.25 2.25 0 0 0 4.5 9v.878m13.5-3A2.25 2.25 0 0 1 19.5 9v.878m0 0a2.246 2.246 0 0 0-.75-.128H5.25c-.263 0-.515.045-.75.128m15 0A2.25 2.25 0 0 1 21 12v6a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18v-6c0-.98.626-1.813 1.5-2.122"/></svg>
-        </button>
-        <button type="button" role="menuitem" class="mobile-example__action lc-glass rounded-full max-md:[--lc-glass-fill:color-mix(in_oklab,var(--background)_90%,transparent)] dark:max-md:[--lc-glass-fill:color-mix(in_oklab,var(--muted)_92%,transparent)]" style="--action-index: 2" data-action="blocks-mobile-navigation#add lc-menu#close" data-blocks-mobile-navigation-destination-param="notes">
-          <span class="mobile-example__action-label">Add a note</span><svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" class="lc-icon size-6" data-slot="icon" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/></svg>
-        </button>
-    </div>
-  </div>
-
+  <div class="lc-dock" data-slot="dock" data-controller="lc-dock" data-action="resize@window-&gt;lc-dock#keyboard focusin@document-&gt;lc-dock#keyboard focusout@document-&gt;lc-dock#keyboard">
+    <nav class="group/nav relative lc-glass max-md:[--lc-glass-fill:color-mix(in_oklab,var(--background)_90%,transparent)] dark:max-md:[--lc-glass-fill:color-mix(in_oklab,var(--muted)_92%,transparent)] lc-dock__nav rounded-pill" aria-label="Studio sections" data-slot="nav-list" data-layout="dock" data-controller="lc-nav"><span class="pointer-events-none absolute start-0 top-0 opacity-0 transition-[translate,width,height,opacity] duration-[400ms] ease-(--lc-ease-out-expo) motion-reduce:transition-none group-data-[indicator]/nav:opacity-100 rounded-pill bg-(--lc-nav-dock-indicator,var(--lc-nav-indicator,var(--accent)))" aria-hidden="true" data-slot="nav-indicator" data-lc-nav-target="indicator"></span><ul class="m-0 grid list-none grid-flow-col auto-cols-fr gap-0.5 rounded-pill p-tight">
+        <li class="contents" data-slot="nav-item"><a class="flex min-w-0 items-center lc-squircle no-underline transition-colors duration-(--lc-motion-quick) text-muted-foreground hover:text-foreground aria-[current=page]:text-foreground [&amp;_svg]:shrink-0 group-data-[indicator]/nav:relative group-data-[indicator]/nav:aria-[current=page]:bg-transparent py-1.5 aria-[current=page]:bg-accent aria-[current=page]:font-semibold min-h-14 flex-col justify-center gap-0.5 rounded-pill px-0 text-caption font-semibold hover:bg-transparent [&amp;_svg]:size-6" aria-current="page" data-slot="nav-link" data-lc-nav-target="link" data-action="lc-nav#select blocks-mobile-navigation#select" href="#projects"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" class="lc-icon" data-slot="icon" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 6.878V6a2.25 2.25 0 0 1 2.25-2.25h7.5A2.25 2.25 0 0 1 18 6v.878m-12 0c.235-.083.487-.128.75-.128h10.5c.263 0 .515.045.75.128m-12 0A2.25 2.25 0 0 0 4.5 9v.878m13.5-3A2.25 2.25 0 0 1 19.5 9v.878m0 0a2.246 2.246 0 0 0-.75-.128H5.25c-.263 0-.515.045-.75.128m15 0A2.25 2.25 0 0 1 21 12v6a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18v-6c0-.98.626-1.813 1.5-2.122"/></svg><span>Projects</span></a></li>
+        <li class="contents" data-slot="nav-item"><a class="flex min-w-0 items-center lc-squircle no-underline transition-colors duration-(--lc-motion-quick) text-muted-foreground hover:text-foreground aria-[current=page]:text-foreground [&amp;_svg]:shrink-0 group-data-[indicator]/nav:relative group-data-[indicator]/nav:aria-[current=page]:bg-transparent py-1.5 aria-[current=page]:bg-accent aria-[current=page]:font-semibold min-h-14 flex-col justify-center gap-0.5 rounded-pill px-0 text-caption font-semibold hover:bg-transparent [&amp;_svg]:size-6" data-slot="nav-link" data-lc-nav-target="link" data-action="lc-nav#select blocks-mobile-navigation#select" href="#notes"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" class="lc-icon" data-slot="icon" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/></svg><span>Notes</span></a></li>
+        <li class="contents" data-slot="nav-item"><a class="flex min-w-0 items-center lc-squircle no-underline transition-colors duration-(--lc-motion-quick) text-muted-foreground hover:text-foreground aria-[current=page]:text-foreground [&amp;_svg]:shrink-0 group-data-[indicator]/nav:relative group-data-[indicator]/nav:aria-[current=page]:bg-transparent py-1.5 aria-[current=page]:bg-accent aria-[current=page]:font-semibold min-h-14 flex-col justify-center gap-0.5 rounded-pill px-0 text-caption font-semibold hover:bg-transparent [&amp;_svg]:size-6" data-slot="nav-link" data-lc-nav-target="link" data-action="lc-nav#select blocks-mobile-navigation#select" href="#people"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" class="lc-icon" data-slot="icon" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z"/></svg><span>People</span></a></li>
+</ul></nav>    <div class="lc-dock__menu" data-slot="dock-menu" data-controller="lc-menu" data-lc-menu-lift-value="false"><button type="button" class="lc-glass rounded-full max-md:[--lc-glass-fill:color-mix(in_oklab,var(--background)_90%,transparent)] dark:max-md:[--lc-glass-fill:color-mix(in_oklab,var(--muted)_92%,transparent)] lc-dock__trigger" aria-label="Create something" aria-haspopup="menu" aria-expanded="false" aria-controls="studio-create-menu" data-slot="dock-menu-trigger" data-lc-menu-target="trigger" data-action="lc-menu#toggle"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" class="lc-icon size-7" data-slot="icon" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg></button><div id="studio-create-menu" class="lc-dock__actions" role="menu" aria-label="Create something" data-lc-menu-target="popover"><button type="button" class="lc-dock__scrim" tabindex="-1" aria-label="Close Create something" data-action="lc-menu#close"></button>
+      <button class="lc-glass rounded-full max-md:[--lc-glass-fill:color-mix(in_oklab,var(--background)_90%,transparent)] dark:max-md:[--lc-glass-fill:color-mix(in_oklab,var(--muted)_92%,transparent)] lc-dock__action" data-slot="dock-action" data-action="lc-menu#close blocks-mobile-navigation#add" data-blocks-mobile-navigation-destination-param="projects" type="button" role="menuitem" style="--lc-dock-action-index: 1"><span class="lc-dock__action-label">New project</span><svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" class="lc-icon size-6" data-slot="icon" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 6.878V6a2.25 2.25 0 0 1 2.25-2.25h7.5A2.25 2.25 0 0 1 18 6v.878m-12 0c.235-.083.487-.128.75-.128h10.5c.263 0 .515.045.75.128m-12 0A2.25 2.25 0 0 0 4.5 9v.878m13.5-3A2.25 2.25 0 0 1 19.5 9v.878m0 0a2.246 2.246 0 0 0-.75-.128H5.25c-.263 0-.515.045-.75.128m15 0A2.25 2.25 0 0 1 21 12v6a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18v-6c0-.98.626-1.813 1.5-2.122"/></svg></button>
+      <button class="lc-glass rounded-full max-md:[--lc-glass-fill:color-mix(in_oklab,var(--background)_90%,transparent)] dark:max-md:[--lc-glass-fill:color-mix(in_oklab,var(--muted)_92%,transparent)] lc-dock__action" data-slot="dock-action" data-action="lc-menu#close blocks-mobile-navigation#add" data-blocks-mobile-navigation-destination-param="notes" type="button" role="menuitem" style="--lc-dock-action-index: 2"><span class="lc-dock__action-label">Add a note</span><svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" class="lc-icon size-6" data-slot="icon" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/></svg></button>
+</div></div><div class="lc-dock__space" aria-hidden="true"></div></div>
   <template data-blocks-mobile-navigation-target="draft">
     <div class="lc-card lc-squircle p-inset flex flex-col gap-3" data-slot="card"><span class="inline-flex items-center gap-tight rounded-lg lc-squircle px-2 py-0.5 font-sans text-caption font-medium whitespace-nowrap bg-tile text-muted-foreground" data-slot="badge" data-tone="neutral">Draft</span><h3 class="text-lg font-semibold" data-draft-title></h3><p class="text-sm text-muted-foreground">A fresh start. Make it your own.</p></div>
   </template>
 </div>
-
 
 
   </body>

@@ -1,3 +1,5 @@
+require "nokogiri"
+
 module Lostcoords::Ui
   module NavigationHelper
     BREADCRUMB_LINK = "rounded-sm text-muted-foreground no-underline underline-offset-4 hover:text-foreground hover:underline"
@@ -81,6 +83,35 @@ module Lostcoords::Ui
           (tag.span(class: lc_tw(NAV_INDICATOR, NAV_LAYOUTS.dig(layout, :indicator)), aria: { hidden: true }, data: { slot: "nav-indicator", lc_nav_target: "indicator" }) if indicator),
           tag.ul(capture(Parts::NavList.new(self, compact, layout, indicator), &block), class: NAV_LAYOUTS.dig(layout, :list))
         ].compact)
+      end
+    end
+
+    TOC_INDICATOR = "pointer-events-none absolute -start-px top-0 h-0 w-0.5 rounded-pill bg-primary opacity-0 " \
+      "transition-[translate,height,opacity] duration-300 ease-(--lc-ease-out-expo) motion-reduce:transition-none"
+
+    # An "On this page" list that marks the section the reader has scrolled to with aria-current="location".
+    # Yields a builder: `toc.link "Usage", "#usage"`, with indent: true for a subsection. headings: takes
+    # rendered HTML, such as Markdown output, and lists its headings that carry an id, nesting the deeper level.
+    def lc_toc(label: lc_t("lostcoords.ui.toc.label"), headings: nil, levels: 2..3, **attributes, &block)
+      lc_label!(label, :label)
+      raise ArgumentError, "lc_toc takes headings: or a block, not both" if headings && block
+      raise ArgumentError, "lc_toc needs headings: or a block" unless headings || block
+      levels = Array(levels)
+      raise ArgumentError, "levels must be heading levels from 1 to 6" unless levels.any? && levels.all? { |level| (1..6).cover?(level) }
+
+      toc = Parts::Toc.new(self)
+      links = if block
+        capture(toc, &block)
+      else
+        found = Nokogiri::HTML5.fragment(headings.to_s).css(levels.map { |level| "h#{level}[id]" }.join(", "))
+        safe_join(found.map { |heading| toc.link(heading.text.strip, "##{heading['id']}", indent: heading.name.delete("h").to_i > levels.min) })
+      end
+
+      tag.nav(**lc_attributes({ class: "relative", aria: { label: label }, data: { slot: "toc", controller: "lc-toc" } }, attributes)) do
+        safe_join([
+          tag.span(class: TOC_INDICATOR, aria: { hidden: true }, data: { slot: "toc-indicator", lc_toc_target: "indicator" }),
+          tag.ul(links, class: "m-0 flex list-none flex-col border-s border-border p-0")
+        ])
       end
     end
 

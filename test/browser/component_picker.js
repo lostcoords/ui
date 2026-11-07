@@ -190,10 +190,10 @@ async function _verifyComponentPicker(page) {
     }
 
     await page.emulateMedia({ reducedMotion: "reduce" })
-    await links.nth(3).focus()
+    await links.nth(4).focus()
     await page.keyboard.press("ArrowDown")
     await settleMotion()
-    const reduced = await links.nth(4).evaluate((node) => {
+    const reduced = await links.nth(5).evaluate((node) => {
       const title = getComputedStyle(node.querySelector(".component-picker__title"))
       const description = getComputedStyle(node.querySelector(".component-picker__description"))
       return (

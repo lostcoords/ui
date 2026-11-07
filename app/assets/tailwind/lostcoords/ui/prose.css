@@ -64,3 +64,12 @@
     @apply lc-inline-code;
   }
 }
+
+@layer utilities {
+  /* A heading's link to itself keeps the heading's look, not a link's. */
+  .lc-prose .lc-anchor {
+    color: inherit;
+    font-weight: inherit;
+    text-decoration: none;
+  }
+}

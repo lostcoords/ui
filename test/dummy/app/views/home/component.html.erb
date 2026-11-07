@@ -1,16 +1,22 @@
 <% position = @sections.index(@section) %>
 <% neighbor = ->(index) { (page = @sections[index]) && index >= 0 ? [ page.title, "/components/#{page.id}.html" ] : nil } %>
 <% pages = { previous: neighbor.(position - 1), next: neighbor.(position + 1) } %>
-<% contents = lc_nav_list label: "On this page", compact: true do |nav| %>
-  <% if @section.id == :foundations %><%= nav.link "Theme colors", "#tokens" %><% end %>
-  <%= nav.link "Usage", "#usage" %>
-  <%= nav.link "Examples", "#examples" %>
-  <% @section.examples.each_with_index do |example, index| %>
-    <%= nav.link showcase_title(example, index), "#example-#{index}", indent: true %>
+<% contents = lc_toc do |toc| %>
+  <% if @section.id == :foundations %>
+    <%= toc.link "Roles and layout", "#roles" %>
+    <%= toc.link "Reading styles", "#reading" %>
+    <%= toc.link "Theme colors", "#tokens" %>
+    <%= toc.link "Style settings", "#style-settings" %>
+    <%= toc.link "Motion", "#motion-feedback" %>
   <% end %>
-  <%= nav.link "API reference", "#api" %>
+  <%= toc.link "Usage", "#usage" %>
+  <%= toc.link "Examples", "#examples" %>
+  <% @section.examples.each_with_index do |example, index| %>
+    <%= toc.link showcase_title(example, index), "#example-#{index}", indent: true %>
+  <% end %>
+  <%= toc.link "API reference", "#api" %>
 <% end %>
-<%= render layout: "blocks/examples/docs_shell", locals: { navigation: render("showcase/navigation"), contents:, menu_label: "Components" } do %>
+<%= lc_docs_shell navigation: render("showcase/navigation"), contents:, menu_label: "Components" do %>
 <div class="<%= lc_stack_class(gap: :section) %>">
   <header class="<%= lc_stack_class(gap: :heading) %>">
     <div class="flex items-center justify-between gap-4">
@@ -23,11 +29,11 @@
   <%= render "showcase/foundations" if @section.id == :foundations %>
   <%= render "showcase/motion" if @section.id == :foundations %>
   <%= render "showcase/copy_button" if @section.id == :copy_button %>
-  <%= lc_section title: "Usage", id: "usage", class: "scroll-mt-28" do %>
+  <%= lc_section title: "Usage", id: "usage", anchor: true do %>
     <p class="<%= lc_text_class(size: :small, tone: :muted, extra: "text-pretty") %>">After the <a href="/installation.html" class="<%= lc_link_class %>">one-time setup</a>, call the helper directly from ERB. No component import is needed.</p>
     <%= render "showcase/source_code", source: showcase_source(@section.examples.first, id: "my-component"), id: "usage-code", label: "#{@section.title} usage" %>
   <% end %>
-  <%= lc_section title: "Examples", id: "examples", class: "scroll-mt-28" do %>
+  <%= lc_section title: "Examples", id: "examples", anchor: true do %>
     <%= lc_stack gap: :section do %>
       <% @section.examples.each_with_index do |example, index| %>
         <%= render "showcase/example", example:, id: "example-#{index}", title: showcase_title(example, index) %>

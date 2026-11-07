@@ -1,0 +1,161 @@
+/* A sticky lc_app_header covers the top of the page; anchors and the docs
+   sidebars start below it. Override --lc-sticky-offset if your header is taller. */
+:root:has(.lc-app-header) {
+  --lc-sticky-offset: 5rem;
+}
+
+@layer components {
+  .lc-app-header__glass {
+    opacity: 0;
+    transition: opacity 300ms ease;
+  }
+
+  .lc-app-header[data-scrolled] .lc-app-header__glass {
+    opacity: 1;
+  }
+
+  /* The sidebar scrolls on its own without a visible scrollbar. */
+  .lc-docs-shell__sidebar {
+    scrollbar-width: none;
+  }
+
+  .lc-docs-shell__sidebar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .lc-dock {
+    --lc-dock-edge: max(1rem, env(safe-area-inset-left));
+    --lc-dock-gap: max(1rem, env(safe-area-inset-right));
+    --lc-dock-bottom: max(0.75rem, env(safe-area-inset-bottom));
+    --lc-dock-size: 4rem;
+  }
+
+  /* Holds the dock's height at the end of the page, so the last content scrolls clear of it. */
+  .lc-dock__space {
+    block-size: calc(var(--lc-dock-bottom) + var(--lc-dock-size) + 1rem);
+  }
+
+  .lc-dock__menu {
+    position: fixed;
+    z-index: calc(var(--lc-z-sticky) + 1);
+    inset-inline-end: var(--lc-dock-gap);
+    bottom: var(--lc-dock-bottom);
+  }
+
+  .lc-dock__trigger,
+  .lc-dock__action {
+    display: grid;
+    width: var(--lc-dock-size);
+    height: var(--lc-dock-size);
+    place-items: center;
+    padding: 0;
+    color: var(--primary);
+    cursor: pointer;
+  }
+
+  .lc-dock__trigger {
+    position: relative;
+    z-index: 2;
+  }
+
+  .lc-dock__trigger svg {
+    transition: rotate 300ms var(--lc-ease-sheet, ease);
+  }
+
+  .lc-dock__trigger[aria-expanded="true"] svg {
+    rotate: 135deg;
+  }
+
+  .lc-dock__actions {
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .lc-dock__actions[data-open] {
+    visibility: visible;
+  }
+
+  .lc-dock__scrim {
+    position: fixed;
+    inset: 0;
+    border: 0;
+    background: color-mix(in oklab, var(--foreground) 18%, transparent);
+    opacity: 0;
+    -webkit-backdrop-filter: blur(calc(var(--spacing) * 2));
+    backdrop-filter: blur(calc(var(--spacing) * 2));
+    transition: opacity 220ms ease;
+  }
+
+  .lc-dock__actions[data-open] .lc-dock__scrim {
+    pointer-events: auto;
+    opacity: 1;
+  }
+
+  .lc-dock__action {
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    width: calc(var(--lc-dock-size) - 0.5rem);
+    height: calc(var(--lc-dock-size) - 0.5rem);
+    margin: 0.25rem;
+    color: var(--foreground);
+    opacity: 0;
+    transform: scale(0.4);
+    transition: transform 300ms ease, opacity 150ms ease;
+  }
+
+  .lc-dock__actions[data-open] .lc-dock__action {
+    pointer-events: auto;
+    opacity: 1;
+    transform: translateY(calc(var(--lc-dock-action-index, 1) * -4.5rem)) scale(1);
+    transition: transform 420ms cubic-bezier(0.34, 1.45, 0.64, 1), opacity 160ms ease;
+    transition-delay: calc((var(--lc-dock-action-index, 1) - 1) * 40ms);
+  }
+
+  .lc-dock__action-label {
+    position: absolute;
+    inset-inline-end: calc(100% + 0.75rem);
+    width: max-content;
+    max-width: calc(100vw - 7rem);
+    padding: 0.5rem 0.875rem;
+    border-radius: var(--radius-pill);
+    background: var(--background);
+    box-shadow: var(--lc-shadow);
+    color: var(--foreground);
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+
+  .lc-dock[data-keyboard] :is(.lc-dock__nav, .lc-dock__menu, .lc-dock__space) {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lc-app-header__glass,
+    .lc-dock__trigger svg,
+    .lc-dock__scrim,
+    .lc-dock__action,
+    .lc-dock__actions[data-open] .lc-dock__action {
+      transition: none;
+    }
+  }
+}
+
+/* The nav is an lc_nav_list, whose relative position is a utility, so the dock's
+   placement sits in the utilities layer too. */
+@layer utilities {
+  .lc-dock__nav {
+    position: fixed;
+    z-index: var(--lc-z-sticky);
+    inset-inline: var(--lc-dock-edge) var(--lc-dock-gap);
+    bottom: var(--lc-dock-bottom);
+  }
+
+  .lc-dock:has(.lc-dock__menu) .lc-dock__nav {
+    inset-inline-end: calc(var(--lc-dock-gap) + var(--lc-dock-size) + 0.75rem);
+  }
+
+  .lc-dock[data-keyboard] .lc-dock__nav {
+    display: none;
+  }
+}

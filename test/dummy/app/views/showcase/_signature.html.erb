@@ -1,6 +1,6 @@
 <%# locals: (id:, name:, title:, signature:, definition:, level: 3) %>
 <div class="<%= lc_stack_class %>">
-  <%= content_tag "h#{level}", title, id: id, class: "scroll-mt-28 font-mono text-sm font-medium" %>
+  <%= lc_heading title, level:, size: :subheading, id:, anchor: true, class: "font-mono text-sm font-medium" %>
   <%= render "showcase/source_code", source: signature, id: "#{id}-signature", language: :ruby, label: "#{title} signature" %>
   <% parameters = showcase_parameters(definition) %>
   <% if parameters.any? %>

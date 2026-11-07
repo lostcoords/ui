@@ -1,20 +1,8 @@
 import { Controller } from "@hotwired/stimulus"
 
+// The preview's sections are panels on one page, so the dock's links switch panels instead of visiting pages.
 export default class extends Controller {
-  static targets = ["link", "panel", "indicator", "status", "projects", "notes", "draft"]
-
-  connect() {
-    this.resizeObserver = new ResizeObserver(() => this.placeIndicator())
-    this.linkTargets.forEach((link) => this.resizeObserver.observe(link))
-    this.onViewportResize = () => this.keyboard()
-    window.visualViewport?.addEventListener("resize", this.onViewportResize)
-    this.placeIndicator()
-  }
-
-  disconnect() {
-    this.resizeObserver.disconnect()
-    window.visualViewport?.removeEventListener("resize", this.onViewportResize)
-  }
+  static targets = ["panel", "status", "projects", "notes", "draft"]
 
   select(event) {
     event.preventDefault()
@@ -23,22 +11,16 @@ export default class extends Controller {
 
   home(event) {
     event.preventDefault()
-    this.show("projects")
+    this.open("projects")
+  }
+
+  // Clicking the dock link moves its indicator and shows the panel.
+  open(id) {
+    this.element.querySelector(`[data-slot=dock] a[href="#${id}"]`)?.click()
   }
 
   show(id) {
-    for (const link of this.linkTargets) {
-      if (link.hash === `#${id}`) link.setAttribute("aria-current", "page")
-      else link.removeAttribute("aria-current")
-    }
     for (const panel of this.panelTargets) panel.hidden = panel.id !== id
-    this.placeIndicator()
-  }
-
-  placeIndicator() {
-    const active = this.linkTargets.find((link) => link.getAttribute("aria-current") === "page")
-    this.indicatorTarget.style.translate = `${active.offsetLeft}px 0`
-    this.indicatorTarget.style.width = `${active.offsetWidth}px`
   }
 
   add({ params: { destination } }) {
@@ -47,13 +29,7 @@ export default class extends Controller {
     draft.querySelector("[data-draft-title]").textContent = title
     const list = destination === "projects" ? this.projectsTarget : this.notesTarget
     list.prepend(draft)
-    this.show(destination)
+    this.open(destination)
     this.statusTarget.textContent = `${title} added. Your next idea starts here.`
-  }
-
-  keyboard() {
-    const typing = document.activeElement?.matches("input, textarea, [contenteditable=true]")
-    const inset = window.innerHeight - (window.visualViewport?.height ?? window.innerHeight)
-    this.element.toggleAttribute("data-keyboard", typing && inset > 150)
   }
 }

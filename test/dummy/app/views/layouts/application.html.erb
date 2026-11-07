@@ -13,7 +13,7 @@
       const theme = localStorage.getItem("lostcoords-ui:theme")
       if (theme === "dark" || (!theme && matchMedia("(prefers-color-scheme: dark)").matches)) document.documentElement.dataset.theme = "dark"
     </script>
-    <%= stylesheet_link_tag "tailwind", "blocks/application_header", "blocks/docs_shell", data: { turbo_track: "reload" } %>
+    <%= stylesheet_link_tag "tailwind", data: { turbo_track: "reload" } %>
     <%= stylesheet_link_tag "components", data: { turbo_track: "dynamic" } if action_name == "components" %>
     <%# Turbo Drive: cross-fades same-origin visits, prefetches on hover and morphs same-page refreshes. %>
     <meta name="view-transition" content="same-origin">
@@ -24,16 +24,21 @@
   </head>
   <body class="antialiased" data-controller="showcase palette-split" data-action="submit->showcase#preventExampleSubmit palette-split:choose->showcase#choosePalette">
     <%= lc_skip_link %>
-    <% brand = capture do %>
-      <svg class="size-7" viewBox="0 0 28 28" fill="none" aria-hidden="true"><path d="M7 3v18h18M3 7h18v18M14 9v10M9 14h10" stroke="currentColor" stroke-width="2"/></svg>
-      <span class="text-sm">lostcoords<span class="text-muted-foreground"> / </span>ui</span>
-    <% end %>
     <% links = [ [ "Docs", "/installation.html", action_name == "installation" ], [ "Foundations", "/components/foundations.html", @section&.id == :foundations ], [ "Components", "/components.html", action_name == "components" || (@section && @section.id != :foundations) ], [ "Blocks", "/blocks.html", controller_name == "blocks" ], [ "Theming", "/theming.html", action_name == "theming" ] ] %>
-    <%= render layout: "blocks/examples/application_header", locals: { brand:, home_label: "LOST COORDS UI home", links:, width: "max-w-330", navigation_class: "lg:flex" } do %>
-      <%= render "showcase/search" %>
-      <%= lc_icon_button "Switch color theme", icon: "moon", size: :sm, data: { action: "showcase#toggleTheme", showcase_target: "theme" }, aria: { pressed: false } %>
-      <%= render "showcase/palette_picker" %>
-      <%= lc_button_link_to "https://github.com/lostcoords/ui", variant: :ghost, size: :sm, class: "max-sm:hidden", aria: { label: "Source on GitHub" } do %><%= render "showcase/github_icon" %><% end %>
+    <%= lc_app_header bar: { class: "max-w-330" } do |header| %>
+      <%= header.brand "/", label: "LOST COORDS UI home" do %>
+        <svg class="size-7" viewBox="0 0 28 28" fill="none" aria-hidden="true"><path d="M7 3v18h18M3 7h18v18M14 9v10M9 14h10" stroke="currentColor" stroke-width="2"/></svg>
+        <span class="text-sm">lostcoords<span class="text-muted-foreground"> / </span>ui</span>
+      <% end %>
+      <%= header.nav class: "max-lg:hidden" do |nav| %>
+        <% links.each do |text, url, current| %><%= nav.link text, url, current: %><% end %>
+      <% end %>
+      <%= header.actions do %>
+        <%= render "showcase/search" %>
+        <%= lc_icon_button "Switch color theme", icon: "moon", size: :sm, data: { action: "showcase#toggleTheme", showcase_target: "theme" }, aria: { pressed: false } %>
+        <%= render "showcase/palette_picker" %>
+        <%= lc_button_link_to "https://github.com/lostcoords/ui", variant: :ghost, size: :sm, class: "max-sm:hidden", aria: { label: "Source on GitHub" } do %><%= render "showcase/github_icon" %><% end %>
+      <% end %>
     <% end %>
     <%= yield %>
     <footer class="mx-auto flex max-w-360 flex-wrap items-center justify-between gap-4 px-5 py-10 text-xs text-muted-foreground sm:px-8 lg:px-10">

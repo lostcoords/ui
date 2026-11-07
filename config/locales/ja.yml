@@ -20,6 +20,15 @@ ja:
         label: "操作"
       popover:
         trigger: "パネルを開く"
+      toc:
+        label: "このページの内容"
+      docs_shell:
+        menu: "メニュー"
+        sidebar: "ドキュメントのサイドバー"
+      app_header:
+        navigation: "メイン"
+      dock:
+        close: "%{label}を閉じる"
       breadcrumb:
         label: "パンくずリスト"
       code_block:

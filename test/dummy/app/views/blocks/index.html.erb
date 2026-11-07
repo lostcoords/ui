@@ -5,7 +5,7 @@
   </header>
 
   <% @blocks.each do |block| %>
-    <section id="<%= block.id %>" class="<%= lc_stack_class(gap: :heading, extra: "scroll-mt-28") %>" aria-labelledby="<%= block.id %>-title" data-controller="block-stage">
+    <section id="<%= block.id %>" class="<%= lc_stack_class(gap: :heading, extra: "lc-anchor-target") %>" aria-labelledby="<%= block.id %>-title" data-controller="block-stage">
       <div class="<%= lc_section_header_class %>">
         <h2 id="<%= block.id %>-title" class="<%= lc_heading_class(extra: "w-full sm:me-auto sm:w-auto") %>"><%= block.title %></h2>
         <div class="flex gap-1 rounded-full bg-muted p-1" role="group" aria-label="Preview width">

@@ -1,0 +1,14 @@
+<%# The transformed frame holds the dock's fixed parts for this preview; in an app they sit on the screen. %>
+<div class="relative h-80 w-full max-w-sm overflow-hidden rounded-3xl bg-background transform-gpu">
+  <%= lc_dock do |dock| %>
+    <%= dock.nav label: "Sections" do |nav| %>
+      <%= nav.link "Home", "#", icon: "home", current: true %>
+      <%= nav.link "Notes", "#", icon: "document-text" %>
+      <%= nav.link "People", "#", icon: "users" %>
+    <% end %>
+    <%= dock.menu label: "Create", id: "dock-specimen-menu" do |menu| %>
+      <%= menu.action "New note", icon: "pencil-square" %>
+      <%= menu.action "New project", icon: "rectangle-stack" %>
+    <% end %>
+  <% end %>
+</div>

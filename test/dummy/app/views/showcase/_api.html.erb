@@ -1,4 +1,4 @@
-<%= lc_section title: "API reference", id: "api", class: "scroll-mt-28" do %>
+<%= lc_section title: "API reference", id: "api", anchor: true do %>
   <p class="text-sm text-muted-foreground">Helpers render semantic HTML and include their interaction wiring. Pass native attributes through <code>class:</code>, <code>data:</code>, <code>aria:</code> and the usual Rails options. Blocks use captured ERB content.</p>
   <%= lc_stack gap: :section do %>
     <% showcase_components(section).each do |component| %>

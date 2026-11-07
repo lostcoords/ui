@@ -51,11 +51,13 @@ module Lostcoords::Ui
       tag.div(**lc_attributes({ class: lc_container_class(size: size) }, attributes), &block)
     end
 
-    def lc_section(title:, level: 2, actions: nil, **attributes, &block)
+    # anchor: true links the heading to the section's id:, for pages readers link into.
+    def lc_section(title:, level: 2, actions: nil, anchor: false, **attributes, &block)
       raise ArgumentError, "title must not be blank" if title.blank?
+      raise ArgumentError, "anchor: true needs an id" if anchor && attributes[:id].blank?
 
-      tag.section(**lc_attributes({ class: lc_stack_class(gap: :heading) }, attributes)) do
-        heading = lc_heading(title, level: level, size: :heading)
+      tag.section(**lc_attributes({ class: lc_stack_class(gap: :heading, extra: ("lc-anchor-target" if anchor)) }, attributes)) do
+        heading = lc_heading(title, level: level, size: :heading, anchor: (attributes[:id] if anchor))
         action_content = actions.respond_to?(:call) ? capture(&actions) : actions
         header = lc_section_header { safe_join([ heading, action_content ].compact) }
         safe_join([ header, lc_stack(&block) ])

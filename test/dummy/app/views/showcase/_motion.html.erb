@@ -1,12 +1,12 @@
 <%= lc_stack gap: :section, id: "motion" do %>
-  <%= lc_section title: "Feedback follows the action" do %>
+  <%= lc_section title: "Feedback follows the action", id: "motion-feedback", anchor: true do %>
     <%= lc_text tone: :muted do %>
       Buttons respond to hover and press automatically. Copy buttons transition their label and icon after the clipboard write succeeds.
       The same button keeps focus and reserves room for every label, so nearby content stays still.
       Try the controls below with a mouse, keyboard, or touch.
     <% end %>
   <% end %>
-  <%= lc_section title: "Share timing across your app" do %>
+  <%= lc_section title: "Share timing across your app", id: "motion-timing", anchor: true do %>
     <%= lc_text tone: :muted do %>
       Override these CSS variables after the engine import, or on a container to tune one area.
       Feedback duration controls the visual transition. The copy button's <code>reset_after:</code> controls how long confirmation remains visible.
@@ -17,13 +17,13 @@
       <% end %>
     </dl>
   <% end %>
-  <%= lc_section title: "Respect reduced motion" do %>
+  <%= lc_section title: "Respect reduced motion", id: "reduced-motion", anchor: true do %>
     <%= lc_text tone: :muted do %>
       When the operating system requests reduced motion, controls skip lift and press scaling, and copy feedback changes immediately.
       Labels, icons, focus, and success announcements still work. Other component animations use the theme's existing reduced-motion handling.
     <% end %>
   <% end %>
-  <%= lc_section title: "Connect application actions to real results" do %>
+  <%= lc_section title: "Connect application actions to real results", id: "motion-results", anchor: true do %>
     <%= lc_text tone: :muted do %>
       Your application owns saving and submitting. Show loading while work is pending, success after it finishes, and an error when it fails.
       Compose <code>lc_button</code> with <code>lc_spinner</code> and <code>aria-busy</code> for loading feedback.

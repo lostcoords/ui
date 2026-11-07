@@ -22,7 +22,11 @@ async function _verifyBlocks(page) {
     await page.locator('#palette-picker-trigger[aria-label^="Color palette:"]').waitFor()
     const frame = page.frameLocator(`iframe[title="${title} interactive preview"]`)
     await frame.locator("body").waitFor()
-    verify((await page.locator("pre").count()) === 3, `${title} exposes ERB, CSS and JavaScript`)
+    const files = { application_header: 1, docs_shell: 1, mobile_navigation: 2 }[id]
+    verify(
+      (await page.locator("pre").count()) === files,
+      `${title} exposes its ${files} example files`,
+    )
     await page.getByRole("button", { name: "Mobile", exact: true }).click()
     verify(
       (await frame.locator("body").evaluate(() => innerWidth)) === 390,

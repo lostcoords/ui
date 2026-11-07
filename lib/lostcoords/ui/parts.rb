@@ -195,6 +195,93 @@ module Lostcoords::Ui
       end
     end
 
+    class Toc < Base
+      LINK = "relative block py-tight ps-content pe-tight text-small text-muted-foreground no-underline transition-colors " \
+        "duration-(--lc-motion-quick) hover:text-foreground aria-[current=location]:font-medium aria-[current=location]:text-foreground"
+
+      # url: an in-page anchor such as "#usage". indent: true nests the entry under the one above it.
+      def link(label, url, indent: false, **attributes)
+        view.send(:lc_label!, label, :label)
+        raise ArgumentError, "toc link needs an anchor URL, such as \"#usage\"" unless url.to_s.match?(/#./)
+
+        view.tag.li(data: { slot: "toc-item" }) do
+          view.link_to(label, url, **merge({ class: view.lc_tw(LINK, ("ps-[calc(var(--spacing-content)*2)]" if indent)),
+            data: { slot: "toc-link", lc_toc_target: "link", action: "lc-toc#select" } }, attributes))
+        end
+      end
+    end
+
+    class AppHeader < Base
+      # The home link. label: names it for screen readers, since the block is usually a logo.
+      def brand(url = "/", label:, **attributes, &block)
+        view.send(:lc_label!, label, :label)
+        raise ArgumentError, "header brand needs a block" unless block
+
+        view.link_to(url, **merge({ class: "flex min-h-11 shrink-0 items-center gap-related pe-2 font-semibold tracking-tight text-inherit no-underline",
+          aria: { label: label }, data: { slot: "app-header-brand" } }, attributes), &block)
+      end
+
+      # A row of links with a sliding indicator; yields the lc_nav_list builder. Hide it on phones
+      # with class: "max-sm:hidden" when a dock or menu carries the same links.
+      def nav(label: view.send(:lc_t, "lostcoords.ui.app_header.navigation"), **attributes, &block)
+        view.lc_nav_list(label: label, layout: :row, indicator: true, **attributes, &block)
+      end
+
+      # Controls at the end of the bar, such as search, a theme switch or an account menu.
+      def actions(**attributes, &block)
+        part(:div, "app-header-actions", "ms-auto flex shrink-0 items-center gap-related", attributes, &block)
+      end
+    end
+
+    class Dock < Base
+      # The primary destinations, icon above label; yields the lc_nav_list builder.
+      def nav(label:, **attributes, &block)
+        view.lc_nav_list(label: label, layout: :dock, indicator: true,
+          **merge({ class: view.lc_glass_class(shape: :panel, thick: true, extra: "lc-dock__nav rounded-pill") }, attributes), &block)
+      end
+
+      # A round button at the end of the dock whose actions fan out above it. Yields a builder:
+      # `menu.action "New note", icon: "pencil-square"`.
+      def menu(label:, icon: "plus", id: nil, **attributes, &block)
+        view.send(:lc_label!, label, :label)
+        raise ArgumentError, "dock menu needs a block" unless block
+
+        id ||= "#{label.parameterize.presence || 'dock'}-menu"
+        actions = view.capture(DockMenu.new(view), &block)
+        view.tag.div(**merge({ class: "lc-dock__menu", data: { slot: "dock-menu", controller: "lc-menu", lc_menu_lift_value: false } }, attributes)) do
+          view.safe_join([
+            view.tag.button(view.lc_icon(icon, options: { class: "size-7", "aria-hidden": true }), type: "button",
+              class: view.lc_glass_class(shape: :disc, thick: true, extra: "lc-dock__trigger"), aria: { label: label, haspopup: "menu", expanded: false, controls: id },
+              data: { slot: "dock-menu-trigger", lc_menu_target: "trigger", action: "lc-menu#toggle" }),
+            view.tag.div(id: id, class: "lc-dock__actions", role: "menu", aria: { label: label }, data: { lc_menu_target: "popover" }) do
+              view.safe_join([
+                view.tag.button(type: "button", class: "lc-dock__scrim", tabindex: -1, aria: { label: view.send(:lc_t, "lostcoords.ui.dock.close", label: label) }, data: { action: "lc-menu#close" }),
+                actions
+              ])
+            end
+          ])
+        end
+      end
+    end
+
+    class DockMenu < Base
+      def initialize(view)
+        super
+        @count = 0
+      end
+
+      # An action that fans out above the dock button. Pass data: { action: "…" } for your controller;
+      # the menu closes after it runs.
+      def action(label, icon:, **attributes)
+        view.send(:lc_label!, label, :label)
+        @count += 1
+        defaults = { class: view.lc_glass_class(shape: :disc, thick: true, extra: "lc-dock__action"), data: { slot: "dock-action", action: "lc-menu#close" } }
+        view.tag.button(**merge(defaults, attributes), type: "button", role: "menuitem", style: "--lc-dock-action-index: #{@count}") do
+          view.safe_join([ view.tag.span(label, class: "lc-dock__action-label"), view.lc_icon(icon, options: { class: "size-6", "aria-hidden": true }) ])
+        end
+      end
+    end
+
     class Panel < Base
       include CustomTrigger
 

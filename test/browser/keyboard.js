@@ -296,7 +296,7 @@ async function _verifyKeyboard(page) {
   await page.keyboard.press("t")
   const second = await focused()
   verify(
-    first.includes("Table") && second.includes("Tabs"),
+    first.includes("Table") && second.includes("Table of contents"),
     "Typing a letter repeatedly cycles through the matching components",
   )
 

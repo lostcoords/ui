@@ -1,0 +1,10 @@
+<% article = capture do %>
+  <h2 id="getting-started">Getting started</h2>
+  <p>Markdown renderers such as Kiln give every heading an id.</p>
+  <h3 id="install">Install</h3>
+  <p>The list and the links come from the same HTML.</p>
+<% end %>
+<div class="flex w-full flex-col gap-section sm:flex-row-reverse sm:items-start">
+  <%= lc_toc headings: article, class: "w-full sm:max-w-44" %>
+  <%= lc_prose(anchors: true) { article } %>
+</div>
