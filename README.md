@@ -21,7 +21,7 @@ lockfile pins its gem version, so publishing a library update does not upgrade c
 ## Install
 
 ```ruby
-gem "lostcoords-ui", "~> 0.8.0"
+gem "lostcoords-ui", "~> 0.9.0"
 ```
 
 The engine adds its rendering helpers to host views, its views and translations to the host's lookup
@@ -170,7 +170,7 @@ Omit `only` to register every library controller. Unknown identifiers raise befo
 registered, and repeated calls on the same application keep later overrides, so register defaults
 before application overrides.
 
-## 0.9.0 (unreleased)
+## Changes in 0.9.0
 
 The gem is Rails-only. It loads through its Rails engine, and the standalone ActionView mode is gone:
 
