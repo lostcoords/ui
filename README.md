@@ -1,8 +1,8 @@
 # lostcoords-ui
 
-Render complete UI components from Rails or standalone ActionView ERB. Helpers include semantic HTML,
-accessible attributes and Stimulus wiring. Tailwind v4 supplies the styles. Rails integrates Propshaft
-and importmap automatically; standalone applications own their asset build.
+Render complete UI components from Rails views. Helpers include semantic HTML, accessible attributes and
+Stimulus wiring. Tailwind v4 supplies the styles. The Rails engine integrates Propshaft, importmap and
+`tailwindcss-rails`.
 
 ```erb
 <%= lc_button "Save changes", type: :submit, icon: "check" %>
@@ -15,8 +15,8 @@ and importmap automatically; standalone applications own their asset build.
 <% end %>
 ```
 
-The supported stack is ActionView, ERB, Tailwind and Stimulus. Each host application's lockfile pins
-its gem version, so publishing a library update does not upgrade consumers.
+The supported stack is Rails 8 or later with ERB, Tailwind and Stimulus. Each host application's
+lockfile pins its gem version, so publishing a library update does not upgrade consumers.
 
 ## Install
 
@@ -24,43 +24,24 @@ its gem version, so publishing a library update does not upgrade consumers.
 gem "lostcoords-ui", "~> 0.8.0"
 ```
 
-The engine adds its rendering helpers to host views, its JavaScript to the asset paths and its pins to
-the importmap. Translations live under `lostcoords.ui.*`.
+The engine adds its rendering helpers to host views, its views and translations to the host's lookup
+paths, its JavaScript to the asset paths and its pins to the importmap. Translations live under
+`lostcoords.ui.*`; a host locale file overrides any of them.
 
-### Standalone ActionView
+### Stylesheets
 
-```ruby
-require "lostcoords/ui/action_view"
+Import the engine's stylesheet after your Tailwind imports. `tailwindcss-rails` generates this path from
+the installed gem on every build:
 
-class ViewContext < ActionView::Base
-  include Lostcoords::Ui::Helpers
-end
-
-view = ViewContext.with_empty_template_cache.with_view_paths(Lostcoords::Ui.view_paths)
-view.lc_button("Save", icon: "check")
+```css
+/* app/assets/tailwind/application.css */
+@import "../builds/tailwind/lostcoords_ui.css";
 ```
-
-For an existing view context, include the helpers and append `Lostcoords::Ui.view_paths` to its
-lookup paths after application paths. The loader registers the library's translations without changing
-the default locale. If the host has its own locale handling, override private `lc_locale` in the view
-context; components do not call the host's `t` helper.
-
-Standalone applications compile Tailwind and register Stimulus controllers through their own asset
-pipeline. `Lostcoords::Ui.root` locates the gem's source assets. Rails applications receive automatic
-registration; use `require "lostcoords/ui/rails"` explicitly if Rails loads after the components.
-
-### Standalone assets
-
-Import `app/assets/tailwind/lostcoords/ui/components.css` from the Bundler-resolved gem root
-into your Tailwind build. This entry includes component rules, default tokens and source scanning.
-It does not set body styles, heading defaults, global inline-code styles or document corner radii.
-Map the library's tokens to your app's theme and keep your Tailwind theme declarations after the import.
-The full `ui.css` entry includes those document defaults and remains the Rails default.
 
 Tailwind always ships component rules, used or not, and generates every utility the scanned helpers
 mention. For a smaller build, import `core.css` and the opt-in components you render instead of
-everything. Each entry carries the rules and scans the sources of its own component only. In Rails,
-every Tailwind build writes stable paths for them next to the engine's own import:
+everything. Each entry carries the rules and scans the sources of its own component only. Every
+Tailwind build writes stable paths for them next to the engine's own import:
 
 ```css
 /* app/assets/tailwind/application.css, instead of ../builds/tailwind/lostcoords_ui.css */
@@ -70,34 +51,16 @@ every Tailwind build writes stable paths for them next to the engine's own impor
 @import "../builds/tailwind/lostcoords_ui/components/menu.css";
 ```
 
-Outside Rails, import the same files from `app/assets/tailwind/lostcoords/ui/` in the gem.
-`base.css` holds the document defaults that `ui.css` adds; skip it when the host owns its base styles.
+`base.css` holds the document defaults: body styles, heading defaults, global inline-code styles and
+document corner radii. Skip it when the host owns its base styles, map the library's tokens to your
+app's theme and keep your Tailwind theme declarations after the imports.
 `core.css` holds the tokens, buttons, badges, avatars, cards, alerts, form controls, choices,
 toggles, layout, typography and navigation. The opt-in entries are `dialog` (with the phone sheet),
 `menu` (menus and popovers), `toast`, `search`, `tooltip`, `collapsible`, `code-block`,
 `emoji-picker`, `table` and `prose`. A component whose entry is missing renders unstyled.
 
-Start one Stimulus application in the host, then register the controllers you use:
-
-```javascript
-import { Application } from "@hotwired/stimulus"
-import { registerControllers } from "lostcoords/ui"
-
-const application = Application.start()
-registerControllers(application, { only: ["lc-copy", "lc-collapsible"] })
-```
-
-Resolve `lostcoords/ui/*` to the gem's `app/javascript/lostcoords/ui/*` and `@hotwired/stimulus` to
-the host's installed package. `registerControllers` imports every controller, so a bundle carries
-them all; to bundle only some, import them directly:
-`import Dialog from "lostcoords/ui/controllers/lc_dialog_controller"` and
-`application.register("lc-dialog", Dialog)`. Build configuration belongs to the host. The entry does not start
-Stimulus or register anything on import. Omit `only` to register all library controllers. Register
-defaults before application overrides. Repeated calls on the same application preserve later
-overrides; unknown controller identifiers raise before registration.
-
 The gem's stylesheets write into the `components` and `modules` layers, so the host declares that layer order.
-The theme defines the `dark:` variant with `html[data-theme="dark"]`. `ui.css` carries its own `@source` lines, so Tailwind
+The theme defines the `dark:` variant with `html[data-theme="dark"]`. Each entry carries its own `@source` lines, so Tailwind
 scans the gem's helpers, views and JavaScript wherever the gem is installed.
 
 ### Theming
@@ -193,6 +156,34 @@ lazyLoadControllersFrom("controllers", application)
 
 `eagerLoadControllersFrom` also works and downloads all of them on every page. A host file with the
 same name, such as `app/javascript/controllers/lc_dialog_controller.js`, replaces the gem's.
+
+To register controllers by hand instead, import `registerControllers` from the `lostcoords/ui` pin:
+
+```javascript
+import { registerControllers } from "lostcoords/ui"
+
+registerControllers(application, { only: ["lc-copy", "lc-collapsible"] })
+```
+
+Omit `only` to register every library controller. Unknown identifiers raise before anything is
+registered, and repeated calls on the same application keep later overrides, so register defaults
+before application overrides.
+
+## 0.9.0 (unreleased)
+
+The gem is Rails-only. It loads through its Rails engine, and the standalone ActionView mode is gone:
+
+- **`require "lostcoords/ui/action_view"` and `require "lostcoords/ui/rails"` are removed.** Use
+  `require "lostcoords/ui"`, or let Bundler require the gem. Both load the engine.
+- **`Lostcoords::Ui.view_paths`, `Lostcoords::Ui.load_translations!` and `Lostcoords::Ui.root` are removed.**
+  The engine adds the gem's views and translations to the host's lookup paths. Use
+  `Lostcoords::Ui::Engine.root` to locate the gem's files.
+- **Components no longer call a private `lc_locale`.** They translate with `I18n.locale`. Set the locale
+  through Rails, for example with `I18n.with_locale` in a controller `around_action`.
+- **The gem depends on `railties` instead of `activesupport`.** An app outside Rails moves to a Rails
+  application and the engine's asset setup above.
+
+Rails apps that load the gem through Bundler need no edits.
 
 ## Changes in 0.8.2
 

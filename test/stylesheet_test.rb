@@ -11,7 +11,7 @@ module Lostcoords::Ui
           @import "tailwindcss/theme.css";
           @import "tailwindcss/utilities.css";
           @plugin "@tailwindcss/typography";
-          @import "#{Lostcoords::Ui.root.join('app/assets/tailwind/lostcoords/ui/components.css')}";
+          @import "#{Lostcoords::Ui::Engine.root.join('app/assets/tailwind/lostcoords/ui/components.css')}";
         CSS
         _, error, status = Open3.capture3(Tailwindcss::Ruby.executable, "-i", input, "-o", "#{dir}/out.css")
         assert status.success?, error

@@ -27,7 +27,7 @@ class RailsIntegrationTest < ActiveSupport::TestCase
         abort "missing helper after reload" unless ActionController::Base.helpers.lc_icon("check").include?("<svg")
       end
     RUBY
-    output, error, status = Open3.capture3("bundle", "exec", "ruby", "-Ilib", "-e", script, chdir: Lostcoords::Ui.root)
+    output, error, status = Open3.capture3("bundle", "exec", "ruby", "-Ilib", "-e", script, chdir: Lostcoords::Ui::Engine.root)
     assert status.success?, "#{output}\n#{error}"
   end
 end

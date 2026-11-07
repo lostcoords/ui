@@ -4,7 +4,7 @@ Gem::Specification.new do |spec|
   spec.name = "lostcoords-ui"
   spec.version = Lostcoords::Ui::VERSION
   spec.authors = [ "Lost Coordinates" ]
-  spec.summary = "ActionView UI components with Tailwind CSS and Stimulus."
+  spec.summary = "Rails UI components with Tailwind CSS and Stimulus."
   spec.homepage = "https://github.com/lostcoords/ui"
   spec.metadata = {
     "source_code_uri" => "https://github.com/lostcoords/ui",
@@ -28,7 +28,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = [ "lib" ]
 
   spec.add_dependency "actionview", ">= 8.0"
-  spec.add_dependency "activesupport", ">= 8.0"
+  spec.add_dependency "railties", ">= 8.0"
   spec.add_dependency "nokogiri", ">= 1.16"
   spec.add_dependency "tailwind_merge", "~> 1.5"
   spec.add_dependency "unicode-emoji", "~> 4.2"

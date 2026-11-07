@@ -3,8 +3,7 @@ require "test_helper"
 module Lostcoords::Ui
   class CodeBlockTest < ActiveSupport::TestCase
     setup do
-      @view = ActionView::Base.with_empty_template_cache.with_view_paths(Lostcoords::Ui.view_paths)
-      @view.extend(Lostcoords::Ui::Helpers)
+      @view = ApplicationController.new.view_context
     end
 
     test "plain source is escaped and preserves whitespace even when marked HTML safe" do

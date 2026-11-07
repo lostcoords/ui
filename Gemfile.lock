@@ -3,8 +3,8 @@ PATH
   specs:
     lostcoords-ui (0.8.2)
       actionview (>= 8.0)
-      activesupport (>= 8.0)
       nokogiri (>= 1.16)
+      railties (>= 8.0)
       tailwind_merge (~> 1.5)
       unicode-emoji (~> 4.2)
 

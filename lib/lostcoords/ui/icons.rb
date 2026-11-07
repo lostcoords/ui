@@ -8,7 +8,7 @@ module Lostcoords::Ui
 
     def self.fetch(name, variant)
       LOCK.synchronize do
-        @catalog ||= JSON.parse(File.read(Lostcoords::Ui.root.join("vendor/heroicons/icons.json")), freeze: true).fetch("icons")
+        @catalog ||= JSON.parse(File.read(Lostcoords::Ui::Engine.root.join("vendor/heroicons/icons.json")), freeze: true).fetch("icons")
         source = @catalog.fetch(variant.to_s).fetch(name.to_s)
         template = TEMPLATES[source] ||= begin
           document = Nokogiri::XML(source) { |config| config.strict.nonet }

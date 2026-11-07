@@ -15,9 +15,9 @@ module Lostcoords::Ui
         picker_class: picker_class, trigger_class: trigger_class, popover_class: popover_class, attributes: attributes
     end
 
-    SEARCH_NAMES_PATH = Lostcoords::Ui.root.join("config/emoji_search_names.yml")
-    SEARCH_NAMES_JA_PATH = Lostcoords::Ui.root.join("config/emoji_search_names_ja.yml")
-    SEARCH_ALIASES_PATH = Lostcoords::Ui.root.join("config/emoji_search_aliases.yml")
+    SEARCH_NAMES_PATH = Lostcoords::Ui::Engine.root.join("config/emoji_search_names.yml")
+    SEARCH_NAMES_JA_PATH = Lostcoords::Ui::Engine.root.join("config/emoji_search_names_ja.yml")
+    SEARCH_ALIASES_PATH = Lostcoords::Ui::Engine.root.join("config/emoji_search_aliases.yml")
 
     # Representative glyph for each category's tab in the picker navigation.
     CATEGORY_ICONS = {

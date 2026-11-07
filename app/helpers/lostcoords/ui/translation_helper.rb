@@ -3,11 +3,7 @@ module Lostcoords::Ui
     private
 
     def lc_t(key, **options)
-      I18n.translate(key, **options, locale: lc_locale)
-    end
-
-    def lc_locale
-      I18n.locale
+      I18n.translate(key, **options)
     end
   end
 end
