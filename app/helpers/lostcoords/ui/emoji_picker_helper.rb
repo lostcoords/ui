@@ -6,10 +6,13 @@ module Lostcoords::Ui
   module EmojiPickerHelper
     include TranslationHelper
 
-    def lc_emoji_picker(form:, field:, label:, catalog_url:, value: nil, quick: [], recent: [], recent_scope: nil, auto_submit: false, **attributes)
+    # popover_class paints the desktop popover: the gem leaves it unpainted so the host can match
+    # its floating surfaces. picker_class and trigger_class style the wrapper and its button.
+    def lc_emoji_picker(form:, field:, label:, catalog_url:, value: nil, quick: [], recent: [], recent_scope: nil, auto_submit: false, picker_class: nil, trigger_class: nil, popover_class: nil, **attributes)
       lc_label!(label, :label)
       lc_label!(catalog_url, :catalog_url)
-      render "lostcoords/ui/components/emoji_picker", form: form, field: field, label: label, catalog_url: catalog_url, value: value, quick: quick, recent: recent, recent_scope: recent_scope, auto_submit: auto_submit, attributes: attributes
+      render "lostcoords/ui/components/emoji_picker", form: form, field: field, label: label, catalog_url: catalog_url, value: value, quick: quick, recent: recent, recent_scope: recent_scope, auto_submit: auto_submit,
+        picker_class: picker_class, trigger_class: trigger_class, popover_class: popover_class, attributes: attributes
     end
 
     SEARCH_NAMES_PATH = Lostcoords::Ui.root.join("config/emoji_search_names.yml")

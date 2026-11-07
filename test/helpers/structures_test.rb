@@ -135,6 +135,15 @@ module Lostcoords::Ui
       assert_equal "change->autosave#save", html.at_css("#symbol")["data-action"]
     end
 
+    test "emoji pickers take the host's picker, trigger and popover classes" do
+      form = ActionView::Helpers::FormBuilder.new(:project, nil, @view, {})
+      html = fragment(@view.lc_emoji_picker(form: form, field: :emoji, label: "Choose a symbol", catalog_url: "/emoji-catalog", id: "symbol",
+        picker_class: "inline-flex", trigger_class: "size-11", popover_class: "host-surface"))
+      assert_includes html.at_css("#symbol")["class"].split, "inline-flex"
+      assert_includes html.at_css(".lc-emoji-picker__trigger")["class"].split, "size-11"
+      assert_includes html.at_css(".lc-emoji-picker__popover")["class"].split, "host-surface"
+    end
+
     test "unsupported options and missing accessible labels are rejected" do
       assert_raises(ArgumentError) { @view.lc_input(size: :tiny) }
       assert_raises(ArgumentError) { @view.lc_input(type: :unsupported) }

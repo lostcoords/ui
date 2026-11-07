@@ -10,9 +10,12 @@
     overscroll-behavior: contain;
     opacity: 0;
     transform: var(--lc-dialog-from);
+
+    /* inline-size: a dialog that widens, such as one opening a side panel, slides to its new width. */
     transition:
       opacity var(--lc-dialog-fade) var(--lc-ease-out-expo),
       transform var(--lc-dialog-duration) var(--lc-ease-out-expo),
+      inline-size var(--lc-dialog-duration) var(--lc-ease-out-expo),
       display var(--lc-dialog-duration) allow-discrete,
       overlay var(--lc-dialog-duration) allow-discrete;
 
