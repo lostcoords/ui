@@ -410,7 +410,7 @@ Turbo confirm: https://ui.lostcoords.com/components/dialog.html
 https://ui.lostcoords.com/components/emoji.html#lc_emoji_picker
 
 ```ruby
-lc_emoji_picker(form:, field:, label:, catalog_url:, value: nil, quick: [], recent: [], recent_scope: nil, auto_submit: false, **attributes)
+lc_emoji_picker(form:, field:, label:, catalog_url:, value: nil, quick: [], recent: [], recent_scope: nil, auto_submit: false, picker_class: nil, trigger_class: nil, popover_class: nil, **attributes)
 ```
 
 Emoji picker: https://ui.lostcoords.com/components/emoji.html

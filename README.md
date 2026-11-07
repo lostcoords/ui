@@ -194,6 +194,21 @@ lazyLoadControllersFrom("controllers", application)
 `eagerLoadControllersFrom` also works and downloads all of them on every page. A host file with the
 same name, such as `app/javascript/controllers/lc_dialog_controller.js`, replaces the gem's.
 
+## Changes in 0.8.2
+
+Nothing needs an edit. New options, and one change you may see:
+
+- **`lc_emoji_picker` takes `picker_class:`, `trigger_class:` and `popover_class:`.** The gem leaves the desktop
+  popover unpainted so the host can match its own floating surfaces; until now that meant rendering the
+  `lostcoords/ui/components/emoji_picker` partial directly. Pass the classes to the helper instead.
+- **A dialog slides to a new width.** `.lc-dialog` transitions `inline-size`, so a dialog that widens, such as
+  one opening a side panel, animates instead of jumping. A host that restated the dialog's `transition` only to
+  add `inline-size` can delete that rule.
+- **`lc-scroll-keeper` keeps a scroll container's position.** Put `data-controller="lc-scroll-keeper"` on a
+  sidebar that every page renders again; it restores its scroll across Turbo visits and reloads.
+- **`lc_nav_list` keeps the server's current link after a back visit.** Before: a page restored from Turbo's
+  cache showed the link clicked before leaving as current. After: it shows the one the server marked.
+
 ## Changes in 0.8.1
 
 Nothing needs an edit, but these look different:
