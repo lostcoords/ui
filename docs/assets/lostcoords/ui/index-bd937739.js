@@ -7,6 +7,7 @@ import Kbd from "lostcoords/ui/controllers/lc_kbd_controller"
 import Menu from "lostcoords/ui/controllers/lc_menu_controller"
 import Nav from "lostcoords/ui/controllers/lc_nav_controller"
 import Popover from "lostcoords/ui/controllers/lc_popover_controller"
+import ScrollKeeper from "lostcoords/ui/controllers/lc_scroll_keeper_controller"
 import Search from "lostcoords/ui/controllers/lc_search_controller"
 import Selection from "lostcoords/ui/controllers/lc_selection_controller"
 import Sheet from "lostcoords/ui/controllers/lc_sheet_controller"
@@ -27,6 +28,7 @@ const controllers = {
   "lc-menu": Menu,
   "lc-nav": Nav,
   "lc-popover": Popover,
+  "lc-scroll-keeper": ScrollKeeper,
   "lc-search": Search,
   "lc-selection": Selection,
   "lc-sheet": Sheet,

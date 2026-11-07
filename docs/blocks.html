@@ -13,95 +13,103 @@
       const theme = localStorage.getItem("lostcoords-ui:theme")
       if (theme === "dark" || (!theme && matchMedia("(prefers-color-scheme: dark)").matches)) document.documentElement.dataset.theme = "dark"
     </script>
-    <link rel="stylesheet" href="./assets/tailwind-671abb00.css" />
-<link rel="stylesheet" href="./assets/blocks/application_header-114f372e.css" />
-<link rel="stylesheet" href="./assets/blocks/docs_shell-8bd5856e.css" />
+    <link rel="stylesheet" href="/assets/tailwind-65b2f6d8.css" data-turbo-track="reload" />
+<link rel="stylesheet" href="/assets/blocks/application_header-114f372e.css" data-turbo-track="reload" />
+<link rel="stylesheet" href="/assets/blocks/docs_shell-8bd5856e.css" data-turbo-track="reload" />
     
+    <meta name="view-transition" content="same-origin">
+    <meta name="turbo-prefetch" content="true">
+    <meta name="turbo-refresh-method" content="morph">
+    <meta name="turbo-refresh-scroll" content="preserve">
     <script type="importmap" data-turbo-track="reload">{
   "imports": {
-    "lostcoords/ui": "./assets/lostcoords/ui/index-f949c24a.js",
-    "lostcoords/ui/controllers/lc_code_block_controller": "./assets/lostcoords/ui/controllers/lc_code_block_controller-0a27362b.js",
-    "lostcoords/ui/controllers/lc_collapsible_controller": "./assets/lostcoords/ui/controllers/lc_collapsible_controller-e723312e.js",
-    "lostcoords/ui/controllers/lc_copy_controller": "./assets/lostcoords/ui/controllers/lc_copy_controller-d436312d.js",
-    "lostcoords/ui/controllers/lc_dialog_controller": "./assets/lostcoords/ui/controllers/lc_dialog_controller-993d9a42.js",
-    "lostcoords/ui/controllers/lc_emoji_picker_controller": "./assets/lostcoords/ui/controllers/lc_emoji_picker_controller-c3f9d5d9.js",
-    "lostcoords/ui/controllers/lc_kbd_controller": "./assets/lostcoords/ui/controllers/lc_kbd_controller-83cd1787.js",
-    "lostcoords/ui/controllers/lc_menu_controller": "./assets/lostcoords/ui/controllers/lc_menu_controller-c2a19d16.js",
-    "lostcoords/ui/controllers/lc_nav_controller": "./assets/lostcoords/ui/controllers/lc_nav_controller-af65a23f.js",
-    "lostcoords/ui/controllers/lc_popover_controller": "./assets/lostcoords/ui/controllers/lc_popover_controller-00b603b0.js",
-    "lostcoords/ui/controllers/lc_search_controller": "./assets/lostcoords/ui/controllers/lc_search_controller-9164d2cd.js",
-    "lostcoords/ui/controllers/lc_selection_controller": "./assets/lostcoords/ui/controllers/lc_selection_controller-cc36bc56.js",
-    "lostcoords/ui/controllers/lc_sheet_controller": "./assets/lostcoords/ui/controllers/lc_sheet_controller-1638338d.js",
-    "lostcoords/ui/controllers/lc_shortcut_controller": "./assets/lostcoords/ui/controllers/lc_shortcut_controller-82108a21.js",
-    "lostcoords/ui/controllers/lc_tabs_controller": "./assets/lostcoords/ui/controllers/lc_tabs_controller-9f1d494f.js",
-    "lostcoords/ui/controllers/lc_toast_controller": "./assets/lostcoords/ui/controllers/lc_toast_controller-80577e17.js",
-    "lostcoords/ui/controllers/lc_toast_region_controller": "./assets/lostcoords/ui/controllers/lc_toast_region_controller-cba89595.js",
-    "lostcoords/ui/controllers/lc_toggle_controller": "./assets/lostcoords/ui/controllers/lc_toggle_controller-c1f00ec9.js",
-    "lostcoords/ui/controllers/lc_tooltip_controller": "./assets/lostcoords/ui/controllers/lc_tooltip_controller-dca69acd.js",
-    "application": "./assets/application-20c5ac24.js",
-    "@hotwired/stimulus": "./assets/stimulus.min-7ea3d58b.js",
-    "@hotwired/stimulus-loading": "./assets/stimulus-loading-25917588.js",
-    "minisearch": "./assets/minisearch-4b8cd157.js",
-    "controllers/lc_code_block_controller": "./assets/lostcoords/ui/controllers/lc_code_block_controller-0a27362b.js",
-    "controllers/lc_collapsible_controller": "./assets/lostcoords/ui/controllers/lc_collapsible_controller-e723312e.js",
-    "controllers/lc_copy_controller": "./assets/lostcoords/ui/controllers/lc_copy_controller-d436312d.js",
-    "controllers/lc_dialog_controller": "./assets/lostcoords/ui/controllers/lc_dialog_controller-993d9a42.js",
-    "controllers/lc_emoji_picker_controller": "./assets/lostcoords/ui/controllers/lc_emoji_picker_controller-c3f9d5d9.js",
-    "controllers/lc_kbd_controller": "./assets/lostcoords/ui/controllers/lc_kbd_controller-83cd1787.js",
-    "controllers/lc_menu_controller": "./assets/lostcoords/ui/controllers/lc_menu_controller-c2a19d16.js",
-    "controllers/lc_nav_controller": "./assets/lostcoords/ui/controllers/lc_nav_controller-af65a23f.js",
-    "controllers/lc_popover_controller": "./assets/lostcoords/ui/controllers/lc_popover_controller-00b603b0.js",
-    "controllers/lc_search_controller": "./assets/lostcoords/ui/controllers/lc_search_controller-9164d2cd.js",
-    "controllers/lc_selection_controller": "./assets/lostcoords/ui/controllers/lc_selection_controller-cc36bc56.js",
-    "controllers/lc_sheet_controller": "./assets/lostcoords/ui/controllers/lc_sheet_controller-1638338d.js",
-    "controllers/lc_shortcut_controller": "./assets/lostcoords/ui/controllers/lc_shortcut_controller-82108a21.js",
-    "controllers/lc_tabs_controller": "./assets/lostcoords/ui/controllers/lc_tabs_controller-9f1d494f.js",
-    "controllers/lc_toast_controller": "./assets/lostcoords/ui/controllers/lc_toast_controller-80577e17.js",
-    "controllers/lc_toast_region_controller": "./assets/lostcoords/ui/controllers/lc_toast_region_controller-cba89595.js",
-    "controllers/lc_toggle_controller": "./assets/lostcoords/ui/controllers/lc_toggle_controller-c1f00ec9.js",
-    "controllers/lc_tooltip_controller": "./assets/lostcoords/ui/controllers/lc_tooltip_controller-dca69acd.js",
-    "lostcoords/ui/helpers/catalog_picker": "./assets/lostcoords/ui/helpers/catalog_picker-c9ff3c51.js",
-    "lostcoords/ui/helpers/confirm": "./assets/lostcoords/ui/helpers/confirm-1d62b1ae.js",
-    "lostcoords/ui/helpers/context_dialog": "./assets/lostcoords/ui/helpers/context_dialog-9c322515.js",
-    "lostcoords/ui/helpers/dialog": "./assets/lostcoords/ui/helpers/dialog-25cf9117.js",
-    "lostcoords/ui/helpers/dismiss_stack": "./assets/lostcoords/ui/helpers/dismiss_stack-79a922c4.js",
-    "lostcoords/ui/helpers/floating_panel": "./assets/lostcoords/ui/helpers/floating_panel-4b97b6e6.js",
-    "lostcoords/ui/helpers/menu_keys": "./assets/lostcoords/ui/helpers/menu_keys-e8db11f6.js",
-    "lostcoords/ui/helpers/roving_focus": "./assets/lostcoords/ui/helpers/roving_focus-37f03892.js",
-    "lostcoords/ui/helpers/sheet_motion": "./assets/lostcoords/ui/helpers/sheet_motion-4ff3b084.js",
-    "lostcoords/ui/helpers/shortcuts": "./assets/lostcoords/ui/helpers/shortcuts-435a59af.js",
-    "lostcoords/ui/helpers/top_layer": "./assets/lostcoords/ui/helpers/top_layer-7da83918.js",
-    "lostcoords/ui/helpers/viewport": "./assets/lostcoords/ui/helpers/viewport-d4d43aa5.js",
-    "controllers/application": "./assets/controllers/application-f811edf3.js",
-    "controllers/block_preview_controller": "./assets/controllers/block_preview_controller-53c37654.js",
-    "controllers/block_stage_controller": "./assets/controllers/block_stage_controller-828c99a5.js",
-    "controllers/blocks_header_controller": "./assets/controllers/blocks_header_controller-ea06a62f.js",
-    "controllers/blocks_mobile_navigation_controller": "./assets/controllers/blocks_mobile_navigation_controller-f3c310d5.js",
-    "controllers/component_picker_controller": "./assets/controllers/component_picker_controller-73ac8278.js",
-    "controllers/confirm_demo_controller": "./assets/controllers/confirm_demo_controller-94f72afd.js",
-    "controllers/docs_search_controller": "./assets/controllers/docs_search_controller-0b42ad02.js",
-    "controllers": "./assets/controllers/index-954e2bb9.js",
-    "controllers/palette_split_controller": "./assets/controllers/palette_split_controller-2330b77a.js",
-    "controllers/showcase_controller": "./assets/controllers/showcase_controller-20d1c9a0.js",
-    "controllers/toast_demo_controller": "./assets/controllers/toast_demo_controller-3d20af24.js"
+    "lostcoords/ui": "/assets/lostcoords/ui/index-bd937739.js",
+    "lostcoords/ui/controllers/lc_code_block_controller": "/assets/lostcoords/ui/controllers/lc_code_block_controller-0a27362b.js",
+    "lostcoords/ui/controllers/lc_collapsible_controller": "/assets/lostcoords/ui/controllers/lc_collapsible_controller-e723312e.js",
+    "lostcoords/ui/controllers/lc_copy_controller": "/assets/lostcoords/ui/controllers/lc_copy_controller-d436312d.js",
+    "lostcoords/ui/controllers/lc_dialog_controller": "/assets/lostcoords/ui/controllers/lc_dialog_controller-993d9a42.js",
+    "lostcoords/ui/controllers/lc_emoji_picker_controller": "/assets/lostcoords/ui/controllers/lc_emoji_picker_controller-c3f9d5d9.js",
+    "lostcoords/ui/controllers/lc_kbd_controller": "/assets/lostcoords/ui/controllers/lc_kbd_controller-83cd1787.js",
+    "lostcoords/ui/controllers/lc_menu_controller": "/assets/lostcoords/ui/controllers/lc_menu_controller-c2a19d16.js",
+    "lostcoords/ui/controllers/lc_nav_controller": "/assets/lostcoords/ui/controllers/lc_nav_controller-9052d393.js",
+    "lostcoords/ui/controllers/lc_popover_controller": "/assets/lostcoords/ui/controllers/lc_popover_controller-00b603b0.js",
+    "lostcoords/ui/controllers/lc_scroll_keeper_controller": "/assets/lostcoords/ui/controllers/lc_scroll_keeper_controller-ee3b0e1b.js",
+    "lostcoords/ui/controllers/lc_search_controller": "/assets/lostcoords/ui/controllers/lc_search_controller-9164d2cd.js",
+    "lostcoords/ui/controllers/lc_selection_controller": "/assets/lostcoords/ui/controllers/lc_selection_controller-cc36bc56.js",
+    "lostcoords/ui/controllers/lc_sheet_controller": "/assets/lostcoords/ui/controllers/lc_sheet_controller-1638338d.js",
+    "lostcoords/ui/controllers/lc_shortcut_controller": "/assets/lostcoords/ui/controllers/lc_shortcut_controller-82108a21.js",
+    "lostcoords/ui/controllers/lc_tabs_controller": "/assets/lostcoords/ui/controllers/lc_tabs_controller-9f1d494f.js",
+    "lostcoords/ui/controllers/lc_toast_controller": "/assets/lostcoords/ui/controllers/lc_toast_controller-80577e17.js",
+    "lostcoords/ui/controllers/lc_toast_region_controller": "/assets/lostcoords/ui/controllers/lc_toast_region_controller-cba89595.js",
+    "lostcoords/ui/controllers/lc_toggle_controller": "/assets/lostcoords/ui/controllers/lc_toggle_controller-c1f00ec9.js",
+    "lostcoords/ui/controllers/lc_tooltip_controller": "/assets/lostcoords/ui/controllers/lc_tooltip_controller-dca69acd.js",
+    "application": "/assets/application-a9592715.js",
+    "@hotwired/turbo-rails": "/assets/turbo.min-86bf8853.js",
+    "@hotwired/stimulus": "/assets/stimulus.min-7ea3d58b.js",
+    "@hotwired/stimulus-loading": "/assets/stimulus-loading-25917588.js",
+    "minisearch": "/assets/minisearch-4b8cd157.js",
+    "controllers/lc_code_block_controller": "/assets/lostcoords/ui/controllers/lc_code_block_controller-0a27362b.js",
+    "controllers/lc_collapsible_controller": "/assets/lostcoords/ui/controllers/lc_collapsible_controller-e723312e.js",
+    "controllers/lc_copy_controller": "/assets/lostcoords/ui/controllers/lc_copy_controller-d436312d.js",
+    "controllers/lc_dialog_controller": "/assets/lostcoords/ui/controllers/lc_dialog_controller-993d9a42.js",
+    "controllers/lc_emoji_picker_controller": "/assets/lostcoords/ui/controllers/lc_emoji_picker_controller-c3f9d5d9.js",
+    "controllers/lc_kbd_controller": "/assets/lostcoords/ui/controllers/lc_kbd_controller-83cd1787.js",
+    "controllers/lc_menu_controller": "/assets/lostcoords/ui/controllers/lc_menu_controller-c2a19d16.js",
+    "controllers/lc_nav_controller": "/assets/lostcoords/ui/controllers/lc_nav_controller-9052d393.js",
+    "controllers/lc_popover_controller": "/assets/lostcoords/ui/controllers/lc_popover_controller-00b603b0.js",
+    "controllers/lc_scroll_keeper_controller": "/assets/lostcoords/ui/controllers/lc_scroll_keeper_controller-ee3b0e1b.js",
+    "controllers/lc_search_controller": "/assets/lostcoords/ui/controllers/lc_search_controller-9164d2cd.js",
+    "controllers/lc_selection_controller": "/assets/lostcoords/ui/controllers/lc_selection_controller-cc36bc56.js",
+    "controllers/lc_sheet_controller": "/assets/lostcoords/ui/controllers/lc_sheet_controller-1638338d.js",
+    "controllers/lc_shortcut_controller": "/assets/lostcoords/ui/controllers/lc_shortcut_controller-82108a21.js",
+    "controllers/lc_tabs_controller": "/assets/lostcoords/ui/controllers/lc_tabs_controller-9f1d494f.js",
+    "controllers/lc_toast_controller": "/assets/lostcoords/ui/controllers/lc_toast_controller-80577e17.js",
+    "controllers/lc_toast_region_controller": "/assets/lostcoords/ui/controllers/lc_toast_region_controller-cba89595.js",
+    "controllers/lc_toggle_controller": "/assets/lostcoords/ui/controllers/lc_toggle_controller-c1f00ec9.js",
+    "controllers/lc_tooltip_controller": "/assets/lostcoords/ui/controllers/lc_tooltip_controller-dca69acd.js",
+    "lostcoords/ui/helpers/catalog_picker": "/assets/lostcoords/ui/helpers/catalog_picker-c9ff3c51.js",
+    "lostcoords/ui/helpers/confirm": "/assets/lostcoords/ui/helpers/confirm-1d62b1ae.js",
+    "lostcoords/ui/helpers/context_dialog": "/assets/lostcoords/ui/helpers/context_dialog-9c322515.js",
+    "lostcoords/ui/helpers/dialog": "/assets/lostcoords/ui/helpers/dialog-25cf9117.js",
+    "lostcoords/ui/helpers/dismiss_stack": "/assets/lostcoords/ui/helpers/dismiss_stack-79a922c4.js",
+    "lostcoords/ui/helpers/floating_panel": "/assets/lostcoords/ui/helpers/floating_panel-4b97b6e6.js",
+    "lostcoords/ui/helpers/menu_keys": "/assets/lostcoords/ui/helpers/menu_keys-e8db11f6.js",
+    "lostcoords/ui/helpers/roving_focus": "/assets/lostcoords/ui/helpers/roving_focus-37f03892.js",
+    "lostcoords/ui/helpers/sheet_motion": "/assets/lostcoords/ui/helpers/sheet_motion-4ff3b084.js",
+    "lostcoords/ui/helpers/shortcuts": "/assets/lostcoords/ui/helpers/shortcuts-435a59af.js",
+    "lostcoords/ui/helpers/top_layer": "/assets/lostcoords/ui/helpers/top_layer-7da83918.js",
+    "lostcoords/ui/helpers/viewport": "/assets/lostcoords/ui/helpers/viewport-d4d43aa5.js",
+    "controllers/application": "/assets/controllers/application-f811edf3.js",
+    "controllers/block_preview_controller": "/assets/controllers/block_preview_controller-53c37654.js",
+    "controllers/block_stage_controller": "/assets/controllers/block_stage_controller-828c99a5.js",
+    "controllers/blocks_header_controller": "/assets/controllers/blocks_header_controller-ea06a62f.js",
+    "controllers/blocks_mobile_navigation_controller": "/assets/controllers/blocks_mobile_navigation_controller-f3c310d5.js",
+    "controllers/component_picker_controller": "/assets/controllers/component_picker_controller-73ac8278.js",
+    "controllers/confirm_demo_controller": "/assets/controllers/confirm_demo_controller-94f72afd.js",
+    "controllers/docs_search_controller": "/assets/controllers/docs_search_controller-0b42ad02.js",
+    "controllers": "/assets/controllers/index-0f4f7204.js",
+    "controllers/palette_split_controller": "/assets/controllers/palette_split_controller-2330b77a.js",
+    "controllers/showcase_controller": "/assets/controllers/showcase_controller-20d1c9a0.js",
+    "controllers/toast_demo_controller": "/assets/controllers/toast_demo_controller-3d20af24.js"
   }
 }</script>
-<link rel="modulepreload" href="./assets/application-20c5ac24.js">
-<link rel="modulepreload" href="./assets/stimulus.min-7ea3d58b.js">
-<link rel="modulepreload" href="./assets/stimulus-loading-25917588.js">
-<link rel="modulepreload" href="./assets/minisearch-4b8cd157.js">
-<link rel="modulepreload" href="./assets/controllers/application-f811edf3.js">
-<link rel="modulepreload" href="./assets/controllers/block_preview_controller-53c37654.js">
-<link rel="modulepreload" href="./assets/controllers/block_stage_controller-828c99a5.js">
-<link rel="modulepreload" href="./assets/controllers/blocks_header_controller-ea06a62f.js">
-<link rel="modulepreload" href="./assets/controllers/blocks_mobile_navigation_controller-f3c310d5.js">
-<link rel="modulepreload" href="./assets/controllers/component_picker_controller-73ac8278.js">
-<link rel="modulepreload" href="./assets/controllers/confirm_demo_controller-94f72afd.js">
-<link rel="modulepreload" href="./assets/controllers/docs_search_controller-0b42ad02.js">
-<link rel="modulepreload" href="./assets/controllers/index-954e2bb9.js">
-<link rel="modulepreload" href="./assets/controllers/palette_split_controller-2330b77a.js">
-<link rel="modulepreload" href="./assets/controllers/showcase_controller-20d1c9a0.js">
-<link rel="modulepreload" href="./assets/controllers/toast_demo_controller-3d20af24.js">
+<link rel="modulepreload" href="/assets/application-a9592715.js">
+<link rel="modulepreload" href="/assets/turbo.min-86bf8853.js">
+<link rel="modulepreload" href="/assets/stimulus.min-7ea3d58b.js">
+<link rel="modulepreload" href="/assets/stimulus-loading-25917588.js">
+<link rel="modulepreload" href="/assets/minisearch-4b8cd157.js">
+<link rel="modulepreload" href="/assets/controllers/application-f811edf3.js">
+<link rel="modulepreload" href="/assets/controllers/block_preview_controller-53c37654.js">
+<link rel="modulepreload" href="/assets/controllers/block_stage_controller-828c99a5.js">
+<link rel="modulepreload" href="/assets/controllers/blocks_header_controller-ea06a62f.js">
+<link rel="modulepreload" href="/assets/controllers/blocks_mobile_navigation_controller-f3c310d5.js">
+<link rel="modulepreload" href="/assets/controllers/component_picker_controller-73ac8278.js">
+<link rel="modulepreload" href="/assets/controllers/confirm_demo_controller-94f72afd.js">
+<link rel="modulepreload" href="/assets/controllers/docs_search_controller-0b42ad02.js">
+<link rel="modulepreload" href="/assets/controllers/index-0f4f7204.js">
+<link rel="modulepreload" href="/assets/controllers/palette_split_controller-2330b77a.js">
+<link rel="modulepreload" href="/assets/controllers/showcase_controller-20d1c9a0.js">
+<link rel="modulepreload" href="/assets/controllers/toast_demo_controller-3d20af24.js">
 <script type="module">import "application"</script>
   </head>
   <body class="antialiased" data-controller="showcase palette-split" data-action="submit->showcase#preventExampleSubmit palette-split:choose->showcase#choosePalette">

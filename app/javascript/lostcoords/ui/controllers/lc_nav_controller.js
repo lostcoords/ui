@@ -9,9 +9,12 @@ export default class extends Controller {
 
   connect() {
     this.key = this.element.getAttribute("aria-label")
-    this.initialLink = this.currentLink
-    this.restore = () => this.select({ currentTarget: this.initialLink }, { animate: false })
-    document.addEventListener("turbo:before-cache", this.restore)
+    // The link the server marked keeps a data attribute, so a page restored from Turbo's cache
+    // marks it again instead of the link clicked before leaving. A click on a link to the same
+    // page, such as an anchor, keeps the clicked link current.
+    const initial = this.linkTargets.find((link) => link.hasAttribute("data-lc-nav-initial"))
+    if (initial) this.mark(initial)
+    else this.currentLink?.setAttribute("data-lc-nav-initial", "")
 
     // The observer reports once on observe, after the first placement below.
     let observed = false
@@ -29,17 +32,20 @@ export default class extends Controller {
   disconnect() {
     cancelAnimationFrame(this.frame)
     this.observer.disconnect()
-    document.removeEventListener("turbo:before-cache", this.restore)
   }
 
-  select(event, { animate = true } = {}) {
+  select(event) {
     if (event.button > 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
 
+    this.mark(event.currentTarget)
+    this.place({ animate: true })
+  }
+
+  mark(current) {
     for (const link of this.linkTargets) {
-      if (link === event.currentTarget) link.setAttribute("aria-current", "page")
+      if (link === current) link.setAttribute("aria-current", "page")
       else link.removeAttribute("aria-current")
     }
-    this.place({ animate })
   }
 
   get currentLink() {

@@ -74,8 +74,9 @@ class StaticExportTest < ActiveSupport::TestCase
         if importmap
           JSON.parse(importmap.content).fetch("imports").each_value do |path|
             assert_match(/-\h{8}\.js\z/, path)
-            assert_match %r{\A\.\.?/}, path, "#{page} has an invalid importmap URL: #{path}"
-            assert File.file?(File.expand_path(path, File.dirname(page))), "Missing module: #{path} in #{page}"
+            # Root-absolute, so every page's tracked importmap matches and Turbo visits never reload.
+            assert_match %r{\A/assets/}, path, "#{page} has an invalid importmap URL: #{path}"
+            assert File.file?(File.join(directory, path)), "Missing module: #{path} in #{page}"
           end
         end
         document.css("a[href], link[href], script[src], iframe[src]").each do |node|

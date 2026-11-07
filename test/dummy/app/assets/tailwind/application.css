@@ -313,4 +313,28 @@ html[data-palette-split-open] {
   }
 }
 
+.turbo-progress-bar {
+  height: 2px;
+  background: var(--primary);
+}
+
+/* Turbo visits and full page loads cross-fade between pages. */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 150ms;
+  animation-timing-function: ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
 @import "../builds/tailwind/lostcoords_ui.css";

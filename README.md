@@ -520,6 +520,11 @@ tones; `lc_link_class` styles links you render yourself. `lc_skip_link` targets 
 Pass `card: true` to `lc_radio` or `lc_checkbox` for selectable tiles; a block adds content, such as a
 preview, under the label.
 
+A sidebar that scrolls on its own starts at the top on every page. Put `data-controller="lc-scroll-keeper"`
+on the scroll container to keep its position across Turbo visits and reloads. Containers with the same
+`data-lc-scroll-keeper-key-value` share one position for the browser tab. Without a saved position,
+it scrolls the `aria-current="page"` link into view.
+
 This documentation site is built with these components and two copyable blocks: the application
 header and the documentation layout.
 

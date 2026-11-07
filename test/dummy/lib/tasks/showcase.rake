@@ -41,12 +41,11 @@ namespace :lostcoords do
         target.dirname.mkpath
         target.binwrite(fetch.(path).sub(%r{^//# sourceMappingURL=.*\n?}, ""))
       end
+      # Asset paths stay root-absolute: Turbo reloads the page when its tracked head tags differ between pages.
       pages.each do |name, html|
         target = dir.join(name)
         target.dirname.mkpath
-        depth = Pathname(name).each_filename.to_a.length.pred
-        prefix = depth.zero? ? "./" : "../" * depth
-        target.write(html.gsub(/(?<=["'])#{Regexp.union(assets)}/) { |path| "#{prefix}#{path.delete_prefix("/")}" })
+        target.write(html)
       end
 
       dir.join("starter.css").write(fetch.("/starter.css"))
