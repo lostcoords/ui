@@ -1,12 +1,11 @@
 module DocsReference
   def self.components
+    usages = Showcase.sections.flat_map { |section| section.examples.map { [ section, it, it.builders ] } }
     Lostcoords::Ui::Components.all.map do |component|
-      examples = Showcase.sections.flat_map do |section|
-        section.examples.filter_map do |example|
-          next unless example.builders.include?(component.name)
+      examples = usages.filter_map do |section, example, builders|
+        next unless builders.include?(component.name)
 
-          { title: example.title, url: "https://ui.lostcoords.com/components/#{section.id}.html", erb: example.source.gsub("EXAMPLE_ID", "my-component") }
-        end
+        { title: example.title, url: "https://ui.lostcoords.com/components/#{section.id}.html", erb: example.source.gsub("EXAMPLE_ID", "my-component") }
       end
       owner = Showcase.owner(component.name)
       parts = DocsParts.for(component.name).map(&:signature)

@@ -11,4 +11,12 @@ Rails.application.configure do
     silence_warnings { library_files.call.each { |path| load path } }
   end
   config.to_prepare { watcher.execute_if_updated }
+
+  # Hotwire Spark is only loaded by bin/rails server (see config/application.rb). Watch the library too.
+  if defined?(Hotwire::Spark)
+    config.action_cable.cable = { "adapter" => "async" }
+    config.action_cable.disable_request_forgery_protection = true # reload through PARCELA_SHARE_HOSTS too
+    config.hotwire.spark.css_paths = %w[app/assets/builds]
+    config.hotwire.spark.html_paths += %w[app/views app/helpers lib].map { library.join(it).to_s }
+  end
 end

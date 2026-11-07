@@ -935,11 +935,15 @@ Blocks live in the docs app. They add no rendering helpers or installable block 
 ## Docs
 
 The docs app lives in `test/dummy`. Run `parcela up --detach` and open https://ui.localhost.
-Parcela starts Rails and the Tailwind watcher. `parcela down` stops this environment.
+Parcela starts Rails (with live reload through Hotwire Spark) and the Tailwind watcher.
+`parcela down` stops this environment.
 
-`bin/rails lostcoords:ui:showcase` exports the home, component pages, blocks, token reference, machine-readable
-API and assets to `docs/` for GitHub Pages. CI checks that the export matches the source and that every
-public rendering helper has a runnable example.
+`bin/rails kiln:build` exports every docs route to `docs/` for GitHub Pages with
+[Kiln](https://github.com/davafons/kiln): pages, blocks, the token reference, the machine-readable API and
+assets. Param sources for the component and block pages live in `test/dummy/config/kiln.rb`, and a route
+without one fails the build. `bin/rails kiln:serve` serves the export the way GitHub Pages does. CI runs
+`bin/rails kiln:build` and fails when `docs/` changes, and checks that every public rendering helper has a
+runnable example.
 
 ## Development
 

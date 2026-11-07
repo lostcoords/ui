@@ -8,6 +8,12 @@ require "rails/test_unit/railtie"
 
 Bundler.require(*Rails.groups)
 
+# Live reload for the docs server only. kiln:build and tests never load it, so docs/ stays clean.
+if Rails.env.development? && defined?(Rails::Server)
+  require "action_cable/engine"
+  require "hotwire-spark"
+end
+
 module Dummy
   class Application < Rails::Application
     config.load_defaults Rails::VERSION::STRING.to_f

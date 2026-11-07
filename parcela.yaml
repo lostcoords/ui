@@ -1,8 +1,6 @@
+# yaml-language-server: $schema=https://parcela.run/schema/v1.json
 version: 1
 project: ui
-
-sharing:
-  domain: tower.lostcoords.com
 
 services:
   web:
