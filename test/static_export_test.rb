@@ -8,7 +8,7 @@ class StaticExportTest < ActiveSupport::TestCase
   include Kiln::TestHelper
 
   test "the docs export is complete and repeatable" do
-    kiln_build do |directory|
+    kiln_build(repeatable: true) do |directory|
       assert_equal "ui.lostcoords.com\n", directory.join("CNAME").read
       reference = JSON.parse(directory.join("api.json").read)
       assert_equal Lostcoords::Ui::Components.all.size, reference.fetch("components").size
@@ -35,11 +35,6 @@ class StaticExportTest < ActiveSupport::TestCase
         JSON.parse(importmap.content).fetch("imports").each_value do |url|
           assert_match %r{\A/assets/.+-\h{8}\.js\z}, url, "#{page} has an invalid importmap URL"
         end
-      end
-
-      kiln_build do |second|
-        diff = Kiln::TreeDiff.call(directory, second)
-        assert diff.empty?, "Non-repeatable export:\n#{diff}"
       end
     end
   end

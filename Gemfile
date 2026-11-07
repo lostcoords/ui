@@ -11,7 +11,7 @@ gem "tailwindcss-rails", "~> 4.4"
 gem "turbo-rails"
 
 # Static export of the docs app (test/dummy) to docs/
-gem "kiln", "~> 0.1.1"
+gem "kiln", "~> 0.1.2"
 
 group :development do
   # Live reload for the docs server (bin/rails server)
