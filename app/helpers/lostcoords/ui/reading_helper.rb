@@ -1,5 +1,3 @@
-require "nokogiri"
-
 module Lostcoords::Ui
   module ReadingHelper
     PROSE_BASE =

@@ -1,5 +1,3 @@
-require "nokogiri"
-
 module Lostcoords::Ui
   module NavigationHelper
     BREADCRUMB_LINK = "rounded-sm text-muted-foreground no-underline underline-offset-4 hover:text-foreground hover:underline"
