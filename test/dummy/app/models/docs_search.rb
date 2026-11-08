@@ -31,8 +31,13 @@ module DocsSearch
   # Every component page repeats these intros word for word, so they would match everywhere.
   PAGE_PARTS = %w[usage examples api].freeze
 
+  # Rendering every page takes seconds, so the dev server keeps the index until a source file changes.
   def self.json
-    JSON.generate(icons: GROUPS, documents: documents.map(&:to_h)) + "\n"
+    sources = Dir[Rails.root.join("app/{views,models,helpers}/**/*"), Lostcoords::Ui::Engine.root.join("{app,lib}/**/*").to_s]
+    digest = sources.sum { |path| File.mtime(path).to_f }
+    @json = nil unless @digest == digest
+    @digest = digest
+    @json ||= JSON.generate(icons: GROUPS, documents: documents.map(&:to_h)) + "\n"
   end
 
   def self.documents
