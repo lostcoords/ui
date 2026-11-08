@@ -62,6 +62,9 @@ let failed = 0
 const browser = await chromium.launch()
 try {
   if (server) await waitForServer(baseUrl)
+  // Every page fetches /search.json when idle. Building it once here keeps that work out of the
+  // suites: their motion checks fail while the server is busy.
+  await fetch(`${baseUrl}/search.json`)
   for (const name of names) {
     const context = await browser.newContext({
       ignoreHTTPSErrors: true,
