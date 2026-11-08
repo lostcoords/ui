@@ -21,7 +21,7 @@ lockfile pins its gem version, so publishing a library update does not upgrade c
 ## Install
 
 ```ruby
-gem "lostcoords-ui", "~> 0.9.0"
+gem "lostcoords-ui", "~> 0.9.1"
 ```
 
 The engine adds its rendering helpers to host views, its views and translations to the host's lookup
@@ -169,6 +169,13 @@ registerControllers(application, { only: ["lc-copy", "lc-collapsible"] })
 Omit `only` to register every library controller. Unknown identifiers raise before anything is
 registered, and repeated calls on the same application keep later overrides, so register defaults
 before application overrides.
+
+## Changes in 0.9.1
+
+Nothing needs an edit:
+
+- **Opening a dialog, sheet or menu no longer shifts the page.** The scroll lock pins the body at the width
+  it had before locking, so the page keeps its width when the scrollbar disappears.
 
 ## Changes in 0.9.0
 

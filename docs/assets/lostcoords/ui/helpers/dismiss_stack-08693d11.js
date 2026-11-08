@@ -153,6 +153,7 @@ function lockDocumentScroll() {
   if (!body || body.dataset.modalScrollLock === "true") return
 
   lockedScrollY = window.scrollY
+  body.style.inlineSize = getComputedStyle(body).inlineSize
   body.dataset.modalScrollLock = "true"
   body.style.position = "fixed"
   body.style.inset = "0"
@@ -160,7 +161,6 @@ function lockDocumentScroll() {
   // Pinning the body drags the sticky nav off with the scrolled-away page;
   // the nav offsets itself by this to stay where it was.
   body.style.setProperty("--lc-scroll-lock-y", `${lockedScrollY}px`)
-  body.style.inlineSize = "100%"
 }
 
 function unlockDocumentScroll() {
