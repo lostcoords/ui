@@ -38,8 +38,8 @@ async function _verifyTurboNavigation(page) {
     window.turboVisitMarker = true
   })
   // A locator click would first scroll the link into view, so the link clicks itself.
-  await page.$eval(`${sidebar} a[href="/components/button.html"]`, (link) => link.click())
-  await page.waitForURL("**/components/button.html")
+  await page.$eval(`${sidebar} a[href="/components/button"]`, (link) => link.click())
+  await page.waitForURL("**/components/button")
   await page.waitForFunction(() => document.title.startsWith("Button"))
   verify(
     await page.evaluate(() => window.turboVisitMarker === true),
@@ -51,7 +51,7 @@ async function _verifyTurboNavigation(page) {
   )
   verify(
     (await page.$eval(`${sidebar} [aria-current="page"]`, (a) => a.getAttribute("href"))) ===
-      "/components/button.html",
+      "/components/button",
     "The new page marks its own link as current",
   )
 
@@ -70,15 +70,15 @@ async function _verifyTurboNavigation(page) {
   )
   verify(
     (await page.$eval(`${sidebar} [aria-current="page"]`, (a) => a.getAttribute("href"))) ===
-      "/components/tooltip.html",
+      "/components/tooltip",
     "Going back marks the earlier page's link as current",
   )
 
   await page.evaluate(() => {
     window.turboVisitMarker = true
   })
-  await page.click('header a[href="/installation.html"]')
-  await page.waitForURL("**/installation.html")
+  await page.click('header a[href="/installation"]')
+  await page.waitForURL("**/installation")
   const assets = await page.evaluate(() =>
     [...document.head.querySelectorAll('link[rel="stylesheet"]')].map((node) =>
       node.getAttribute("href"),

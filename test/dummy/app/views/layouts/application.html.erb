@@ -24,9 +24,9 @@
   </head>
   <body class="antialiased" data-controller="showcase palette-split" data-action="submit->showcase#preventExampleSubmit palette-split:choose->showcase#choosePalette">
     <%= lc_skip_link %>
-    <% links = [ [ "Docs", "/installation.html", action_name == "installation" ], [ "Foundations", "/components/foundations.html", @section&.id == :foundations ], [ "Components", "/components.html", action_name == "components" || (@section && @section.id != :foundations) ], [ "Blocks", "/blocks.html", controller_name == "blocks" ], [ "Theming", "/theming.html", action_name == "theming" ] ] %>
+    <% links = [ [ "Docs", installation_path, action_name == "installation" ], [ "Foundations", component_path(:foundations), @section&.id == :foundations ], [ "Components", components_path, action_name == "components" || (@section && @section.id != :foundations) ], [ "Blocks", blocks_path, controller_name == "blocks" ], [ "Theming", theming_path, action_name == "theming" ] ] %>
     <%= lc_app_header bar: { class: "max-w-330" } do |header| %>
-      <%= header.brand "/", label: "LOST COORDS UI home" do %>
+      <%= header.brand root_path, label: "LOST COORDS UI home" do %>
         <svg class="size-7" viewBox="0 0 28 28" fill="none" aria-hidden="true"><path d="M7 3v18h18M3 7h18v18M14 9v10M9 14h10" stroke="currentColor" stroke-width="2"/></svg>
         <span class="text-sm">lostcoords<span class="text-muted-foreground"> / </span>ui</span>
       <% end %>

@@ -5,8 +5,8 @@ module DocsBlocks
 
   Block = Data.define(:id, :title, :description, :notes) do
     def partial = "blocks/examples/#{id}"
-    def url = "/blocks/#{id}.html"
-    def preview_url = "/blocks/#{id}/preview.html"
+    def url = Rails.application.routes.url_helpers.block_path(id)
+    def preview_url = Rails.application.routes.url_helpers.block_preview_path(id)
 
     def components
       builders = sources.first.content.scan(/\blc_\w+/).map(&:to_sym)

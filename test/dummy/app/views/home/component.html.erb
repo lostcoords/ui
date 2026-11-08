@@ -1,5 +1,5 @@
 <% position = @sections.index(@section) %>
-<% neighbor = ->(index) { (page = @sections[index]) && index >= 0 ? [ page.title, "/components/#{page.id}.html" ] : nil } %>
+<% neighbor = ->(index) { (page = @sections[index]) && index >= 0 ? [ page.title, component_path(page.id) ] : nil } %>
 <% pages = { previous: neighbor.(position - 1), next: neighbor.(position + 1) } %>
 <% contents = lc_toc do |toc| %>
   <% if @section.id == :foundations %>
@@ -30,7 +30,7 @@
   <%= render "showcase/motion" if @section.id == :foundations %>
   <%= render "showcase/copy_button" if @section.id == :copy_button %>
   <%= lc_section title: "Usage", id: "usage", anchor: true do %>
-    <p class="<%= lc_text_class(size: :small, tone: :muted, extra: "text-pretty") %>">After the <a href="/installation.html" class="<%= lc_link_class %>">one-time setup</a>, call the helper directly from ERB. No component import is needed.</p>
+    <p class="<%= lc_text_class(size: :small, tone: :muted, extra: "text-pretty") %>">After the <a href="<%= installation_path %>" class="<%= lc_link_class %>">one-time setup</a>, call the helper directly from ERB. No component import is needed.</p>
     <%= render "showcase/source_code", source: showcase_source(@section.examples.first, id: "my-component"), id: "usage-code", label: "#{@section.title} usage" %>
   <% end %>
   <%= lc_section title: "Examples", id: "examples", anchor: true do %>

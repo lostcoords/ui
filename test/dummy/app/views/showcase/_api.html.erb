@@ -21,7 +21,7 @@
   <%= lc_card do |card| %>
     <%= card.header title: "Styling and extension" %>
     <%= card.content class: "text-small text-muted-foreground" do %>
-    <p>Use <code>class:</code> to merge utilities, native attributes for application behavior, and the <a href="/theming.html" class="<%= lc_link_class %>">theming guide</a> for the shared palette. For custom markup, the <a href="https://github.com/lostcoords/ui#advanced-style-composition" class="<%= lc_link_class %>">advanced class helpers</a> expose the same styles, including glass surfaces and class merging.</p>
+    <p>Use <code>class:</code> to merge utilities, native attributes for application behavior, and the <a href="<%= theming_path %>" class="<%= lc_link_class %>">theming guide</a> for the shared palette. For custom markup, the <a href="https://github.com/lostcoords/ui#advanced-style-composition" class="<%= lc_link_class %>">advanced class helpers</a> expose the same styles, including glass surfaces and class merging.</p>
     <p><a href="/api.json" class="<%= lc_link_class %>">API JSON</a> · <a href="/llms.txt" class="<%= lc_link_class %>">LLM reference</a></p>
     <% end %>
   <% end %>

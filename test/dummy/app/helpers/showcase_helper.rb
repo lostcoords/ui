@@ -19,7 +19,7 @@ module ShowcaseHelper
   def showcase_related(section)
     section.related.filter_map do |name|
       owner = Showcase.owner(name)
-      [ name, "/components/#{owner.id}.html##{name}" ] if owner
+      [ name, component_path(owner.id, anchor: name) ] if owner
     end
   end
 

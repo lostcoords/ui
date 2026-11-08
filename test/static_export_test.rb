@@ -24,7 +24,8 @@ class StaticExportTest < ActiveSupport::TestCase
       assert search.any? { |document| document["text"].include?("lazyLoadControllersFrom") }, "Search indexes page text"
       search.each do |document|
         path, fragment = document["url"].split("#", 2)
-        page = directory.join(path.delete_prefix("/"))
+        # GitHub Pages serves /blocks from blocks.html.
+        page = directory.join(path.delete_prefix("/")).then { File.extname(it).empty? ? it.sub_ext(".html") : it }
         assert page.file?, "Search links to a missing page: #{document["url"]}"
         assert Nokogiri::HTML(page.read).at_css("[id='#{fragment}']"), "Search links to a missing anchor: #{document["url"]}" if fragment
       end

@@ -27,7 +27,7 @@ class HomeTest < ActionDispatch::IntegrationTest
       end
       section.related.each do |name|
         assert_select "##{name}", { count: 0 }, "#{section.id} documents #{name}, which another page owns"
-        assert_select %(#api a[href="/components/#{Showcase.owner(name).id}.html##{name}"]), { count: 1 }, "#{section.id} does not link #{name}"
+        assert_select %(#api a[href="/components/#{Showcase.owner(name).id}##{name}"]), { count: 1 }, "#{section.id} does not link #{name}"
       end
     end
   end
@@ -45,9 +45,9 @@ class HomeTest < ActionDispatch::IntegrationTest
     assert_select "h1", text: "Components"
     components = Showcase.sections.reject { |section| section.id == :foundations }.sort_by(&:title)
     assert_select 'main ul[aria-label="All components"] a' do |links|
-      assert_equal components.map { |component| "/components/#{component.id}.html" }, links.map { |link| link["href"] }
+      assert_equal components.map { |component| "/components/#{component.id}" }, links.map { |link| link["href"] }
     end
-    assert_select 'header nav a[href="/components.html"][aria-current="page"]', count: 1
+    assert_select 'header nav a[href="/components"][aria-current="page"]', count: 1
 
     header_links = css_select('header nav[aria-label="Main"] a').map { |link| link["href"] }
     assert_select 'nav[aria-label="Documentation"] ul[aria-label="Library"]' do |sidebars|

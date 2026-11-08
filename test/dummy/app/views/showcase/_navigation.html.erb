@@ -1,15 +1,15 @@
 <%= lc_nav_list label: "Documentation" do |nav| %>
   <%= nav.group "Library" do %>
-    <%= nav.link "Installation", "/installation.html", current: action_name == "installation" %>
-    <%= nav.link "Foundations", "/components/foundations.html", current: @section&.id == :foundations %>
-    <%= nav.link "Components", "/components.html", current: action_name == "components" %>
-    <%= nav.link "Blocks", "/blocks.html", current: controller_name == "blocks" %>
-    <%= nav.link "Theming", "/theming.html", current: action_name == "theming" %>
+    <%= nav.link "Installation", installation_path, current: action_name == "installation" %>
+    <%= nav.link "Foundations", component_path(:foundations), current: @section&.id == :foundations %>
+    <%= nav.link "Components", components_path, current: action_name == "components" %>
+    <%= nav.link "Blocks", blocks_path, current: controller_name == "blocks" %>
+    <%= nav.link "Theming", theming_path, current: action_name == "theming" %>
   <% end %>
   <%= nav.group "Components" do %>
     <% @sections.each do |section| %>
       <% next if section.id == :foundations %>
-      <%= nav.link section.title, "/components/#{section.id}.html", current: @section&.id == section.id %>
+      <%= nav.link section.title, component_path(section.id), current: @section&.id == section.id %>
     <% end %>
   <% end %>
 <% end %>

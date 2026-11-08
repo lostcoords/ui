@@ -2,8 +2,8 @@
 
 Rails rendering helpers with semantic HTML, native attributes and browser interactions.
 
-Install and styling: https://ui.lostcoords.com/installation.html
-Theming: https://ui.lostcoords.com/theming.html
+Install and styling: https://ui.lostcoords.com/installation
+Theming: https://ui.lostcoords.com/theming
 API JSON: https://ui.lostcoords.com/api.json
 
 Tailwind CSS v4 is required. Install the gem once; the Rails engine exposes all lc_* helpers without per-component imports.
@@ -39,13 +39,13 @@ Override only the roles you need. Soft status backgrounds are generated automati
 
 ## lc_checkbox
 
-https://ui.lostcoords.com/components/checkbox.html#lc_checkbox
+https://ui.lostcoords.com/components/checkbox#lc_checkbox
 
 ```ruby
 lc_checkbox(label, name: nil, value: "1", checked: false, unchecked_value: "0", hint: nil, card: false, **attributes, &block)
 ```
 
-Checkboxes: https://ui.lostcoords.com/components/checkbox.html
+Checkboxes: https://ui.lostcoords.com/components/checkbox
 
 ```erb
 <%= lc_stack gap: :related do %>
@@ -57,13 +57,13 @@ Checkboxes: https://ui.lostcoords.com/components/checkbox.html
 
 ## lc_radio
 
-https://ui.lostcoords.com/components/radio.html#lc_radio
+https://ui.lostcoords.com/components/radio#lc_radio
 
 ```ruby
 lc_radio(label, name:, value:, checked: false, hint: nil, card: false, **attributes, &block)
 ```
 
-Radio group: https://ui.lostcoords.com/components/radio.html
+Radio group: https://ui.lostcoords.com/components/radio
 
 ```erb
 <%= lc_choice_group legend: "Plan", hint: "You can change plans at any time." do %>
@@ -73,7 +73,7 @@ Radio group: https://ui.lostcoords.com/components/radio.html
 <% end %>
 ```
 
-Cards: https://ui.lostcoords.com/components/radio.html
+Cards: https://ui.lostcoords.com/components/radio
 
 ```erb
 <%= lc_choice_group legend: "Plan", class: "w-full max-w-md" do %>
@@ -87,13 +87,13 @@ Cards: https://ui.lostcoords.com/components/radio.html
 
 ## lc_switch
 
-https://ui.lostcoords.com/components/switch.html#lc_switch
+https://ui.lostcoords.com/components/switch#lc_switch
 
 ```ruby
 lc_switch(label, name: nil, value: "1", checked: false, unchecked_value: "0", hint: nil, **attributes)
 ```
 
-Switches: https://ui.lostcoords.com/components/switch.html
+Switches: https://ui.lostcoords.com/components/switch
 
 ```erb
 <%= lc_stack gap: :related do %>
@@ -102,7 +102,7 @@ Switches: https://ui.lostcoords.com/components/switch.html
 <% end %>
 ```
 
-Tabs: https://ui.lostcoords.com/components/tabs.html
+Tabs: https://ui.lostcoords.com/components/tabs
 
 ```erb
 <%= lc_tabs id: "my-component-tabs", label: "Project", class: "w-full" do |tabs| %>
@@ -118,7 +118,7 @@ Tabs: https://ui.lostcoords.com/components/tabs.html
 <% end %>
 ```
 
-Vertical, with manual activation: https://ui.lostcoords.com/components/tabs.html
+Vertical, with manual activation: https://ui.lostcoords.com/components/tabs
 
 ```erb
 <%= lc_tabs id: "my-component-settings", label: "Settings", orientation: :vertical, activation: :manual, class: "w-full" do |tabs| %>
@@ -136,13 +136,13 @@ Vertical, with manual activation: https://ui.lostcoords.com/components/tabs.html
 
 ## lc_choice_group
 
-https://ui.lostcoords.com/components/radio.html#lc_choice_group
+https://ui.lostcoords.com/components/radio#lc_choice_group
 
 ```ruby
 lc_choice_group(legend:, **options, &block)
 ```
 
-Radio group: https://ui.lostcoords.com/components/radio.html
+Radio group: https://ui.lostcoords.com/components/radio
 
 ```erb
 <%= lc_choice_group legend: "Plan", hint: "You can change plans at any time." do %>
@@ -152,7 +152,7 @@ Radio group: https://ui.lostcoords.com/components/radio.html
 <% end %>
 ```
 
-Cards: https://ui.lostcoords.com/components/radio.html
+Cards: https://ui.lostcoords.com/components/radio
 
 ```erb
 <%= lc_choice_group legend: "Plan", class: "w-full max-w-md" do %>
@@ -166,25 +166,25 @@ Cards: https://ui.lostcoords.com/components/radio.html
 
 ## lc_code_block
 
-https://ui.lostcoords.com/components/code_block.html#lc_code_block
+https://ui.lostcoords.com/components/code_block#lc_code_block
 
 ```ruby
 lc_code_block(source, id:, language: nil, title: nil, label: nil, max_lines: 10, **attributes, &block)
 ```
 
-Plain source: https://ui.lostcoords.com/components/code_block.html
+Plain source: https://ui.lostcoords.com/components/code_block
 
 ```erb
 <%= lc_code_block "def hello(name)\n  puts name\nend", id: "my-component-ruby", language: :ruby, label: "Ruby greeting", class: "w-full" %>
 ```
 
-With a filename: https://ui.lostcoords.com/components/code_block.html
+With a filename: https://ui.lostcoords.com/components/code_block
 
 ```erb
 <%= lc_code_block "def hello(name)\n  puts name\nend", id: "my-component-file", language: :ruby, title: "app/helpers/greeting_helper.rb", label: "Greeting helper", class: "w-full" %>
 ```
 
-Collapsible source: https://ui.lostcoords.com/components/code_block.html
+Collapsible source: https://ui.lostcoords.com/components/code_block
 
 ```erb
 <%= lc_code_block (1..15).map { |number| "puts #{number}" }.join("\n"), id: "my-component-long", language: :ruby, label: "Long Ruby snippet", max_lines: 5, class: "w-full" %>
@@ -192,13 +192,13 @@ Collapsible source: https://ui.lostcoords.com/components/code_block.html
 
 ## lc_collapsible
 
-https://ui.lostcoords.com/components/collapsible.html#lc_collapsible
+https://ui.lostcoords.com/components/collapsible#lc_collapsible
 
 ```ruby
 lc_collapsible(title: nil, open: false, card: true, summary_class: nil, indicator: :marker, button: nil, **attributes, &block)
 ```
 
-Expandable content: https://ui.lostcoords.com/components/collapsible.html
+Expandable content: https://ui.lostcoords.com/components/collapsible
 
 ```erb
 <%= lc_collapsible class: "w-full", title: "Can I use my own colors?" do %>
@@ -206,7 +206,7 @@ Expandable content: https://ui.lostcoords.com/components/collapsible.html
 <% end %>
 ```
 
-Row summary with a chevron: https://ui.lostcoords.com/components/collapsible.html
+Row summary with a chevron: https://ui.lostcoords.com/components/collapsible
 
 ```erb
 <%= lc_collapsible card: false, indicator: :chevron, class: "w-full max-w-80", summary_class: "rounded-2xl px-3 font-medium hover:bg-accent" do |collapsible| %>
@@ -221,7 +221,7 @@ Row summary with a chevron: https://ui.lostcoords.com/components/collapsible.htm
 <% end %>
 ```
 
-Button summary: https://ui.lostcoords.com/components/collapsible.html
+Button summary: https://ui.lostcoords.com/components/collapsible
 
 ```erb
 <%= lc_collapsible card: false, button: { variant: :secondary, size: :sm }, summary_class: "w-fit", class: "w-full max-w-80" do |collapsible| %>
@@ -237,20 +237,20 @@ Button summary: https://ui.lostcoords.com/components/collapsible.html
 
 ## lc_copy_button
 
-https://ui.lostcoords.com/components/copy_button.html#lc_copy_button
+https://ui.lostcoords.com/components/copy_button#lc_copy_button
 
 ```ruby
 lc_copy_button(label = nil, value: nil, source: nil, copied_label: nil, error_label: nil, reset_after: 2000, icon_only: false, variant: :secondary, size: :md, **attributes)
 ```
 
-Motion feedback: https://ui.lostcoords.com/components/foundations.html
+Motion feedback: https://ui.lostcoords.com/components/foundations
 
 ```erb
 <%= lc_copy_button "Copy link", value: "https://ui.lostcoords.com", copied_label: "Link copied", reset_after: 2500 %>
 <%= lc_copy_button "Copy link", value: "https://ui.lostcoords.com", icon_only: true, variant: :ghost %>
 ```
 
-Labels, icons and disabled controls: https://ui.lostcoords.com/components/copy_button.html
+Labels, icons and disabled controls: https://ui.lostcoords.com/components/copy_button
 
 ```erb
 <%= lc_copy_button value: "https://ui.lostcoords.com", variant: :primary %>
@@ -259,7 +259,7 @@ Labels, icons and disabled controls: https://ui.lostcoords.com/components/copy_b
 <%= lc_copy_button value: "Unavailable", disabled: true %>
 ```
 
-Copy from an element: https://ui.lostcoords.com/components/copy_button.html
+Copy from an element: https://ui.lostcoords.com/components/copy_button
 
 ```erb
 <%= lc_stack gap: :related, class: "w-full max-w-md" do %>
@@ -271,7 +271,7 @@ Copy from an element: https://ui.lostcoords.com/components/copy_button.html
 <% end %>
 ```
 
-Translated labels: https://ui.lostcoords.com/components/copy_button.html
+Translated labels: https://ui.lostcoords.com/components/copy_button
 
 ```erb
 <% I18n.with_locale(:ja) do %>
@@ -284,14 +284,14 @@ Translated labels: https://ui.lostcoords.com/components/copy_button.html
 
 ## lc_description_list
 
-https://ui.lostcoords.com/components/description_list.html#lc_description_list
+https://ui.lostcoords.com/components/description_list#lc_description_list
 
 ```ruby
 lc_description_list(**attributes, &block)
 list.item(term, detail = nil, **attributes, &block)
 ```
 
-Details: https://ui.lostcoords.com/components/description_list.html
+Details: https://ui.lostcoords.com/components/description_list
 
 ```erb
 <%= lc_card class: "w-full" do |card| %>
@@ -308,7 +308,7 @@ Details: https://ui.lostcoords.com/components/description_list.html
 
 ## lc_dialog
 
-https://ui.lostcoords.com/components/dialog.html#lc_dialog
+https://ui.lostcoords.com/components/dialog#lc_dialog
 
 ```ruby
 lc_dialog(id:, title:, description: nil, trigger: lc_t("lostcoords.ui.dialog.trigger"), kind: :modal, size: nil, detents: "fit",
@@ -318,7 +318,7 @@ dialog.footer(**attributes, &block)
 dialog.close(label = nil, variant: :secondary, **attributes)
 ```
 
-Modal: https://ui.lostcoords.com/components/dialog.html
+Modal: https://ui.lostcoords.com/components/dialog
 
 ```erb
 <%= lc_dialog id: "my-component-dialog", title: "Create project", description: "Projects group pages and members.", trigger: "New project" do |dialog| %>
@@ -334,7 +334,7 @@ Modal: https://ui.lostcoords.com/components/dialog.html
 <% end %>
 ```
 
-Mobile dialog: https://ui.lostcoords.com/components/dialog.html
+Mobile dialog: https://ui.lostcoords.com/components/dialog
 
 ```erb
 <%= lc_dialog id: "my-component-sheet", title: "Workspace details", trigger: "Open mobile dialog", detents: "fit" do %>
@@ -345,7 +345,7 @@ Mobile dialog: https://ui.lostcoords.com/components/dialog.html
 <% end %>
 ```
 
-Mobile height options: https://ui.lostcoords.com/components/dialog.html
+Mobile height options: https://ui.lostcoords.com/components/dialog
 
 ```erb
 <%= lc_dialog id: "my-component-sheet", title: "Notes", detents: "medium large" do %>
@@ -353,7 +353,7 @@ Mobile height options: https://ui.lostcoords.com/components/dialog.html
 <% end %>
 ```
 
-Compact dialog: https://ui.lostcoords.com/components/dialog.html
+Compact dialog: https://ui.lostcoords.com/components/dialog
 
 ```erb
 <%= lc_dialog id: "my-component-context", title: "Quick details", trigger: "Open compact dialog", kind: :context do %>
@@ -368,7 +368,7 @@ Compact dialog: https://ui.lostcoords.com/components/dialog.html
 <% end %>
 ```
 
-Opened by your controller: https://ui.lostcoords.com/components/dialog.html
+Opened by your controller: https://ui.lostcoords.com/components/dialog
 
 ```erb
 <div data-controller="lc-dialog">
@@ -386,13 +386,13 @@ Opened by your controller: https://ui.lostcoords.com/components/dialog.html
 
 ## lc_confirm_sheet
 
-https://ui.lostcoords.com/components/dialog.html#lc_confirm_sheet
+https://ui.lostcoords.com/components/dialog#lc_confirm_sheet
 
 ```ruby
 lc_confirm_sheet(**attributes)
 ```
 
-Turbo confirm: https://ui.lostcoords.com/components/dialog.html
+Turbo confirm: https://ui.lostcoords.com/components/dialog
 
 ```erb
 <%# In the layout, once. %>
@@ -407,13 +407,13 @@ Turbo confirm: https://ui.lostcoords.com/components/dialog.html
 
 ## lc_emoji_picker
 
-https://ui.lostcoords.com/components/emoji.html#lc_emoji_picker
+https://ui.lostcoords.com/components/emoji#lc_emoji_picker
 
 ```ruby
 lc_emoji_picker(form:, field:, label:, catalog_url:, value: nil, quick: [], recent: [], recent_scope: nil, auto_submit: false, picker_class: nil, trigger_class: nil, popover_class: nil, **attributes)
 ```
 
-Emoji picker: https://ui.lostcoords.com/components/emoji.html
+Emoji picker: https://ui.lostcoords.com/components/emoji
 
 ```erb
 <%= fields_for :project do |form| %>
@@ -423,13 +423,13 @@ Emoji picker: https://ui.lostcoords.com/components/emoji.html
 
 ## lc_form_with
 
-https://ui.lostcoords.com/components/field.html#lc_form_with
+https://ui.lostcoords.com/components/field#lc_form_with
 
 ```ruby
 lc_form_with(card: false, padding: :md, gap: nil, **options, &block)
 ```
 
-Form builder: https://ui.lostcoords.com/components/field.html
+Form builder: https://ui.lostcoords.com/components/field
 
 ```erb
 <%= lc_form_with model: DocsProject.invalid_example, url: "#", card: true, class: "w-full max-w-sm" do |form| %>
@@ -442,13 +442,13 @@ Form builder: https://ui.lostcoords.com/components/field.html
 
 ## lc_glass
 
-https://ui.lostcoords.com/components/glass.html#lc_glass
+https://ui.lostcoords.com/components/glass#lc_glass
 
 ```ruby
 lc_glass(shape: :bar, thick: false, as: :div, **attributes, &block)
 ```
 
-Search bar: https://ui.lostcoords.com/components/glass.html
+Search bar: https://ui.lostcoords.com/components/glass
 
 ```erb
 <div class="relative isolate grid h-64 w-full place-items-center overflow-hidden rounded-3xl bg-linear-to-br from-success/40 via-warning/40 to-primary/30 p-6">
@@ -461,13 +461,13 @@ Search bar: https://ui.lostcoords.com/components/glass.html
 
 ## lc_icon
 
-https://ui.lostcoords.com/components/button.html#lc_icon
+https://ui.lostcoords.com/components/button#lc_icon
 
 ```ruby
 lc_icon(name, variant: :outline, options: {}, path_options: {})
 ```
 
-Header: https://ui.lostcoords.com/components/app_header.html
+Header: https://ui.lostcoords.com/components/app_header
 
 ```erb
 <%= lc_app_header class: "static w-full p-0 sm:p-0" do |header| %>
@@ -486,7 +486,7 @@ Header: https://ui.lostcoords.com/components/app_header.html
 <% end %>
 ```
 
-Custom icons and content: https://ui.lostcoords.com/components/button.html
+Custom icons and content: https://ui.lostcoords.com/components/button
 
 ```erb
 <%= lc_button variant: :secondary do %>
@@ -504,7 +504,7 @@ Custom icons and content: https://ui.lostcoords.com/components/button.html
 <% end %>
 ```
 
-Button summary: https://ui.lostcoords.com/components/collapsible.html
+Button summary: https://ui.lostcoords.com/components/collapsible
 
 ```erb
 <%= lc_collapsible card: false, button: { variant: :secondary, size: :sm }, summary_class: "w-fit", class: "w-full max-w-80" do |collapsible| %>
@@ -518,7 +518,7 @@ Button summary: https://ui.lostcoords.com/components/collapsible.html
 <% end %>
 ```
 
-Search bar: https://ui.lostcoords.com/components/glass.html
+Search bar: https://ui.lostcoords.com/components/glass
 
 ```erb
 <div class="relative isolate grid h-64 w-full place-items-center overflow-hidden rounded-3xl bg-linear-to-br from-success/40 via-warning/40 to-primary/30 p-6">
@@ -529,7 +529,7 @@ Search bar: https://ui.lostcoords.com/components/glass.html
 </div>
 ```
 
-Settings: https://ui.lostcoords.com/components/list_group.html
+Settings: https://ui.lostcoords.com/components/list_group
 
 ```erb
 <%= lc_list_section "Sign-in methods", id: "my-component", footnote: "Keep at least one way to sign in.", class: "w-full max-w-md" do %>
@@ -555,13 +555,13 @@ Settings: https://ui.lostcoords.com/components/list_group.html
 
 ## lc_stack
 
-https://ui.lostcoords.com/components/foundations.html#lc_stack
+https://ui.lostcoords.com/components/foundations#lc_stack
 
 ```ruby
 lc_stack(gap: :content, as: :div, **attributes, &block)
 ```
 
-Text styles: https://ui.lostcoords.com/components/foundations.html
+Text styles: https://ui.lostcoords.com/components/foundations
 
 ```erb
 <div class="grid gap-5">
@@ -574,7 +574,7 @@ Text styles: https://ui.lostcoords.com/components/foundations.html
 </div>
 ```
 
-Page rhythm: https://ui.lostcoords.com/components/foundations.html
+Page rhythm: https://ui.lostcoords.com/components/foundations
 
 ```erb
 <%= lc_stack gap: :section, class: "w-full max-w-xl" do %>
@@ -609,7 +609,7 @@ Page rhythm: https://ui.lostcoords.com/components/foundations.html
 <% end %>
 ```
 
-Responsive containers: https://ui.lostcoords.com/components/foundations.html
+Responsive containers: https://ui.lostcoords.com/components/foundations
 
 ```erb
 <%= lc_container do %>
@@ -638,7 +638,7 @@ Responsive containers: https://ui.lostcoords.com/components/foundations.html
 <% end %>
 ```
 
-Checkboxes: https://ui.lostcoords.com/components/checkbox.html
+Checkboxes: https://ui.lostcoords.com/components/checkbox
 
 ```erb
 <%= lc_stack gap: :related do %>
@@ -648,7 +648,7 @@ Checkboxes: https://ui.lostcoords.com/components/checkbox.html
 <% end %>
 ```
 
-Copy from an element: https://ui.lostcoords.com/components/copy_button.html
+Copy from an element: https://ui.lostcoords.com/components/copy_button
 
 ```erb
 <%= lc_stack gap: :related, class: "w-full max-w-md" do %>
@@ -660,7 +660,7 @@ Copy from an element: https://ui.lostcoords.com/components/copy_button.html
 <% end %>
 ```
 
-Empty state: https://ui.lostcoords.com/components/empty_state.html
+Empty state: https://ui.lostcoords.com/components/empty_state
 
 ```erb
 <%= lc_empty_state class: "w-full" do %>
@@ -673,7 +673,7 @@ Empty state: https://ui.lostcoords.com/components/empty_state.html
 <% end %>
 ```
 
-Grouped controls: https://ui.lostcoords.com/components/field.html
+Grouped controls: https://ui.lostcoords.com/components/field
 
 ```erb
 <%= lc_stack class: "w-full max-w-sm" do %>
@@ -694,7 +694,7 @@ Grouped controls: https://ui.lostcoords.com/components/field.html
 <% end %>
 ```
 
-Focus a field: https://ui.lostcoords.com/components/kbd.html
+Focus a field: https://ui.lostcoords.com/components/kbd
 
 ```erb
 <%= lc_stack gap: :related, class: "w-full max-w-sm" do %>
@@ -707,7 +707,7 @@ Focus a field: https://ui.lostcoords.com/components/kbd.html
 <% end %>
 ```
 
-Tones: https://ui.lostcoords.com/components/link.html
+Tones: https://ui.lostcoords.com/components/link
 
 ```erb
 <%= lc_stack gap: :related do %>
@@ -717,7 +717,7 @@ Tones: https://ui.lostcoords.com/components/link.html
 <% end %>
 ```
 
-Skip link: https://ui.lostcoords.com/components/skip_link.html
+Skip link: https://ui.lostcoords.com/components/skip_link
 
 ```erb
 <%= lc_stack gap: :related, class: "items-center" do %>
@@ -726,7 +726,7 @@ Skip link: https://ui.lostcoords.com/components/skip_link.html
 <% end %>
 ```
 
-Switches: https://ui.lostcoords.com/components/switch.html
+Switches: https://ui.lostcoords.com/components/switch
 
 ```erb
 <%= lc_stack gap: :related do %>
@@ -737,13 +737,13 @@ Switches: https://ui.lostcoords.com/components/switch.html
 
 ## lc_inline
 
-https://ui.lostcoords.com/components/foundations.html#lc_inline
+https://ui.lostcoords.com/components/foundations#lc_inline
 
 ```ruby
 lc_inline(gap: :related, as: :div, **attributes, &block)
 ```
 
-Page rhythm: https://ui.lostcoords.com/components/foundations.html
+Page rhythm: https://ui.lostcoords.com/components/foundations
 
 ```erb
 <%= lc_stack gap: :section, class: "w-full max-w-xl" do %>
@@ -778,7 +778,7 @@ Page rhythm: https://ui.lostcoords.com/components/foundations.html
 <% end %>
 ```
 
-Responsive containers: https://ui.lostcoords.com/components/foundations.html
+Responsive containers: https://ui.lostcoords.com/components/foundations
 
 ```erb
 <%= lc_container do %>
@@ -807,7 +807,7 @@ Responsive containers: https://ui.lostcoords.com/components/foundations.html
 <% end %>
 ```
 
-Expanded swap and decorative span: https://ui.lostcoords.com/components/button.html
+Expanded swap and decorative span: https://ui.lostcoords.com/components/button
 
 ```erb
 <%= lc_inline do %>
@@ -821,7 +821,7 @@ Expanded swap and decorative span: https://ui.lostcoords.com/components/button.h
 <% end %>
 ```
 
-Form actions: https://ui.lostcoords.com/components/field.html
+Form actions: https://ui.lostcoords.com/components/field
 
 ```erb
 <%= lc_inline class: "justify-end" do %>
@@ -830,7 +830,7 @@ Form actions: https://ui.lostcoords.com/components/field.html
 <% end %>
 ```
 
-Grouped controls: https://ui.lostcoords.com/components/field.html
+Grouped controls: https://ui.lostcoords.com/components/field
 
 ```erb
 <%= lc_stack class: "w-full max-w-sm" do %>
@@ -851,7 +851,7 @@ Grouped controls: https://ui.lostcoords.com/components/field.html
 <% end %>
 ```
 
-Filters: https://ui.lostcoords.com/components/toggle.html
+Filters: https://ui.lostcoords.com/components/toggle
 
 ```erb
 <%= lc_inline role: "group", aria: { label: "Topics" } do %>
@@ -861,7 +861,7 @@ Filters: https://ui.lostcoords.com/components/toggle.html
 <% end %>
 ```
 
-Navigation: https://ui.lostcoords.com/components/toggle.html
+Navigation: https://ui.lostcoords.com/components/toggle
 
 ```erb
 <%= lc_inline do %>
@@ -870,7 +870,7 @@ Navigation: https://ui.lostcoords.com/components/toggle.html
 <% end %>
 ```
 
-Form values, native radios and reset: https://ui.lostcoords.com/components/toggle_group.html
+Form values, native radios and reset: https://ui.lostcoords.com/components/toggle_group
 
 ```erb
 <form class="flex flex-col items-center gap-4">
@@ -887,7 +887,7 @@ Form values, native radios and reset: https://ui.lostcoords.com/components/toggl
 </form>
 ```
 
-Tooltips: https://ui.lostcoords.com/components/tooltip.html
+Tooltips: https://ui.lostcoords.com/components/tooltip
 
 ```erb
 <%= lc_inline gap: :content do %>
@@ -902,13 +902,13 @@ Tooltips: https://ui.lostcoords.com/components/tooltip.html
 
 ## lc_container
 
-https://ui.lostcoords.com/components/foundations.html#lc_container
+https://ui.lostcoords.com/components/foundations#lc_container
 
 ```ruby
 lc_container(size: :page, **attributes, &block)
 ```
 
-Responsive containers: https://ui.lostcoords.com/components/foundations.html
+Responsive containers: https://ui.lostcoords.com/components/foundations
 
 ```erb
 <%= lc_container do %>
@@ -939,13 +939,13 @@ Responsive containers: https://ui.lostcoords.com/components/foundations.html
 
 ## lc_section
 
-https://ui.lostcoords.com/components/foundations.html#lc_section
+https://ui.lostcoords.com/components/foundations#lc_section
 
 ```ruby
 lc_section(title:, level: 2, actions: nil, anchor: false, **attributes, &block)
 ```
 
-Page rhythm: https://ui.lostcoords.com/components/foundations.html
+Page rhythm: https://ui.lostcoords.com/components/foundations
 
 ```erb
 <%= lc_stack gap: :section, class: "w-full max-w-xl" do %>
@@ -980,7 +980,7 @@ Page rhythm: https://ui.lostcoords.com/components/foundations.html
 <% end %>
 ```
 
-Responsive containers: https://ui.lostcoords.com/components/foundations.html
+Responsive containers: https://ui.lostcoords.com/components/foundations
 
 ```erb
 <%= lc_container do %>
@@ -1009,7 +1009,7 @@ Responsive containers: https://ui.lostcoords.com/components/foundations.html
 <% end %>
 ```
 
-Documentation page: https://ui.lostcoords.com/components/docs_shell.html
+Documentation page: https://ui.lostcoords.com/components/docs_shell
 
 ```erb
 <% navigation = lc_nav_list label: "Guides" do |nav| %>
@@ -1026,13 +1026,13 @@ Documentation page: https://ui.lostcoords.com/components/docs_shell.html
 
 ## lc_section_header
 
-https://ui.lostcoords.com/components/foundations.html#lc_section_header
+https://ui.lostcoords.com/components/foundations#lc_section_header
 
 ```ruby
 lc_section_header(as: :header, **attributes, &block)
 ```
 
-Page rhythm: https://ui.lostcoords.com/components/foundations.html
+Page rhythm: https://ui.lostcoords.com/components/foundations
 
 ```erb
 <%= lc_stack gap: :section, class: "w-full max-w-xl" do %>
@@ -1069,13 +1069,13 @@ Page rhythm: https://ui.lostcoords.com/components/foundations.html
 
 ## lc_list_section
 
-https://ui.lostcoords.com/components/list_group.html#lc_list_section
+https://ui.lostcoords.com/components/list_group#lc_list_section
 
 ```ruby
 lc_list_section(heading, footnote: nil, level: 2, **attributes, &block)
 ```
 
-Settings: https://ui.lostcoords.com/components/list_group.html
+Settings: https://ui.lostcoords.com/components/list_group
 
 ```erb
 <%= lc_list_section "Sign-in methods", id: "my-component", footnote: "Keep at least one way to sign in.", class: "w-full max-w-md" do %>
@@ -1101,13 +1101,13 @@ Settings: https://ui.lostcoords.com/components/list_group.html
 
 ## lc_list_group
 
-https://ui.lostcoords.com/components/list_group.html#lc_list_group
+https://ui.lostcoords.com/components/list_group#lc_list_group
 
 ```ruby
 lc_list_group(tag: :div, **attributes, &block)
 ```
 
-Settings: https://ui.lostcoords.com/components/list_group.html
+Settings: https://ui.lostcoords.com/components/list_group
 
 ```erb
 <%= lc_list_section "Sign-in methods", id: "my-component", footnote: "Keep at least one way to sign in.", class: "w-full max-w-md" do %>
@@ -1131,7 +1131,7 @@ Settings: https://ui.lostcoords.com/components/list_group.html
 <% end %>
 ```
 
-Form rows: https://ui.lostcoords.com/components/list_group.html
+Form rows: https://ui.lostcoords.com/components/list_group
 
 ```erb
 <%= lc_list_group class: "w-full max-w-md" do %>
@@ -1152,13 +1152,13 @@ Form rows: https://ui.lostcoords.com/components/list_group.html
 
 ## lc_list_row
 
-https://ui.lostcoords.com/components/list_group.html#lc_list_row
+https://ui.lostcoords.com/components/list_group#lc_list_row
 
 ```ruby
 lc_list_row(title = nil, subtitle: nil, icon: nil, href: nil, tag: nil, padded: true, **attributes, &block)
 ```
 
-Settings: https://ui.lostcoords.com/components/list_group.html
+Settings: https://ui.lostcoords.com/components/list_group
 
 ```erb
 <%= lc_list_section "Sign-in methods", id: "my-component", footnote: "Keep at least one way to sign in.", class: "w-full max-w-md" do %>
@@ -1184,13 +1184,13 @@ Settings: https://ui.lostcoords.com/components/list_group.html
 
 ## lc_list_field
 
-https://ui.lostcoords.com/components/list_group.html#lc_list_field
+https://ui.lostcoords.com/components/list_group#lc_list_field
 
 ```ruby
 lc_list_field(label, icon: nil, id: nil, tag: :div, surface: true, **attributes, &block)
 ```
 
-Form rows: https://ui.lostcoords.com/components/list_group.html
+Form rows: https://ui.lostcoords.com/components/list_group
 
 ```erb
 <%= lc_list_group class: "w-full max-w-md" do %>
@@ -1211,13 +1211,13 @@ Form rows: https://ui.lostcoords.com/components/list_group.html
 
 ## lc_list_item
 
-https://ui.lostcoords.com/components/list_group.html#lc_list_item
+https://ui.lostcoords.com/components/list_group#lc_list_item
 
 ```ruby
 lc_list_item(title, subtitle: nil, icon: nil, tag: :div, **attributes, &block)
 ```
 
-Settings: https://ui.lostcoords.com/components/list_group.html
+Settings: https://ui.lostcoords.com/components/list_group
 
 ```erb
 <%= lc_list_section "Sign-in methods", id: "my-component", footnote: "Keep at least one way to sign in.", class: "w-full max-w-md" do %>
@@ -1243,13 +1243,13 @@ Settings: https://ui.lostcoords.com/components/list_group.html
 
 ## lc_menu
 
-https://ui.lostcoords.com/components/menu.html#lc_menu
+https://ui.lostcoords.com/components/menu#lc_menu
 
 ```ruby
 lc_menu(id:, label: lc_t("lostcoords.ui.menu.label"), align: :end, trigger: :button, icon: "ellipsis-vertical", trigger_attributes: {}, wrapper_attributes: {}, **attributes, &block)
 ```
 
-Select trigger: https://ui.lostcoords.com/components/button.html
+Select trigger: https://ui.lostcoords.com/components/button
 
 ```erb
 <%= lc_menu id: "my-component-menu", label: "Member", align: :start do |menu| %>
@@ -1260,7 +1260,7 @@ Select trigger: https://ui.lostcoords.com/components/button.html
 <% end %>
 ```
 
-Turbo confirm: https://ui.lostcoords.com/components/dialog.html
+Turbo confirm: https://ui.lostcoords.com/components/dialog
 
 ```erb
 <%# In the layout, once. %>
@@ -1273,7 +1273,7 @@ Turbo confirm: https://ui.lostcoords.com/components/dialog.html
 <% end %>
 ```
 
-Actions: https://ui.lostcoords.com/components/menu.html
+Actions: https://ui.lostcoords.com/components/menu
 
 ```erb
 <%= lc_menu id: "my-component-menu", label: "Project actions" do %>
@@ -1283,7 +1283,7 @@ Actions: https://ui.lostcoords.com/components/menu.html
 <% end %>
 ```
 
-Icon trigger, hints, choices and groups: https://ui.lostcoords.com/components/menu.html
+Icon trigger, hints, choices and groups: https://ui.lostcoords.com/components/menu
 
 ```erb
 <div class="flex flex-wrap items-center gap-content">
@@ -1309,13 +1309,13 @@ Icon trigger, hints, choices and groups: https://ui.lostcoords.com/components/me
 
 ## lc_popover
 
-https://ui.lostcoords.com/components/popover.html#lc_popover
+https://ui.lostcoords.com/components/popover#lc_popover
 
 ```ruby
 lc_popover(id:, label: lc_t("lostcoords.ui.popover.trigger"), title: nil, align: :end, trigger_variant: :secondary, trigger: :button, icon: "ellipsis-vertical", trigger_attributes: {}, wrapper_attributes: {}, **attributes, &block)
 ```
 
-Anchored content: https://ui.lostcoords.com/components/popover.html
+Anchored content: https://ui.lostcoords.com/components/popover
 
 ```erb
 <%= lc_popover id: "my-component-popover", label: "Project details", title: "Design system" do %>
@@ -1323,7 +1323,7 @@ Anchored content: https://ui.lostcoords.com/components/popover.html
 <% end %>
 ```
 
-Opened from a row: https://ui.lostcoords.com/components/popover.html
+Opened from a row: https://ui.lostcoords.com/components/popover
 
 ```erb
 <div class="flex items-center gap-related min-h-control-md px-3 rounded-2xl bg-muted cursor-pointer" data-controller="lc-popover" data-action="click->lc-popover#toggleFromRow">
@@ -1337,13 +1337,13 @@ Opened from a row: https://ui.lostcoords.com/components/popover.html
 
 ## lc_menu_option
 
-https://ui.lostcoords.com/components/menu.html#lc_menu_option
+https://ui.lostcoords.com/components/menu#lc_menu_option
 
 ```ruby
 lc_menu_option(label = nil, href: nil, tone: :default, icon: nil, leading: nil, hint: nil, checked: nil, checkbox: false, method: nil, params: {}, form: {}, **attributes, &block)
 ```
 
-Select trigger: https://ui.lostcoords.com/components/button.html
+Select trigger: https://ui.lostcoords.com/components/button
 
 ```erb
 <%= lc_menu id: "my-component-menu", label: "Member", align: :start do |menu| %>
@@ -1354,7 +1354,7 @@ Select trigger: https://ui.lostcoords.com/components/button.html
 <% end %>
 ```
 
-Split button: https://ui.lostcoords.com/components/button.html
+Split button: https://ui.lostcoords.com/components/button
 
 ```erb
 <%= lc_split_button "Add expense", id: "my-component-menu", icon: "plus", menu_label: "More ways to add" do %>
@@ -1363,7 +1363,7 @@ Split button: https://ui.lostcoords.com/components/button.html
 <% end %>
 ```
 
-Split button variants and sizes: https://ui.lostcoords.com/components/button.html
+Split button variants and sizes: https://ui.lostcoords.com/components/button
 
 ```erb
 <% [ [ :secondary, :sm ], [ :outline, :md ], [ :ghost, :lg ] ].each do |variant, size| %>
@@ -1374,7 +1374,7 @@ Split button variants and sizes: https://ui.lostcoords.com/components/button.htm
 <% end %>
 ```
 
-Turbo confirm: https://ui.lostcoords.com/components/dialog.html
+Turbo confirm: https://ui.lostcoords.com/components/dialog
 
 ```erb
 <%# In the layout, once. %>
@@ -1387,7 +1387,7 @@ Turbo confirm: https://ui.lostcoords.com/components/dialog.html
 <% end %>
 ```
 
-Actions: https://ui.lostcoords.com/components/menu.html
+Actions: https://ui.lostcoords.com/components/menu
 
 ```erb
 <%= lc_menu id: "my-component-menu", label: "Project actions" do %>
@@ -1397,7 +1397,7 @@ Actions: https://ui.lostcoords.com/components/menu.html
 <% end %>
 ```
 
-Icon trigger, hints, choices and groups: https://ui.lostcoords.com/components/menu.html
+Icon trigger, hints, choices and groups: https://ui.lostcoords.com/components/menu
 
 ```erb
 <div class="flex flex-wrap items-center gap-content">
@@ -1423,13 +1423,13 @@ Icon trigger, hints, choices and groups: https://ui.lostcoords.com/components/me
 
 ## lc_menu_group
 
-https://ui.lostcoords.com/components/menu.html#lc_menu_group
+https://ui.lostcoords.com/components/menu#lc_menu_group
 
 ```ruby
 lc_menu_group(label, id:, **attributes, &block)
 ```
 
-Icon trigger, hints, choices and groups: https://ui.lostcoords.com/components/menu.html
+Icon trigger, hints, choices and groups: https://ui.lostcoords.com/components/menu
 
 ```erb
 <div class="flex flex-wrap items-center gap-content">
@@ -1455,13 +1455,13 @@ Icon trigger, hints, choices and groups: https://ui.lostcoords.com/components/me
 
 ## lc_link
 
-https://ui.lostcoords.com/components/link.html#lc_link
+https://ui.lostcoords.com/components/link#lc_link
 
 ```ruby
 lc_link(content = nil, url = nil, tone: :inherit, **attributes, &block)
 ```
 
-Tones: https://ui.lostcoords.com/components/link.html
+Tones: https://ui.lostcoords.com/components/link
 
 ```erb
 <%= lc_stack gap: :related do %>
@@ -1473,7 +1473,7 @@ Tones: https://ui.lostcoords.com/components/link.html
 
 ## lc_nav_list
 
-https://ui.lostcoords.com/components/nav_list.html#lc_nav_list
+https://ui.lostcoords.com/components/nav_list#lc_nav_list
 
 ```ruby
 lc_nav_list(label:, compact: false, layout: :column, indicator: false, **attributes, &block)
@@ -1481,7 +1481,7 @@ nav.link(label = nil, url = nil, icon: nil, current: false, indent: false, **att
 nav.group(title, **attributes, &block)
 ```
 
-Documentation page: https://ui.lostcoords.com/components/docs_shell.html
+Documentation page: https://ui.lostcoords.com/components/docs_shell
 
 ```erb
 <% navigation = lc_nav_list label: "Guides" do |nav| %>
@@ -1496,7 +1496,7 @@ Documentation page: https://ui.lostcoords.com/components/docs_shell.html
 <% end %>
 ```
 
-Sidebar: https://ui.lostcoords.com/components/nav_list.html
+Sidebar: https://ui.lostcoords.com/components/nav_list
 
 ```erb
 <%= lc_nav_list label: "Settings", class: "w-full max-w-60" do |nav| %>
@@ -1512,7 +1512,7 @@ Sidebar: https://ui.lostcoords.com/components/nav_list.html
 <% end %>
 ```
 
-On this page: https://ui.lostcoords.com/components/nav_list.html
+On this page: https://ui.lostcoords.com/components/nav_list
 
 ```erb
 <%= lc_nav_list label: "On this page", compact: true, class: "w-full max-w-48" do |nav| %>
@@ -1523,7 +1523,7 @@ On this page: https://ui.lostcoords.com/components/nav_list.html
 <% end %>
 ```
 
-Row with a sliding indicator: https://ui.lostcoords.com/components/nav_list.html
+Row with a sliding indicator: https://ui.lostcoords.com/components/nav_list
 
 ```erb
 <%= lc_nav_list label: "Project", layout: :row, indicator: true, class: "w-full" do |nav| %>
@@ -1534,7 +1534,7 @@ Row with a sliding indicator: https://ui.lostcoords.com/components/nav_list.html
 <% end %>
 ```
 
-Dock: https://ui.lostcoords.com/components/nav_list.html
+Dock: https://ui.lostcoords.com/components/nav_list
 
 ```erb
 <%# On phones, fix it to the bottom with your own classes. layout: :responsive is a dock below sm and a row from sm. %>
@@ -1548,14 +1548,14 @@ Dock: https://ui.lostcoords.com/components/nav_list.html
 
 ## lc_toc
 
-https://ui.lostcoords.com/components/toc.html#lc_toc
+https://ui.lostcoords.com/components/toc#lc_toc
 
 ```ruby
 lc_toc(label: lc_t("lostcoords.ui.toc.label"), headings: nil, levels: 2..3, **attributes, &block)
 toc.link(label, url, indent: false, **attributes)
 ```
 
-Documentation page: https://ui.lostcoords.com/components/docs_shell.html
+Documentation page: https://ui.lostcoords.com/components/docs_shell
 
 ```erb
 <% navigation = lc_nav_list label: "Guides" do |nav| %>
@@ -1570,7 +1570,7 @@ Documentation page: https://ui.lostcoords.com/components/docs_shell.html
 <% end %>
 ```
 
-Links you list: https://ui.lostcoords.com/components/toc.html
+Links you list: https://ui.lostcoords.com/components/toc
 
 ```erb
 <%= lc_toc class: "w-full max-w-56" do |toc| %>
@@ -1581,7 +1581,7 @@ Links you list: https://ui.lostcoords.com/components/toc.html
 <% end %>
 ```
 
-From rendered headings: https://ui.lostcoords.com/components/toc.html
+From rendered headings: https://ui.lostcoords.com/components/toc
 
 ```erb
 <% article = capture do %>
@@ -1598,19 +1598,19 @@ From rendered headings: https://ui.lostcoords.com/components/toc.html
 
 ## lc_pager
 
-https://ui.lostcoords.com/components/pager.html#lc_pager
+https://ui.lostcoords.com/components/pager#lc_pager
 
 ```ruby
 lc_pager(previous: nil, next: nil, label: lc_t("lostcoords.ui.pager.label"), compact: false, **attributes)
 ```
 
-Pager: https://ui.lostcoords.com/components/pager.html
+Pager: https://ui.lostcoords.com/components/pager
 
 ```erb
 <%= lc_pager previous: [ "Installation", "/components/pager.html" ], next: [ "Theming", "/components/pager.html" ], class: "w-full" %>
 ```
 
-Compact: https://ui.lostcoords.com/components/pager.html
+Compact: https://ui.lostcoords.com/components/pager
 
 ```erb
 <%= lc_pager previous: [ "Button", "/components/pager.html" ], next: [ "Card", "/components/pager.html" ], label: "Components", compact: true %>
@@ -1618,13 +1618,13 @@ Compact: https://ui.lostcoords.com/components/pager.html
 
 ## lc_skip_link
 
-https://ui.lostcoords.com/components/skip_link.html#lc_skip_link
+https://ui.lostcoords.com/components/skip_link#lc_skip_link
 
 ```ruby
 lc_skip_link(target = "#main", label: lc_t("lostcoords.ui.skip_link.label"), **attributes)
 ```
 
-Skip link: https://ui.lostcoords.com/components/skip_link.html
+Skip link: https://ui.lostcoords.com/components/skip_link
 
 ```erb
 <%= lc_stack gap: :related, class: "items-center" do %>
@@ -1635,13 +1635,13 @@ Skip link: https://ui.lostcoords.com/components/skip_link.html
 
 ## lc_breadcrumb
 
-https://ui.lostcoords.com/components/breadcrumb.html#lc_breadcrumb
+https://ui.lostcoords.com/components/breadcrumb#lc_breadcrumb
 
 ```ruby
 lc_breadcrumb(items, label: lc_t("lostcoords.ui.breadcrumb.label"), **attributes)
 ```
 
-Breadcrumb: https://ui.lostcoords.com/components/breadcrumb.html
+Breadcrumb: https://ui.lostcoords.com/components/breadcrumb
 
 ```erb
 <%= lc_breadcrumb [ [ "Projects", "/components/breadcrumb.html" ], [ "Design system", "/components/breadcrumb.html" ], "Settings" ] %>
@@ -1649,14 +1649,14 @@ Breadcrumb: https://ui.lostcoords.com/components/breadcrumb.html
 
 ## lc_tabs
 
-https://ui.lostcoords.com/components/tabs.html#lc_tabs
+https://ui.lostcoords.com/components/tabs#lc_tabs
 
 ```ruby
 lc_tabs(id:, label:, selected: nil, orientation: :horizontal, activation: :automatic, list: {}, **attributes, &block)
 tabs.panel(label, value: nil, **attributes, &block)
 ```
 
-Tabs: https://ui.lostcoords.com/components/tabs.html
+Tabs: https://ui.lostcoords.com/components/tabs
 
 ```erb
 <%= lc_tabs id: "my-component-tabs", label: "Project", class: "w-full" do |tabs| %>
@@ -1672,7 +1672,7 @@ Tabs: https://ui.lostcoords.com/components/tabs.html
 <% end %>
 ```
 
-Vertical, with manual activation: https://ui.lostcoords.com/components/tabs.html
+Vertical, with manual activation: https://ui.lostcoords.com/components/tabs
 
 ```erb
 <%= lc_tabs id: "my-component-settings", label: "Settings", orientation: :vertical, activation: :manual, class: "w-full" do |tabs| %>
@@ -1690,13 +1690,13 @@ Vertical, with manual activation: https://ui.lostcoords.com/components/tabs.html
 
 ## lc_button
 
-https://ui.lostcoords.com/components/button.html#lc_button
+https://ui.lostcoords.com/components/button#lc_button
 
 ```ruby
 lc_button(content = nil, variant: :primary, tone: :default, size: :md, block: false, icon: nil, icon_position: :start, as: :button, expanded_icon: nil, **attributes, &content_block)
 ```
 
-Page rhythm: https://ui.lostcoords.com/components/foundations.html
+Page rhythm: https://ui.lostcoords.com/components/foundations
 
 ```erb
 <%= lc_stack gap: :section, class: "w-full max-w-xl" do %>
@@ -1731,7 +1731,7 @@ Page rhythm: https://ui.lostcoords.com/components/foundations.html
 <% end %>
 ```
 
-Responsive containers: https://ui.lostcoords.com/components/foundations.html
+Responsive containers: https://ui.lostcoords.com/components/foundations
 
 ```erb
 <%= lc_container do %>
@@ -1760,7 +1760,7 @@ Responsive containers: https://ui.lostcoords.com/components/foundations.html
 <% end %>
 ```
 
-Reading content: https://ui.lostcoords.com/components/foundations.html
+Reading content: https://ui.lostcoords.com/components/foundations
 
 ```erb
 <%= lc_prose do %>
@@ -1781,7 +1781,7 @@ Reading content: https://ui.lostcoords.com/components/foundations.html
 <% end %>
 ```
 
-Hover and press: https://ui.lostcoords.com/components/foundations.html
+Hover and press: https://ui.lostcoords.com/components/foundations
 
 ```erb
 <%= lc_button "Hover or press", icon: "plus" %>
@@ -1789,7 +1789,7 @@ Hover and press: https://ui.lostcoords.com/components/foundations.html
 <%= lc_icon_button "Add item", icon: "plus" %>
 ```
 
-Title and actions: https://ui.lostcoords.com/components/alert.html
+Title and actions: https://ui.lostcoords.com/components/alert
 
 ```erb
 <%= lc_alert "Your card was declined. Update the payment method to keep the workspace active.", title: "Payment failed" do |alert| %>
@@ -1800,13 +1800,13 @@ Title and actions: https://ui.lostcoords.com/components/alert.html
 <% end %>
 ```
 
-Default: https://ui.lostcoords.com/components/button.html
+Default: https://ui.lostcoords.com/components/button
 
 ```erb
 <%= lc_button "Create project" %>
 ```
 
-Variants: https://ui.lostcoords.com/components/button.html
+Variants: https://ui.lostcoords.com/components/button
 
 ```erb
 <%= lc_button "Primary" %>
@@ -1817,7 +1817,7 @@ Variants: https://ui.lostcoords.com/components/button.html
 <%= lc_button "Delete", variant: :destructive %>
 ```
 
-Destructive tone: https://ui.lostcoords.com/components/button.html
+Destructive tone: https://ui.lostcoords.com/components/button
 
 ```erb
 <%= lc_button "Revoke", variant: :ghost, tone: :destructive %>
@@ -1826,7 +1826,7 @@ Destructive tone: https://ui.lostcoords.com/components/button.html
 <%= lc_button "Delete group", tone: :destructive %>
 ```
 
-Glass over content: https://ui.lostcoords.com/components/button.html
+Glass over content: https://ui.lostcoords.com/components/button
 
 ```erb
 <div class="grid w-full gap-4">
@@ -1845,7 +1845,7 @@ Glass over content: https://ui.lostcoords.com/components/button.html
 </div>
 ```
 
-Sizes: https://ui.lostcoords.com/components/button.html
+Sizes: https://ui.lostcoords.com/components/button
 
 ```erb
 <%= lc_button "Small", size: :sm %>
@@ -1853,14 +1853,14 @@ Sizes: https://ui.lostcoords.com/components/button.html
 <%= lc_button "Large", size: :lg %>
 ```
 
-With an icon: https://ui.lostcoords.com/components/button.html
+With an icon: https://ui.lostcoords.com/components/button
 
 ```erb
 <%= lc_button "Create project", icon: "plus" %>
 <%= lc_button "Continue", icon: "arrow-right", icon_position: :end, variant: :secondary %>
 ```
 
-Custom icons and content: https://ui.lostcoords.com/components/button.html
+Custom icons and content: https://ui.lostcoords.com/components/button
 
 ```erb
 <%= lc_button variant: :secondary do %>
@@ -1878,7 +1878,7 @@ Custom icons and content: https://ui.lostcoords.com/components/button.html
 <% end %>
 ```
 
-Loading: https://ui.lostcoords.com/components/button.html
+Loading: https://ui.lostcoords.com/components/button
 
 ```erb
 <%= lc_button disabled: true, aria: { busy: true } do %>
@@ -1887,13 +1887,13 @@ Loading: https://ui.lostcoords.com/components/button.html
 <% end %>
 ```
 
-Disabled: https://ui.lostcoords.com/components/button.html
+Disabled: https://ui.lostcoords.com/components/button
 
 ```erb
 <%= lc_button "Unavailable", disabled: true %>
 ```
 
-Expanded swap and decorative span: https://ui.lostcoords.com/components/button.html
+Expanded swap and decorative span: https://ui.lostcoords.com/components/button
 
 ```erb
 <%= lc_inline do %>
@@ -1907,7 +1907,7 @@ Expanded swap and decorative span: https://ui.lostcoords.com/components/button.h
 <% end %>
 ```
 
-Default: https://ui.lostcoords.com/components/card.html
+Default: https://ui.lostcoords.com/components/card
 
 ```erb
 <%= lc_card class: "w-full" do |card| %>
@@ -1924,7 +1924,7 @@ Default: https://ui.lostcoords.com/components/card.html
 <% end %>
 ```
 
-Custom spacing: https://ui.lostcoords.com/components/card.html
+Custom spacing: https://ui.lostcoords.com/components/card
 
 ```erb
 <%= lc_card class: "w-full [--lc-inset:var(--spacing-section)]" do |card| %>
@@ -1935,7 +1935,7 @@ Custom spacing: https://ui.lostcoords.com/components/card.html
 <% end %>
 ```
 
-With form controls: https://ui.lostcoords.com/components/card.html
+With form controls: https://ui.lostcoords.com/components/card
 
 ```erb
 <%= lc_card class: "@container w-full" do |card| %>
@@ -1951,7 +1951,7 @@ With form controls: https://ui.lostcoords.com/components/card.html
 <% end %>
 ```
 
-Modal: https://ui.lostcoords.com/components/dialog.html
+Modal: https://ui.lostcoords.com/components/dialog
 
 ```erb
 <%= lc_dialog id: "my-component-dialog", title: "Create project", description: "Projects group pages and members.", trigger: "New project" do |dialog| %>
@@ -1967,7 +1967,7 @@ Modal: https://ui.lostcoords.com/components/dialog.html
 <% end %>
 ```
 
-Compact dialog: https://ui.lostcoords.com/components/dialog.html
+Compact dialog: https://ui.lostcoords.com/components/dialog
 
 ```erb
 <%= lc_dialog id: "my-component-context", title: "Quick details", trigger: "Open compact dialog", kind: :context do %>
@@ -1982,7 +1982,7 @@ Compact dialog: https://ui.lostcoords.com/components/dialog.html
 <% end %>
 ```
 
-Opened by your controller: https://ui.lostcoords.com/components/dialog.html
+Opened by your controller: https://ui.lostcoords.com/components/dialog
 
 ```erb
 <div data-controller="lc-dialog">
@@ -1998,7 +1998,7 @@ Opened by your controller: https://ui.lostcoords.com/components/dialog.html
 </div>
 ```
 
-Empty state: https://ui.lostcoords.com/components/empty_state.html
+Empty state: https://ui.lostcoords.com/components/empty_state
 
 ```erb
 <%= lc_empty_state class: "w-full" do %>
@@ -2011,7 +2011,7 @@ Empty state: https://ui.lostcoords.com/components/empty_state.html
 <% end %>
 ```
 
-Form actions: https://ui.lostcoords.com/components/field.html
+Form actions: https://ui.lostcoords.com/components/field
 
 ```erb
 <%= lc_inline class: "justify-end" do %>
@@ -2020,7 +2020,7 @@ Form actions: https://ui.lostcoords.com/components/field.html
 <% end %>
 ```
 
-Settings: https://ui.lostcoords.com/components/list_group.html
+Settings: https://ui.lostcoords.com/components/list_group
 
 ```erb
 <%= lc_list_section "Sign-in methods", id: "my-component", footnote: "Keep at least one way to sign in.", class: "w-full max-w-md" do %>
@@ -2044,7 +2044,7 @@ Settings: https://ui.lostcoords.com/components/list_group.html
 <% end %>
 ```
 
-Over dialogs and sticky headers: https://ui.lostcoords.com/components/toast.html
+Over dialogs and sticky headers: https://ui.lostcoords.com/components/toast
 
 ```erb
 <%# In an app, render the region once in the layout and append toasts with turbo_stream.append. %>
@@ -2053,7 +2053,7 @@ Over dialogs and sticky headers: https://ui.lostcoords.com/components/toast.html
 <%= lc_button "Save project", data: { controller: "toast-demo", action: "toast-demo#show", toast_demo_template_value: "my-component-toast", toast_demo_region_value: "my-component-toasts" } %>
 ```
 
-Centred, at the top on phones: https://ui.lostcoords.com/components/toast.html
+Centred, at the top on phones: https://ui.lostcoords.com/components/toast
 
 ```erb
 <%# Centred at the bottom, and at the top on phones, clear of a bottom tab bar. %>
@@ -2062,7 +2062,7 @@ Centred, at the top on phones: https://ui.lostcoords.com/components/toast.html
 <%= lc_button "Add expense", data: { controller: "toast-demo", action: "toast-demo#show", toast_demo_template_value: "my-component-toast", toast_demo_region_value: "my-component-toasts" } %>
 ```
 
-Form values, native radios and reset: https://ui.lostcoords.com/components/toggle_group.html
+Form values, native radios and reset: https://ui.lostcoords.com/components/toggle_group
 
 ```erb
 <form class="flex flex-col items-center gap-4">
@@ -2079,7 +2079,7 @@ Form values, native radios and reset: https://ui.lostcoords.com/components/toggl
 </form>
 ```
 
-Tooltips: https://ui.lostcoords.com/components/tooltip.html
+Tooltips: https://ui.lostcoords.com/components/tooltip
 
 ```erb
 <%= lc_inline gap: :content do %>
@@ -2094,13 +2094,13 @@ Tooltips: https://ui.lostcoords.com/components/tooltip.html
 
 ## lc_button_link_to
 
-https://ui.lostcoords.com/components/button.html#lc_button_link_to
+https://ui.lostcoords.com/components/button#lc_button_link_to
 
 ```ruby
 lc_button_link_to(content = nil, url = nil, variant: :primary, tone: :default, size: :md, block: false, icon: nil, icon_position: :start, **attributes, &content_block)
 ```
 
-As a link: https://ui.lostcoords.com/components/button.html
+As a link: https://ui.lostcoords.com/components/button
 
 ```erb
 <%= lc_button_link_to "Browse components", "/components/button.html", variant: :secondary %>
@@ -2108,19 +2108,19 @@ As a link: https://ui.lostcoords.com/components/button.html
 
 ## lc_button_to
 
-https://ui.lostcoords.com/components/button.html#lc_button_to
+https://ui.lostcoords.com/components/button#lc_button_to
 
 ```ruby
 lc_button_to(content = nil, url = nil, variant: :primary, tone: :default, size: :md, block: false, icon: nil, icon_position: :start, **attributes, &content_block)
 ```
 
-HTTP actions: https://ui.lostcoords.com/components/button.html
+HTTP actions: https://ui.lostcoords.com/components/button
 
 ```erb
 <%= lc_button_to "Archive project", "/projects/42", method: :delete, variant: :destructive, form: { data: { turbo_confirm: "Archive this project?" } } %>
 ```
 
-Turbo confirm: https://ui.lostcoords.com/components/dialog.html
+Turbo confirm: https://ui.lostcoords.com/components/dialog
 
 ```erb
 <%# In the layout, once. %>
@@ -2135,13 +2135,13 @@ Turbo confirm: https://ui.lostcoords.com/components/dialog.html
 
 ## lc_select_trigger
 
-https://ui.lostcoords.com/components/button.html#lc_select_trigger
+https://ui.lostcoords.com/components/button#lc_select_trigger
 
 ```ruby
 lc_select_trigger(label = nil, size: :md, block: false, **attributes, &content)
 ```
 
-Select trigger: https://ui.lostcoords.com/components/button.html
+Select trigger: https://ui.lostcoords.com/components/button
 
 ```erb
 <%= lc_menu id: "my-component-menu", label: "Member", align: :start do |menu| %>
@@ -2152,7 +2152,7 @@ Select trigger: https://ui.lostcoords.com/components/button.html
 <% end %>
 ```
 
-Icon trigger, hints, choices and groups: https://ui.lostcoords.com/components/menu.html
+Icon trigger, hints, choices and groups: https://ui.lostcoords.com/components/menu
 
 ```erb
 <div class="flex flex-wrap items-center gap-content">
@@ -2178,14 +2178,14 @@ Icon trigger, hints, choices and groups: https://ui.lostcoords.com/components/me
 
 ## lc_split_button
 
-https://ui.lostcoords.com/components/button.html#lc_split_button
+https://ui.lostcoords.com/components/button#lc_split_button
 
 ```ruby
 lc_split_button(label, id:, href: nil, menu_label: lc_t("lostcoords.ui.menu.label"), variant: :primary, tone: :default, size: :md,
                         icon: nil, icon_position: :start, block: false, align: :end, action: {}, toggle: {}, menu: {}, **attributes, &items)
 ```
 
-Split button: https://ui.lostcoords.com/components/button.html
+Split button: https://ui.lostcoords.com/components/button
 
 ```erb
 <%= lc_split_button "Add expense", id: "my-component-menu", icon: "plus", menu_label: "More ways to add" do %>
@@ -2194,7 +2194,7 @@ Split button: https://ui.lostcoords.com/components/button.html
 <% end %>
 ```
 
-Split button variants and sizes: https://ui.lostcoords.com/components/button.html
+Split button variants and sizes: https://ui.lostcoords.com/components/button
 
 ```erb
 <% [ [ :secondary, :sm ], [ :outline, :md ], [ :ghost, :lg ] ].each do |variant, size| %>
@@ -2207,13 +2207,13 @@ Split button variants and sizes: https://ui.lostcoords.com/components/button.htm
 
 ## lc_icon_button
 
-https://ui.lostcoords.com/components/button.html#lc_icon_button
+https://ui.lostcoords.com/components/button#lc_icon_button
 
 ```ruby
 lc_icon_button(label, icon: nil, size: :md, shape: :circle, variant: :ghost, tone: :default, **attributes, &content)
 ```
 
-Hover and press: https://ui.lostcoords.com/components/foundations.html
+Hover and press: https://ui.lostcoords.com/components/foundations
 
 ```erb
 <%= lc_button "Hover or press", icon: "plus" %>
@@ -2221,7 +2221,7 @@ Hover and press: https://ui.lostcoords.com/components/foundations.html
 <%= lc_icon_button "Add item", icon: "plus" %>
 ```
 
-Header: https://ui.lostcoords.com/components/app_header.html
+Header: https://ui.lostcoords.com/components/app_header
 
 ```erb
 <%= lc_app_header class: "static w-full p-0 sm:p-0" do |header| %>
@@ -2240,7 +2240,7 @@ Header: https://ui.lostcoords.com/components/app_header.html
 <% end %>
 ```
 
-Icon buttons: https://ui.lostcoords.com/components/button.html
+Icon buttons: https://ui.lostcoords.com/components/button
 
 ```erb
 <%= lc_icon_button "Add project", icon: "plus" %>
@@ -2254,7 +2254,7 @@ Icon buttons: https://ui.lostcoords.com/components/button.html
 <%= lc_icon_button "Delete file", icon: "trash", variant: :outline, tone: :destructive %>
 ```
 
-Tooltips: https://ui.lostcoords.com/components/tooltip.html
+Tooltips: https://ui.lostcoords.com/components/tooltip
 
 ```erb
 <%= lc_inline gap: :content do %>
@@ -2269,13 +2269,13 @@ Tooltips: https://ui.lostcoords.com/components/tooltip.html
 
 ## lc_icon_button_link_to
 
-https://ui.lostcoords.com/components/button.html#lc_icon_button_link_to
+https://ui.lostcoords.com/components/button#lc_icon_button_link_to
 
 ```ruby
 lc_icon_button_link_to(label, url, icon: nil, size: :md, shape: :circle, variant: :ghost, tone: :default, **attributes, &content)
 ```
 
-Icon buttons: https://ui.lostcoords.com/components/button.html
+Icon buttons: https://ui.lostcoords.com/components/button
 
 ```erb
 <%= lc_icon_button "Add project", icon: "plus" %>
@@ -2291,13 +2291,13 @@ Icon buttons: https://ui.lostcoords.com/components/button.html
 
 ## lc_icon_button_to
 
-https://ui.lostcoords.com/components/button.html#lc_icon_button_to
+https://ui.lostcoords.com/components/button#lc_icon_button_to
 
 ```ruby
 lc_icon_button_to(label, url, icon: nil, size: :md, shape: :circle, variant: :ghost, tone: :default, **attributes, &content)
 ```
 
-Icon buttons: https://ui.lostcoords.com/components/button.html
+Icon buttons: https://ui.lostcoords.com/components/button
 
 ```erb
 <%= lc_icon_button "Add project", icon: "plus" %>
@@ -2313,13 +2313,13 @@ Icon buttons: https://ui.lostcoords.com/components/button.html
 
 ## lc_badge
 
-https://ui.lostcoords.com/components/badge.html#lc_badge
+https://ui.lostcoords.com/components/badge#lc_badge
 
 ```ruby
 lc_badge(content = nil, tone: :neutral, shape: :rounded, **attributes, &block)
 ```
 
-Tones: https://ui.lostcoords.com/components/badge.html
+Tones: https://ui.lostcoords.com/components/badge
 
 ```erb
 <%= lc_badge "Draft" %>
@@ -2329,7 +2329,7 @@ Tones: https://ui.lostcoords.com/components/badge.html
 <%= lc_badge "Failed", tone: :destructive %>
 ```
 
-Pill status: https://ui.lostcoords.com/components/badge.html
+Pill status: https://ui.lostcoords.com/components/badge
 
 ```erb
 <%= lc_badge "On track", tone: :primary, shape: :pill %>
@@ -2337,7 +2337,7 @@ Pill status: https://ui.lostcoords.com/components/badge.html
 <%= lc_badge "3 errors", tone: :destructive, shape: :pill %>
 ```
 
-Details: https://ui.lostcoords.com/components/description_list.html
+Details: https://ui.lostcoords.com/components/description_list
 
 ```erb
 <%= lc_card class: "w-full" do |card| %>
@@ -2354,13 +2354,13 @@ Details: https://ui.lostcoords.com/components/description_list.html
 
 ## lc_icon_badge
 
-https://ui.lostcoords.com/components/icon_badge.html#lc_icon_badge
+https://ui.lostcoords.com/components/icon_badge#lc_icon_badge
 
 ```ruby
 lc_icon_badge(content = nil, icon: nil, size: :md, shape: :square, tone: :neutral, **attributes, &block)
 ```
 
-Empty state: https://ui.lostcoords.com/components/empty_state.html
+Empty state: https://ui.lostcoords.com/components/empty_state
 
 ```erb
 <%= lc_empty_state class: "w-full" do %>
@@ -2373,7 +2373,7 @@ Empty state: https://ui.lostcoords.com/components/empty_state.html
 <% end %>
 ```
 
-Shapes and sizes: https://ui.lostcoords.com/components/icon_badge.html
+Shapes and sizes: https://ui.lostcoords.com/components/icon_badge
 
 ```erb
 <%= lc_icon_badge icon: "folder", size: :sm %>
@@ -2384,7 +2384,7 @@ Shapes and sizes: https://ui.lostcoords.com/components/icon_badge.html
 <%= lc_icon_badge "🍜", size: 7, shape: :plain, aria: { hidden: true } %>
 ```
 
-Round icons and tones: https://ui.lostcoords.com/components/icon_badge.html
+Round icons and tones: https://ui.lostcoords.com/components/icon_badge
 
 ```erb
 <%= lc_icon_badge shape: :circle, size: :sm, icon: "sparkles", tone: :primary%>
@@ -2393,13 +2393,13 @@ Round icons and tones: https://ui.lostcoords.com/components/icon_badge.html
 
 ## lc_avatar
 
-https://ui.lostcoords.com/components/avatar.html#lc_avatar
+https://ui.lostcoords.com/components/avatar#lc_avatar
 
 ```ruby
 lc_avatar(content = nil, src: nil, alt: nil, size: :md, ink: false, linked: false, as: :span, **attributes, &block)
 ```
 
-Page rhythm: https://ui.lostcoords.com/components/foundations.html
+Page rhythm: https://ui.lostcoords.com/components/foundations
 
 ```erb
 <%= lc_stack gap: :section, class: "w-full max-w-xl" do %>
@@ -2434,7 +2434,7 @@ Page rhythm: https://ui.lostcoords.com/components/foundations.html
 <% end %>
 ```
 
-Header: https://ui.lostcoords.com/components/app_header.html
+Header: https://ui.lostcoords.com/components/app_header
 
 ```erb
 <%= lc_app_header class: "static w-full p-0 sm:p-0" do |header| %>
@@ -2453,7 +2453,7 @@ Header: https://ui.lostcoords.com/components/app_header.html
 <% end %>
 ```
 
-Initials and images: https://ui.lostcoords.com/components/avatar.html
+Initials and images: https://ui.lostcoords.com/components/avatar
 
 ```erb
 <%= lc_avatar "AL", ink: true, class: "bg-accent", aria: { label: "Alex Lee" } %>
@@ -2462,7 +2462,7 @@ Initials and images: https://ui.lostcoords.com/components/avatar.html
 <%= lc_avatar "MK", ink: true, class: "bg-destructive-soft", aria: { label: "Morgan Kim" } %>
 ```
 
-Sizes: https://ui.lostcoords.com/components/avatar.html
+Sizes: https://ui.lostcoords.com/components/avatar
 
 ```erb
 <% [ :xs, :sm, 7, :md, 11, :lg, :xl, :xxl ].each do |size| %>
@@ -2470,7 +2470,7 @@ Sizes: https://ui.lostcoords.com/components/avatar.html
 <% end %>
 ```
 
-Avatar groups: https://ui.lostcoords.com/components/avatar.html
+Avatar groups: https://ui.lostcoords.com/components/avatar
 
 ```erb
 <%= lc_avatar_stack aria: { label: "Alex, Sam and Jamie" } do %>
@@ -2482,13 +2482,13 @@ Avatar groups: https://ui.lostcoords.com/components/avatar.html
 
 ## lc_avatar_stack
 
-https://ui.lostcoords.com/components/avatar.html#lc_avatar_stack
+https://ui.lostcoords.com/components/avatar#lc_avatar_stack
 
 ```ruby
 lc_avatar_stack(compact: false, row: {}, **attributes, &block)
 ```
 
-Avatar groups: https://ui.lostcoords.com/components/avatar.html
+Avatar groups: https://ui.lostcoords.com/components/avatar
 
 ```erb
 <%= lc_avatar_stack aria: { label: "Alex, Sam and Jamie" } do %>
@@ -2500,7 +2500,7 @@ Avatar groups: https://ui.lostcoords.com/components/avatar.html
 
 ## lc_card
 
-https://ui.lostcoords.com/components/card.html#lc_card
+https://ui.lostcoords.com/components/card#lc_card
 
 ```ruby
 lc_card(href: nil, interactive: false, padding: :md, as: :div, **attributes, &block)
@@ -2511,7 +2511,7 @@ card.content(**attributes, &block)
 card.footer(**attributes, &block)
 ```
 
-Page rhythm: https://ui.lostcoords.com/components/foundations.html
+Page rhythm: https://ui.lostcoords.com/components/foundations
 
 ```erb
 <%= lc_stack gap: :section, class: "w-full max-w-xl" do %>
@@ -2546,7 +2546,7 @@ Page rhythm: https://ui.lostcoords.com/components/foundations.html
 <% end %>
 ```
 
-Responsive containers: https://ui.lostcoords.com/components/foundations.html
+Responsive containers: https://ui.lostcoords.com/components/foundations
 
 ```erb
 <%= lc_container do %>
@@ -2575,7 +2575,7 @@ Responsive containers: https://ui.lostcoords.com/components/foundations.html
 <% end %>
 ```
 
-Default: https://ui.lostcoords.com/components/card.html
+Default: https://ui.lostcoords.com/components/card
 
 ```erb
 <%= lc_card class: "w-full" do |card| %>
@@ -2592,7 +2592,7 @@ Default: https://ui.lostcoords.com/components/card.html
 <% end %>
 ```
 
-Compact: https://ui.lostcoords.com/components/card.html
+Compact: https://ui.lostcoords.com/components/card
 
 ```erb
 <%= lc_card padding: :sm, class: "w-full" do |card| %>
@@ -2601,7 +2601,7 @@ Compact: https://ui.lostcoords.com/components/card.html
 <% end %>
 ```
 
-Linked card: https://ui.lostcoords.com/components/card.html
+Linked card: https://ui.lostcoords.com/components/card
 
 ```erb
 <%= lc_card href: "/components/card.html", class: "w-full" do |card| %>
@@ -2609,7 +2609,7 @@ Linked card: https://ui.lostcoords.com/components/card.html
 <% end %>
 ```
 
-Custom spacing: https://ui.lostcoords.com/components/card.html
+Custom spacing: https://ui.lostcoords.com/components/card
 
 ```erb
 <%= lc_card class: "w-full [--lc-inset:var(--spacing-section)]" do |card| %>
@@ -2620,7 +2620,7 @@ Custom spacing: https://ui.lostcoords.com/components/card.html
 <% end %>
 ```
 
-Edge-to-edge content: https://ui.lostcoords.com/components/card.html
+Edge-to-edge content: https://ui.lostcoords.com/components/card
 
 ```erb
 <%= lc_card padding: :none, class: "w-full" do %>
@@ -2635,7 +2635,7 @@ Edge-to-edge content: https://ui.lostcoords.com/components/card.html
 <% end %>
 ```
 
-With form controls: https://ui.lostcoords.com/components/card.html
+With form controls: https://ui.lostcoords.com/components/card
 
 ```erb
 <%= lc_card class: "@container w-full" do |card| %>
@@ -2651,7 +2651,7 @@ With form controls: https://ui.lostcoords.com/components/card.html
 <% end %>
 ```
 
-Validation feedback: https://ui.lostcoords.com/components/card.html
+Validation feedback: https://ui.lostcoords.com/components/card
 
 ```erb
 <%= lc_card class: "w-full" do |card| %>
@@ -2664,7 +2664,7 @@ Validation feedback: https://ui.lostcoords.com/components/card.html
 <% end %>
 ```
 
-Details: https://ui.lostcoords.com/components/description_list.html
+Details: https://ui.lostcoords.com/components/description_list
 
 ```erb
 <%= lc_card class: "w-full" do |card| %>
@@ -2681,13 +2681,13 @@ Details: https://ui.lostcoords.com/components/description_list.html
 
 ## lc_empty_state
 
-https://ui.lostcoords.com/components/empty_state.html#lc_empty_state
+https://ui.lostcoords.com/components/empty_state#lc_empty_state
 
 ```ruby
 lc_empty_state(**attributes, &block)
 ```
 
-Empty state: https://ui.lostcoords.com/components/empty_state.html
+Empty state: https://ui.lostcoords.com/components/empty_state
 
 ```erb
 <%= lc_empty_state class: "w-full" do %>
@@ -2702,13 +2702,13 @@ Empty state: https://ui.lostcoords.com/components/empty_state.html
 
 ## lc_spinner
 
-https://ui.lostcoords.com/components/spinner.html#lc_spinner
+https://ui.lostcoords.com/components/spinner#lc_spinner
 
 ```ruby
 lc_spinner(size: :md, label: lc_t("lostcoords.ui.spinner.label"), **attributes)
 ```
 
-Custom icons and content: https://ui.lostcoords.com/components/button.html
+Custom icons and content: https://ui.lostcoords.com/components/button
 
 ```erb
 <%= lc_button variant: :secondary do %>
@@ -2726,7 +2726,7 @@ Custom icons and content: https://ui.lostcoords.com/components/button.html
 <% end %>
 ```
 
-Loading: https://ui.lostcoords.com/components/button.html
+Loading: https://ui.lostcoords.com/components/button
 
 ```erb
 <%= lc_button disabled: true, aria: { busy: true } do %>
@@ -2735,7 +2735,7 @@ Loading: https://ui.lostcoords.com/components/button.html
 <% end %>
 ```
 
-Sizes and labels: https://ui.lostcoords.com/components/spinner.html
+Sizes and labels: https://ui.lostcoords.com/components/spinner
 
 ```erb
 <%= lc_spinner size: :sm %>
@@ -2745,13 +2745,13 @@ Sizes and labels: https://ui.lostcoords.com/components/spinner.html
 
 ## lc_skeleton
 
-https://ui.lostcoords.com/components/skeleton.html#lc_skeleton
+https://ui.lostcoords.com/components/skeleton#lc_skeleton
 
 ```ruby
 lc_skeleton(**attributes)
 ```
 
-Placeholder: https://ui.lostcoords.com/components/skeleton.html
+Placeholder: https://ui.lostcoords.com/components/skeleton
 
 ```erb
 <div class="flex w-full flex-col gap-3" aria-label="Loading content" aria-busy="true">
@@ -2763,26 +2763,26 @@ Placeholder: https://ui.lostcoords.com/components/skeleton.html
 
 ## lc_alert
 
-https://ui.lostcoords.com/components/alert.html#lc_alert
+https://ui.lostcoords.com/components/alert#lc_alert
 
 ```ruby
 lc_alert(message = nil, title: nil, tone: :destructive, **attributes, &block)
 alert.actions(**attributes, &block)
 ```
 
-Error: https://ui.lostcoords.com/components/alert.html
+Error: https://ui.lostcoords.com/components/alert
 
 ```erb
 <%= lc_alert "That name is already taken." %>
 ```
 
-Success: https://ui.lostcoords.com/components/alert.html
+Success: https://ui.lostcoords.com/components/alert
 
 ```erb
 <%= lc_alert "Changes saved.", tone: :success %>
 ```
 
-Title and actions: https://ui.lostcoords.com/components/alert.html
+Title and actions: https://ui.lostcoords.com/components/alert
 
 ```erb
 <%= lc_alert "Your card was declined. Update the payment method to keep the workspace active.", title: "Payment failed" do |alert| %>
@@ -2793,7 +2793,7 @@ Title and actions: https://ui.lostcoords.com/components/alert.html
 <% end %>
 ```
 
-Validation feedback: https://ui.lostcoords.com/components/card.html
+Validation feedback: https://ui.lostcoords.com/components/card
 
 ```erb
 <%= lc_card class: "w-full" do |card| %>
@@ -2808,13 +2808,13 @@ Validation feedback: https://ui.lostcoords.com/components/card.html
 
 ## lc_prose
 
-https://ui.lostcoords.com/components/foundations.html#lc_prose
+https://ui.lostcoords.com/components/foundations#lc_prose
 
 ```ruby
 lc_prose(anchors: false, **attributes, &block)
 ```
 
-Reading content: https://ui.lostcoords.com/components/foundations.html
+Reading content: https://ui.lostcoords.com/components/foundations
 
 ```erb
 <%= lc_prose do %>
@@ -2835,7 +2835,7 @@ Reading content: https://ui.lostcoords.com/components/foundations.html
 <% end %>
 ```
 
-Japanese reading: https://ui.lostcoords.com/components/foundations.html
+Japanese reading: https://ui.lostcoords.com/components/foundations
 
 ```erb
 <%= lc_prose lang: "ja" do %>
@@ -2852,7 +2852,7 @@ Japanese reading: https://ui.lostcoords.com/components/foundations.html
 <% end %>
 ```
 
-From rendered headings: https://ui.lostcoords.com/components/toc.html
+From rendered headings: https://ui.lostcoords.com/components/toc
 
 ```erb
 <% article = capture do %>
@@ -2869,14 +2869,14 @@ From rendered headings: https://ui.lostcoords.com/components/toc.html
 
 ## lc_search
 
-https://ui.lostcoords.com/components/search.html#lc_search
+https://ui.lostcoords.com/components/search#lc_search
 
 ```ruby
 lc_search(label:, src: nil, param: "q", placeholder: label, trigger: lc_t("lostcoords.ui.search.trigger"), empty: lc_t("lostcoords.ui.search.empty"), prompt: nil,
       shortcut: "mod+k", id: "lc-search", **attributes, &block)
 ```
 
-Filtered in the browser: https://ui.lostcoords.com/components/search.html
+Filtered in the browser: https://ui.lostcoords.com/components/search
 
 ```erb
 <%# Rows rendered in the block are filtered in the browser. Pass src: to have your server answer each query instead. %>
@@ -2894,13 +2894,13 @@ Filtered in the browser: https://ui.lostcoords.com/components/search.html
 
 ## lc_search_group
 
-https://ui.lostcoords.com/components/search.html#lc_search_group
+https://ui.lostcoords.com/components/search#lc_search_group
 
 ```ruby
 lc_search_group(title, **attributes, &block)
 ```
 
-Filtered in the browser: https://ui.lostcoords.com/components/search.html
+Filtered in the browser: https://ui.lostcoords.com/components/search
 
 ```erb
 <%# Rows rendered in the block are filtered in the browser. Pass src: to have your server answer each query instead. %>
@@ -2918,13 +2918,13 @@ Filtered in the browser: https://ui.lostcoords.com/components/search.html
 
 ## lc_search_result
 
-https://ui.lostcoords.com/components/search.html#lc_search_result
+https://ui.lostcoords.com/components/search#lc_search_result
 
 ```ruby
 lc_search_result(title, url, detail: nil, icon: nil, keywords: nil, **attributes, &block)
 ```
 
-Filtered in the browser: https://ui.lostcoords.com/components/search.html
+Filtered in the browser: https://ui.lostcoords.com/components/search
 
 ```erb
 <%# Rows rendered in the block are filtered in the browser. Pass src: to have your server answer each query instead. %>
@@ -2942,13 +2942,13 @@ Filtered in the browser: https://ui.lostcoords.com/components/search.html
 
 ## lc_sheet
 
-https://ui.lostcoords.com/components/dialog.html#lc_sheet
+https://ui.lostcoords.com/components/dialog#lc_sheet
 
 ```ruby
 lc_sheet(tag: :div, anchored: false, detents: "fit", handle: false, size: nil, **attributes, &block)
 ```
 
-Popover sheet: https://ui.lostcoords.com/components/dialog.html
+Popover sheet: https://ui.lostcoords.com/components/dialog
 
 ```erb
 <button type="button" class="<%= lc_button_class(variant: :secondary) %>" popovertarget="my-component-filters">Filters</button>
@@ -2964,13 +2964,13 @@ Popover sheet: https://ui.lostcoords.com/components/dialog.html
 
 ## lc_docs_shell
 
-https://ui.lostcoords.com/components/docs_shell.html#lc_docs_shell
+https://ui.lostcoords.com/components/docs_shell#lc_docs_shell
 
 ```ruby
 lc_docs_shell(navigation:, contents: nil, menu_label: lc_t("lostcoords.ui.docs_shell.menu"), sidebar_label: lc_t("lostcoords.ui.docs_shell.sidebar"), main: {}, **attributes, &block)
 ```
 
-Documentation page: https://ui.lostcoords.com/components/docs_shell.html
+Documentation page: https://ui.lostcoords.com/components/docs_shell
 
 ```erb
 <% navigation = lc_nav_list label: "Guides" do |nav| %>
@@ -2987,7 +2987,7 @@ Documentation page: https://ui.lostcoords.com/components/docs_shell.html
 
 ## lc_app_header
 
-https://ui.lostcoords.com/components/app_header.html#lc_app_header
+https://ui.lostcoords.com/components/app_header#lc_app_header
 
 ```ruby
 lc_app_header(bar: {}, **attributes, &block)
@@ -2996,7 +2996,7 @@ header.nav(label: view.send(:lc_t, "lostcoords.ui.app_header.navigation"), **att
 header.actions(**attributes, &block)
 ```
 
-Header: https://ui.lostcoords.com/components/app_header.html
+Header: https://ui.lostcoords.com/components/app_header
 
 ```erb
 <%= lc_app_header class: "static w-full p-0 sm:p-0" do |header| %>
@@ -3017,7 +3017,7 @@ Header: https://ui.lostcoords.com/components/app_header.html
 
 ## lc_dock
 
-https://ui.lostcoords.com/components/dock.html#lc_dock
+https://ui.lostcoords.com/components/dock#lc_dock
 
 ```ruby
 lc_dock(**attributes, &block)
@@ -3026,7 +3026,7 @@ dock.menu(label:, icon: "plus", id: nil, **attributes, &block)
 menu.action(label, icon:, **attributes)
 ```
 
-Dock with actions: https://ui.lostcoords.com/components/dock.html
+Dock with actions: https://ui.lostcoords.com/components/dock
 
 ```erb
 <%# The transformed frame holds the dock's fixed parts for this preview; in an app they sit on the screen. %>
@@ -3047,13 +3047,13 @@ Dock with actions: https://ui.lostcoords.com/components/dock.html
 
 ## lc_input
 
-https://ui.lostcoords.com/components/input.html#lc_input
+https://ui.lostcoords.com/components/input#lc_input
 
 ```ruby
 lc_input(name: nil, value: nil, type: :text, size: :md, plain: false, **attributes)
 ```
 
-With form controls: https://ui.lostcoords.com/components/card.html
+With form controls: https://ui.lostcoords.com/components/card
 
 ```erb
 <%= lc_card class: "@container w-full" do |card| %>
@@ -3069,7 +3069,7 @@ With form controls: https://ui.lostcoords.com/components/card.html
 <% end %>
 ```
 
-Validation feedback: https://ui.lostcoords.com/components/card.html
+Validation feedback: https://ui.lostcoords.com/components/card
 
 ```erb
 <%= lc_card class: "w-full" do |card| %>
@@ -3082,7 +3082,7 @@ Validation feedback: https://ui.lostcoords.com/components/card.html
 <% end %>
 ```
 
-Button summary: https://ui.lostcoords.com/components/collapsible.html
+Button summary: https://ui.lostcoords.com/components/collapsible
 
 ```erb
 <%= lc_collapsible card: false, button: { variant: :secondary, size: :sm }, summary_class: "w-fit", class: "w-full max-w-80" do |collapsible| %>
@@ -3096,7 +3096,7 @@ Button summary: https://ui.lostcoords.com/components/collapsible.html
 <% end %>
 ```
 
-Copy from an element: https://ui.lostcoords.com/components/copy_button.html
+Copy from an element: https://ui.lostcoords.com/components/copy_button
 
 ```erb
 <%= lc_stack gap: :related, class: "w-full max-w-md" do %>
@@ -3108,7 +3108,7 @@ Copy from an element: https://ui.lostcoords.com/components/copy_button.html
 <% end %>
 ```
 
-Modal: https://ui.lostcoords.com/components/dialog.html
+Modal: https://ui.lostcoords.com/components/dialog
 
 ```erb
 <%= lc_dialog id: "my-component-dialog", title: "Create project", description: "Projects group pages and members.", trigger: "New project" do |dialog| %>
@@ -3124,7 +3124,7 @@ Modal: https://ui.lostcoords.com/components/dialog.html
 <% end %>
 ```
 
-Mobile dialog: https://ui.lostcoords.com/components/dialog.html
+Mobile dialog: https://ui.lostcoords.com/components/dialog
 
 ```erb
 <%= lc_dialog id: "my-component-sheet", title: "Workspace details", trigger: "Open mobile dialog", detents: "fit" do %>
@@ -3135,7 +3135,7 @@ Mobile dialog: https://ui.lostcoords.com/components/dialog.html
 <% end %>
 ```
 
-Label and hint: https://ui.lostcoords.com/components/field.html
+Label and hint: https://ui.lostcoords.com/components/field
 
 ```erb
 <%= lc_field label: "Project name", id: "my-component-name", hint: "A short, memorable name.", class: "w-full max-w-sm" do |field| %>
@@ -3143,7 +3143,7 @@ Label and hint: https://ui.lostcoords.com/components/field.html
 <% end %>
 ```
 
-Validation: https://ui.lostcoords.com/components/field.html
+Validation: https://ui.lostcoords.com/components/field
 
 ```erb
 <%= lc_field label: "Email address", id: "my-component-email", error: "Enter a valid email address.", class: "w-full max-w-sm" do |field| %>
@@ -3151,7 +3151,7 @@ Validation: https://ui.lostcoords.com/components/field.html
 <% end %>
 ```
 
-Sizes: https://ui.lostcoords.com/components/input.html
+Sizes: https://ui.lostcoords.com/components/input
 
 ```erb
 <%= lc_input name: "title", placeholder: "Small", size: :sm, class: "max-w-sm", aria: { label: "Small input" } %>
@@ -3159,14 +3159,14 @@ Sizes: https://ui.lostcoords.com/components/input.html
 <%= lc_input name: "title", placeholder: "Large", size: :lg, class: "max-w-sm", aria: { label: "Large input" } %>
 ```
 
-Disabled and read-only: https://ui.lostcoords.com/components/input.html
+Disabled and read-only: https://ui.lostcoords.com/components/input
 
 ```erb
 <%= lc_input value: "Read-only value", readonly: true, class: "max-w-sm", aria: { label: "Read-only input" } %>
 <%= lc_input placeholder: "Disabled", disabled: true, class: "max-w-sm", aria: { label: "Disabled input" } %>
 ```
 
-Focus a field: https://ui.lostcoords.com/components/kbd.html
+Focus a field: https://ui.lostcoords.com/components/kbd
 
 ```erb
 <%= lc_stack gap: :related, class: "w-full max-w-sm" do %>
@@ -3179,7 +3179,7 @@ Focus a field: https://ui.lostcoords.com/components/kbd.html
 <% end %>
 ```
 
-Form rows: https://ui.lostcoords.com/components/list_group.html
+Form rows: https://ui.lostcoords.com/components/list_group
 
 ```erb
 <%= lc_list_group class: "w-full max-w-md" do %>
@@ -3200,13 +3200,13 @@ Form rows: https://ui.lostcoords.com/components/list_group.html
 
 ## lc_textarea
 
-https://ui.lostcoords.com/components/textarea.html#lc_textarea
+https://ui.lostcoords.com/components/textarea#lc_textarea
 
 ```ruby
 lc_textarea(content = nil, name: nil, **attributes, &block)
 ```
 
-Mobile height options: https://ui.lostcoords.com/components/dialog.html
+Mobile height options: https://ui.lostcoords.com/components/dialog
 
 ```erb
 <%= lc_dialog id: "my-component-sheet", title: "Notes", detents: "medium large" do %>
@@ -3214,7 +3214,7 @@ Mobile height options: https://ui.lostcoords.com/components/dialog.html
 <% end %>
 ```
 
-Textarea: https://ui.lostcoords.com/components/textarea.html
+Textarea: https://ui.lostcoords.com/components/textarea
 
 ```erb
 <%= lc_textarea "A place for your notes.", name: "notes", rows: 4, class: "max-w-sm", aria: { label: "Notes" } %>
@@ -3222,13 +3222,13 @@ Textarea: https://ui.lostcoords.com/components/textarea.html
 
 ## lc_select
 
-https://ui.lostcoords.com/components/select.html#lc_select
+https://ui.lostcoords.com/components/select#lc_select
 
 ```ruby
 lc_select(options = nil, name: nil, selected: nil, size: :md, **attributes, &block)
 ```
 
-Native select: https://ui.lostcoords.com/components/select.html
+Native select: https://ui.lostcoords.com/components/select
 
 ```erb
 <%= lc_select [["Design", "design"], ["Engineering", "engineering"]], name: "team", selected: "design", class: "max-w-sm", aria: { label: "Team" } %>
@@ -3236,13 +3236,13 @@ Native select: https://ui.lostcoords.com/components/select.html
 
 ## lc_field
 
-https://ui.lostcoords.com/components/field.html#lc_field
+https://ui.lostcoords.com/components/field#lc_field
 
 ```ruby
 lc_field(label:, id:, hint: nil, error: nil, size: :md, **attributes, &block)
 ```
 
-With form controls: https://ui.lostcoords.com/components/card.html
+With form controls: https://ui.lostcoords.com/components/card
 
 ```erb
 <%= lc_card class: "@container w-full" do |card| %>
@@ -3258,7 +3258,7 @@ With form controls: https://ui.lostcoords.com/components/card.html
 <% end %>
 ```
 
-Validation feedback: https://ui.lostcoords.com/components/card.html
+Validation feedback: https://ui.lostcoords.com/components/card
 
 ```erb
 <%= lc_card class: "w-full" do |card| %>
@@ -3271,7 +3271,7 @@ Validation feedback: https://ui.lostcoords.com/components/card.html
 <% end %>
 ```
 
-Button summary: https://ui.lostcoords.com/components/collapsible.html
+Button summary: https://ui.lostcoords.com/components/collapsible
 
 ```erb
 <%= lc_collapsible card: false, button: { variant: :secondary, size: :sm }, summary_class: "w-fit", class: "w-full max-w-80" do |collapsible| %>
@@ -3285,7 +3285,7 @@ Button summary: https://ui.lostcoords.com/components/collapsible.html
 <% end %>
 ```
 
-Copy from an element: https://ui.lostcoords.com/components/copy_button.html
+Copy from an element: https://ui.lostcoords.com/components/copy_button
 
 ```erb
 <%= lc_stack gap: :related, class: "w-full max-w-md" do %>
@@ -3297,7 +3297,7 @@ Copy from an element: https://ui.lostcoords.com/components/copy_button.html
 <% end %>
 ```
 
-Modal: https://ui.lostcoords.com/components/dialog.html
+Modal: https://ui.lostcoords.com/components/dialog
 
 ```erb
 <%= lc_dialog id: "my-component-dialog", title: "Create project", description: "Projects group pages and members.", trigger: "New project" do |dialog| %>
@@ -3313,7 +3313,7 @@ Modal: https://ui.lostcoords.com/components/dialog.html
 <% end %>
 ```
 
-Mobile dialog: https://ui.lostcoords.com/components/dialog.html
+Mobile dialog: https://ui.lostcoords.com/components/dialog
 
 ```erb
 <%= lc_dialog id: "my-component-sheet", title: "Workspace details", trigger: "Open mobile dialog", detents: "fit" do %>
@@ -3324,7 +3324,7 @@ Mobile dialog: https://ui.lostcoords.com/components/dialog.html
 <% end %>
 ```
 
-Label and hint: https://ui.lostcoords.com/components/field.html
+Label and hint: https://ui.lostcoords.com/components/field
 
 ```erb
 <%= lc_field label: "Project name", id: "my-component-name", hint: "A short, memorable name.", class: "w-full max-w-sm" do |field| %>
@@ -3332,7 +3332,7 @@ Label and hint: https://ui.lostcoords.com/components/field.html
 <% end %>
 ```
 
-Validation: https://ui.lostcoords.com/components/field.html
+Validation: https://ui.lostcoords.com/components/field
 
 ```erb
 <%= lc_field label: "Email address", id: "my-component-email", error: "Enter a valid email address.", class: "w-full max-w-sm" do |field| %>
@@ -3340,7 +3340,7 @@ Validation: https://ui.lostcoords.com/components/field.html
 <% end %>
 ```
 
-Rails forms: https://ui.lostcoords.com/components/field.html
+Rails forms: https://ui.lostcoords.com/components/field
 
 ```erb
 <%= form_with scope: :project, url: "#", class: "w-full max-w-sm" do |form| %>
@@ -3350,7 +3350,7 @@ Rails forms: https://ui.lostcoords.com/components/field.html
 <% end %>
 ```
 
-Focus a field: https://ui.lostcoords.com/components/kbd.html
+Focus a field: https://ui.lostcoords.com/components/kbd
 
 ```erb
 <%= lc_stack gap: :related, class: "w-full max-w-sm" do %>
@@ -3365,13 +3365,13 @@ Focus a field: https://ui.lostcoords.com/components/kbd.html
 
 ## lc_fieldset
 
-https://ui.lostcoords.com/components/field.html#lc_fieldset
+https://ui.lostcoords.com/components/field#lc_fieldset
 
 ```ruby
 lc_fieldset(legend:, id: nil, hint: nil, error: nil, size: :md, **attributes, &block)
 ```
 
-Grouped controls: https://ui.lostcoords.com/components/field.html
+Grouped controls: https://ui.lostcoords.com/components/field
 
 ```erb
 <%= lc_stack class: "w-full max-w-sm" do %>
@@ -3394,13 +3394,13 @@ Grouped controls: https://ui.lostcoords.com/components/field.html
 
 ## lc_toggle_group
 
-https://ui.lostcoords.com/components/toggle_group.html#lc_toggle_group
+https://ui.lostcoords.com/components/toggle_group#lc_toggle_group
 
 ```ruby
 lc_toggle_group(label:, name: nil, value: nil, as: :div, variant: :segmented, size: :md, **attributes, &block)
 ```
 
-Row summary with a chevron: https://ui.lostcoords.com/components/collapsible.html
+Row summary with a chevron: https://ui.lostcoords.com/components/collapsible
 
 ```erb
 <%= lc_collapsible card: false, indicator: :chevron, class: "w-full max-w-80", summary_class: "rounded-2xl px-3 font-medium hover:bg-accent" do |collapsible| %>
@@ -3415,7 +3415,7 @@ Row summary with a chevron: https://ui.lostcoords.com/components/collapsible.htm
 <% end %>
 ```
 
-Mutually exclusive choices: https://ui.lostcoords.com/components/toggle_group.html
+Mutually exclusive choices: https://ui.lostcoords.com/components/toggle_group
 
 ```erb
 <%= lc_toggle_group label: "View", value: "month" do %>
@@ -3425,7 +3425,7 @@ Mutually exclusive choices: https://ui.lostcoords.com/components/toggle_group.ht
 <% end %>
 ```
 
-Navigation links: https://ui.lostcoords.com/components/toggle_group.html
+Navigation links: https://ui.lostcoords.com/components/toggle_group
 
 ```erb
 <%= lc_toggle_group label: "Period", as: :nav do %>
@@ -3435,7 +3435,7 @@ Navigation links: https://ui.lostcoords.com/components/toggle_group.html
 <% end %>
 ```
 
-Wrapping pills: https://ui.lostcoords.com/components/toggle_group.html
+Wrapping pills: https://ui.lostcoords.com/components/toggle_group
 
 ```erb
 <%= lc_toggle_group label: "Category", name: "category", value: "", variant: :pills do %>
@@ -3446,7 +3446,7 @@ Wrapping pills: https://ui.lostcoords.com/components/toggle_group.html
 <% end %>
 ```
 
-Form values, native radios and reset: https://ui.lostcoords.com/components/toggle_group.html
+Form values, native radios and reset: https://ui.lostcoords.com/components/toggle_group
 
 ```erb
 <form class="flex flex-col items-center gap-4">
@@ -3465,13 +3465,13 @@ Form values, native radios and reset: https://ui.lostcoords.com/components/toggl
 
 ## lc_toggle_group_item
 
-https://ui.lostcoords.com/components/toggle_group.html#lc_toggle_group_item
+https://ui.lostcoords.com/components/toggle_group#lc_toggle_group_item
 
 ```ruby
 lc_toggle_group_item(label = nil, value: nil, selected: nil, checked: nil, href: nil, current: nil, input: {}, **attributes, &block)
 ```
 
-Row summary with a chevron: https://ui.lostcoords.com/components/collapsible.html
+Row summary with a chevron: https://ui.lostcoords.com/components/collapsible
 
 ```erb
 <%= lc_collapsible card: false, indicator: :chevron, class: "w-full max-w-80", summary_class: "rounded-2xl px-3 font-medium hover:bg-accent" do |collapsible| %>
@@ -3486,7 +3486,7 @@ Row summary with a chevron: https://ui.lostcoords.com/components/collapsible.htm
 <% end %>
 ```
 
-Mutually exclusive choices: https://ui.lostcoords.com/components/toggle_group.html
+Mutually exclusive choices: https://ui.lostcoords.com/components/toggle_group
 
 ```erb
 <%= lc_toggle_group label: "View", value: "month" do %>
@@ -3496,7 +3496,7 @@ Mutually exclusive choices: https://ui.lostcoords.com/components/toggle_group.ht
 <% end %>
 ```
 
-Navigation links: https://ui.lostcoords.com/components/toggle_group.html
+Navigation links: https://ui.lostcoords.com/components/toggle_group
 
 ```erb
 <%= lc_toggle_group label: "Period", as: :nav do %>
@@ -3506,7 +3506,7 @@ Navigation links: https://ui.lostcoords.com/components/toggle_group.html
 <% end %>
 ```
 
-Wrapping pills: https://ui.lostcoords.com/components/toggle_group.html
+Wrapping pills: https://ui.lostcoords.com/components/toggle_group
 
 ```erb
 <%= lc_toggle_group label: "Category", name: "category", value: "", variant: :pills do %>
@@ -3517,7 +3517,7 @@ Wrapping pills: https://ui.lostcoords.com/components/toggle_group.html
 <% end %>
 ```
 
-Form values, native radios and reset: https://ui.lostcoords.com/components/toggle_group.html
+Form values, native radios and reset: https://ui.lostcoords.com/components/toggle_group
 
 ```erb
 <form class="flex flex-col items-center gap-4">
@@ -3536,13 +3536,13 @@ Form values, native radios and reset: https://ui.lostcoords.com/components/toggl
 
 ## lc_toggle
 
-https://ui.lostcoords.com/components/toggle.html#lc_toggle
+https://ui.lostcoords.com/components/toggle#lc_toggle
 
 ```ruby
 lc_toggle(label = nil, active: false, ghost: false, size: :md, href: nil, name: nil, value: nil, input: {}, **attributes, &block)
 ```
 
-Grouped controls: https://ui.lostcoords.com/components/field.html
+Grouped controls: https://ui.lostcoords.com/components/field
 
 ```erb
 <%= lc_stack class: "w-full max-w-sm" do %>
@@ -3563,7 +3563,7 @@ Grouped controls: https://ui.lostcoords.com/components/field.html
 <% end %>
 ```
 
-Form rows: https://ui.lostcoords.com/components/list_group.html
+Form rows: https://ui.lostcoords.com/components/list_group
 
 ```erb
 <%= lc_list_group class: "w-full max-w-md" do %>
@@ -3582,7 +3582,7 @@ Form rows: https://ui.lostcoords.com/components/list_group.html
 <% end %>
 ```
 
-Filters: https://ui.lostcoords.com/components/toggle.html
+Filters: https://ui.lostcoords.com/components/toggle
 
 ```erb
 <%= lc_inline role: "group", aria: { label: "Topics" } do %>
@@ -3592,7 +3592,7 @@ Filters: https://ui.lostcoords.com/components/toggle.html
 <% end %>
 ```
 
-Navigation: https://ui.lostcoords.com/components/toggle.html
+Navigation: https://ui.lostcoords.com/components/toggle
 
 ```erb
 <%= lc_inline do %>
@@ -3601,14 +3601,14 @@ Navigation: https://ui.lostcoords.com/components/toggle.html
 <% end %>
 ```
 
-Disabled and ghost: https://ui.lostcoords.com/components/toggle.html
+Disabled and ghost: https://ui.lostcoords.com/components/toggle
 
 ```erb
 <%= lc_toggle "Unavailable", disabled: true %>
 <%= lc_toggle "Add filter", ghost: true %>
 ```
 
-Form values, native radios and reset: https://ui.lostcoords.com/components/toggle_group.html
+Form values, native radios and reset: https://ui.lostcoords.com/components/toggle_group
 
 ```erb
 <form class="flex flex-col items-center gap-4">
@@ -3627,13 +3627,13 @@ Form values, native radios and reset: https://ui.lostcoords.com/components/toggl
 
 ## lc_table
 
-https://ui.lostcoords.com/components/table.html#lc_table
+https://ui.lostcoords.com/components/table#lc_table
 
 ```ruby
 lc_table(**attributes, &block)
 ```
 
-Records: https://ui.lostcoords.com/components/table.html
+Records: https://ui.lostcoords.com/components/table
 
 ```erb
 <div class="overflow-x-auto" tabindex="0" role="region" aria-label="Recent activity">
@@ -3652,19 +3652,19 @@ Records: https://ui.lostcoords.com/components/table.html
 
 ## lc_toast
 
-https://ui.lostcoords.com/components/toast.html#lc_toast
+https://ui.lostcoords.com/components/toast#lc_toast
 
 ```ruby
 lc_toast(message = nil, tone: :success, timeout: 4000, **attributes, &block)
 ```
 
-Brief feedback: https://ui.lostcoords.com/components/toast.html
+Brief feedback: https://ui.lostcoords.com/components/toast
 
 ```erb
 <%= lc_toast "Project saved.", timeout: 0 %>
 ```
 
-Over dialogs and sticky headers: https://ui.lostcoords.com/components/toast.html
+Over dialogs and sticky headers: https://ui.lostcoords.com/components/toast
 
 ```erb
 <%# In an app, render the region once in the layout and append toasts with turbo_stream.append. %>
@@ -3673,7 +3673,7 @@ Over dialogs and sticky headers: https://ui.lostcoords.com/components/toast.html
 <%= lc_button "Save project", data: { controller: "toast-demo", action: "toast-demo#show", toast_demo_template_value: "my-component-toast", toast_demo_region_value: "my-component-toasts" } %>
 ```
 
-Centred, at the top on phones: https://ui.lostcoords.com/components/toast.html
+Centred, at the top on phones: https://ui.lostcoords.com/components/toast
 
 ```erb
 <%# Centred at the bottom, and at the top on phones, clear of a bottom tab bar. %>
@@ -3684,13 +3684,13 @@ Centred, at the top on phones: https://ui.lostcoords.com/components/toast.html
 
 ## lc_toast_region
 
-https://ui.lostcoords.com/components/toast.html#lc_toast_region
+https://ui.lostcoords.com/components/toast#lc_toast_region
 
 ```ruby
 lc_toast_region(placement: :bottom_end, mobile_placement: nil, **attributes, &block)
 ```
 
-Over dialogs and sticky headers: https://ui.lostcoords.com/components/toast.html
+Over dialogs and sticky headers: https://ui.lostcoords.com/components/toast
 
 ```erb
 <%# In an app, render the region once in the layout and append toasts with turbo_stream.append. %>
@@ -3699,7 +3699,7 @@ Over dialogs and sticky headers: https://ui.lostcoords.com/components/toast.html
 <%= lc_button "Save project", data: { controller: "toast-demo", action: "toast-demo#show", toast_demo_template_value: "my-component-toast", toast_demo_region_value: "my-component-toasts" } %>
 ```
 
-Centred, at the top on phones: https://ui.lostcoords.com/components/toast.html
+Centred, at the top on phones: https://ui.lostcoords.com/components/toast
 
 ```erb
 <%# Centred at the bottom, and at the top on phones, clear of a bottom tab bar. %>
@@ -3710,13 +3710,13 @@ Centred, at the top on phones: https://ui.lostcoords.com/components/toast.html
 
 ## lc_tooltip
 
-https://ui.lostcoords.com/components/tooltip.html#lc_tooltip
+https://ui.lostcoords.com/components/tooltip#lc_tooltip
 
 ```ruby
 lc_tooltip(text, id:, side: :top, **attributes, &block)
 ```
 
-Tooltips: https://ui.lostcoords.com/components/tooltip.html
+Tooltips: https://ui.lostcoords.com/components/tooltip
 
 ```erb
 <%= lc_inline gap: :content do %>
@@ -3731,13 +3731,13 @@ Tooltips: https://ui.lostcoords.com/components/tooltip.html
 
 ## lc_heading
 
-https://ui.lostcoords.com/components/foundations.html#lc_heading
+https://ui.lostcoords.com/components/foundations#lc_heading
 
 ```ruby
 lc_heading(content = nil, level: 2, size: :heading, trim: false, anchor: false, **attributes, &block)
 ```
 
-Text styles: https://ui.lostcoords.com/components/foundations.html
+Text styles: https://ui.lostcoords.com/components/foundations
 
 ```erb
 <div class="grid gap-5">
@@ -3750,7 +3750,7 @@ Text styles: https://ui.lostcoords.com/components/foundations.html
 </div>
 ```
 
-Japanese text: https://ui.lostcoords.com/components/foundations.html
+Japanese text: https://ui.lostcoords.com/components/foundations
 
 ```erb
 <div lang="ja" class="grid max-w-sm gap-4">
@@ -3761,7 +3761,7 @@ Japanese text: https://ui.lostcoords.com/components/foundations.html
 </div>
 ```
 
-Eyebrow: https://ui.lostcoords.com/components/foundations.html
+Eyebrow: https://ui.lostcoords.com/components/foundations
 
 ```erb
 <div class="grid gap-related">
@@ -3774,7 +3774,7 @@ Eyebrow: https://ui.lostcoords.com/components/foundations.html
 </div>
 ```
 
-Page rhythm: https://ui.lostcoords.com/components/foundations.html
+Page rhythm: https://ui.lostcoords.com/components/foundations
 
 ```erb
 <%= lc_stack gap: :section, class: "w-full max-w-xl" do %>
@@ -3809,7 +3809,7 @@ Page rhythm: https://ui.lostcoords.com/components/foundations.html
 <% end %>
 ```
 
-Responsive containers: https://ui.lostcoords.com/components/foundations.html
+Responsive containers: https://ui.lostcoords.com/components/foundations
 
 ```erb
 <%= lc_container do %>
@@ -3838,7 +3838,7 @@ Responsive containers: https://ui.lostcoords.com/components/foundations.html
 <% end %>
 ```
 
-Popover sheet: https://ui.lostcoords.com/components/dialog.html
+Popover sheet: https://ui.lostcoords.com/components/dialog
 
 ```erb
 <button type="button" class="<%= lc_button_class(variant: :secondary) %>" popovertarget="my-component-filters">Filters</button>
@@ -3852,7 +3852,7 @@ Popover sheet: https://ui.lostcoords.com/components/dialog.html
 <% end %>
 ```
 
-Empty state: https://ui.lostcoords.com/components/empty_state.html
+Empty state: https://ui.lostcoords.com/components/empty_state
 
 ```erb
 <%= lc_empty_state class: "w-full" do %>
@@ -3867,13 +3867,13 @@ Empty state: https://ui.lostcoords.com/components/empty_state.html
 
 ## lc_text
 
-https://ui.lostcoords.com/components/foundations.html#lc_text
+https://ui.lostcoords.com/components/foundations#lc_text
 
 ```ruby
 lc_text(content = nil, size: :body, tone: :default, trim: false, as: :p, **attributes, &block)
 ```
 
-Text styles: https://ui.lostcoords.com/components/foundations.html
+Text styles: https://ui.lostcoords.com/components/foundations
 
 ```erb
 <div class="grid gap-5">
@@ -3886,7 +3886,7 @@ Text styles: https://ui.lostcoords.com/components/foundations.html
 </div>
 ```
 
-Japanese text: https://ui.lostcoords.com/components/foundations.html
+Japanese text: https://ui.lostcoords.com/components/foundations
 
 ```erb
 <div lang="ja" class="grid max-w-sm gap-4">
@@ -3897,7 +3897,7 @@ Japanese text: https://ui.lostcoords.com/components/foundations.html
 </div>
 ```
 
-Eyebrow: https://ui.lostcoords.com/components/foundations.html
+Eyebrow: https://ui.lostcoords.com/components/foundations
 
 ```erb
 <div class="grid gap-related">
@@ -3910,7 +3910,7 @@ Eyebrow: https://ui.lostcoords.com/components/foundations.html
 </div>
 ```
 
-Page rhythm: https://ui.lostcoords.com/components/foundations.html
+Page rhythm: https://ui.lostcoords.com/components/foundations
 
 ```erb
 <%= lc_stack gap: :section, class: "w-full max-w-xl" do %>
@@ -3945,7 +3945,7 @@ Page rhythm: https://ui.lostcoords.com/components/foundations.html
 <% end %>
 ```
 
-Responsive containers: https://ui.lostcoords.com/components/foundations.html
+Responsive containers: https://ui.lostcoords.com/components/foundations
 
 ```erb
 <%= lc_container do %>
@@ -3974,7 +3974,7 @@ Responsive containers: https://ui.lostcoords.com/components/foundations.html
 <% end %>
 ```
 
-Default: https://ui.lostcoords.com/components/card.html
+Default: https://ui.lostcoords.com/components/card
 
 ```erb
 <%= lc_card class: "w-full" do |card| %>
@@ -3991,7 +3991,7 @@ Default: https://ui.lostcoords.com/components/card.html
 <% end %>
 ```
 
-Compact: https://ui.lostcoords.com/components/card.html
+Compact: https://ui.lostcoords.com/components/card
 
 ```erb
 <%= lc_card padding: :sm, class: "w-full" do |card| %>
@@ -4000,7 +4000,7 @@ Compact: https://ui.lostcoords.com/components/card.html
 <% end %>
 ```
 
-Edge-to-edge content: https://ui.lostcoords.com/components/card.html
+Edge-to-edge content: https://ui.lostcoords.com/components/card
 
 ```erb
 <%= lc_card padding: :none, class: "w-full" do %>
@@ -4015,7 +4015,7 @@ Edge-to-edge content: https://ui.lostcoords.com/components/card.html
 <% end %>
 ```
 
-Copy from an element: https://ui.lostcoords.com/components/copy_button.html
+Copy from an element: https://ui.lostcoords.com/components/copy_button
 
 ```erb
 <%= lc_stack gap: :related, class: "w-full max-w-md" do %>
@@ -4027,7 +4027,7 @@ Copy from an element: https://ui.lostcoords.com/components/copy_button.html
 <% end %>
 ```
 
-Documentation page: https://ui.lostcoords.com/components/docs_shell.html
+Documentation page: https://ui.lostcoords.com/components/docs_shell
 
 ```erb
 <% navigation = lc_nav_list label: "Guides" do |nav| %>
@@ -4042,7 +4042,7 @@ Documentation page: https://ui.lostcoords.com/components/docs_shell.html
 <% end %>
 ```
 
-Empty state: https://ui.lostcoords.com/components/empty_state.html
+Empty state: https://ui.lostcoords.com/components/empty_state
 
 ```erb
 <%= lc_empty_state class: "w-full" do %>
@@ -4055,7 +4055,7 @@ Empty state: https://ui.lostcoords.com/components/empty_state.html
 <% end %>
 ```
 
-Grouped controls: https://ui.lostcoords.com/components/field.html
+Grouped controls: https://ui.lostcoords.com/components/field
 
 ```erb
 <%= lc_stack class: "w-full max-w-sm" do %>
@@ -4076,7 +4076,7 @@ Grouped controls: https://ui.lostcoords.com/components/field.html
 <% end %>
 ```
 
-Focus a field: https://ui.lostcoords.com/components/kbd.html
+Focus a field: https://ui.lostcoords.com/components/kbd
 
 ```erb
 <%= lc_stack gap: :related, class: "w-full max-w-sm" do %>
@@ -4089,7 +4089,7 @@ Focus a field: https://ui.lostcoords.com/components/kbd.html
 <% end %>
 ```
 
-Tones: https://ui.lostcoords.com/components/link.html
+Tones: https://ui.lostcoords.com/components/link
 
 ```erb
 <%= lc_stack gap: :related do %>
@@ -4099,7 +4099,7 @@ Tones: https://ui.lostcoords.com/components/link.html
 <% end %>
 ```
 
-Cards: https://ui.lostcoords.com/components/radio.html
+Cards: https://ui.lostcoords.com/components/radio
 
 ```erb
 <%= lc_choice_group legend: "Plan", class: "w-full max-w-md" do %>
@@ -4111,7 +4111,7 @@ Cards: https://ui.lostcoords.com/components/radio.html
 <% end %>
 ```
 
-Skip link: https://ui.lostcoords.com/components/skip_link.html
+Skip link: https://ui.lostcoords.com/components/skip_link
 
 ```erb
 <%= lc_stack gap: :related, class: "items-center" do %>
@@ -4120,7 +4120,7 @@ Skip link: https://ui.lostcoords.com/components/skip_link.html
 <% end %>
 ```
 
-Tabs: https://ui.lostcoords.com/components/tabs.html
+Tabs: https://ui.lostcoords.com/components/tabs
 
 ```erb
 <%= lc_tabs id: "my-component-tabs", label: "Project", class: "w-full" do |tabs| %>
@@ -4136,7 +4136,7 @@ Tabs: https://ui.lostcoords.com/components/tabs.html
 <% end %>
 ```
 
-Vertical, with manual activation: https://ui.lostcoords.com/components/tabs.html
+Vertical, with manual activation: https://ui.lostcoords.com/components/tabs
 
 ```erb
 <%= lc_tabs id: "my-component-settings", label: "Settings", orientation: :vertical, activation: :manual, class: "w-full" do |tabs| %>
@@ -4154,13 +4154,13 @@ Vertical, with manual activation: https://ui.lostcoords.com/components/tabs.html
 
 ## lc_kbd
 
-https://ui.lostcoords.com/components/kbd.html#lc_kbd
+https://ui.lostcoords.com/components/kbd#lc_kbd
 
 ```ruby
 lc_kbd(keys, **attributes)
 ```
 
-Focus a field: https://ui.lostcoords.com/components/kbd.html
+Focus a field: https://ui.lostcoords.com/components/kbd
 
 ```erb
 <%= lc_stack gap: :related, class: "w-full max-w-sm" do %>
@@ -4175,13 +4175,13 @@ Focus a field: https://ui.lostcoords.com/components/kbd.html
 
 ## Blocks
 
-Docs-only composition examples: https://ui.lostcoords.com/blocks.html
+Docs-only composition examples: https://ui.lostcoords.com/blocks
 Copy and adapt the example files. Blocks are not importable library components.
 
 ### Application header
 
 A glass header with navigation, an account menu and room for your brand.
-https://ui.lostcoords.com/blocks/application_header.html
+https://ui.lostcoords.com/blocks/application_header
 
 Replace the sample brand, links and account actions with your application's content.
 
@@ -4266,7 +4266,7 @@ app/views/shared/_application_header.html.erb
 ### Documentation layout
 
 A sidebar, page content and an "On this page" list, with a collapsible menu on phones.
-https://ui.lostcoords.com/blocks/docs_shell.html
+https://ui.lostcoords.com/blocks/docs_shell
 
 lc_docs_shell takes the sidebar as navigation: and an lc_toc as contents:, with the page as its block. This documentation site uses it for every guide and component page.
 
@@ -4314,7 +4314,7 @@ app/views/shared/_docs_shell.html.erb
 ### Mobile navigation
 
 A floating navigation pill and an expanding stack of quick actions.
-https://ui.lostcoords.com/blocks/mobile_navigation.html
+https://ui.lostcoords.com/blocks/mobile_navigation
 
 Choose a small set of primary destinations and replace the sample quick actions.
 

@@ -18,7 +18,6 @@ module Dummy
   class Application < Rails::Application
     config.load_defaults Rails::VERSION::STRING.to_f
     config.eager_load = false
-    config.secret_key_base = "dummy"
     config.i18n.available_locales = %i[en es ja]
   end
 end

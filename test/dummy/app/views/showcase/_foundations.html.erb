@@ -46,7 +46,7 @@
     <%= lc_text size: :small, tone: :muted do %>
       Change <code>--primary</code> to update actions, links, selection and focus together.
       Soft backgrounds for primary and status colors are generated automatically.
-      <a href="/theming.html" class="<%= lc_link_class %>">See the theming guide</a> for examples.
+      <a href="<%= theming_path %>" class="<%= lc_link_class %>">See the theming guide</a> for examples.
     <% end %>
     <%= render "showcase/token_table", tokens: DocsFoundations::COLORS, id: "theme-color-table" %>
   <% end %>

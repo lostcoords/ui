@@ -1,7 +1,7 @@
 <%= lc_docs_shell navigation: render("showcase/navigation"), menu_label: "Components" do %>
 <div class="<%= lc_stack_class(gap: :section) %>">
   <header class="<%= lc_stack_class(gap: :heading, extra: "max-w-3xl") %>">
-    <%= lc_breadcrumb [ [ "Blocks", "/blocks.html" ], @block.title ] %>
+    <%= lc_breadcrumb [ [ "Blocks", blocks_path ], @block.title ] %>
     <%= lc_heading @block.title, level: 1, size: :title %>
     <p class="<%= lc_text_class(tone: :muted, extra: "text-pretty") %>"><%= @block.description %></p>
   </header>
@@ -19,7 +19,7 @@
     <p class="text-xs text-muted-foreground">Interact with the example above, or open it in a full window.</p>
   </section>
   <%= lc_section title: "Make it yours", id: "adapt-title", anchor: true do %>
-    <p class="<%= lc_text_class(size: :small, tone: :muted, extra: "max-w-3xl") %>">After <a href="/installation.html" class="<%= lc_link_class %>">setting up the library</a>, copy the example files into your app and adapt the content. These are composition references, with no block API to install or import.</p>
+    <p class="<%= lc_text_class(size: :small, tone: :muted, extra: "max-w-3xl") %>">After <a href="<%= installation_path %>" class="<%= lc_link_class %>">setting up the library</a>, copy the example files into your app and adapt the content. These are composition references, with no block API to install or import.</p>
     <% if @block.stylesheet? || @block.controller? %>
       <p class="<%= lc_text_class(size: :small, tone: :muted, extra: "max-w-3xl") %>">Load the copied stylesheet from your application layout. Place the controller in your Stimulus controller directory and register it using your app's usual loading convention.</p>
     <% end %>
@@ -28,7 +28,7 @@
       <span class="text-muted-foreground">Built with</span>
       <% @block.components.each do |component| %>
         <% section = @sections.find { |section| section.id == component } %>
-        <%= lc_button_link_to section.title, "/components/#{component}.html", variant: :secondary, size: :sm %>
+        <%= lc_button_link_to section.title, component_path(component), variant: :secondary, size: :sm %>
       <% end %>
     </div>
   <% end %>
@@ -43,6 +43,6 @@
       <% end %>
     <% end %>
   <% end %>
-  <%= lc_link "← All blocks", "/blocks.html", class: "self-start text-label no-underline hover:underline" %>
+  <%= lc_link "← All blocks", blocks_path, class: "self-start text-label no-underline hover:underline" %>
 </div>
 <% end %>

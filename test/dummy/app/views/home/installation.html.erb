@@ -24,7 +24,7 @@
     <%= render "showcase/source_code", source: DocsInstallation.stylesheet, language: :css, id: "install-starter", label: "Starter stylesheet" %>
     <p class="<%= lc_text_class(size: :small, tone: :muted, extra: "text-pretty") %>">For an existing app, add the starter's layer order and typography plugin if needed. Keep your Tailwind imports and add the engine import:</p>
     <%= render "showcase/source_code", source: '@import "../builds/tailwind/lostcoords_ui.css";', language: :css, id: "install-styles", label: "Engine stylesheet import" %>
-    <p class="<%= lc_text_class(size: :small, tone: :muted, extra: "text-pretty") %>">Run <code>bin/rails tailwindcss:build</code>. The build generates that import path from the installed gem. Components work with the defaults immediately. To customize colors or fonts, add overrides after the import using the <a href="/theming.html" class="<%= lc_link_class %>">theming guide</a>.</p>
+    <p class="<%= lc_text_class(size: :small, tone: :muted, extra: "text-pretty") %>">Run <code>bin/rails tailwindcss:build</code>. The build generates that import path from the installed gem. Components work with the defaults immediately. To customize colors or fonts, add overrides after the import using the <a href="<%= theming_path %>" class="<%= lc_link_class %>">theming guide</a>.</p>
   <% end %>
   <%= lc_section title: "3. Load the assets", id: "javascript", anchor: true do %>
     <p class="<%= lc_text_class(size: :small, tone: :muted, extra: "text-pretty") %>">Your layout needs the compiled Tailwind stylesheet and importmap tags. Keep your existing tags if they already load these assets.</p>
@@ -33,7 +33,7 @@
   <% end %>
   <%= lc_section title: "4. Use a component", id: "first-component", anchor: true do %>
     <%= render "showcase/source_code", source: DocsInstallation::FIRST_COMPONENT, id: "install-first-component", label: "First component" %>
-    <p class="<%= lc_text_class(size: :small, tone: :muted, extra: "text-pretty") %>">Helpers render native HTML. Use <code>class:</code> for additional utilities, <code>data:</code> and <code>aria:</code> for attributes, and blocks for custom content. Browse the <a href="/components/button.html" class="<%= lc_link_class %>">button examples</a> to see variants, sizes, links and Rails forms.</p>
+    <p class="<%= lc_text_class(size: :small, tone: :muted, extra: "text-pretty") %>">Helpers render native HTML. Use <code>class:</code> for additional utilities, <code>data:</code> and <code>aria:</code> for attributes, and blocks for custom content. Browse the <a href="<%= component_path(:button) %>" class="<%= lc_link_class %>">button examples</a> to see variants, sizes, links and Rails forms.</p>
   <% end %>
 </div>
 <% end %>

@@ -4,13 +4,13 @@
       <%= lc_heading "Components for Rails.", level: 1, size: :title, class: "text-4xl leading-tight sm:text-5xl" %>
       <p class="<%= lc_text_class(tone: :muted, extra: "max-w-lg text-pretty") %>">Customizable, extensible, experimental, ready to use components used by LOST COORDS projects.</p>
     </div>
-    <%= lc_button_link_to "Browse components", "/components.html", icon: "arrow-up-right", icon_position: :end %>
+    <%= lc_button_link_to "Browse components", components_path, icon: "arrow-up-right", icon_position: :end %>
   </header>
 
   <%= render "showcase/component_bento", sections: @sections %>
 
   <div class="flex flex-wrap items-center justify-between gap-4 pt-4 text-sm">
     <p class="text-muted-foreground">Build with your own palette and type.</p>
-    <%= lc_link "Customize the theme →", "/theming.html", class: "text-label" %>
+    <%= lc_link "Customize the theme →", theming_path, class: "text-label" %>
   </div>
 </main>

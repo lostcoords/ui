@@ -168,9 +168,7 @@ async function _verifyComponentPicker(page) {
 
     for (const width of [1440, 768, 390, 320]) {
       await page.setViewportSize({ width, height: 900 })
-      await page
-        .locator('.component-picker__link[href="/components/description_list.html"]')
-        .focus()
+      await page.locator('.component-picker__link[href="/components/description_list"]').focus()
       await page.keyboard.press("ArrowDown")
       await page.keyboard.press("ArrowUp")
       await settleMotion()
@@ -205,9 +203,9 @@ async function _verifyComponentPicker(page) {
     verify(reduced, "Reduced motion keeps the selected description visible without movement")
 
     await page.keyboard.press("Enter")
-    await page.waitForURL(`${origin}/components/button.html`)
+    await page.waitForURL(`${origin}/components/button`)
     verify(
-      page.url() === `${origin}/components/button.html`,
+      page.url() === `${origin}/components/button`,
       "Enter follows the selected component's native documentation link",
     )
   } finally {

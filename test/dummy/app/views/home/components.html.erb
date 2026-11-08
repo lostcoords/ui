@@ -10,7 +10,7 @@
       <ul class="component-picker" aria-label="All components" style="--picker-rows: <%= rows %>" data-controller="component-picker" data-action="keydown->component-picker#navigate pointermove@window->component-picker#track">
         <% @components.each_with_index do |component, index| %>
           <li>
-            <%= link_to "/components/#{component.id}.html", class: "component-picker__link", data: { component_picker_target: "link", distance: index < rows ? [index, 5].min : 5, action: "pointermove->component-picker#activate focus->component-picker#activate" } do %>
+            <%= link_to component_path(component.id), class: "component-picker__link", data: { component_picker_target: "link", distance: index < rows ? [index, 5].min : 5, action: "pointermove->component-picker#activate focus->component-picker#activate" } do %>
               <span class="component-picker__number" aria-hidden="true"><%= format("%02d", index + 1) %></span>
               <span class="component-picker__body">
                 <span class="component-picker__title"><%= component.title %></span>

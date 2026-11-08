@@ -46,11 +46,8 @@ async function _verifySearch(page) {
 
   await input.fill("dialog")
   const results = await visible()
-  verify(results[0] === "/components/dialog.html", "Typing a component name ranks its page first")
-  verify(
-    results.includes("/components/dialog.html#lc_dialog"),
-    "Helpers appear alongside components",
-  )
+  verify(results[0] === "/components/dialog", "Typing a component name ranks its page first")
+  verify(results.includes("/components/dialog#lc_dialog"), "Helpers appear alongside components")
 
   await input.fill("lc_button")
   verify(
@@ -59,11 +56,11 @@ async function _verifySearch(page) {
   )
 
   await input.fill("buton")
-  verify((await visible()).includes("/components/button.html"), "A typo still finds the component")
+  verify((await visible()).includes("/components/button"), "A typo still finds the component")
 
   await input.fill("lazyLoadControllersFrom")
   verify(
-    (await visible()).includes("/installation.html#javascript"),
+    (await visible()).includes("/installation#javascript"),
     "Words in a page's text find the section that holds them",
   )
   verify(
@@ -77,7 +74,7 @@ async function _verifySearch(page) {
 
   await input.fill("icon_position")
   verify(
-    (await visible()).includes("/components/button.html#lc_button"),
+    (await visible()).includes("/components/button#lc_button"),
     "Helper options find the helper",
   )
 
@@ -94,14 +91,12 @@ async function _verifySearch(page) {
   await input.fill("switch themes")
   await page.keyboard.press("ArrowDown")
   verify(
-    await page.evaluate(
-      () => document.activeElement.getAttribute("href") === "/theming.html#dark-mode",
-    ),
+    await page.evaluate(() => document.activeElement.getAttribute("href") === "/theming#dark-mode"),
     "Arrow Down moves to the first result",
   )
   await page.keyboard.press("ArrowUp")
   await page.keyboard.press("Enter")
-  await page.waitForURL(/theming\.html#dark-mode$/)
+  await page.waitForURL(/theming#dark-mode$/)
   verify(true, "Enter in the field opens the top result")
   await ready()
 
