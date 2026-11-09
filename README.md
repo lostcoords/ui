@@ -61,13 +61,13 @@ toggles, layout, typography and navigation. The opt-in entries are `dialog` (wit
 menu also needs `menu`). A component whose entry is missing renders unstyled.
 
 The gem's stylesheets write into the `components` and `modules` layers, so the host declares that layer order.
-The theme defines the `dark:` variant with `html[data-theme="dark"]`. Each entry carries its own `@source` lines, so Tailwind
+The theme defines the `dark:` variant with `html[data-theme="dark"]`, and with `html[data-theme="system"]` under an OS dark preference. Each entry carries its own `@source` lines, so Tailwind
 scans the gem's helpers, views and JavaScript wherever the gem is installed.
 
 ### Theming
 
 Colors use [shadcn/ui](https://ui.shadcn.com/docs/theming) names, so a shadcn or tweakcn theme drops in.
-Set `data-theme="dark"` on `<html>` for dark mode; your app owns the switch and saved preference.
+Set `data-theme="dark"` on `<html>` for dark mode, or `data-theme="system"` to follow the OS with no pre-paint script, which keeps cached HTML theme-agnostic. Your app owns the switch and saved preference. A dark override written for `html[data-theme="dark"]` does not reach `system`: use `light-dark()` for colors, or repeat it under `@media (prefers-color-scheme: dark)`.
 Override any of these after the engine import:
 
 ```css

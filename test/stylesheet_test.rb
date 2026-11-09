@@ -24,6 +24,30 @@ module Lostcoords::Ui
       end
     end
 
+    test "system follows an OS dark preference through the tokens and the dark variant" do
+      Dir.mktmpdir do |dir|
+        Stylesheets.write(dir)
+        input = File.join(dir, "input.css")
+        File.write(input, <<~CSS)
+          @import "tailwindcss/theme.css";
+          @import "tailwindcss/utilities.css" source(none);
+          @import "./lostcoords_ui/base.css";
+          @import "./lostcoords_ui/core.css";
+          @source inline("dark:hidden");
+        CSS
+        _, error, status = Open3.capture3(Tailwindcss::Ruby.executable, "-i", input, "-o", "#{dir}/out.css")
+        assert status.success?, error
+        css = File.read("#{dir}/out.css")
+
+        token = /html\[data-theme="?dark"?\]\s*\{\s*--background/
+        assert_match token, css
+        assert_match(/@media \(prefers-color-scheme: dark\)\s*\{\s*html\[data-theme="?system"?\]\s*\{\s*--background/, css)
+        assert_match(/\.dark\\:hidden\s*\{\s*&?:?where\(html\[data-theme="?dark"?\]|\.dark\\:hidden:where\(html\[data-theme="?dark"?\]/, css)
+        assert_match(/\.dark\\:hidden:where\(html\[data-theme="?system"?\]|&:where\(html\[data-theme="?system"?\]/, css)
+        assert_includes css.gsub(/\s+/, " "), "color-scheme: light dark"
+      end
+    end
+
     test "a granular build carries only the entries it imports" do
       Dir.mktmpdir do |dir|
         Stylesheets.write(dir)

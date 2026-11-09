@@ -109,7 +109,31 @@
   --container-form: 32rem;
 }
 
-@custom-variant dark (&:where(html[data-theme="dark"], html[data-theme="dark"] *));
+/* data-theme="system" follows the OS, for a host that leaves the choice unresolved in cached HTML. */
+@custom-variant dark {
+  &:where(html[data-theme="dark"], html[data-theme="dark"] *) {
+    @slot;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    &:where(html[data-theme="system"], html[data-theme="system"] *) {
+      @slot;
+    }
+  }
+}
+
+/* The dark token block's own selector. A host may redefine `dark` to scope it; this one stays put. */
+@custom-variant lc-dark-tokens {
+  &[data-theme="dark"] {
+    @slot;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    &[data-theme="system"] {
+      @slot;
+    }
+  }
+}
 
 @layer theme {
   :root {
@@ -213,44 +237,46 @@
     }
   }
 
-  html[data-theme="dark"] {
-    --background: oklch(20.5% 0 0deg);
-    --foreground: oklch(91.5% 0 0deg);
-    --primary: oklch(91.5% 0 0deg);
-    --primary-foreground: var(--background);
-    --muted: oklch(24.2% 0 0deg);
-    --muted-foreground: color-mix(in oklab, var(--foreground) 76%, var(--background));
-    --accent: oklch(28.4% 0 0deg);
-    --destructive: oklch(78% 0.120 41.4deg);
-    --success: oklch(78% 0.089 144.3deg);
-    --warning: oklch(80% 0.110 86deg);
-    --border: color-mix(in oklab, var(--foreground) 16%, transparent);
+  html {
+    @variant lc-dark-tokens {
+      --background: oklch(20.5% 0 0deg);
+      --foreground: oklch(91.5% 0 0deg);
+      --primary: oklch(91.5% 0 0deg);
+      --primary-foreground: var(--background);
+      --muted: oklch(24.2% 0 0deg);
+      --muted-foreground: color-mix(in oklab, var(--foreground) 76%, var(--background));
+      --accent: oklch(28.4% 0 0deg);
+      --destructive: oklch(78% 0.120 41.4deg);
+      --success: oklch(78% 0.089 144.3deg);
+      --warning: oklch(80% 0.110 86deg);
+      --border: color-mix(in oklab, var(--foreground) 16%, transparent);
 
-    --lc-scrim: rgb(0 0 0 / 0.6);
-    --lc-scrim-soft: rgb(0 0 0 / 0.32);
-    --lc-scrim-veil: rgb(0 0 0 / 0.4);
+      --lc-scrim: rgb(0 0 0 / 0.6);
+      --lc-scrim-soft: rgb(0 0 0 / 0.32);
+      --lc-scrim-veil: rgb(0 0 0 / 0.4);
 
-    --lc-shadow-sm: 0 1px 2px rgb(0 0 0 / 0.2);
-    --lc-shadow:
-      0 1px 2px rgb(0 0 0 / 0.16),
-      0 8px 24px -8px rgb(0 0 0 / 0.32);
-    --lc-shadow-lg:
-      0 1px 3px rgb(0 0 0 / 0.2),
-      0 24px 48px -12px rgb(0 0 0 / 0.55);
+      --lc-shadow-sm: 0 1px 2px rgb(0 0 0 / 0.2);
+      --lc-shadow:
+        0 1px 2px rgb(0 0 0 / 0.16),
+        0 8px 24px -8px rgb(0 0 0 / 0.32);
+      --lc-shadow-lg:
+        0 1px 3px rgb(0 0 0 / 0.2),
+        0 24px 48px -12px rgb(0 0 0 / 0.55);
 
-    --lc-glass-fill: color-mix(in oklab, var(--background) 80%, transparent);
-    --lc-glass-edge: transparent;
-    --lc-glass-rim: 0 0 #0000;
-    --lc-glass-bar-edge: rgb(255 255 255 / 0.06);
-    --lc-glass-shadow: 0 1px 3px rgb(0 0 0 / 0.04), 0 4px 12px rgb(0 0 0 / 0.03);
-    --lc-glass-hud-fill:
-      linear-gradient(rgb(255 255 255 / 0.06), rgb(255 255 255 / 0) 60%),
-      color-mix(in oklab, var(--accent) 90%, transparent);
-    --lc-glass-hud-solid: var(--accent);
-    --lc-glass-hud-shadow:
-      inset 0 1px 0 rgb(255 255 255 / 0.1),
-      inset 0 0 0 1px rgb(255 255 255 / 0.1),
-      0 8px 20px -8px rgb(0 0 0 / 0.6);
+      --lc-glass-fill: color-mix(in oklab, var(--background) 80%, transparent);
+      --lc-glass-edge: transparent;
+      --lc-glass-rim: 0 0 #0000;
+      --lc-glass-bar-edge: rgb(255 255 255 / 0.06);
+      --lc-glass-shadow: 0 1px 3px rgb(0 0 0 / 0.04), 0 4px 12px rgb(0 0 0 / 0.03);
+      --lc-glass-hud-fill:
+        linear-gradient(rgb(255 255 255 / 0.06), rgb(255 255 255 / 0) 60%),
+        color-mix(in oklab, var(--accent) 90%, transparent);
+      --lc-glass-hud-solid: var(--accent);
+      --lc-glass-hud-shadow:
+        inset 0 1px 0 rgb(255 255 255 / 0.1),
+        inset 0 0 0 1px rgb(255 255 255 / 0.1),
+        0 8px 20px -8px rgb(0 0 0 / 0.6);
+    }
   }
 
   html:lang(ja) { --font-sans: var(--font-japanese); }
