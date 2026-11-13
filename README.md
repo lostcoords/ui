@@ -21,7 +21,7 @@ lockfile pins its gem version, so publishing a library update does not upgrade c
 ## Install
 
 ```ruby
-gem "lostcoords-ui", "~> 0.9.1"
+gem "lostcoords-ui", "~> 0.10.0"
 ```
 
 The engine adds its rendering helpers to host views, its views and translations to the host's lookup
@@ -169,6 +169,42 @@ registerControllers(application, { only: ["lc-copy", "lc-collapsible"] })
 Omit `only` to register every library controller. Unknown identifiers raise before anything is
 registered, and repeated calls on the same application keep later overrides, so register defaults
 before application overrides.
+
+## Changes in 0.10.0
+
+Nothing needs an edit, but toggles look different:
+
+- **A selected toggle pill fills solid.** Before: a pressed, checked or current `lc_toggle` (and a
+  `variant: :pills` toggle group item) had a soft primary fill, a primary edge and primary ink. After: it
+  fills with `--primary` and `--primary-foreground` ink over a transparent border, so selecting never shifts
+  its edge. A host that restyled the soft state for contrast can drop that override.
+- **A segmented toggle group slides one indicator.** Items stretch to share the track, and their corners are
+  concentric with it. Where the browser supports anchor positioning, the current item's surface is one
+  indicator that slides from item to item, whichever state marks it (`aria-current`, `aria-selected`,
+  `aria-checked`, `aria-pressed`, a checked radio or `active:`); elsewhere each current item paints its own,
+  as before. Items carry `lc-toggle-group-item`, and the track `lc-toggle-group`.
+
+New components and options, moved from apps that built them by hand:
+
+- **`lc_tab_bar` is a row of links styled as underlined tabs.** The current tab is bold with a rounded
+  underline in `--lc-tab-bar-indicator`; `count:` adds a muted number and `fill: true` shares the row. Unlike
+  `lc_tabs`, each tab is a link to its own URL.
+- **`lc_sidebar` is a sticky app sidebar that folds to an icon rail**, with the `lc-sidebar` controller, in the
+  `shell` entry. It keeps the reader's choice in a cookie the helper reads back, starts as a rail below
+  `rail_below:` unless expanded, and yields `sidebar.header` (with the toggle), `sidebar.body`, `sidebar.footer`
+  and `sidebar.account`, a row that opens an `lc_menu`. The `lc-rail:` variant styles your own content on the
+  rail, and `--lc-sidebar-indicator` paints the current link's bar. If you built a sidebar with a rail variant
+  and a cookie of your own, you can replace it and delete its stylesheet rules and controller.
+- **`lc_stats` and `lc_stat` show headline numbers** in a description list, in a line or as tiles.
+- **`lc_char_counter` is the character ring X shows under a post**, with the `lc-char-counter` controller. It
+  counts a field, or takes a count you supply for weighted characters.
+- **`lc_time` renders the short relative time X shows**, "12m", "4h", "4 Nov", with the full date as its title.
+- **`lc_split` and `lc_columns` lay out a main column beside an aside and balanced columns of groups**, with
+  `lc_split_class` and `lc_columns_class` for markup you render yourself.
+- **`lc_empty_state` takes `title:`, `text:`, `icon:`, `level:` and `card:`** to lay out the usual empty state;
+  the block form still works.
+- **`lc_toggle` takes `icon:`, `icon_only:` and `tooltip:`.** `icon_only: true` makes a square toggle of just the
+  icon whose label stays as its accessible name.
 
 ## Changes in 0.9.1
 
