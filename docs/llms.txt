@@ -546,6 +546,9 @@ Settings: https://ui.lostcoords.com/components/list_group
     <%= lc_list_row "Recovery codes", icon: "document-text", href: "#recovery-codes" do %>
       <%= lc_icon "chevron-right", variant: :mini, options: { class: "size-5 text-muted-foreground rtl:rotate-180", "aria-hidden": true } %>
     <% end %>
+    <%= lc_list_row "Laptop", subtitle: "Signed in 2 hours ago", icon: "computer-desktop", href: "#laptop", tag: :div do %>
+      <%= lc_icon_button "Sign out", icon: "arrow-right-start-on-rectangle", size: :sm, tooltip: true %>
+    <% end %>
     <%= lc_list_row padded: false do %>
       <%= lc_list_item "Delete account", icon: "trash", tag: :button, type: "button", class: "w-full cursor-pointer rounded-[inherit] text-destructive transition-colors hover:bg-accent" %>
     <% end %>
@@ -894,6 +897,7 @@ Tooltips: https://ui.lostcoords.com/components/tooltip
   <%= lc_tooltip "Copy a link to this page", id: "my-component-copy-tip" do |tip| %>
     <%= lc_icon_button "Copy link", icon: "link", **tip %>
   <% end %>
+  <%= lc_icon_button "Delete", icon: "trash", tooltip: true %>
   <%= lc_tooltip "Only owners can archive", id: "my-component-archive-tip", side: :bottom do |tip| %>
     <%= lc_button "Archive", variant: :secondary, **tip %>
   <% end %>
@@ -1092,6 +1096,9 @@ Settings: https://ui.lostcoords.com/components/list_group
     <%= lc_list_row "Recovery codes", icon: "document-text", href: "#recovery-codes" do %>
       <%= lc_icon "chevron-right", variant: :mini, options: { class: "size-5 text-muted-foreground rtl:rotate-180", "aria-hidden": true } %>
     <% end %>
+    <%= lc_list_row "Laptop", subtitle: "Signed in 2 hours ago", icon: "computer-desktop", href: "#laptop", tag: :div do %>
+      <%= lc_icon_button "Sign out", icon: "arrow-right-start-on-rectangle", size: :sm, tooltip: true %>
+    <% end %>
     <%= lc_list_row padded: false do %>
       <%= lc_list_item "Delete account", icon: "trash", tag: :button, type: "button", class: "w-full cursor-pointer rounded-[inherit] text-destructive transition-colors hover:bg-accent" %>
     <% end %>
@@ -1123,6 +1130,9 @@ Settings: https://ui.lostcoords.com/components/list_group
     <% end %>
     <%= lc_list_row "Recovery codes", icon: "document-text", href: "#recovery-codes" do %>
       <%= lc_icon "chevron-right", variant: :mini, options: { class: "size-5 text-muted-foreground rtl:rotate-180", "aria-hidden": true } %>
+    <% end %>
+    <%= lc_list_row "Laptop", subtitle: "Signed in 2 hours ago", icon: "computer-desktop", href: "#laptop", tag: :div do %>
+      <%= lc_icon_button "Sign out", icon: "arrow-right-start-on-rectangle", size: :sm, tooltip: true %>
     <% end %>
     <%= lc_list_row padded: false do %>
       <%= lc_list_item "Delete account", icon: "trash", tag: :button, type: "button", class: "w-full cursor-pointer rounded-[inherit] text-destructive transition-colors hover:bg-accent" %>
@@ -1175,6 +1185,9 @@ Settings: https://ui.lostcoords.com/components/list_group
     <%= lc_list_row "Recovery codes", icon: "document-text", href: "#recovery-codes" do %>
       <%= lc_icon "chevron-right", variant: :mini, options: { class: "size-5 text-muted-foreground rtl:rotate-180", "aria-hidden": true } %>
     <% end %>
+    <%= lc_list_row "Laptop", subtitle: "Signed in 2 hours ago", icon: "computer-desktop", href: "#laptop", tag: :div do %>
+      <%= lc_icon_button "Sign out", icon: "arrow-right-start-on-rectangle", size: :sm, tooltip: true %>
+    <% end %>
     <%= lc_list_row padded: false do %>
       <%= lc_list_item "Delete account", icon: "trash", tag: :button, type: "button", class: "w-full cursor-pointer rounded-[inherit] text-destructive transition-colors hover:bg-accent" %>
     <% end %>
@@ -1214,7 +1227,7 @@ Form rows: https://ui.lostcoords.com/components/list_group
 https://ui.lostcoords.com/components/list_group#lc_list_item
 
 ```ruby
-lc_list_item(title, subtitle: nil, icon: nil, tag: :div, **attributes, &block)
+lc_list_item(title, subtitle: nil, icon: nil, link: nil, tag: :div, **attributes, &block)
 ```
 
 Settings: https://ui.lostcoords.com/components/list_group
@@ -1233,6 +1246,9 @@ Settings: https://ui.lostcoords.com/components/list_group
     <% end %>
     <%= lc_list_row "Recovery codes", icon: "document-text", href: "#recovery-codes" do %>
       <%= lc_icon "chevron-right", variant: :mini, options: { class: "size-5 text-muted-foreground rtl:rotate-180", "aria-hidden": true } %>
+    <% end %>
+    <%= lc_list_row "Laptop", subtitle: "Signed in 2 hours ago", icon: "computer-desktop", href: "#laptop", tag: :div do %>
+      <%= lc_icon_button "Sign out", icon: "arrow-right-start-on-rectangle", size: :sm, tooltip: true %>
     <% end %>
     <%= lc_list_row padded: false do %>
       <%= lc_list_item "Delete account", icon: "trash", tag: :button, type: "button", class: "w-full cursor-pointer rounded-[inherit] text-destructive transition-colors hover:bg-accent" %>
@@ -2037,6 +2053,9 @@ Settings: https://ui.lostcoords.com/components/list_group
     <%= lc_list_row "Recovery codes", icon: "document-text", href: "#recovery-codes" do %>
       <%= lc_icon "chevron-right", variant: :mini, options: { class: "size-5 text-muted-foreground rtl:rotate-180", "aria-hidden": true } %>
     <% end %>
+    <%= lc_list_row "Laptop", subtitle: "Signed in 2 hours ago", icon: "computer-desktop", href: "#laptop", tag: :div do %>
+      <%= lc_icon_button "Sign out", icon: "arrow-right-start-on-rectangle", size: :sm, tooltip: true %>
+    <% end %>
     <%= lc_list_row padded: false do %>
       <%= lc_list_item "Delete account", icon: "trash", tag: :button, type: "button", class: "w-full cursor-pointer rounded-[inherit] text-destructive transition-colors hover:bg-accent" %>
     <% end %>
@@ -2086,6 +2105,7 @@ Tooltips: https://ui.lostcoords.com/components/tooltip
   <%= lc_tooltip "Copy a link to this page", id: "my-component-copy-tip" do |tip| %>
     <%= lc_icon_button "Copy link", icon: "link", **tip %>
   <% end %>
+  <%= lc_icon_button "Delete", icon: "trash", tooltip: true %>
   <%= lc_tooltip "Only owners can archive", id: "my-component-archive-tip", side: :bottom do |tip| %>
     <%= lc_button "Archive", variant: :secondary, **tip %>
   <% end %>
@@ -2210,7 +2230,7 @@ Split button variants and sizes: https://ui.lostcoords.com/components/button
 https://ui.lostcoords.com/components/button#lc_icon_button
 
 ```ruby
-lc_icon_button(label, icon: nil, size: :md, shape: :circle, variant: :ghost, tone: :default, **attributes, &content)
+lc_icon_button(label, icon: nil, size: :md, shape: :circle, variant: :ghost, tone: :default, tooltip: nil, **attributes, &content)
 ```
 
 Hover and press: https://ui.lostcoords.com/components/foundations
@@ -2254,6 +2274,33 @@ Icon buttons: https://ui.lostcoords.com/components/button
 <%= lc_icon_button "Delete file", icon: "trash", variant: :outline, tone: :destructive %>
 ```
 
+Settings: https://ui.lostcoords.com/components/list_group
+
+```erb
+<%= lc_list_section "Sign-in methods", id: "my-component", footnote: "Keep at least one way to sign in.", class: "w-full max-w-md" do %>
+  <%= lc_list_group do %>
+    <%= lc_list_row "Email", subtitle: "ada@example.com", icon: "envelope" do %>
+      <%= lc_button "Change", variant: :secondary, size: :sm %>
+    <% end %>
+    <%= lc_list_row "Passkey", subtitle: "Not set up", icon: "key" do %>
+      <%= lc_button "Add", variant: :secondary, size: :sm %>
+    <% end %>
+    <%= lc_list_row "Sign-in alerts", subtitle: "Email me when a new device signs in", icon: "bell", tag: :label, class: "cursor-pointer" do %>
+      <input type="checkbox" role="switch" name="alerts" class="<%= lc_switch_class %>" checked>
+    <% end %>
+    <%= lc_list_row "Recovery codes", icon: "document-text", href: "#recovery-codes" do %>
+      <%= lc_icon "chevron-right", variant: :mini, options: { class: "size-5 text-muted-foreground rtl:rotate-180", "aria-hidden": true } %>
+    <% end %>
+    <%= lc_list_row "Laptop", subtitle: "Signed in 2 hours ago", icon: "computer-desktop", href: "#laptop", tag: :div do %>
+      <%= lc_icon_button "Sign out", icon: "arrow-right-start-on-rectangle", size: :sm, tooltip: true %>
+    <% end %>
+    <%= lc_list_row padded: false do %>
+      <%= lc_list_item "Delete account", icon: "trash", tag: :button, type: "button", class: "w-full cursor-pointer rounded-[inherit] text-destructive transition-colors hover:bg-accent" %>
+    <% end %>
+  <% end %>
+<% end %>
+```
+
 Tooltips: https://ui.lostcoords.com/components/tooltip
 
 ```erb
@@ -2261,6 +2308,7 @@ Tooltips: https://ui.lostcoords.com/components/tooltip
   <%= lc_tooltip "Copy a link to this page", id: "my-component-copy-tip" do |tip| %>
     <%= lc_icon_button "Copy link", icon: "link", **tip %>
   <% end %>
+  <%= lc_icon_button "Delete", icon: "trash", tooltip: true %>
   <%= lc_tooltip "Only owners can archive", id: "my-component-archive-tip", side: :bottom do |tip| %>
     <%= lc_button "Archive", variant: :secondary, **tip %>
   <% end %>
@@ -2272,7 +2320,7 @@ Tooltips: https://ui.lostcoords.com/components/tooltip
 https://ui.lostcoords.com/components/button#lc_icon_button_link_to
 
 ```ruby
-lc_icon_button_link_to(label, url, icon: nil, size: :md, shape: :circle, variant: :ghost, tone: :default, **attributes, &content)
+lc_icon_button_link_to(label, url, icon: nil, size: :md, shape: :circle, variant: :ghost, tone: :default, tooltip: nil, **attributes, &content)
 ```
 
 Icon buttons: https://ui.lostcoords.com/components/button
@@ -2294,7 +2342,7 @@ Icon buttons: https://ui.lostcoords.com/components/button
 https://ui.lostcoords.com/components/button#lc_icon_button_to
 
 ```ruby
-lc_icon_button_to(label, url, icon: nil, size: :md, shape: :circle, variant: :ghost, tone: :default, **attributes, &content)
+lc_icon_button_to(label, url, icon: nil, size: :md, shape: :circle, variant: :ghost, tone: :default, tooltip: nil, **attributes, &content)
 ```
 
 Icon buttons: https://ui.lostcoords.com/components/button
@@ -3713,7 +3761,7 @@ Centred, at the top on phones: https://ui.lostcoords.com/components/toast
 https://ui.lostcoords.com/components/tooltip#lc_tooltip
 
 ```ruby
-lc_tooltip(text, id:, side: :top, **attributes, &block)
+lc_tooltip(text, id: nil, side: :top, **attributes, &block)
 ```
 
 Tooltips: https://ui.lostcoords.com/components/tooltip
@@ -3723,6 +3771,7 @@ Tooltips: https://ui.lostcoords.com/components/tooltip
   <%= lc_tooltip "Copy a link to this page", id: "my-component-copy-tip" do |tip| %>
     <%= lc_icon_button "Copy link", icon: "link", **tip %>
   <% end %>
+  <%= lc_icon_button "Delete", icon: "trash", tooltip: true %>
   <%= lc_tooltip "Only owners can archive", id: "my-component-archive-tip", side: :bottom do |tip| %>
     <%= lc_button "Archive", variant: :secondary, **tip %>
   <% end %>
