@@ -21,7 +21,7 @@ lockfile pins its gem version, so publishing a library update does not upgrade c
 ## Install
 
 ```ruby
-gem "lostcoords-ui", "~> 0.10.0"
+gem "lostcoords-ui", "~> 0.11.0"
 ```
 
 The engine adds its rendering helpers to host views, its views and translations to the host's lookup
@@ -169,6 +169,15 @@ registerControllers(application, { only: ["lc-copy", "lc-collapsible"] })
 Omit `only` to register every library controller. Unknown identifiers raise before anything is
 registered, and repeated calls on the same application keep later overrides, so register defaults
 before application overrides.
+
+## Changes in 0.11.0
+
+Nothing needs an edit. New:
+
+- **`lc_hovercard` previews what a link points to**, such as a profile card over a name, with the
+  `lc-hovercard` controller, in the `components` entry. It opens on hover or keyboard focus, takes its card
+  as `content:` or loads it lazily from `src:`, and keeps the card out of the accessibility tree as a
+  preview of the linked page.
 
 ## Changes in 0.10.0
 
@@ -816,6 +825,22 @@ hides.
 
 `lc-popover-shell` gives a native `[popover]` menu the same enter and exit as FloatingPanel panels. Set
 `--lc-popover-from` to change the closed pose and an `origin-*` utility for where it grows from.
+
+`lc_hovercard` previews what a link points to, such as a profile over a name, with the `lc-hovercard`
+controller. The card opens after a short hover, or at once on keyboard focus, in the top layer beside the
+trigger, flips above it near the bottom of the screen, and stays open while the pointer crosses onto it.
+Leaving both closes it, Escape closes it at once, and touch screens never open it, so a tap follows the
+link. Splat the yielded attributes on the trigger. `content:` renders the card up front; `src:` loads it as
+HTML from your endpoint the first time it opens, from the page's own origin only, so a long list of
+triggers costs nothing until one is hovered, and a skeleton shows until then. The card is a preview: it is
+hidden from assistive technology and its links leave the tab order, so keep everything in it reachable
+from the page the link opens. Inside a paragraph, keep `content:` to phrasing elements such as spans.
+
+```erb
+<%= lc_hovercard src: card_person_path(person) do |card| %>
+  <%= link_to person.name, person, **card %>
+<% end %>
+```
 
 ### Search
 

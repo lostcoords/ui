@@ -13,7 +13,7 @@
       const theme = localStorage.getItem("lostcoords-ui:theme")
       if (theme === "dark" || (!theme && matchMedia("(prefers-color-scheme: dark)").matches)) document.documentElement.dataset.theme = "dark"
     </script>
-    <link rel="stylesheet" href="/assets/tailwind-6ae9fe8b.css" data-turbo-track="reload" />
+    <link rel="stylesheet" href="/assets/tailwind-9efc8d86.css" data-turbo-track="reload" />
     <link rel="stylesheet" href="/assets/components-3552f81a.css" data-turbo-track="dynamic" />
     <meta name="view-transition" content="same-origin">
     <meta name="turbo-prefetch" content="true">
@@ -21,7 +21,7 @@
     <meta name="turbo-refresh-scroll" content="preserve">
     <script type="importmap" data-turbo-track="reload">{
   "imports": {
-    "lostcoords/ui": "/assets/lostcoords/ui/index-a7117cd1.js",
+    "lostcoords/ui": "/assets/lostcoords/ui/index-a55cf3d1.js",
     "lostcoords/ui/controllers/lc_app_header_controller": "/assets/lostcoords/ui/controllers/lc_app_header_controller-057c2c2a.js",
     "lostcoords/ui/controllers/lc_char_counter_controller": "/assets/lostcoords/ui/controllers/lc_char_counter_controller-ecd7d956.js",
     "lostcoords/ui/controllers/lc_code_block_controller": "/assets/lostcoords/ui/controllers/lc_code_block_controller-0a27362b.js",
@@ -30,6 +30,7 @@
     "lostcoords/ui/controllers/lc_dialog_controller": "/assets/lostcoords/ui/controllers/lc_dialog_controller-993d9a42.js",
     "lostcoords/ui/controllers/lc_dock_controller": "/assets/lostcoords/ui/controllers/lc_dock_controller-0e45af8e.js",
     "lostcoords/ui/controllers/lc_emoji_picker_controller": "/assets/lostcoords/ui/controllers/lc_emoji_picker_controller-c3f9d5d9.js",
+    "lostcoords/ui/controllers/lc_hovercard_controller": "/assets/lostcoords/ui/controllers/lc_hovercard_controller-1b08977f.js",
     "lostcoords/ui/controllers/lc_kbd_controller": "/assets/lostcoords/ui/controllers/lc_kbd_controller-83cd1787.js",
     "lostcoords/ui/controllers/lc_menu_controller": "/assets/lostcoords/ui/controllers/lc_menu_controller-c2a19d16.js",
     "lostcoords/ui/controllers/lc_nav_controller": "/assets/lostcoords/ui/controllers/lc_nav_controller-9052d393.js",
@@ -59,6 +60,7 @@
     "controllers/lc_dialog_controller": "/assets/lostcoords/ui/controllers/lc_dialog_controller-993d9a42.js",
     "controllers/lc_dock_controller": "/assets/lostcoords/ui/controllers/lc_dock_controller-0e45af8e.js",
     "controllers/lc_emoji_picker_controller": "/assets/lostcoords/ui/controllers/lc_emoji_picker_controller-c3f9d5d9.js",
+    "controllers/lc_hovercard_controller": "/assets/lostcoords/ui/controllers/lc_hovercard_controller-1b08977f.js",
     "controllers/lc_kbd_controller": "/assets/lostcoords/ui/controllers/lc_kbd_controller-83cd1787.js",
     "controllers/lc_menu_controller": "/assets/lostcoords/ui/controllers/lc_menu_controller-c2a19d16.js",
     "controllers/lc_nav_controller": "/assets/lostcoords/ui/controllers/lc_nav_controller-9052d393.js",
@@ -79,7 +81,7 @@
     "lostcoords/ui/helpers/confirm": "/assets/lostcoords/ui/helpers/confirm-1d62b1ae.js",
     "lostcoords/ui/helpers/context_dialog": "/assets/lostcoords/ui/helpers/context_dialog-9c322515.js",
     "lostcoords/ui/helpers/dialog": "/assets/lostcoords/ui/helpers/dialog-25cf9117.js",
-    "lostcoords/ui/helpers/dismiss_stack": "/assets/lostcoords/ui/helpers/dismiss_stack-08693d11.js",
+    "lostcoords/ui/helpers/dismiss_stack": "/assets/lostcoords/ui/helpers/dismiss_stack-bf85c841.js",
     "lostcoords/ui/helpers/floating_panel": "/assets/lostcoords/ui/helpers/floating_panel-4b97b6e6.js",
     "lostcoords/ui/helpers/menu_keys": "/assets/lostcoords/ui/helpers/menu_keys-e8db11f6.js",
     "lostcoords/ui/helpers/roving_focus": "/assets/lostcoords/ui/helpers/roving_focus-37f03892.js",
@@ -194,6 +196,7 @@
       <li data-slot="nav-item"><a class="flex min-w-0 items-center gap-related rounded-xl lc-squircle no-underline transition-colors duration-(--lc-motion-quick) text-muted-foreground hover:text-foreground aria-[current=page]:text-foreground [&amp;_svg]:shrink-0 group-data-[indicator]/nav:relative group-data-[indicator]/nav:aria-[current=page]:bg-transparent min-h-control-md px-3 py-1.5 text-label hover:bg-accent aria-[current=page]:bg-accent aria-[current=page]:font-semibold [&amp;_svg]:size-4.5" data-slot="nav-link" href="/components/empty_state">Empty state</a></li>
       <li data-slot="nav-item"><a class="flex min-w-0 items-center gap-related rounded-xl lc-squircle no-underline transition-colors duration-(--lc-motion-quick) text-muted-foreground hover:text-foreground aria-[current=page]:text-foreground [&amp;_svg]:shrink-0 group-data-[indicator]/nav:relative group-data-[indicator]/nav:aria-[current=page]:bg-transparent min-h-control-md px-3 py-1.5 text-label hover:bg-accent aria-[current=page]:bg-accent aria-[current=page]:font-semibold [&amp;_svg]:size-4.5" data-slot="nav-link" href="/components/field">Field</a></li>
       <li data-slot="nav-item"><a class="flex min-w-0 items-center gap-related rounded-xl lc-squircle no-underline transition-colors duration-(--lc-motion-quick) text-muted-foreground hover:text-foreground aria-[current=page]:text-foreground [&amp;_svg]:shrink-0 group-data-[indicator]/nav:relative group-data-[indicator]/nav:aria-[current=page]:bg-transparent min-h-control-md px-3 py-1.5 text-label hover:bg-accent aria-[current=page]:bg-accent aria-[current=page]:font-semibold [&amp;_svg]:size-4.5" data-slot="nav-link" href="/components/glass">Glass</a></li>
+      <li data-slot="nav-item"><a class="flex min-w-0 items-center gap-related rounded-xl lc-squircle no-underline transition-colors duration-(--lc-motion-quick) text-muted-foreground hover:text-foreground aria-[current=page]:text-foreground [&amp;_svg]:shrink-0 group-data-[indicator]/nav:relative group-data-[indicator]/nav:aria-[current=page]:bg-transparent min-h-control-md px-3 py-1.5 text-label hover:bg-accent aria-[current=page]:bg-accent aria-[current=page]:font-semibold [&amp;_svg]:size-4.5" data-slot="nav-link" href="/components/hovercard">Hover card</a></li>
       <li data-slot="nav-item"><a class="flex min-w-0 items-center gap-related rounded-xl lc-squircle no-underline transition-colors duration-(--lc-motion-quick) text-muted-foreground hover:text-foreground aria-[current=page]:text-foreground [&amp;_svg]:shrink-0 group-data-[indicator]/nav:relative group-data-[indicator]/nav:aria-[current=page]:bg-transparent min-h-control-md px-3 py-1.5 text-label hover:bg-accent aria-[current=page]:bg-accent aria-[current=page]:font-semibold [&amp;_svg]:size-4.5" data-slot="nav-link" href="/components/icon_badge">Icon badge</a></li>
       <li data-slot="nav-item"><a class="flex min-w-0 items-center gap-related rounded-xl lc-squircle no-underline transition-colors duration-(--lc-motion-quick) text-muted-foreground hover:text-foreground aria-[current=page]:text-foreground [&amp;_svg]:shrink-0 group-data-[indicator]/nav:relative group-data-[indicator]/nav:aria-[current=page]:bg-transparent min-h-control-md px-3 py-1.5 text-label hover:bg-accent aria-[current=page]:bg-accent aria-[current=page]:font-semibold [&amp;_svg]:size-4.5" data-slot="nav-link" href="/components/input">Input</a></li>
       <li data-slot="nav-item"><a class="flex min-w-0 items-center gap-related rounded-xl lc-squircle no-underline transition-colors duration-(--lc-motion-quick) text-muted-foreground hover:text-foreground aria-[current=page]:text-foreground [&amp;_svg]:shrink-0 group-data-[indicator]/nav:relative group-data-[indicator]/nav:aria-[current=page]:bg-transparent min-h-control-md px-3 py-1.5 text-label hover:bg-accent aria-[current=page]:bg-accent aria-[current=page]:font-semibold [&amp;_svg]:size-4.5" data-slot="nav-link" href="/components/kbd">Keyboard shortcut</a></li>
@@ -250,6 +253,7 @@
       <li data-slot="nav-item"><a class="flex min-w-0 items-center gap-related rounded-xl lc-squircle no-underline transition-colors duration-(--lc-motion-quick) text-muted-foreground hover:text-foreground aria-[current=page]:text-foreground [&amp;_svg]:shrink-0 group-data-[indicator]/nav:relative group-data-[indicator]/nav:aria-[current=page]:bg-transparent min-h-control-md px-3 py-1.5 text-label hover:bg-accent aria-[current=page]:bg-accent aria-[current=page]:font-semibold [&amp;_svg]:size-4.5" data-slot="nav-link" href="/components/empty_state">Empty state</a></li>
       <li data-slot="nav-item"><a class="flex min-w-0 items-center gap-related rounded-xl lc-squircle no-underline transition-colors duration-(--lc-motion-quick) text-muted-foreground hover:text-foreground aria-[current=page]:text-foreground [&amp;_svg]:shrink-0 group-data-[indicator]/nav:relative group-data-[indicator]/nav:aria-[current=page]:bg-transparent min-h-control-md px-3 py-1.5 text-label hover:bg-accent aria-[current=page]:bg-accent aria-[current=page]:font-semibold [&amp;_svg]:size-4.5" data-slot="nav-link" href="/components/field">Field</a></li>
       <li data-slot="nav-item"><a class="flex min-w-0 items-center gap-related rounded-xl lc-squircle no-underline transition-colors duration-(--lc-motion-quick) text-muted-foreground hover:text-foreground aria-[current=page]:text-foreground [&amp;_svg]:shrink-0 group-data-[indicator]/nav:relative group-data-[indicator]/nav:aria-[current=page]:bg-transparent min-h-control-md px-3 py-1.5 text-label hover:bg-accent aria-[current=page]:bg-accent aria-[current=page]:font-semibold [&amp;_svg]:size-4.5" data-slot="nav-link" href="/components/glass">Glass</a></li>
+      <li data-slot="nav-item"><a class="flex min-w-0 items-center gap-related rounded-xl lc-squircle no-underline transition-colors duration-(--lc-motion-quick) text-muted-foreground hover:text-foreground aria-[current=page]:text-foreground [&amp;_svg]:shrink-0 group-data-[indicator]/nav:relative group-data-[indicator]/nav:aria-[current=page]:bg-transparent min-h-control-md px-3 py-1.5 text-label hover:bg-accent aria-[current=page]:bg-accent aria-[current=page]:font-semibold [&amp;_svg]:size-4.5" data-slot="nav-link" href="/components/hovercard">Hover card</a></li>
       <li data-slot="nav-item"><a class="flex min-w-0 items-center gap-related rounded-xl lc-squircle no-underline transition-colors duration-(--lc-motion-quick) text-muted-foreground hover:text-foreground aria-[current=page]:text-foreground [&amp;_svg]:shrink-0 group-data-[indicator]/nav:relative group-data-[indicator]/nav:aria-[current=page]:bg-transparent min-h-control-md px-3 py-1.5 text-label hover:bg-accent aria-[current=page]:bg-accent aria-[current=page]:font-semibold [&amp;_svg]:size-4.5" data-slot="nav-link" href="/components/icon_badge">Icon badge</a></li>
       <li data-slot="nav-item"><a class="flex min-w-0 items-center gap-related rounded-xl lc-squircle no-underline transition-colors duration-(--lc-motion-quick) text-muted-foreground hover:text-foreground aria-[current=page]:text-foreground [&amp;_svg]:shrink-0 group-data-[indicator]/nav:relative group-data-[indicator]/nav:aria-[current=page]:bg-transparent min-h-control-md px-3 py-1.5 text-label hover:bg-accent aria-[current=page]:bg-accent aria-[current=page]:font-semibold [&amp;_svg]:size-4.5" data-slot="nav-link" href="/components/input">Input</a></li>
       <li data-slot="nav-item"><a class="flex min-w-0 items-center gap-related rounded-xl lc-squircle no-underline transition-colors duration-(--lc-motion-quick) text-muted-foreground hover:text-foreground aria-[current=page]:text-foreground [&amp;_svg]:shrink-0 group-data-[indicator]/nav:relative group-data-[indicator]/nav:aria-[current=page]:bg-transparent min-h-control-md px-3 py-1.5 text-label hover:bg-accent aria-[current=page]:bg-accent aria-[current=page]:font-semibold [&amp;_svg]:size-4.5" data-slot="nav-link" href="/components/kbd">Keyboard shortcut</a></li>
@@ -286,7 +290,7 @@
     </header>
 
     <div class="component-picker-frame">
-      <ul class="component-picker" aria-label="All components" style="--picker-rows: 24" data-controller="component-picker" data-action="keydown->component-picker#navigate pointermove@window->component-picker#track">
+      <ul class="component-picker" aria-label="All components" style="--picker-rows: 25" data-controller="component-picker" data-action="keydown->component-picker#navigate pointermove@window->component-picker#track">
           <li>
             <a class="component-picker__link" data-component-picker-target="link" data-distance="0" data-action="pointermove-&gt;component-picker#activate focus-&gt;component-picker#activate" href="/components/alert">
               <span class="component-picker__number" aria-hidden="true">01</span>
@@ -468,8 +472,17 @@
               <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" class="lc-icon component-picker__arrow" data-slot="icon" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25"/></svg>
 </a>          </li>
           <li>
-            <a class="component-picker__link" data-component-picker-target="link" data-distance="5" data-action="pointermove-&gt;component-picker#activate focus-&gt;component-picker#activate" href="/components/icon_badge">
+            <a class="component-picker__link" data-component-picker-target="link" data-distance="5" data-action="pointermove-&gt;component-picker#activate focus-&gt;component-picker#activate" href="/components/hovercard">
               <span class="component-picker__number" aria-hidden="true">21</span>
+              <span class="component-picker__body">
+                <span class="component-picker__title">Hover card</span>
+                <span class="component-picker__description">A preview of what a link points to, on hover and keyboard focus.</span>
+              </span>
+              <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" class="lc-icon component-picker__arrow" data-slot="icon" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25"/></svg>
+</a>          </li>
+          <li>
+            <a class="component-picker__link" data-component-picker-target="link" data-distance="5" data-action="pointermove-&gt;component-picker#activate focus-&gt;component-picker#activate" href="/components/icon_badge">
+              <span class="component-picker__number" aria-hidden="true">22</span>
               <span class="component-picker__body">
                 <span class="component-picker__title">Icon badge</span>
                 <span class="component-picker__description">A small container for a symbol.</span>
@@ -478,7 +491,7 @@
 </a>          </li>
           <li>
             <a class="component-picker__link" data-component-picker-target="link" data-distance="5" data-action="pointermove-&gt;component-picker#activate focus-&gt;component-picker#activate" href="/components/input">
-              <span class="component-picker__number" aria-hidden="true">22</span>
+              <span class="component-picker__number" aria-hidden="true">23</span>
               <span class="component-picker__body">
                 <span class="component-picker__title">Input</span>
                 <span class="component-picker__description">Native single-line input.</span>
@@ -487,7 +500,7 @@
 </a>          </li>
           <li>
             <a class="component-picker__link" data-component-picker-target="link" data-distance="5" data-action="pointermove-&gt;component-picker#activate focus-&gt;component-picker#activate" href="/components/kbd">
-              <span class="component-picker__number" aria-hidden="true">23</span>
+              <span class="component-picker__number" aria-hidden="true">24</span>
               <span class="component-picker__body">
                 <span class="component-picker__title">Keyboard shortcut</span>
                 <span class="component-picker__description">Page-wide keys that focus or press an element, and the hints that show them.</span>
@@ -496,7 +509,7 @@
 </a>          </li>
           <li>
             <a class="component-picker__link" data-component-picker-target="link" data-distance="5" data-action="pointermove-&gt;component-picker#activate focus-&gt;component-picker#activate" href="/components/link">
-              <span class="component-picker__number" aria-hidden="true">24</span>
+              <span class="component-picker__number" aria-hidden="true">25</span>
               <span class="component-picker__body">
                 <span class="component-picker__title">Link</span>
                 <span class="component-picker__description">Inline text links with a visible underline.</span>
@@ -505,7 +518,7 @@
 </a>          </li>
           <li>
             <a class="component-picker__link" data-component-picker-target="link" data-distance="5" data-action="pointermove-&gt;component-picker#activate focus-&gt;component-picker#activate" href="/components/list_group">
-              <span class="component-picker__number" aria-hidden="true">25</span>
+              <span class="component-picker__number" aria-hidden="true">26</span>
               <span class="component-picker__body">
                 <span class="component-picker__title">List group</span>
                 <span class="component-picker__description">Grouped rows of settings, with a heading and footnote.</span>
@@ -514,7 +527,7 @@
 </a>          </li>
           <li>
             <a class="component-picker__link" data-component-picker-target="link" data-distance="5" data-action="pointermove-&gt;component-picker#activate focus-&gt;component-picker#activate" href="/components/menu">
-              <span class="component-picker__number" aria-hidden="true">26</span>
+              <span class="component-picker__number" aria-hidden="true">27</span>
               <span class="component-picker__body">
                 <span class="component-picker__title">Menu</span>
                 <span class="component-picker__description">Actions in a floating panel.</span>
@@ -523,7 +536,7 @@
 </a>          </li>
           <li>
             <a class="component-picker__link" data-component-picker-target="link" data-distance="5" data-action="pointermove-&gt;component-picker#activate focus-&gt;component-picker#activate" href="/components/select">
-              <span class="component-picker__number" aria-hidden="true">27</span>
+              <span class="component-picker__number" aria-hidden="true">28</span>
               <span class="component-picker__body">
                 <span class="component-picker__title">Native select</span>
                 <span class="component-picker__description">Native options with consistent sizing.</span>
@@ -532,7 +545,7 @@
 </a>          </li>
           <li>
             <a class="component-picker__link" data-component-picker-target="link" data-distance="5" data-action="pointermove-&gt;component-picker#activate focus-&gt;component-picker#activate" href="/components/nav_list">
-              <span class="component-picker__number" aria-hidden="true">28</span>
+              <span class="component-picker__number" aria-hidden="true">29</span>
               <span class="component-picker__body">
                 <span class="component-picker__title">Nav list</span>
                 <span class="component-picker__description">Navigation that marks the current page: sidebars, page contents, tab rows and a phone dock.</span>
@@ -541,7 +554,7 @@
 </a>          </li>
           <li>
             <a class="component-picker__link" data-component-picker-target="link" data-distance="5" data-action="pointermove-&gt;component-picker#activate focus-&gt;component-picker#activate" href="/components/pager">
-              <span class="component-picker__number" aria-hidden="true">29</span>
+              <span class="component-picker__number" aria-hidden="true">30</span>
               <span class="component-picker__body">
                 <span class="component-picker__title">Pager</span>
                 <span class="component-picker__description">Previous and next links between pages in a sequence.</span>
@@ -550,7 +563,7 @@
 </a>          </li>
           <li>
             <a class="component-picker__link" data-component-picker-target="link" data-distance="5" data-action="pointermove-&gt;component-picker#activate focus-&gt;component-picker#activate" href="/components/popover">
-              <span class="component-picker__number" aria-hidden="true">30</span>
+              <span class="component-picker__number" aria-hidden="true">31</span>
               <span class="component-picker__body">
                 <span class="component-picker__title">Popover</span>
                 <span class="component-picker__description">Content anchored to a trigger.</span>
@@ -559,7 +572,7 @@
 </a>          </li>
           <li>
             <a class="component-picker__link" data-component-picker-target="link" data-distance="5" data-action="pointermove-&gt;component-picker#activate focus-&gt;component-picker#activate" href="/components/radio">
-              <span class="component-picker__number" aria-hidden="true">31</span>
+              <span class="component-picker__number" aria-hidden="true">32</span>
               <span class="component-picker__body">
                 <span class="component-picker__title">Radio</span>
                 <span class="component-picker__description">One choice from a short list.</span>
@@ -568,7 +581,7 @@
 </a>          </li>
           <li>
             <a class="component-picker__link" data-component-picker-target="link" data-distance="5" data-action="pointermove-&gt;component-picker#activate focus-&gt;component-picker#activate" href="/components/search">
-              <span class="component-picker__number" aria-hidden="true">32</span>
+              <span class="component-picker__number" aria-hidden="true">33</span>
               <span class="component-picker__body">
                 <span class="component-picker__title">Search</span>
                 <span class="component-picker__description">A full-screen search with grouped results.</span>
@@ -577,7 +590,7 @@
 </a>          </li>
           <li>
             <a class="component-picker__link" data-component-picker-target="link" data-distance="5" data-action="pointermove-&gt;component-picker#activate focus-&gt;component-picker#activate" href="/components/sidebar">
-              <span class="component-picker__number" aria-hidden="true">33</span>
+              <span class="component-picker__number" aria-hidden="true">34</span>
               <span class="component-picker__body">
                 <span class="component-picker__title">Sidebar</span>
                 <span class="component-picker__description">A sticky app sidebar that folds to an icon rail and remembers the choice.</span>
@@ -586,7 +599,7 @@
 </a>          </li>
           <li>
             <a class="component-picker__link" data-component-picker-target="link" data-distance="5" data-action="pointermove-&gt;component-picker#activate focus-&gt;component-picker#activate" href="/components/skeleton">
-              <span class="component-picker__number" aria-hidden="true">34</span>
+              <span class="component-picker__number" aria-hidden="true">35</span>
               <span class="component-picker__body">
                 <span class="component-picker__title">Skeleton</span>
                 <span class="component-picker__description">A placeholder while content loads.</span>
@@ -595,7 +608,7 @@
 </a>          </li>
           <li>
             <a class="component-picker__link" data-component-picker-target="link" data-distance="5" data-action="pointermove-&gt;component-picker#activate focus-&gt;component-picker#activate" href="/components/skip_link">
-              <span class="component-picker__number" aria-hidden="true">35</span>
+              <span class="component-picker__number" aria-hidden="true">36</span>
               <span class="component-picker__body">
                 <span class="component-picker__title">Skip link</span>
                 <span class="component-picker__description">Lets keyboard users jump past repeated navigation.</span>
@@ -604,7 +617,7 @@
 </a>          </li>
           <li>
             <a class="component-picker__link" data-component-picker-target="link" data-distance="5" data-action="pointermove-&gt;component-picker#activate focus-&gt;component-picker#activate" href="/components/spinner">
-              <span class="component-picker__number" aria-hidden="true">36</span>
+              <span class="component-picker__number" aria-hidden="true">37</span>
               <span class="component-picker__body">
                 <span class="component-picker__title">Spinner</span>
                 <span class="component-picker__description">An action in progress.</span>
@@ -613,7 +626,7 @@
 </a>          </li>
           <li>
             <a class="component-picker__link" data-component-picker-target="link" data-distance="5" data-action="pointermove-&gt;component-picker#activate focus-&gt;component-picker#activate" href="/components/stats">
-              <span class="component-picker__number" aria-hidden="true">37</span>
+              <span class="component-picker__number" aria-hidden="true">38</span>
               <span class="component-picker__body">
                 <span class="component-picker__title">Stats</span>
                 <span class="component-picker__description">Headline numbers, in a line or as tiles.</span>
@@ -622,7 +635,7 @@
 </a>          </li>
           <li>
             <a class="component-picker__link" data-component-picker-target="link" data-distance="5" data-action="pointermove-&gt;component-picker#activate focus-&gt;component-picker#activate" href="/components/switch">
-              <span class="component-picker__number" aria-hidden="true">38</span>
+              <span class="component-picker__number" aria-hidden="true">39</span>
               <span class="component-picker__body">
                 <span class="component-picker__title">Switch</span>
                 <span class="component-picker__description">An on or off setting that submits like a checkbox.</span>
@@ -631,7 +644,7 @@
 </a>          </li>
           <li>
             <a class="component-picker__link" data-component-picker-target="link" data-distance="5" data-action="pointermove-&gt;component-picker#activate focus-&gt;component-picker#activate" href="/components/tab_bar">
-              <span class="component-picker__number" aria-hidden="true">39</span>
+              <span class="component-picker__number" aria-hidden="true">40</span>
               <span class="component-picker__body">
                 <span class="component-picker__title">Tab bar</span>
                 <span class="component-picker__description">Links to the views of a page as a row of underlined tabs, with counts.</span>
@@ -640,7 +653,7 @@
 </a>          </li>
           <li>
             <a class="component-picker__link" data-component-picker-target="link" data-distance="5" data-action="pointermove-&gt;component-picker#activate focus-&gt;component-picker#activate" href="/components/table">
-              <span class="component-picker__number" aria-hidden="true">40</span>
+              <span class="component-picker__number" aria-hidden="true">41</span>
               <span class="component-picker__body">
                 <span class="component-picker__title">Table</span>
                 <span class="component-picker__description">Native tables with clear headers and subtle row dividers. Keep captions, headers and scroll containers in the view.</span>
@@ -649,7 +662,7 @@
 </a>          </li>
           <li>
             <a class="component-picker__link" data-component-picker-target="link" data-distance="5" data-action="pointermove-&gt;component-picker#activate focus-&gt;component-picker#activate" href="/components/toc">
-              <span class="component-picker__number" aria-hidden="true">41</span>
+              <span class="component-picker__number" aria-hidden="true">42</span>
               <span class="component-picker__body">
                 <span class="component-picker__title">Table of contents</span>
                 <span class="component-picker__description">An &quot;On this page&quot; list that marks the section the reader has scrolled to.</span>
@@ -658,7 +671,7 @@
 </a>          </li>
           <li>
             <a class="component-picker__link" data-component-picker-target="link" data-distance="5" data-action="pointermove-&gt;component-picker#activate focus-&gt;component-picker#activate" href="/components/tabs">
-              <span class="component-picker__number" aria-hidden="true">42</span>
+              <span class="component-picker__number" aria-hidden="true">43</span>
               <span class="component-picker__body">
                 <span class="component-picker__title">Tabs</span>
                 <span class="component-picker__description">Panels of related content behind one tab list, with arrow key navigation.</span>
@@ -667,7 +680,7 @@
 </a>          </li>
           <li>
             <a class="component-picker__link" data-component-picker-target="link" data-distance="5" data-action="pointermove-&gt;component-picker#activate focus-&gt;component-picker#activate" href="/components/textarea">
-              <span class="component-picker__number" aria-hidden="true">43</span>
+              <span class="component-picker__number" aria-hidden="true">44</span>
               <span class="component-picker__body">
                 <span class="component-picker__title">Textarea</span>
                 <span class="component-picker__description">Room for more than one line.</span>
@@ -676,7 +689,7 @@
 </a>          </li>
           <li>
             <a class="component-picker__link" data-component-picker-target="link" data-distance="5" data-action="pointermove-&gt;component-picker#activate focus-&gt;component-picker#activate" href="/components/time">
-              <span class="component-picker__number" aria-hidden="true">44</span>
+              <span class="component-picker__number" aria-hidden="true">45</span>
               <span class="component-picker__body">
                 <span class="component-picker__title">Time</span>
                 <span class="component-picker__description">A short relative time, as X shows it, with the full date on hover.</span>
@@ -685,7 +698,7 @@
 </a>          </li>
           <li>
             <a class="component-picker__link" data-component-picker-target="link" data-distance="5" data-action="pointermove-&gt;component-picker#activate focus-&gt;component-picker#activate" href="/components/toast">
-              <span class="component-picker__number" aria-hidden="true">45</span>
+              <span class="component-picker__number" aria-hidden="true">46</span>
               <span class="component-picker__body">
                 <span class="component-picker__title">Toast</span>
                 <span class="component-picker__description">Brief feedback after an action.</span>
@@ -694,7 +707,7 @@
 </a>          </li>
           <li>
             <a class="component-picker__link" data-component-picker-target="link" data-distance="5" data-action="pointermove-&gt;component-picker#activate focus-&gt;component-picker#activate" href="/components/toggle">
-              <span class="component-picker__number" aria-hidden="true">46</span>
+              <span class="component-picker__number" aria-hidden="true">47</span>
               <span class="component-picker__body">
                 <span class="component-picker__title">Toggle</span>
                 <span class="component-picker__description">Pressed controls, filter links and radio choices.</span>
@@ -703,7 +716,7 @@
 </a>          </li>
           <li>
             <a class="component-picker__link" data-component-picker-target="link" data-distance="5" data-action="pointermove-&gt;component-picker#activate focus-&gt;component-picker#activate" href="/components/toggle_group">
-              <span class="component-picker__number" aria-hidden="true">47</span>
+              <span class="component-picker__number" aria-hidden="true">48</span>
               <span class="component-picker__body">
                 <span class="component-picker__title">Toggle group</span>
                 <span class="component-picker__description">Mutually exclusive choices with keyboard navigation and form values.</span>
@@ -712,7 +725,7 @@
 </a>          </li>
           <li>
             <a class="component-picker__link" data-component-picker-target="link" data-distance="5" data-action="pointermove-&gt;component-picker#activate focus-&gt;component-picker#activate" href="/components/tooltip">
-              <span class="component-picker__number" aria-hidden="true">48</span>
+              <span class="component-picker__number" aria-hidden="true">49</span>
               <span class="component-picker__body">
                 <span class="component-picker__title">Tooltip</span>
                 <span class="component-picker__description">A short hint on hover and keyboard focus.</span>

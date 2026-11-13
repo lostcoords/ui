@@ -6,6 +6,7 @@ import Copy from "lostcoords/ui/controllers/lc_copy_controller"
 import Dialog from "lostcoords/ui/controllers/lc_dialog_controller"
 import Dock from "lostcoords/ui/controllers/lc_dock_controller"
 import EmojiPicker from "lostcoords/ui/controllers/lc_emoji_picker_controller"
+import Hovercard from "lostcoords/ui/controllers/lc_hovercard_controller"
 import Kbd from "lostcoords/ui/controllers/lc_kbd_controller"
 import Menu from "lostcoords/ui/controllers/lc_menu_controller"
 import Nav from "lostcoords/ui/controllers/lc_nav_controller"
@@ -32,6 +33,7 @@ const controllers = {
   "lc-dialog": Dialog,
   "lc-dock": Dock,
   "lc-emoji-picker": EmojiPicker,
+  "lc-hovercard": Hovercard,
   "lc-kbd": Kbd,
   "lc-menu": Menu,
   "lc-nav": Nav,

@@ -130,7 +130,7 @@ function defaultIsOpen() {
 }
 
 function priorityFor(type) {
-  if (type === "tooltip") return 40
+  if (type === "tooltip" || type === "hovercard") return 40
   if (type === "popover") return 30
   if (type === "panel") return 20
   return 10

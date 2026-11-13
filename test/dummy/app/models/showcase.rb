@@ -233,6 +233,9 @@ module Showcase
       Section.new(:tooltip, "Tooltip", "A short hint on hover and keyboard focus.", [
         Example.new(:tooltip, "Tooltips", :panel)
       ]),
+      Section.new(:hovercard, "Hover card", "A preview of what a link points to, on hover and keyboard focus.", [
+        Example.new(:hovercard, "Profile preview", :panel)
+      ]),
       Section.new(:dialog, "Dialog", "A focused task, with a sheet layout on phones.", [
         Example.new(:modal_dialog, "Modal", :panel),
         Example.new(:dialog_fit, "Mobile dialog", :panel),

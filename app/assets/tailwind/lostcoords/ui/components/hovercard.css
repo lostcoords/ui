@@ -1,0 +1,4 @@
+/* lc_hovercard. */
+@import "../hovercard.css";
+@source "../../../../../helpers/lostcoords/ui/hovercard_helper.rb";
+@source "../../../../../javascript/lostcoords/ui/controllers/lc_hovercard_controller.js";

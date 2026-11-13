@@ -1,0 +1,47 @@
+@layer components {
+  /* lc-hovercard lifts the card into the top layer while it shows. It keeps a
+     box while closed, invisible, so the lift can measure where it belongs. */
+  .lc-hovercard__content {
+    position: absolute;
+    inset-block-start: calc(100% + var(--spacing-related));
+    inset-inline-start: 0;
+    z-index: var(--lc-z-popover);
+    display: flex;
+    flex-direction: column;
+    inline-size: min(20rem, calc(100vw - 2rem));
+    overflow: visible;
+    margin: 0;
+    padding: var(--spacing-inset);
+    color: var(--popover-foreground);
+    text-align: start;
+    white-space: normal;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(calc(var(--spacing) * -1)) scale(0.98);
+
+    /* allow-discrete keeps a lifted card in the top layer while it fades out. */
+    transition:
+      opacity 160ms var(--lc-ease-out-expo),
+      transform 160ms var(--lc-ease-out-expo),
+      visibility 160ms,
+      display 160ms allow-discrete,
+      overlay 160ms allow-discrete;
+  }
+
+  .lc-hovercard[data-side="top"] > .lc-hovercard__content {
+    inset-block: auto calc(100% + var(--spacing-related));
+    transform: translateY(var(--spacing)) scale(0.98);
+  }
+
+  .lc-hovercard[data-open] > .lc-hovercard__content {
+    pointer-events: auto;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lc-hovercard__content { transform: none; }
+  }
+}

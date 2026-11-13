@@ -100,6 +100,66 @@ async function _verifyLayers(page) {
   )
   verify(true, "the closed tooltip returns to its place")
 
+  // Hover cards open after a pause in the top layer, stay open while the pointer moves onto the card,
+  // and close on Escape or when the pointer leaves both.
+  await page.goto(`${origin}/components/hovercard.html`)
+  await ready("lc-hovercard")
+  const cardTrigger = page.locator('#example-0 [data-lc-hovercard-target="trigger"]').first()
+  const cardOpen = () =>
+    page.evaluate(() =>
+      document.querySelector('#example-0 [data-slot="hovercard-content"]').matches(":popover-open"),
+    )
+  await cardTrigger.hover()
+  verify(!(await cardOpen()), "the hover card waits before opening")
+  await page.waitForFunction(
+    () => {
+      const card = document.querySelector('#example-0 [data-slot="hovercard-content"]')
+      return card?.matches(":popover-open") && getComputedStyle(card).opacity === "1"
+    },
+    null,
+    { polling: 100 },
+  )
+  const hovercard = await page.evaluate(() => {
+    const card = document.querySelector('#example-0 [data-slot="hovercard-content"]')
+    const trigger = document.querySelector('#example-0 [data-lc-hovercard-target="trigger"]')
+    const cardBox = card.getBoundingClientRect()
+    const box = trigger.getBoundingClientRect()
+    return {
+      beside: cardBox.top >= box.bottom || cardBox.bottom <= box.top,
+      fixed: getComputedStyle(card).position === "fixed",
+      hidden: card.getAttribute("aria-hidden") === "true",
+    }
+  })
+  verify(hovercard.beside, "the hover card sits beside its trigger, flipping above near the bottom")
+  verify(hovercard.fixed, "the open hover card is pinned in the top layer")
+  verify(hovercard.hidden, "the hover card stays out of the accessibility tree")
+  const cardBox = await page.locator('#example-0 [data-slot="hovercard-content"]').boundingBox()
+  await page.mouse.move(cardBox.x + cardBox.width / 2, cardBox.y + cardBox.height / 2, { steps: 4 })
+  await page.waitForTimeout(400)
+  verify(await cardOpen(), "the hover card stays open while the pointer is on it")
+  await page.keyboard.press("Escape")
+  verify(!(await cardOpen()), "Escape closes the hover card")
+  await page.mouse.move(0, 0)
+  await cardTrigger.hover()
+  await page.waitForFunction(
+    () =>
+      document
+        .querySelector('#example-0 [data-slot="hovercard-content"]')
+        ?.matches(":popover-open"),
+    null,
+    { polling: 100 },
+  )
+  await page.mouse.move(0, 0)
+  await page.waitForFunction(
+    () =>
+      !document
+        .querySelector('#example-0 [data-slot="hovercard-content"]')
+        ?.matches(":popover-open"),
+    null,
+    { polling: 100 },
+  )
+  verify(true, "the hover card closes after the pointer leaves")
+
   // Toasts open in the top layer, above a modal dialog opened before them. The modal makes the page
   // outside it inert, which hides the toast from hit testing, so the check reads the painted pixel.
   await page.goto(`${origin}/components/toast.html`)

@@ -523,6 +523,39 @@ Search bar: https://ui.lostcoords.com/components/glass
 </div>
 ```
 
+## lc_hovercard
+
+https://ui.lostcoords.com/components/hovercard#lc_hovercard
+
+```ruby
+lc_hovercard(src: nil, content: nil, side: :bottom, **attributes, &block)
+```
+
+Profile preview: https://ui.lostcoords.com/components/hovercard
+
+```erb
+<% card = capture do %>
+  <span class="flex flex-col gap-related">
+    <span class="flex items-center gap-heading">
+      <%= lc_avatar "AL", size: :lg %>
+      <span class="flex min-w-0 flex-col">
+        <span class="truncate text-label font-semibold">Ada Lovelace</span>
+        <span class="truncate text-small text-muted-foreground">@ada</span>
+      </span>
+    </span>
+    <span class="text-small">Writes about analytical engines and the poetry of numbers.</span>
+    <span class="text-small text-muted-foreground"><span class="font-semibold text-foreground">1,843</span> followers · <span class="font-semibold text-foreground">12</span> replies</span>
+  </span>
+<% end %>
+<p class="text-body">
+  Notes from
+  <%= lc_hovercard content: card do |preview| %>
+    <%= link_to "Ada Lovelace", "#ada", class: "font-semibold text-primary hover:underline", **preview %>
+  <% end %>
+  on the engine's first program.
+</p>
+```
+
 ## lc_icon
 
 https://ui.lostcoords.com/components/button#lc_icon
@@ -2806,6 +2839,31 @@ Avatar groups: https://ui.lostcoords.com/components/avatar
   <%= lc_avatar "SK", ink: true, class: "bg-warning-soft" %>
   <%= lc_avatar "JR", ink: true, class: "bg-destructive-soft" %>
 <% end %>
+```
+
+Profile preview: https://ui.lostcoords.com/components/hovercard
+
+```erb
+<% card = capture do %>
+  <span class="flex flex-col gap-related">
+    <span class="flex items-center gap-heading">
+      <%= lc_avatar "AL", size: :lg %>
+      <span class="flex min-w-0 flex-col">
+        <span class="truncate text-label font-semibold">Ada Lovelace</span>
+        <span class="truncate text-small text-muted-foreground">@ada</span>
+      </span>
+    </span>
+    <span class="text-small">Writes about analytical engines and the poetry of numbers.</span>
+    <span class="text-small text-muted-foreground"><span class="font-semibold text-foreground">1,843</span> followers · <span class="font-semibold text-foreground">12</span> replies</span>
+  </span>
+<% end %>
+<p class="text-body">
+  Notes from
+  <%= lc_hovercard content: card do |preview| %>
+    <%= link_to "Ada Lovelace", "#ada", class: "font-semibold text-primary hover:underline", **preview %>
+  <% end %>
+  on the engine's first program.
+</p>
 ```
 
 Navigation and an account menu: https://ui.lostcoords.com/components/sidebar

@@ -276,6 +276,18 @@
       ]
     },
     {
+      "name": "lc_hovercard",
+      "signature": "lc_hovercard(src: nil, content: nil, side: :bottom, **attributes, &block)",
+      "url": "https://ui.lostcoords.com/components/hovercard#lc_hovercard",
+      "examples": [
+        {
+          "title": "Profile preview",
+          "url": "https://ui.lostcoords.com/components/hovercard",
+          "erb": "<% card = capture do %>\n  <span class=\"flex flex-col gap-related\">\n    <span class=\"flex items-center gap-heading\">\n      <%= lc_avatar \"AL\", size: :lg %>\n      <span class=\"flex min-w-0 flex-col\">\n        <span class=\"truncate text-label font-semibold\">Ada Lovelace</span>\n        <span class=\"truncate text-small text-muted-foreground\">@ada</span>\n      </span>\n    </span>\n    <span class=\"text-small\">Writes about analytical engines and the poetry of numbers.</span>\n    <span class=\"text-small text-muted-foreground\"><span class=\"font-semibold text-foreground\">1,843</span> followers · <span class=\"font-semibold text-foreground\">12</span> replies</span>\n  </span>\n<% end %>\n<p class=\"text-body\">\n  Notes from\n  <%= lc_hovercard content: card do |preview| %>\n    <%= link_to \"Ada Lovelace\", \"#ada\", class: \"font-semibold text-primary hover:underline\", **preview %>\n  <% end %>\n  on the engine's first program.\n</p>"
+        }
+      ]
+    },
+    {
       "name": "lc_icon",
       "signature": "lc_icon(name, variant: :outline, options: {}, path_options: {})",
       "url": "https://ui.lostcoords.com/components/button#lc_icon",
@@ -1182,6 +1194,11 @@
           "title": "Avatar groups",
           "url": "https://ui.lostcoords.com/components/avatar",
           "erb": "<%= lc_avatar_stack aria: { label: \"Alex, Sam and Jamie\" } do %>\n  <%= lc_avatar \"AL\", ink: true, class: \"bg-success-soft\" %>\n  <%= lc_avatar \"SK\", ink: true, class: \"bg-warning-soft\" %>\n  <%= lc_avatar \"JR\", ink: true, class: \"bg-destructive-soft\" %>\n<% end %>"
+        },
+        {
+          "title": "Profile preview",
+          "url": "https://ui.lostcoords.com/components/hovercard",
+          "erb": "<% card = capture do %>\n  <span class=\"flex flex-col gap-related\">\n    <span class=\"flex items-center gap-heading\">\n      <%= lc_avatar \"AL\", size: :lg %>\n      <span class=\"flex min-w-0 flex-col\">\n        <span class=\"truncate text-label font-semibold\">Ada Lovelace</span>\n        <span class=\"truncate text-small text-muted-foreground\">@ada</span>\n      </span>\n    </span>\n    <span class=\"text-small\">Writes about analytical engines and the poetry of numbers.</span>\n    <span class=\"text-small text-muted-foreground\"><span class=\"font-semibold text-foreground\">1,843</span> followers · <span class=\"font-semibold text-foreground\">12</span> replies</span>\n  </span>\n<% end %>\n<p class=\"text-body\">\n  Notes from\n  <%= lc_hovercard content: card do |preview| %>\n    <%= link_to \"Ada Lovelace\", \"#ada\", class: \"font-semibold text-primary hover:underline\", **preview %>\n  <% end %>\n  on the engine's first program.\n</p>"
         },
         {
           "title": "Navigation and an account menu",
