@@ -12,6 +12,9 @@
     <%= lc_list_row "Recovery codes", icon: "document-text", href: "#recovery-codes" do %>
       <%= lc_icon "chevron-right", variant: :mini, options: { class: "size-5 text-muted-foreground rtl:rotate-180", "aria-hidden": true } %>
     <% end %>
+    <%= lc_list_row "Laptop", subtitle: "Signed in 2 hours ago", icon: "computer-desktop", href: "#laptop", tag: :div do %>
+      <%= lc_icon_button "Sign out", icon: "arrow-right-start-on-rectangle", size: :sm, tooltip: true %>
+    <% end %>
     <%= lc_list_row padded: false do %>
       <%= lc_list_item "Delete account", icon: "trash", tag: :button, type: "button", class: "w-full cursor-pointer rounded-[inherit] text-destructive transition-colors hover:bg-accent" %>
     <% end %>

@@ -405,7 +405,9 @@ makes the summary look like that `lc_button` without the native marker, and `ind
 only the group's ends round. Rows are card surfaces, so fields and buttons in them follow
 `--card-input` and `--card-secondary`. `lc_list_row` with a title lays out `icon:` (a name, or your own
 markup such as a logo), the title, `subtitle:` and the block as trailing content; `tag:` makes it a
-`label`, `li`, `details` or `a` (`href:`). Without a title the block is the whole row, and
+`label`, `li`, `details` or `a` (`href:`). `href:` with `tag: :li` or `:div` links the title instead
+and stretches it over the row, so the block can hold buttons and links of its own; a click anywhere
+else in the row follows the title. Without a title the block is the whole row, and
 `padded: false` leaves the padding to content such as an `lc_list_item` button or summary, which lays
 out the same icon, title and subtitle inside your own element. `lc_list_section` adds the heading and
 footnote; with an `id:`, the heading labels the section. Put a form around `lc_list_group` inside it
@@ -507,6 +509,8 @@ Text that labels something other than one control, such as a list, uses `lc_text
   <%= lc_icon_button "Copy link", icon: "link", **tip %>
 <% end %>
 
+<%= lc_icon_button "Stop", icon: "stop", tooltip: true %>
+
 <%= lc_description_list do |list| %>
   <%= list.item "Owner", @project.owner.name %>
   <%= list.item("Plan") { lc_badge @project.plan } %>
@@ -515,7 +519,9 @@ Text that labels something other than one control, such as a list, uses `lc_text
 
 Tabs follow the ARIA tabs pattern with arrow key, Home and End navigation, and dispatch
 `lc-tabs:change`. `orientation: :vertical` stacks the tabs beside their panels and moves with Arrow Up
-and Down; `activation: :manual` moves focus with the arrows and selects with Enter or Space; `list:` adds attributes to the tab list. Tooltips show on hover and keyboard focus, Escape hides them, and they describe
+and Down; `activation: :manual` moves focus with the arrows and selects with Enter or Space; `list:` adds attributes to the tab list. Icon buttons take `tooltip: true` to show their label, or `tooltip: "text"` to describe themselves
+with other text. A tooltip without an `id:` repeats its trigger's label and stays hidden from
+assistive technology. Tooltips show on hover and keyboard focus, Escape hides them, and they describe
 their trigger, in the top layer; keep essential information visible. Description lists stack on phones and use two
 columns from `sm`.
 

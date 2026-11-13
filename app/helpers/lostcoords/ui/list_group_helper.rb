@@ -5,6 +5,15 @@ module Lostcoords::Ui
     LIST_ROW_PADDING = "px-content py-heading sm:px-inset"
     LIST_ICON = "grid size-10 shrink-0 place-items-center rounded-full bg-tile [&>svg:not([class*='size-'])]:size-4.5"
     LIST_ROW_TAGS = %i[div li label details a].freeze
+    LIST_ROW_HOVER = "transition-colors duration-(--lc-motion-quick) hover:bg-accent"
+    # A linked li or div row: the title's link covers the row, the row's own controls sit above it,
+    # and the row shows the link's focus ring.
+    LIST_ROW_LINKED =
+      "relative has-[[data-slot=list-link]:focus-visible]:outline-2 has-[[data-slot=list-link]:focus-visible]:outline-offset-2 " \
+      "has-[[data-slot=list-link]:focus-visible]:outline-(--ring,color-mix(in_oklab,var(--primary)_50%,transparent)) " \
+      "[&_:is(a[href],button,input,select,textarea,summary,[tabindex]):not([data-slot=list-link])]:relative " \
+      "[&_:is(a[href],button,input,select,textarea,summary,[tabindex]):not([data-slot=list-link])]:z-raised"
+    LIST_LINK = "text-inherit no-underline focus-visible:outline-none after:absolute after:inset-0 after:rounded-[inherit] after:content-['']"
     LIST_FIELD_TAGS = %i[div fieldset span].freeze
     LIST_FIELD = "@container px-content py-2.5 transition-colors duration-(--lc-motion-quick) has-[[data-plain]:focus]:bg-accent"
     LIST_FIELD_GRID = "grid min-h-9 grid-cols-[1.25rem_minmax(0,1fr)] items-center gap-x-heading gap-y-related @md:grid-cols-[8rem_minmax(0,1fr)]"
@@ -37,14 +46,18 @@ module Lostcoords::Ui
 
     # With a title, the row lays out icon:, the title and subtitle, then the block as its trailing
     # content. Without one, the block is the whole row; padded: false drops the row's padding for
-    # content that pads itself, such as an lc_list_item button. href: makes the row a link.
+    # content that pads itself, such as an lc_list_item button. href: makes the row a link. On an li
+    # or div row, the title is the link and covers the row, so the block can hold buttons and links
+    # of its own; a click elsewhere in the row follows the title.
     def lc_list_row(title = nil, subtitle: nil, icon: nil, href: nil, tag: nil, padded: true, **attributes, &block)
       tag = lc_option!(:tag, tag || (href ? :a : :div), LIST_ROW_TAGS)
-      raise ArgumentError, "href: needs tag: :a" if href && tag != :a
+      titled = href && tag != :a
+      raise ArgumentError, "href: needs tag: :a, :li or :div" if titled && !%i[li div].include?(tag)
+      raise ArgumentError, "href: on an li or div row links its title, so it needs one" if titled && title.blank?
 
-      link = ("no-underline transition-colors duration-(--lc-motion-quick) hover:bg-accent" if href)
-      defaults = { href: href, data: { slot: "list-row" } }
-      return lc_list_item(title, subtitle: subtitle, icon: icon, tag: tag, **lc_attributes(defaults.merge(class: lc_tw(LIST_ROW, link)), attributes), &block) if title.present?
+      link = (titled ? lc_tw(LIST_ROW_HOVER, LIST_ROW_LINKED) : lc_tw("no-underline", LIST_ROW_HOVER)) if href
+      defaults = { href: (href unless titled), data: { slot: "list-row" } }
+      return lc_list_item(title, subtitle: subtitle, icon: icon, link: (href if titled), tag: tag, **lc_attributes(defaults.merge(class: lc_tw(LIST_ROW, link)), attributes), &block) if title.present?
 
       classes = lc_tw(LIST_ROW, (LIST_ROW_PADDING if padded), link)
       content_tag(tag, (capture(&block) if block), **lc_attributes(defaults.merge(class: classes), attributes))
@@ -76,9 +89,11 @@ module Lostcoords::Ui
 
     # The row layout without the row's surface, for an element inside a free-form row: a summary, a
     # button that opens an editor. icon: takes an icon name or your own markup, such as a logo.
-    def lc_list_item(title, subtitle: nil, icon: nil, tag: :div, **attributes, &block)
+    # link: links the title to that URL and stretches the link over the nearest positioned ancestor.
+    def lc_list_item(title, subtitle: nil, icon: nil, link: nil, tag: :div, **attributes, &block)
       lc_label!(title, :title)
       glyph = icon.is_a?(ActiveSupport::SafeBuffer) ? icon : lc_icon(icon) if icon.present?
+      title = link_to(title, link, class: LIST_LINK, data: { slot: "list-link" }) if link
       content_tag(tag, **lc_attributes({ class: LIST_ITEM, data: { slot: "list-item" } }, attributes)) do
         text = safe_join([
           content_tag(:span, title, class: "font-semibold", data: { slot: "list-title" }),

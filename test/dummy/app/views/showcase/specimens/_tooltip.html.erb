@@ -2,6 +2,7 @@
   <%= lc_tooltip "Copy a link to this page", id: "EXAMPLE_ID-copy-tip" do |tip| %>
     <%= lc_icon_button "Copy link", icon: "link", **tip %>
   <% end %>
+  <%= lc_icon_button "Delete", icon: "trash", tooltip: true %>
   <%= lc_tooltip "Only owners can archive", id: "EXAMPLE_ID-archive-tip", side: :bottom do |tip| %>
     <%= lc_button "Archive", variant: :secondary, **tip %>
   <% end %>

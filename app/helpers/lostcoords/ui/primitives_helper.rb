@@ -86,20 +86,21 @@ module Lostcoords::Ui
       tag.div(safe_join([ primary, toggle, popover ]), **lc_attributes(defaults, attributes))
     end
 
-    def lc_icon_button(label, icon: nil, size: :md, shape: :circle, variant: :ghost, tone: :default, **attributes, &content)
+    def lc_icon_button(label, icon: nil, size: :md, shape: :circle, variant: :ghost, tone: :default, tooltip: nil, **attributes, &content)
       attributes = lc_icon_button_attributes(label, size, shape, variant, tone, { type: "button" }, attributes)
-      tag.button(lc_icon_button_content(icon, &content), **attributes)
+      lc_icon_button_tooltip(label, tooltip, attributes) { |tip| tag.button(lc_icon_button_content(icon, &content), **lc_attributes(attributes, tip)) }
     end
 
-    def lc_icon_button_link_to(label, url, icon: nil, size: :md, shape: :circle, variant: :ghost, tone: :default, **attributes, &content)
+    def lc_icon_button_link_to(label, url, icon: nil, size: :md, shape: :circle, variant: :ghost, tone: :default, tooltip: nil, **attributes, &content)
       attributes = lc_icon_button_attributes(label, size, shape, variant, tone, {}, attributes)
       raise ArgumentError, "Links cannot be disabled; use lc_icon_button for a disabled control" if attributes[:disabled]
 
-      link_to(lc_icon_button_content(icon, &content), url, attributes)
+      lc_icon_button_tooltip(label, tooltip, attributes) { |tip| link_to(lc_icon_button_content(icon, &content), url, lc_attributes(attributes, tip)) }
     end
 
-    def lc_icon_button_to(label, url, icon: nil, size: :md, shape: :circle, variant: :ghost, tone: :default, **attributes, &content)
-      button_to(lc_icon_button_content(icon, &content), url, lc_icon_button_attributes(label, size, shape, variant, tone, {}, attributes))
+    def lc_icon_button_to(label, url, icon: nil, size: :md, shape: :circle, variant: :ghost, tone: :default, tooltip: nil, **attributes, &content)
+      attributes = lc_icon_button_attributes(label, size, shape, variant, tone, {}, attributes)
+      lc_icon_button_tooltip(label, tooltip, attributes) { |tip| button_to(lc_icon_button_content(icon, &content), url, lc_attributes(attributes, tip)) }
     end
 
     def lc_badge(content = nil, tone: :neutral, shape: :rounded, **attributes, &block)
@@ -213,6 +214,16 @@ module Lostcoords::Ui
         raise ArgumentError, "lc_icon_button requires a nonblank accessible label" if label.blank? || accessible_label.blank?
 
         attributes
+      end
+
+      # tooltip: true shows the label on hover and keyboard focus; a string shows that text instead,
+      # and describes the button with it.
+      def lc_icon_button_tooltip(label, tooltip, attributes)
+        return yield({}) if tooltip.nil? || tooltip == false
+
+        text = tooltip == true ? label : tooltip
+        id = ("#{attributes[:id] || "lc-icon-button-#{@lc_tooltip_count = (@lc_tooltip_count || 0) + 1}"}-tooltip" unless text == label)
+        lc_tooltip(text, id: id) { |tip| yield(tip) }
       end
 
       def lc_icon_button_content(icon, &content)

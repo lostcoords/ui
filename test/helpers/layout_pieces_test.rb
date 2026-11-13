@@ -131,6 +131,22 @@ module Lostcoords::Ui
       assert_equal "/docs", rows[3]["href"]
     end
 
+    test "a linked li or div row links its title over the row and keeps its own controls above it" do
+      row = render('<%= lc_list_row "primary", subtitle: "app.localhost", href: "/logs", tag: :li do %><button>Stop</button><% end %>').at_css("li[data-slot=list-row]")
+      assert_nil row["href"]
+      link = row.at_css("[data-slot=list-title] > a[data-slot=list-link]")
+      assert_equal "/logs", link["href"]
+      assert_equal "primary", link.text
+      classes = row["class"].split
+      assert_includes classes, "relative"
+      assert_includes classes, "hover:bg-accent"
+      assert link["class"].split.include?("after:inset-0"), "the link covers the row"
+      assert classes.any? { it.end_with?("]:z-raised") && it.include?(":not([data-slot=list-link])") }, "controls sit above the link"
+      assert_equal "Stop", row.at_css("button").text
+      div = render('<%= lc_list_row "Docs", href: "/docs", tag: :div %>').at_css("div[data-slot=list-row]")
+      assert div.at_css("a[data-slot=list-link][href='/docs']")
+    end
+
     test "list items lay out a row inside your own element" do
       item = render('<%= lc_list_item "Other devices", subtitle: "2 devices", icon: "device-phone-mobile", tag: :summary do %><span>v</span><% end %>').at_css("summary[data-slot=list-item]")
       assert_equal %w[list-icon list-text], item.element_children.first(2).map { it["data-slot"] }
@@ -141,7 +157,8 @@ module Lostcoords::Ui
 
     test "list rows reject unknown tags and links on other tags" do
       assert_raises(ArgumentError) { @view.lc_list_row("Row", tag: :span) }
-      assert_raises(ArgumentError) { @view.lc_list_row("Row", href: "/x", tag: :div) }
+      assert_raises(ArgumentError) { @view.lc_list_row("Row", href: "/x", tag: :label) }
+      assert_raises(ArgumentError) { @view.lc_list_row(href: "/x", tag: :li) { "Row" } }
       assert_raises(ArgumentError) { @view.lc_list_group(tag: :ol) }
       assert_raises(ArgumentError) { @view.lc_list_section("Heading", level: 7) }
       assert_raises(ArgumentError) { @view.lc_list_section("") }

@@ -162,6 +162,24 @@ async function _verifyLayoutPieces(page) {
   verify(rows.middle === 0, "middle rows are square")
   verify(rows.lastBottom > 0, "the last row's bottom corners round")
 
+  const linked = page
+    .locator("[data-slot=list-row]")
+    .filter({ has: page.locator("[data-slot=list-link]") })
+  await linked.click({ position: { x: 8, y: 8 } })
+  verify(
+    new URL(page.url()).hash === "#laptop",
+    "a click anywhere in a linked row follows its title",
+  )
+  const control = await linked.locator("button").evaluate((button) => {
+    const box = button.getBoundingClientRect()
+    return (
+      document
+        .elementFromPoint(box.x + box.width / 2, box.y + box.height / 2)
+        ?.closest("button") === button
+    )
+  })
+  verify(control, "a linked row's own controls sit above its link")
+
   const surfaces = await page.evaluate(() => {
     const root = document.documentElement
     root.style.setProperty("--card-secondary", "rgb(1, 2, 3)")

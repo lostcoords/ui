@@ -180,6 +180,35 @@ module Lostcoords::Ui
       assert_raises(ArgumentError) { @view.lc_tooltip("x", id: "t", side: :left) }
     end
 
+    test "a tooltip without an id repeats its trigger's label and is not read" do
+      html = render('<%= lc_tooltip "Copy" do |tip| %><%= lc_button "Copy", **tip %><% end %>')
+      assert_nil html.at_css("button")["aria-describedby"]
+      content = html.at_css("[data-slot=tooltip-content]")
+      assert_equal "true", content["aria-hidden"]
+      assert_nil content["role"]
+      assert_nil content["id"]
+    end
+
+    test "icon buttons show their label as a tooltip, or describe themselves with other text" do
+      plain = render('<%= lc_icon_button "Stop", icon: "stop" %>')
+      assert_nil plain.at_css("[data-slot=tooltip]")
+      label = render('<%= lc_icon_button "Stop", icon: "stop", tooltip: true %>')
+      button = label.at_css("[data-slot=tooltip] > button[aria-label=Stop]")
+      assert button
+      assert_nil button["aria-describedby"]
+      assert_equal "Stop", label.at_css("[data-slot=tooltip-content][aria-hidden=true]").text
+      text = render('<%= lc_icon_button_link_to "Logs", "/logs", icon: "command-line", id: "logs", tooltip: "Open the logs" %>')
+      link = text.at_css("[data-slot=tooltip] > a#logs")
+      assert_equal "logs-tooltip", link["aria-describedby"]
+      assert_equal "Open the logs", text.at_css("#logs-tooltip[role=tooltip]").text
+      numbered = render('<%= lc_icon_button "A", icon: "stop", tooltip: "First" %><%= lc_icon_button "B", icon: "stop", tooltip: "Second" %>')
+      ids = numbered.css("[role=tooltip]").map { it["id"] }
+      assert_equal 2, ids.uniq.size
+      assert_equal ids, numbered.css("button").map { it["aria-describedby"] }
+      form = render('<%= lc_icon_button_to "Delete", "/x", icon: "trash", tooltip: true %>')
+      assert form.at_css("[data-slot=tooltip] form button[aria-label=Delete]")
+    end
+
     test "breadcrumbs link ancestors and mark the current page" do
       html = fragment(@view.lc_breadcrumb([ [ "Projects", "/p" ], "Website" ]))
       assert_equal "Breadcrumb", html.at_css("nav")["aria-label"]
