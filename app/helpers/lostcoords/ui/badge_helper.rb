@@ -80,21 +80,23 @@ module Lostcoords::Ui
 
     BADGE_SHAPES = { rounded: "", pill: "rounded-full px-2.5" }.freeze
 
+    # A selected pill fills solid with the primary color; its border stays transparent, so the
+    # fill alone carries the state and selecting never shifts the pill's edge.
     TOGGLE_BASE =
       "inline-flex items-center justify-center gap-related rounded-pill " \
       "border border-transparent bg-(--lc-field-bg,var(--input)) " \
       "font-sans text-muted-foreground whitespace-nowrap cursor-pointer no-underline " \
       "transition-[background-color,border-color,color,transform] duration-(--lc-motion-quick) ease-(--lc-ease-out) " \
       "lc-press hover:text-foreground " \
-      "aria-pressed:bg-primary-soft aria-pressed:border-primary aria-pressed:text-primary aria-pressed:shadow-none " \
-      "aria-checked:bg-primary-soft aria-checked:border-primary aria-checked:text-primary aria-checked:shadow-none " \
-      "aria-[current]:not-aria-[current=false]:bg-primary-soft aria-[current]:not-aria-[current=false]:border-primary " \
-      "aria-[current]:not-aria-[current=false]:text-primary aria-[current]:not-aria-[current=false]:shadow-none " \
-      "has-checked:bg-primary-soft has-checked:border-primary has-checked:text-primary has-checked:shadow-none " \
-      "aria-expanded:bg-primary-soft aria-expanded:border-primary aria-expanded:text-primary aria-expanded:shadow-none " \
+      "aria-pressed:bg-primary aria-pressed:border-transparent aria-pressed:text-primary-foreground aria-pressed:shadow-none " \
+      "aria-checked:bg-primary aria-checked:border-transparent aria-checked:text-primary-foreground aria-checked:shadow-none " \
+      "aria-[current]:not-aria-[current=false]:bg-primary aria-[current]:not-aria-[current=false]:border-transparent " \
+      "aria-[current]:not-aria-[current=false]:text-primary-foreground aria-[current]:not-aria-[current=false]:shadow-none " \
+      "has-checked:bg-primary has-checked:border-transparent has-checked:text-primary-foreground has-checked:shadow-none " \
+      "aria-expanded:bg-primary aria-expanded:border-transparent aria-expanded:text-primary-foreground aria-expanded:shadow-none " \
       "[&_svg]:size-[1.1em] [&_svg]:shrink-0"
 
-    TOGGLE_ACTIVE = "bg-primary-soft border-primary text-primary hover:text-primary shadow-none"
+    TOGGLE_ACTIVE = "bg-primary border-transparent text-primary-foreground hover:text-primary-foreground shadow-none"
 
     TOGGLE_GHOST = "border-dashed border-muted-foreground/40 [background:none] shadow-none text-muted-foreground"
 

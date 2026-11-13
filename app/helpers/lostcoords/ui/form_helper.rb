@@ -1,11 +1,11 @@
 module Lostcoords::Ui
   module FormHelper
     TOGGLE_GROUP_BASE =
-      "inline-flex items-center gap-1 rounded-2xl bg-track p-1 lc-squircle"
+      "lc-toggle-group inline-flex items-center gap-1 rounded-2xl bg-track p-1 lc-squircle *:grow"
 
     TOGGLE_GROUP_ITEM_BASE =
-      "lc-press inline-flex items-center justify-center gap-1.5 whitespace-nowrap " \
-      "h-control-sm rounded-xl border-0 bg-transparent " \
+      "lc-toggle-group-item lc-press inline-flex items-center justify-center gap-1.5 whitespace-nowrap " \
+      "h-control-sm rounded-(--lc-toggle-item-radius,var(--radius-xl)) lc-squircle border-0 bg-transparent " \
       "px-3 font-sans text-label cursor-pointer no-underline " \
       "text-muted-foreground not-disabled:hover:text-foreground " \
       "aria-selected:bg-background aria-selected:text-foreground " \
@@ -18,7 +18,7 @@ module Lostcoords::Ui
       "has-disabled:cursor-not-allowed has-disabled:text-[color-mix(in_oklab,var(--foreground)_38%,transparent)] " \
       "[&_svg]:size-[1.1em] [&_svg]:shrink-0"
 
-    TOGGLE_GROUP_ITEM_ACTIVE = "bg-background text-foreground hover:text-foreground"
+    TOGGLE_GROUP_ITEM_ACTIVE = "lc-toggle-group-item-active bg-background text-foreground hover:text-foreground"
 
     INPUT_BASE =
       "w-full max-w-full min-w-0 " \

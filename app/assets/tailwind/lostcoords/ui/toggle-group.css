@@ -1,0 +1,58 @@
+/* Segmented toggle group (lc_toggle_group_class, lc_toggle_group_item_class).
+
+   Where anchor positioning is supported, the current item's surface is one
+   indicator on the track that slides from item to item, whichever state marks
+   it (aria-current, aria-selected, aria-checked, aria-pressed, a checked radio
+   or the active: class). Elsewhere each current item paints its own surface. */
+
+@layer components {
+  /* Concentric with the track: its radius (rounded-2xl) less its padding (p-1).
+     Spelled out because --radius-2xl resolves at :root, before lc-squircle
+     scales it. */
+  .lc-toggle-group {
+    --lc-toggle-item-radius: calc(var(--radius) * 2 * var(--lc-corner-scale, 1) - var(--spacing));
+    position: relative;
+    isolation: isolate;
+  }
+}
+
+@supports (anchor-name: --a) and (anchor-scope: all) {
+  .lc-toggle-group {
+    anchor-scope: --lc-toggle-current;
+  }
+
+  .lc-toggle-group::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    position-anchor: --lc-toggle-current;
+    inset: anchor(top) anchor(right) anchor(bottom) anchor(left);
+    border-radius: var(--lc-toggle-item-radius);
+    corner-shape: inherit;
+    background-color: var(--color-background);
+    pointer-events: none;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .lc-toggle-group::after {
+      transition: inset var(--lc-motion-control) var(--lc-ease-out);
+    }
+  }
+
+  /* Unlayered, so it wins over the items' own aria-*:bg-background utilities. */
+  .lc-toggle-group .lc-toggle-group-item {
+    background-color: transparent;
+  }
+
+  .lc-toggle-group
+    .lc-toggle-group-item:is(
+      [aria-current]:not([aria-current="false"]),
+      [aria-selected="true"],
+      [aria-checked="true"],
+      [aria-pressed="true"],
+      :has(input:checked),
+      .lc-toggle-group-item-active
+    ) {
+    anchor-name: --lc-toggle-current;
+  }
+}
