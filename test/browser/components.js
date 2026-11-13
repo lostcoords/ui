@@ -155,12 +155,17 @@ async function _verifyComponents(page) {
     const checkedBilling = () => page.locator('input[name="billing"]:checked').inputValue()
     await page.locator('label[data-slot="toggle-group-item"]', { hasText: "Annual" }).click()
     verify((await checkedBilling()) === "annual", "A named toggle group submits the checked radio")
-    const labelFill = (text) =>
-      page
-        .locator('label[data-slot="toggle-group-item"]', { hasText: text })
-        .evaluate((node) => getComputedStyle(node).backgroundColor)
+    // Where anchor positioning is supported, the track's one indicator follows the checked item;
+    // elsewhere the checked item paints its own fill.
+    const labelSurface = (text) =>
+      page.locator('label[data-slot="toggle-group-item"]', { hasText: text }).evaluate((node) => {
+        const style = getComputedStyle(node)
+        return CSS.supports("anchor-name: --a") && CSS.supports("anchor-scope: all")
+          ? style.anchorName
+          : style.backgroundColor
+      })
     verify(
-      (await labelFill("Annual")) !== (await labelFill("Monthly")),
+      (await labelSurface("Annual")) !== (await labelSurface("Monthly")),
       "A native radio item shows its checked state",
     )
     await page.getByRole("button", { name: "Reset", exact: true }).click()

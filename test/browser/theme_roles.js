@@ -117,12 +117,14 @@ async function _verifyThemeRoles(page) {
     const after = await values()
     verify(after.button !== before.button, `${mode}: a scoped primary override updates buttons`)
     verify(
-      after.button === after.link && after.button === after.toggleText,
+      after.button === after.link &&
+        after.button === after.toggleFill &&
+        after.buttonText === after.toggleText,
       `${mode}: buttons, reading links and selected toggles use the same primary color`,
     )
     verify(
       after.toggleFill !== before.toggleFill && after.iconBadge !== before.iconBadge,
-      `${mode}: soft selection and icon badge backgrounds follow a scoped primary override`,
+      `${mode}: selection and icon badge backgrounds follow a scoped primary override`,
     )
     await page.bringToFront()
     const focus = await page.evaluate(() => {
