@@ -29,6 +29,20 @@ es:
         navigation: "Principal"
       dock:
         close: "Cerrar %{label}"
+      sidebar:
+        label: "Barra lateral"
+        collapse: "Contraer la barra lateral"
+        expand: "Expandir la barra lateral"
+      char_counter:
+        label: "%{count} de %{max} caracteres"
+      time:
+        now: "ahora"
+        minutes: "%{count} min"
+        hours: "%{count} h"
+        formats:
+          date: "%-d %b"
+          date_with_year: "%-d %b %Y"
+          full: "%-d de %B de %Y, %H:%M"
       breadcrumb:
         label: "Ruta de navegación"
       code_block:

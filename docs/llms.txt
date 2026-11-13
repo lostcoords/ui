@@ -306,6 +306,70 @@ Details: https://ui.lostcoords.com/components/description_list
 <% end %>
 ```
 
+## lc_stats
+
+https://ui.lostcoords.com/components/stats#lc_stats
+
+```ruby
+lc_stats(layout: :inline, columns: nil, **attributes, &block)
+```
+
+In a line: https://ui.lostcoords.com/components/stats
+
+```erb
+<%= lc_stats do %>
+  <%= lc_stat "1,204", label: "replies sent", tone: :primary %>
+  <%= lc_stat "318", label: "replies received" %>
+  <%= lc_stat label: "people" do %><a href="#people" class="text-inherit hover:underline">96</a><% end %>
+  <%= lc_stat "42", label: "two-way", tone: :success %>
+<% end %>
+```
+
+Tiles: https://ui.lostcoords.com/components/stats
+
+```erb
+<%= lc_card padding: :sm, class: "w-full max-w-sm" do %>
+  <%= lc_stats layout: :grid, columns: 2 do %>
+    <%= lc_stat 24, label: "Replies from you", tone: :primary %>
+    <%= lc_stat 17, label: "Replies from them" %>
+    <%= lc_stat 9, label: "Likes" %>
+    <%= lc_stat 0, label: "Bookmarks", tone: :warning %>
+  <% end %>
+<% end %>
+```
+
+## lc_stat
+
+https://ui.lostcoords.com/components/stats#lc_stat
+
+```ruby
+lc_stat(value = nil, label:, tone: :default, **attributes, &block)
+```
+
+In a line: https://ui.lostcoords.com/components/stats
+
+```erb
+<%= lc_stats do %>
+  <%= lc_stat "1,204", label: "replies sent", tone: :primary %>
+  <%= lc_stat "318", label: "replies received" %>
+  <%= lc_stat label: "people" do %><a href="#people" class="text-inherit hover:underline">96</a><% end %>
+  <%= lc_stat "42", label: "two-way", tone: :success %>
+<% end %>
+```
+
+Tiles: https://ui.lostcoords.com/components/stats
+
+```erb
+<%= lc_card padding: :sm, class: "w-full max-w-sm" do %>
+  <%= lc_stats layout: :grid, columns: 2 do %>
+    <%= lc_stat 24, label: "Replies from you", tone: :primary %>
+    <%= lc_stat 17, label: "Replies from them" %>
+    <%= lc_stat 9, label: "Likes" %>
+    <%= lc_stat 0, label: "Bookmarks", tone: :warning %>
+  <% end %>
+<% end %>
+```
+
 ## lc_dialog
 
 https://ui.lostcoords.com/components/dialog#lc_dialog
@@ -738,6 +802,19 @@ Switches: https://ui.lostcoords.com/components/switch
 <% end %>
 ```
 
+Relative and dated: https://ui.lostcoords.com/components/time
+
+```erb
+<% now = Time.utc(2026, 11, 4, 12) %>
+<%= lc_stack gap: :related, as: :ul, class: "m-0 list-none p-0 text-small" do %>
+  <li>Posted <%= lc_time now - 30.seconds, now: now %></li>
+  <li>Posted <%= lc_time now - 12.minutes, now: now %></li>
+  <li>Posted <%= lc_time now - 4.hours, now: now %></li>
+  <li>Posted <%= lc_time Time.utc(2026, 10, 28, 9, 30), now: now %></li>
+  <li>Posted <%= lc_time Time.utc(2025, 11, 4, 18), now: now, detail: "edited" %></li>
+<% end %>
+```
+
 ## lc_inline
 
 https://ui.lostcoords.com/components/foundations#lc_inline
@@ -873,6 +950,17 @@ Navigation: https://ui.lostcoords.com/components/toggle
 <% end %>
 ```
 
+Icon-only toggles: https://ui.lostcoords.com/components/toggle
+
+```erb
+<%= lc_inline gap: :tight, role: "group", aria: { label: "Formatting" } do %>
+  <%= lc_toggle "Bold", icon: "bold", icon_only: true, tooltip: true, active: true %>
+  <%= lc_toggle "Italic", icon: "italic", icon_only: true, tooltip: true %>
+  <%= lc_toggle "Underline", icon: "underline", icon_only: true, tooltip: true, size: :sm %>
+  <%= lc_toggle "Pinned", icon: "bookmark" %>
+<% end %>
+```
+
 Form values, native radios and reset: https://ui.lostcoords.com/components/toggle_group
 
 ```erb
@@ -901,6 +989,41 @@ Tooltips: https://ui.lostcoords.com/components/tooltip
   <%= lc_tooltip "Only owners can archive", id: "my-component-archive-tip", side: :bottom do |tip| %>
     <%= lc_button "Archive", variant: :secondary, **tip %>
   <% end %>
+<% end %>
+```
+
+## lc_split
+
+https://ui.lostcoords.com/components/foundations#lc_split
+
+```ruby
+lc_split(aside: :md, as: :div, **attributes, &block)
+```
+
+Main column and aside: https://ui.lostcoords.com/components/foundations
+
+```erb
+<%= lc_split aside: :md do %>
+  <%= lc_card do %><%= lc_text "The main column takes the remaining width." %><% end %>
+  <%= lc_card as: :aside do %><%= lc_text "The aside is 20rem from lg and stacks below on smaller screens.", size: :small, tone: :muted %><% end %>
+<% end %>
+```
+
+## lc_columns
+
+https://ui.lostcoords.com/components/foundations#lc_columns
+
+```ruby
+lc_columns(count: 2, as: :div, **attributes, &block)
+```
+
+Balanced columns: https://ui.lostcoords.com/components/foundations
+
+```erb
+<%= lc_columns count: 2 do %>
+  <%= lc_section title: "Profile" do %><%= lc_card do %><%= lc_text "Name, handle and avatar." %><% end %><% end %>
+  <%= lc_section title: "Notifications" do %><%= lc_card do %><%= lc_text "Email and push preferences, grouped so no card splits between columns." %><% end %><% end %>
+  <%= lc_section title: "Connections" do %><%= lc_card do %><%= lc_text "Linked accounts." %><% end %><% end %>
 <% end %>
 ```
 
@@ -1010,6 +1133,16 @@ Responsive containers: https://ui.lostcoords.com/components/foundations
       <% end %>
     </div>
   <% end %>
+<% end %>
+```
+
+Balanced columns: https://ui.lostcoords.com/components/foundations
+
+```erb
+<%= lc_columns count: 2 do %>
+  <%= lc_section title: "Profile" do %><%= lc_card do %><%= lc_text "Name, handle and avatar." %><% end %><% end %>
+  <%= lc_section title: "Notifications" do %><%= lc_card do %><%= lc_text "Email and push preferences, grouped so no card splits between columns." %><% end %><% end %>
+  <%= lc_section title: "Connections" do %><%= lc_card do %><%= lc_text "Linked accounts." %><% end %><% end %>
 <% end %>
 ```
 
@@ -1437,6 +1570,59 @@ Icon trigger, hints, choices and groups: https://ui.lostcoords.com/components/me
 </div>
 ```
 
+Navigation and an account menu: https://ui.lostcoords.com/components/sidebar
+
+```erb
+<%= lc_sidebar cookie: "docs_sidebar", rail_below: false, class: "static h-128 rounded-2xl bg-muted" do |sidebar| %>
+  <%= sidebar.header do %>
+    <a href="#" class="text-subheading font-bold text-inherit no-underline" aria-label="Studio home">
+      <span class="lc-rail:hidden">Studio</span><span class="hidden lc-rail:inline" aria-hidden="true">S</span>
+    </a>
+  <% end %>
+  <%= sidebar.body do %>
+    <%= lc_nav_list label: "Main" do |nav| %>
+      <%= nav.group "Workspace" do %>
+        <%= nav.link "Home", "#home", icon: "home", current: true, title: "Home" %>
+        <%= nav.link "Projects", "#projects", icon: "folder", title: "Projects" %>
+        <%= nav.link "Messages", "#messages", icon: "chat-bubble-left-right", title: "Messages" %>
+      <% end %>
+      <%= nav.group "Account" do %>
+        <%= nav.link "Settings", "#settings", icon: "cog-6-tooth", title: "Settings" %>
+      <% end %>
+    <% end %>
+  <% end %>
+  <%= sidebar.footer do %>
+    <%= sidebar.account "Ada Lovelace", detail: "ada@example.com", avatar: lc_avatar("AL", size: :sm, class: "bg-primary-soft text-primary"), id: "my-component-account" do %>
+      <%= lc_menu_option "Settings", icon: "cog-6-tooth", href: "#settings" %>
+      <%= lc_menu_option "Sign out", icon: "arrow-right-start-on-rectangle", href: "#sign-out" %>
+    <% end %>
+  <% end %>
+<% end %>
+```
+
+Folded to a rail: https://ui.lostcoords.com/components/sidebar
+
+```erb
+<%= lc_sidebar cookie: "docs_sidebar_rail", state: "collapsed", class: "static h-96 rounded-2xl bg-muted" do |sidebar| %>
+  <%= sidebar.header do %>
+    <a href="#" class="text-subheading font-bold text-inherit no-underline" aria-label="Studio home">
+      <span class="lc-rail:hidden">Studio</span><span class="hidden lc-rail:inline" aria-hidden="true">S</span>
+    </a>
+  <% end %>
+  <%= sidebar.body do %>
+    <%= lc_nav_list label: "Main" do |nav| %>
+      <%= nav.link "Home", "#home", icon: "home", current: true, title: "Home" %>
+      <%= nav.link "Projects", "#projects", icon: "folder", title: "Projects" %>
+    <% end %>
+  <% end %>
+  <%= sidebar.footer do %>
+    <%= sidebar.account "Ada Lovelace", detail: "ada@example.com", avatar: lc_avatar("AL", size: :sm, class: "bg-primary-soft text-primary"), id: "my-component-account" do %>
+      <%= lc_menu_option "Sign out", icon: "arrow-right-start-on-rectangle", href: "#sign-out" %>
+    <% end %>
+  <% end %>
+<% end %>
+```
+
 ## lc_menu_group
 
 https://ui.lostcoords.com/components/menu#lc_menu_group
@@ -1559,6 +1745,92 @@ Dock: https://ui.lostcoords.com/components/nav_list
   <%= nav.link "Members", "#members", icon: "users" %>
   <%= nav.link "Activity", "#activity", icon: "clock" %>
   <%= nav.link "Stats", "#stats", icon: "chart-bar" %>
+<% end %>
+```
+
+Navigation and an account menu: https://ui.lostcoords.com/components/sidebar
+
+```erb
+<%= lc_sidebar cookie: "docs_sidebar", rail_below: false, class: "static h-128 rounded-2xl bg-muted" do |sidebar| %>
+  <%= sidebar.header do %>
+    <a href="#" class="text-subheading font-bold text-inherit no-underline" aria-label="Studio home">
+      <span class="lc-rail:hidden">Studio</span><span class="hidden lc-rail:inline" aria-hidden="true">S</span>
+    </a>
+  <% end %>
+  <%= sidebar.body do %>
+    <%= lc_nav_list label: "Main" do |nav| %>
+      <%= nav.group "Workspace" do %>
+        <%= nav.link "Home", "#home", icon: "home", current: true, title: "Home" %>
+        <%= nav.link "Projects", "#projects", icon: "folder", title: "Projects" %>
+        <%= nav.link "Messages", "#messages", icon: "chat-bubble-left-right", title: "Messages" %>
+      <% end %>
+      <%= nav.group "Account" do %>
+        <%= nav.link "Settings", "#settings", icon: "cog-6-tooth", title: "Settings" %>
+      <% end %>
+    <% end %>
+  <% end %>
+  <%= sidebar.footer do %>
+    <%= sidebar.account "Ada Lovelace", detail: "ada@example.com", avatar: lc_avatar("AL", size: :sm, class: "bg-primary-soft text-primary"), id: "my-component-account" do %>
+      <%= lc_menu_option "Settings", icon: "cog-6-tooth", href: "#settings" %>
+      <%= lc_menu_option "Sign out", icon: "arrow-right-start-on-rectangle", href: "#sign-out" %>
+    <% end %>
+  <% end %>
+<% end %>
+```
+
+Folded to a rail: https://ui.lostcoords.com/components/sidebar
+
+```erb
+<%= lc_sidebar cookie: "docs_sidebar_rail", state: "collapsed", class: "static h-96 rounded-2xl bg-muted" do |sidebar| %>
+  <%= sidebar.header do %>
+    <a href="#" class="text-subheading font-bold text-inherit no-underline" aria-label="Studio home">
+      <span class="lc-rail:hidden">Studio</span><span class="hidden lc-rail:inline" aria-hidden="true">S</span>
+    </a>
+  <% end %>
+  <%= sidebar.body do %>
+    <%= lc_nav_list label: "Main" do |nav| %>
+      <%= nav.link "Home", "#home", icon: "home", current: true, title: "Home" %>
+      <%= nav.link "Projects", "#projects", icon: "folder", title: "Projects" %>
+    <% end %>
+  <% end %>
+  <%= sidebar.footer do %>
+    <%= sidebar.account "Ada Lovelace", detail: "ada@example.com", avatar: lc_avatar("AL", size: :sm, class: "bg-primary-soft text-primary"), id: "my-component-account" do %>
+      <%= lc_menu_option "Sign out", icon: "arrow-right-start-on-rectangle", href: "#sign-out" %>
+    <% end %>
+  <% end %>
+<% end %>
+```
+
+## lc_tab_bar
+
+https://ui.lostcoords.com/components/tab_bar#lc_tab_bar
+
+```ruby
+lc_tab_bar(label:, fill: false, **attributes, &block)
+bar.link(label, url, current: false, count: nil, **attributes)
+```
+
+Tabs that share the row: https://ui.lostcoords.com/components/tab_bar
+
+```erb
+<%= lc_tab_bar label: "Inbox", fill: true, class: "w-full" do |bar| %>
+  <%= bar.link "All", "#all", current: true, count: 128 %>
+  <%= bar.link "Mentions", "#mentions", count: 12 %>
+  <%= bar.link "Replies", "#replies", count: 4 %>
+  <%= bar.link "Archived", "#archived" %>
+<% end %>
+```
+
+Scrolling when it overflows: https://ui.lostcoords.com/components/tab_bar
+
+```erb
+<%= lc_tab_bar label: "Timeline filter", class: "w-full max-w-sm" do |bar| %>
+  <%= bar.link "Everything", "#everything", count: 86 %>
+  <%= bar.link "Replies", "#replies", current: true, count: 31 %>
+  <%= bar.link "Messages", "#messages", count: 18 %>
+  <%= bar.link "Likes", "#likes", count: 25 %>
+  <%= bar.link "Bookmarks", "#bookmarks", count: 7 %>
+  <%= bar.link "Mentions", "#mentions", count: 5 %>
 <% end %>
 ```
 
@@ -2024,6 +2296,14 @@ Empty state: https://ui.lostcoords.com/components/empty_state
     <%= lc_text "Create a project to get started.", size: :small, tone: :muted %>
   <% end %>
   <%= lc_button "Create project" %>
+<% end %>
+```
+
+Title, text and icon on a card: https://ui.lostcoords.com/components/empty_state
+
+```erb
+<%= lc_empty_state title: "No drafts yet", text: "Drafts you start appear here until you post them.", icon: "pencil-square", card: true, class: "w-full" do %>
+  <%= lc_button "New draft", icon: "plus" %>
 <% end %>
 ```
 
@@ -2528,6 +2808,59 @@ Avatar groups: https://ui.lostcoords.com/components/avatar
 <% end %>
 ```
 
+Navigation and an account menu: https://ui.lostcoords.com/components/sidebar
+
+```erb
+<%= lc_sidebar cookie: "docs_sidebar", rail_below: false, class: "static h-128 rounded-2xl bg-muted" do |sidebar| %>
+  <%= sidebar.header do %>
+    <a href="#" class="text-subheading font-bold text-inherit no-underline" aria-label="Studio home">
+      <span class="lc-rail:hidden">Studio</span><span class="hidden lc-rail:inline" aria-hidden="true">S</span>
+    </a>
+  <% end %>
+  <%= sidebar.body do %>
+    <%= lc_nav_list label: "Main" do |nav| %>
+      <%= nav.group "Workspace" do %>
+        <%= nav.link "Home", "#home", icon: "home", current: true, title: "Home" %>
+        <%= nav.link "Projects", "#projects", icon: "folder", title: "Projects" %>
+        <%= nav.link "Messages", "#messages", icon: "chat-bubble-left-right", title: "Messages" %>
+      <% end %>
+      <%= nav.group "Account" do %>
+        <%= nav.link "Settings", "#settings", icon: "cog-6-tooth", title: "Settings" %>
+      <% end %>
+    <% end %>
+  <% end %>
+  <%= sidebar.footer do %>
+    <%= sidebar.account "Ada Lovelace", detail: "ada@example.com", avatar: lc_avatar("AL", size: :sm, class: "bg-primary-soft text-primary"), id: "my-component-account" do %>
+      <%= lc_menu_option "Settings", icon: "cog-6-tooth", href: "#settings" %>
+      <%= lc_menu_option "Sign out", icon: "arrow-right-start-on-rectangle", href: "#sign-out" %>
+    <% end %>
+  <% end %>
+<% end %>
+```
+
+Folded to a rail: https://ui.lostcoords.com/components/sidebar
+
+```erb
+<%= lc_sidebar cookie: "docs_sidebar_rail", state: "collapsed", class: "static h-96 rounded-2xl bg-muted" do |sidebar| %>
+  <%= sidebar.header do %>
+    <a href="#" class="text-subheading font-bold text-inherit no-underline" aria-label="Studio home">
+      <span class="lc-rail:hidden">Studio</span><span class="hidden lc-rail:inline" aria-hidden="true">S</span>
+    </a>
+  <% end %>
+  <%= sidebar.body do %>
+    <%= lc_nav_list label: "Main" do |nav| %>
+      <%= nav.link "Home", "#home", icon: "home", current: true, title: "Home" %>
+      <%= nav.link "Projects", "#projects", icon: "folder", title: "Projects" %>
+    <% end %>
+  <% end %>
+  <%= sidebar.footer do %>
+    <%= sidebar.account "Ada Lovelace", detail: "ada@example.com", avatar: lc_avatar("AL", size: :sm, class: "bg-primary-soft text-primary"), id: "my-component-account" do %>
+      <%= lc_menu_option "Sign out", icon: "arrow-right-start-on-rectangle", href: "#sign-out" %>
+    <% end %>
+  <% end %>
+<% end %>
+```
+
 ## lc_avatar_stack
 
 https://ui.lostcoords.com/components/avatar#lc_avatar_stack
@@ -2620,6 +2953,25 @@ Responsive containers: https://ui.lostcoords.com/components/foundations
       <% end %>
     </div>
   <% end %>
+<% end %>
+```
+
+Main column and aside: https://ui.lostcoords.com/components/foundations
+
+```erb
+<%= lc_split aside: :md do %>
+  <%= lc_card do %><%= lc_text "The main column takes the remaining width." %><% end %>
+  <%= lc_card as: :aside do %><%= lc_text "The aside is 20rem from lg and stacks below on smaller screens.", size: :small, tone: :muted %><% end %>
+<% end %>
+```
+
+Balanced columns: https://ui.lostcoords.com/components/foundations
+
+```erb
+<%= lc_columns count: 2 do %>
+  <%= lc_section title: "Profile" do %><%= lc_card do %><%= lc_text "Name, handle and avatar." %><% end %><% end %>
+  <%= lc_section title: "Notifications" do %><%= lc_card do %><%= lc_text "Email and push preferences, grouped so no card splits between columns." %><% end %><% end %>
+  <%= lc_section title: "Connections" do %><%= lc_card do %><%= lc_text "Linked accounts." %><% end %><% end %>
 <% end %>
 ```
 
@@ -2727,12 +3079,25 @@ Details: https://ui.lostcoords.com/components/description_list
 <% end %>
 ```
 
+Tiles: https://ui.lostcoords.com/components/stats
+
+```erb
+<%= lc_card padding: :sm, class: "w-full max-w-sm" do %>
+  <%= lc_stats layout: :grid, columns: 2 do %>
+    <%= lc_stat 24, label: "Replies from you", tone: :primary %>
+    <%= lc_stat 17, label: "Replies from them" %>
+    <%= lc_stat 9, label: "Likes" %>
+    <%= lc_stat 0, label: "Bookmarks", tone: :warning %>
+  <% end %>
+<% end %>
+```
+
 ## lc_empty_state
 
 https://ui.lostcoords.com/components/empty_state#lc_empty_state
 
 ```ruby
-lc_empty_state(**attributes, &block)
+lc_empty_state(title: nil, text: nil, icon: nil, level: 2, card: false, **attributes, &block)
 ```
 
 Empty state: https://ui.lostcoords.com/components/empty_state
@@ -2745,6 +3110,14 @@ Empty state: https://ui.lostcoords.com/components/empty_state
     <%= lc_text "Create a project to get started.", size: :small, tone: :muted %>
   <% end %>
   <%= lc_button "Create project" %>
+<% end %>
+```
+
+Title, text and icon on a card: https://ui.lostcoords.com/components/empty_state
+
+```erb
+<%= lc_empty_state title: "No drafts yet", text: "Drafts you start appear here until you post them.", icon: "pencil-square", card: true, class: "w-full" do %>
+  <%= lc_button "New draft", icon: "plus" %>
 <% end %>
 ```
 
@@ -3063,6 +3436,72 @@ Header: https://ui.lostcoords.com/components/app_header
 <% end %>
 ```
 
+## lc_sidebar
+
+https://ui.lostcoords.com/components/sidebar#lc_sidebar
+
+```ruby
+lc_sidebar(label: lc_t("lostcoords.ui.sidebar.label"), cookie: "lc_sidebar", rail_below: :xl, state: nil, **attributes, &block)
+sidebar.header(toggle: true, **attributes, &block)
+sidebar.toggle(**attributes)
+sidebar.body(**attributes, &block)
+sidebar.footer(**attributes, &block)
+sidebar.account(name, detail: nil, avatar: nil, id: "sidebar-account", align: :start, **attributes, &block)
+```
+
+Navigation and an account menu: https://ui.lostcoords.com/components/sidebar
+
+```erb
+<%= lc_sidebar cookie: "docs_sidebar", rail_below: false, class: "static h-128 rounded-2xl bg-muted" do |sidebar| %>
+  <%= sidebar.header do %>
+    <a href="#" class="text-subheading font-bold text-inherit no-underline" aria-label="Studio home">
+      <span class="lc-rail:hidden">Studio</span><span class="hidden lc-rail:inline" aria-hidden="true">S</span>
+    </a>
+  <% end %>
+  <%= sidebar.body do %>
+    <%= lc_nav_list label: "Main" do |nav| %>
+      <%= nav.group "Workspace" do %>
+        <%= nav.link "Home", "#home", icon: "home", current: true, title: "Home" %>
+        <%= nav.link "Projects", "#projects", icon: "folder", title: "Projects" %>
+        <%= nav.link "Messages", "#messages", icon: "chat-bubble-left-right", title: "Messages" %>
+      <% end %>
+      <%= nav.group "Account" do %>
+        <%= nav.link "Settings", "#settings", icon: "cog-6-tooth", title: "Settings" %>
+      <% end %>
+    <% end %>
+  <% end %>
+  <%= sidebar.footer do %>
+    <%= sidebar.account "Ada Lovelace", detail: "ada@example.com", avatar: lc_avatar("AL", size: :sm, class: "bg-primary-soft text-primary"), id: "my-component-account" do %>
+      <%= lc_menu_option "Settings", icon: "cog-6-tooth", href: "#settings" %>
+      <%= lc_menu_option "Sign out", icon: "arrow-right-start-on-rectangle", href: "#sign-out" %>
+    <% end %>
+  <% end %>
+<% end %>
+```
+
+Folded to a rail: https://ui.lostcoords.com/components/sidebar
+
+```erb
+<%= lc_sidebar cookie: "docs_sidebar_rail", state: "collapsed", class: "static h-96 rounded-2xl bg-muted" do |sidebar| %>
+  <%= sidebar.header do %>
+    <a href="#" class="text-subheading font-bold text-inherit no-underline" aria-label="Studio home">
+      <span class="lc-rail:hidden">Studio</span><span class="hidden lc-rail:inline" aria-hidden="true">S</span>
+    </a>
+  <% end %>
+  <%= sidebar.body do %>
+    <%= lc_nav_list label: "Main" do |nav| %>
+      <%= nav.link "Home", "#home", icon: "home", current: true, title: "Home" %>
+      <%= nav.link "Projects", "#projects", icon: "folder", title: "Projects" %>
+    <% end %>
+  <% end %>
+  <%= sidebar.footer do %>
+    <%= sidebar.account "Ada Lovelace", detail: "ada@example.com", avatar: lc_avatar("AL", size: :sm, class: "bg-primary-soft text-primary"), id: "my-component-account" do %>
+      <%= lc_menu_option "Sign out", icon: "arrow-right-start-on-rectangle", href: "#sign-out" %>
+    <% end %>
+  <% end %>
+<% end %>
+```
+
 ## lc_dock
 
 https://ui.lostcoords.com/components/dock#lc_dock
@@ -3254,6 +3693,15 @@ https://ui.lostcoords.com/components/textarea#lc_textarea
 lc_textarea(content = nil, name: nil, **attributes, &block)
 ```
 
+Counting a field: https://ui.lostcoords.com/components/char_counter
+
+```erb
+<%= lc_field label: "Post", id: "my-component-post", class: "w-full max-w-md" do |field| %>
+  <%= lc_textarea "Shipping a calmer sidebar today: it folds to icons and remembers your choice.", rows: 4, **field %>
+  <div class="flex justify-end"><%= lc_char_counter max: 100, for: "my-component-post" %></div>
+<% end %>
+```
+
 Mobile height options: https://ui.lostcoords.com/components/dialog
 
 ```erb
@@ -3266,6 +3714,23 @@ Textarea: https://ui.lostcoords.com/components/textarea
 
 ```erb
 <%= lc_textarea "A place for your notes.", name: "notes", rows: 4, class: "max-w-sm", aria: { label: "Notes" } %>
+```
+
+## lc_char_counter
+
+https://ui.lostcoords.com/components/char_counter#lc_char_counter
+
+```ruby
+lc_char_counter(max:, for: nil, warn: 20, count: nil, **attributes)
+```
+
+Counting a field: https://ui.lostcoords.com/components/char_counter
+
+```erb
+<%= lc_field label: "Post", id: "my-component-post", class: "w-full max-w-md" do |field| %>
+  <%= lc_textarea "Shipping a calmer sidebar today: it folds to icons and remembers your choice.", rows: 4, **field %>
+  <div class="flex justify-end"><%= lc_char_counter max: 100, for: "my-component-post" %></div>
+<% end %>
 ```
 
 ## lc_select
@@ -3316,6 +3781,15 @@ Validation feedback: https://ui.lostcoords.com/components/card
       <%= lc_input name: "project[name]", value: "Design system", **field %>
     <% end %>
   <% end %>
+<% end %>
+```
+
+Counting a field: https://ui.lostcoords.com/components/char_counter
+
+```erb
+<%= lc_field label: "Post", id: "my-component-post", class: "w-full max-w-md" do |field| %>
+  <%= lc_textarea "Shipping a calmer sidebar today: it folds to icons and remembers your choice.", rows: 4, **field %>
+  <div class="flex justify-end"><%= lc_char_counter max: 100, for: "my-component-post" %></div>
 <% end %>
 ```
 
@@ -3587,7 +4061,7 @@ Form values, native radios and reset: https://ui.lostcoords.com/components/toggl
 https://ui.lostcoords.com/components/toggle#lc_toggle
 
 ```ruby
-lc_toggle(label = nil, active: false, ghost: false, size: :md, href: nil, name: nil, value: nil, input: {}, **attributes, &block)
+lc_toggle(label = nil, active: false, ghost: false, size: :md, href: nil, name: nil, value: nil, input: {}, icon: nil, icon_only: false, tooltip: nil, **attributes, &block)
 ```
 
 Grouped controls: https://ui.lostcoords.com/components/field
@@ -3654,6 +4128,17 @@ Disabled and ghost: https://ui.lostcoords.com/components/toggle
 ```erb
 <%= lc_toggle "Unavailable", disabled: true %>
 <%= lc_toggle "Add filter", ghost: true %>
+```
+
+Icon-only toggles: https://ui.lostcoords.com/components/toggle
+
+```erb
+<%= lc_inline gap: :tight, role: "group", aria: { label: "Formatting" } do %>
+  <%= lc_toggle "Bold", icon: "bold", icon_only: true, tooltip: true, active: true %>
+  <%= lc_toggle "Italic", icon: "italic", icon_only: true, tooltip: true %>
+  <%= lc_toggle "Underline", icon: "underline", icon_only: true, tooltip: true, size: :sm %>
+  <%= lc_toggle "Pinned", icon: "bookmark" %>
+<% end %>
 ```
 
 Form values, native radios and reset: https://ui.lostcoords.com/components/toggle_group
@@ -4023,6 +4508,25 @@ Responsive containers: https://ui.lostcoords.com/components/foundations
 <% end %>
 ```
 
+Main column and aside: https://ui.lostcoords.com/components/foundations
+
+```erb
+<%= lc_split aside: :md do %>
+  <%= lc_card do %><%= lc_text "The main column takes the remaining width." %><% end %>
+  <%= lc_card as: :aside do %><%= lc_text "The aside is 20rem from lg and stacks below on smaller screens.", size: :small, tone: :muted %><% end %>
+<% end %>
+```
+
+Balanced columns: https://ui.lostcoords.com/components/foundations
+
+```erb
+<%= lc_columns count: 2 do %>
+  <%= lc_section title: "Profile" do %><%= lc_card do %><%= lc_text "Name, handle and avatar." %><% end %><% end %>
+  <%= lc_section title: "Notifications" do %><%= lc_card do %><%= lc_text "Email and push preferences, grouped so no card splits between columns." %><% end %><% end %>
+  <%= lc_section title: "Connections" do %><%= lc_card do %><%= lc_text "Linked accounts." %><% end %><% end %>
+<% end %>
+```
+
 Default: https://ui.lostcoords.com/components/card
 
 ```erb
@@ -4198,6 +4702,27 @@ Vertical, with manual activation: https://ui.lostcoords.com/components/tabs
   <% tabs.panel "Billing" do %>
     <%= lc_text "Plan, invoices and payment method.", tone: :muted %>
   <% end %>
+<% end %>
+```
+
+## lc_time
+
+https://ui.lostcoords.com/components/time#lc_time
+
+```ruby
+lc_time(time, now: Time.current, detail: nil, **attributes)
+```
+
+Relative and dated: https://ui.lostcoords.com/components/time
+
+```erb
+<% now = Time.utc(2026, 11, 4, 12) %>
+<%= lc_stack gap: :related, as: :ul, class: "m-0 list-none p-0 text-small" do %>
+  <li>Posted <%= lc_time now - 30.seconds, now: now %></li>
+  <li>Posted <%= lc_time now - 12.minutes, now: now %></li>
+  <li>Posted <%= lc_time now - 4.hours, now: now %></li>
+  <li>Posted <%= lc_time Time.utc(2026, 10, 28, 9, 30), now: now %></li>
+  <li>Posted <%= lc_time Time.utc(2025, 11, 4, 18), now: now, detail: "edited" %></li>
 <% end %>
 ```
 
@@ -4514,6 +5039,8 @@ Glass surfaces use lc_glass_class; lc_tw merges utility classes. Read https://gi
 - `lc_stack_class(gap: :content, extra: nil)`
 - `lc_inline_class(gap: :related, extra: nil)`
 - `lc_container_class(size: :page, extra: nil)`
+- `lc_split_class(aside: :md, extra: nil)`
+- `lc_columns_class(count: 2, extra: nil)`
 - `lc_section_header_class(extra: nil)`
 - `lc_popover_class(align: :end, extra: nil)`
 - `lc_menu_popover_class(align: :end, extra: nil)`

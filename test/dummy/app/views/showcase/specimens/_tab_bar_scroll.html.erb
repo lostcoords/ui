@@ -1,0 +1,8 @@
+<%= lc_tab_bar label: "Timeline filter", class: "w-full max-w-sm" do |bar| %>
+  <%= bar.link "Everything", "#everything", count: 86 %>
+  <%= bar.link "Replies", "#replies", current: true, count: 31 %>
+  <%= bar.link "Messages", "#messages", count: 18 %>
+  <%= bar.link "Likes", "#likes", count: 25 %>
+  <%= bar.link "Bookmarks", "#bookmarks", count: 7 %>
+  <%= bar.link "Mentions", "#mentions", count: 5 %>
+<% end %>

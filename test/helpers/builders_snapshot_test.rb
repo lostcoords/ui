@@ -129,7 +129,11 @@ module Lostcoords::Ui
       "lc_choice_label_class(card: true)" => "lc-choice min-w-0 items-start gap-related text-body text-foreground cursor-pointer has-disabled:cursor-not-allowed has-disabled:opacity-60 flex w-full rounded-2xl lc-squircle border border-transparent bg-tile p-content transition-[background-color,border-color] duration-(--lc-motion-quick) ease-(--lc-ease-out) hover:bg-accent has-checked:border-primary has-checked:bg-primary-soft has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-(--ring,color-mix(in_oklab,var(--primary)_50%,transparent))",
       "lc_checkbox_class" => "lc-checkbox rounded-sm shrink-0 size-4.5 m-0 cursor-pointer accent-primary disabled:cursor-not-allowed disabled:opacity-40",
       "lc_radio_class" => "lc-radio rounded-full shrink-0 size-4.5 m-0 cursor-pointer accent-primary disabled:cursor-not-allowed disabled:opacity-40",
-      "lc_switch_class" => "lc-switch shrink-0 m-0 cursor-pointer disabled:cursor-not-allowed disabled:opacity-40"
+      "lc_switch_class" => "lc-switch shrink-0 m-0 cursor-pointer disabled:cursor-not-allowed disabled:opacity-40",
+      "lc_split_class" => "grid min-w-0 items-start gap-section lg:grid-cols-[minmax(0,1fr)_20rem]",
+      "lc_split_class(aside: :sm)" => "grid min-w-0 items-start gap-section lg:grid-cols-[minmax(0,1fr)_16rem]",
+      "lc_columns_class" => "min-w-0 gap-section *:break-inside-avoid *:not-last:mb-section lg:columns-2",
+      "lc_columns_class(count: 3)" => "min-w-0 gap-section *:break-inside-avoid *:not-last:mb-section md:columns-2 xl:columns-3"
     }.freeze
 
     test "every builder returns its pinned classes from the engine's helpers alone" do

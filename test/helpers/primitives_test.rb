@@ -271,6 +271,21 @@ module Lostcoords::Ui
       end
     end
 
+    test "an empty state lays out an icon, a title and text before its block" do
+      state = fragment(@view.lc_empty_state(title: "No drafts", text: "Start one.", icon: "inbox", level: 3) { @view.lc_button("New draft") }).at_css("[data-slot=empty-state]")
+      assert_equal %w[span div button], state.element_children.map(&:name)
+      assert state.at_css("[data-slot=empty-state-icon] svg")
+      assert_equal "No drafts", state.at_css("h3[data-slot=empty-state-title]").text
+      assert_equal "Start one.", state.at_css("p[data-slot=empty-state-description]").text
+
+      title_only = fragment(@view.lc_empty_state(title: "Nothing here")).at_css("[data-slot=empty-state]")
+      assert_equal "Nothing here", title_only.at_css("h2").text
+      assert_nil title_only.at_css("[data-slot=empty-state-icon]")
+
+      card = fragment(@view.lc_empty_state(title: "Empty", card: true, id: "empty")).at_css("[data-slot=card]")
+      assert card.at_css("> #empty[data-slot=empty-state]")
+    end
+
     test "linked cards use native anchors with captured and escaped content" do
       html = @view.lc_card(href: '/guide?query="cards"&sort=new', target: "_blank", rel: "noopener", data: { turbo_frame: "_top" }) { @view.tag.h2("<Guide>") }
       card = fragment(html).at_css("a")

@@ -1,0 +1,25 @@
+<%= lc_sidebar cookie: "docs_sidebar", rail_below: false, class: "static h-128 rounded-2xl bg-muted" do |sidebar| %>
+  <%= sidebar.header do %>
+    <a href="#" class="text-subheading font-bold text-inherit no-underline" aria-label="Studio home">
+      <span class="lc-rail:hidden">Studio</span><span class="hidden lc-rail:inline" aria-hidden="true">S</span>
+    </a>
+  <% end %>
+  <%= sidebar.body do %>
+    <%= lc_nav_list label: "Main" do |nav| %>
+      <%= nav.group "Workspace" do %>
+        <%= nav.link "Home", "#home", icon: "home", current: true, title: "Home" %>
+        <%= nav.link "Projects", "#projects", icon: "folder", title: "Projects" %>
+        <%= nav.link "Messages", "#messages", icon: "chat-bubble-left-right", title: "Messages" %>
+      <% end %>
+      <%= nav.group "Account" do %>
+        <%= nav.link "Settings", "#settings", icon: "cog-6-tooth", title: "Settings" %>
+      <% end %>
+    <% end %>
+  <% end %>
+  <%= sidebar.footer do %>
+    <%= sidebar.account "Ada Lovelace", detail: "ada@example.com", avatar: lc_avatar("AL", size: :sm, class: "bg-primary-soft text-primary"), id: "EXAMPLE_ID-account" do %>
+      <%= lc_menu_option "Settings", icon: "cog-6-tooth", href: "#settings" %>
+      <%= lc_menu_option "Sign out", icon: "arrow-right-start-on-rectangle", href: "#sign-out" %>
+    <% end %>
+  <% end %>
+<% end %>

@@ -1,0 +1,6 @@
+<%= lc_tab_bar label: "Inbox", fill: true, class: "w-full" do |bar| %>
+  <%= bar.link "All", "#all", current: true, count: 128 %>
+  <%= bar.link "Mentions", "#mentions", count: 12 %>
+  <%= bar.link "Replies", "#replies", count: 4 %>
+  <%= bar.link "Archived", "#archived" %>
+<% end %>

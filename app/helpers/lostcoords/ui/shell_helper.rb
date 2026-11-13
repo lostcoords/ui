@@ -1,5 +1,5 @@
 module Lostcoords::Ui
-  # Page chrome: the sticky application header, the documentation layout and the phone dock.
+  # Page chrome: the sticky application header, the app sidebar, the documentation layout and the phone dock.
   module ShellHelper
     DOCS_SHELL = "lc-docs-shell mx-auto flex w-full max-w-360 gap-10 px-5 sm:px-8 lg:px-10"
     DOCS_SHELL_ASIDE = "sticky top-(--lc-sticky-offset,0rem) hidden h-[calc(100dvh-var(--lc-sticky-offset,0rem))] shrink-0 overflow-y-auto"
@@ -46,6 +46,37 @@ module Lostcoords::Ui
           safe_join([ tag.span(class: lc_glass_class(thick: true, extra: "lc-app-header__glass pointer-events-none absolute inset-0 -z-(--lc-z-raised)"), aria: { hidden: true }), content ])
         end
       end
+    end
+
+    SIDEBAR = "lc-sidebar sticky top-0 flex h-dvh w-(--lc-sidebar-width,15rem) shrink-0 flex-col gap-content overflow-y-auto px-related py-inset " \
+      "lc-rail:w-(--lc-sidebar-rail-width,4rem)"
+    SIDEBAR_RAIL_BELOW = %i[md lg xl 2xl].freeze
+    SIDEBAR_STATES = %w[collapsed expanded].freeze
+
+    # A sticky, full-height app sidebar that folds to an icon rail. Yields a builder: sidebar.header
+    # (a wordmark and the toggle), sidebar.body (usually lc_nav_list), sidebar.footer and
+    # sidebar.account. The toggle stores the choice in the cookie named cookie:, which the helper
+    # reads back, so the server renders the next page the same way; state: "collapsed" or "expanded"
+    # overrides it. Below rail_below: (a breakpoint, or false for never) it starts as a rail unless
+    # the reader expanded it. Style your own content for the rail with the lc-rail: variant.
+    def lc_sidebar(label: lc_t("lostcoords.ui.sidebar.label"), cookie: "lc_sidebar", rail_below: :xl, state: nil, **attributes, &block)
+      lc_label!(label, :label)
+      lc_label!(cookie, :cookie)
+      raise ArgumentError, "lc_sidebar needs a block" unless block
+
+      rail_below = lc_option!(:rail_below, rail_below, SIDEBAR_RAIL_BELOW) unless rail_below == false
+      # cookies is a controller helper_method that respond_to? can't see from the view, so read the request's.
+      state = (state || (request.cookies[cookie] if respond_to?(:request) && request)).to_s
+      state = nil unless SIDEBAR_STATES.include?(state)
+      collapse_label = lc_t("lostcoords.ui.sidebar.collapse")
+      expand_label = lc_t("lostcoords.ui.sidebar.expand")
+
+      content = capture(Parts::Sidebar.new(self, state == "collapsed" ? expand_label : collapse_label, state != "collapsed"), &block)
+      data = { slot: "sidebar", controller: "lc-sidebar lc-scroll-keeper", rail_below: rail_below || nil,
+        collapsed: (true if state == "collapsed"), expanded: (true if state == "expanded"),
+        lc_sidebar_cookie_value: cookie, lc_sidebar_collapse_label_value: collapse_label, lc_sidebar_expand_label_value: expand_label,
+        lc_scroll_keeper_key_value: cookie }.compact
+      tag.aside(content, **lc_attributes({ class: SIDEBAR, aria: { label: label }, data: data }, attributes))
     end
 
     # A floating bar at the bottom of a phone screen: dock.nav for primary destinations and dock.menu

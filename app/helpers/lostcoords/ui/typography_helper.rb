@@ -42,6 +42,28 @@ module Lostcoords::Ui
       tag.public_send(lc_option!(:as, as, TEXT_ELEMENTS), content, **lc_attributes({ class: lc_text_class(size: size, tone: tone, trim: trim) }, attributes), &block)
     end
 
+    # A <time> with the short text X shows: "now", "12m" and "4h" within a day, then "4 Nov", and
+    # "4 Nov 2025" in another year; a Date shows its day. The full date and time is its title, and
+    # detail: adds to it. now: is the moment to count from. Texts and formats are lostcoords.ui.time.*.
+    def lc_time(time, now: Time.current, detail: nil, **attributes)
+      raise ArgumentError, "lc_time needs a Time, DateTime or Date" unless time.is_a?(Time) || time.is_a?(Date)
+
+      date = time.instance_of?(Date)
+      time = time.in_time_zone
+      elapsed = now - time
+      text = if date || elapsed.negative? || elapsed >= 1.day
+        lc_localize_time(time, time.year == now.year ? :date : :date_with_year)
+      elsif elapsed < 1.minute
+        lc_t("lostcoords.ui.time.now")
+      elsif elapsed < 1.hour
+        lc_t("lostcoords.ui.time.minutes", count: (elapsed / 1.minute).floor)
+      else
+        lc_t("lostcoords.ui.time.hours", count: (elapsed / 1.hour).floor)
+      end
+      title = [ lc_localize_time(time, date ? :date_with_year : :full), detail.presence ].compact.join(" · ")
+      tag.time(text, **lc_attributes({ datetime: (date ? time.to_date.iso8601 : time.iso8601), title: title, data: { slot: "time" } }, attributes))
+    end
+
     # A key hint, such as lc_kbd("mod+k"). "mod" renders Ctrl and reads ⌘ on Apple platforms once JS runs.
     def lc_kbd(keys, **attributes)
       lc_label!(keys, :keys)
@@ -63,5 +85,13 @@ module Lostcoords::Ui
       data = data.to_h.symbolize_keys
       data.merge(controller: [ data[:controller], "lc-shortcut" ].compact.join(" "), lc_shortcut_keys_value: keys)
     end
+
+    private
+      # Month names come from the host's locale, as rails-i18n provides them; without them, English ones.
+      def lc_localize_time(time, format)
+        pattern = lc_t("lostcoords.ui.time.formats.#{format}")
+        named = I18n.exists?(:"date.month_names") && I18n.exists?(:"date.abbr_month_names")
+        named ? I18n.l(time, format: pattern) : time.strftime(pattern)
+      end
   end
 end

@@ -1,0 +1,4 @@
+<%= lc_split aside: :md do %>
+  <%= lc_card do %><%= lc_text "The main column takes the remaining width." %><% end %>
+  <%= lc_card as: :aside do %><%= lc_text "The aside is 20rem from lg and stacks below on smaller screens.", size: :small, tone: :muted %><% end %>
+<% end %>

@@ -1,0 +1,8 @@
+<%= lc_card padding: :sm, class: "w-full max-w-sm" do %>
+  <%= lc_stats layout: :grid, columns: 2 do %>
+    <%= lc_stat 24, label: "Replies from you", tone: :primary %>
+    <%= lc_stat 17, label: "Replies from them" %>
+    <%= lc_stat 9, label: "Likes" %>
+    <%= lc_stat 0, label: "Bookmarks", tone: :warning %>
+  <% end %>
+<% end %>

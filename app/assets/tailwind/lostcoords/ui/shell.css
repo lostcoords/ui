@@ -4,23 +4,79 @@
   --lc-sticky-offset: 5rem;
 }
 
+/* lc_sidebar folds to an icon rail when the reader collapsed it, or below its
+   rail_below breakpoint unless they expanded it. lc-rail: styles anything in it
+   for the rail, as in lc-rail:hidden. */
+@custom-variant lc-rail {
+  &:where(.lc-sidebar[data-collapsed], .lc-sidebar[data-collapsed] *) {
+    @slot;
+  }
+  @media (width < 48rem) {
+    &:where(.lc-sidebar[data-rail-below="md"]:not([data-expanded]), .lc-sidebar[data-rail-below="md"]:not([data-expanded]) *) {
+      @slot;
+    }
+  }
+  @media (width < 64rem) {
+    &:where(.lc-sidebar[data-rail-below="lg"]:not([data-expanded]), .lc-sidebar[data-rail-below="lg"]:not([data-expanded]) *) {
+      @slot;
+    }
+  }
+  @media (width < 80rem) {
+    &:where(.lc-sidebar[data-rail-below="xl"]:not([data-expanded]), .lc-sidebar[data-rail-below="xl"]:not([data-expanded]) *) {
+      @slot;
+    }
+  }
+  @media (width < 96rem) {
+    &:where(.lc-sidebar[data-rail-below="2xl"]:not([data-expanded]), .lc-sidebar[data-rail-below="2xl"]:not([data-expanded]) *) {
+      @slot;
+    }
+  }
+}
+
 @layer components {
-  .lc-app-header__glass {
-    opacity: 0;
-    transition: opacity 300ms ease;
-  }
-
-  .lc-app-header[data-scrolled] .lc-app-header__glass {
-    opacity: 1;
-  }
-
   /* The sidebar scrolls on its own without a visible scrollbar. */
-  .lc-docs-shell__sidebar {
+  .lc-sidebar {
     scrollbar-width: none;
   }
 
-  .lc-docs-shell__sidebar::-webkit-scrollbar {
+  .lc-sidebar::-webkit-scrollbar {
     display: none;
+  }
+
+  /* A bar at the sidebar's edge marks the current link. Set --lc-sidebar-indicator
+     to any background, such as a gradient. On the rail, links center their icons
+     and their labels and group titles stay for screen readers only. */
+  .lc-sidebar [data-slot="nav-link"] {
+    position: relative;
+
+    @apply lc-rail:justify-center;
+  }
+
+  .lc-sidebar [data-slot="nav-link"][aria-current="page"]::before {
+    content: "";
+    position: absolute;
+    inset-block: calc(var(--spacing) * 2);
+    inset-inline-start: calc(var(--spacing-related) * -1);
+    width: calc(var(--spacing) * 0.75);
+    border-radius: var(--radius-pill);
+    background: var(--lc-sidebar-indicator, var(--primary));
+  }
+
+  .lc-sidebar :is([data-slot="nav-group-title"], [data-slot="nav-link"] > span) {
+    @apply lc-rail:sr-only;
+  }
+
+  /* The toggle's chevrons point the way the sidebar will move. */
+  .lc-sidebar__toggle svg {
+    transition: rotate var(--lc-motion-control) var(--lc-ease-out);
+
+    @apply lc-rail:rotate-180;
+  }
+
+  .lc-sidebar__toggle:dir(rtl) svg {
+    rotate: 180deg;
+
+    @apply lc-rail:rotate-0;
   }
 
   .lc-dock {
@@ -132,6 +188,7 @@
 
   @media (prefers-reduced-motion: reduce) {
     .lc-app-header__glass,
+    .lc-sidebar__toggle svg,
     .lc-dock__trigger svg,
     .lc-dock__scrim,
     .lc-dock__action,

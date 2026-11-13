@@ -195,6 +195,35 @@ module Lostcoords::Ui
       end
     end
 
+    class TabBar < Base
+      LINK = "flex justify-center px-content text-small text-muted-foreground no-underline transition-colors duration-(--lc-motion-quick) " \
+        "hover:bg-accent hover:text-foreground aria-[current=page]:font-semibold aria-[current=page]:text-foreground"
+
+      def initialize(view, fill)
+        super(view)
+        @fill = fill
+      end
+
+      # current: marks the tab of the page the reader is on with aria-current="page". count: shows a
+      # muted number after the label; nil shows none.
+      def link(label, url, current: false, count: nil, **attributes)
+        view.send(:lc_label!, label, :label)
+        raise ArgumentError, "tab bar link needs a URL" if url.blank?
+
+        view.tag.li(class: (@fill ? "min-w-fit flex-1" : "shrink-0"), data: { slot: "tab-bar-item" }) do
+          view.link_to(url, **merge({ class: LINK, aria: { current: ("page" if current) }, data: { slot: "tab-bar-link" } }, attributes)) do
+            view.tag.span(class: "relative flex items-center gap-tight py-content whitespace-nowrap") do
+              view.safe_join([
+                label,
+                (view.tag.span(count, class: "font-normal tabular-nums text-muted-foreground", data: { slot: "tab-bar-count" }) unless count.nil?),
+                (view.tag.span(class: "absolute inset-x-0 bottom-0 h-1 rounded-pill bg-(--lc-tab-bar-indicator,var(--primary))", aria: { hidden: true }, data: { slot: "tab-bar-indicator" }) if current)
+              ].compact)
+            end
+          end
+        end
+      end
+    end
+
     class Toc < Base
       LINK = "relative block py-tight ps-content pe-tight text-small text-muted-foreground no-underline transition-colors " \
         "duration-(--lc-motion-quick) hover:text-foreground aria-[current=location]:font-medium aria-[current=location]:text-foreground"
@@ -230,6 +259,63 @@ module Lostcoords::Ui
       # Controls at the end of the bar, such as search, a theme switch or an account menu.
       def actions(**attributes, &block)
         part(:div, "app-header-actions", "ms-auto flex shrink-0 items-center gap-related", attributes, &block)
+      end
+    end
+
+    class Sidebar < Base
+      ACCOUNT_TRIGGER = "flex w-full min-w-0 cursor-pointer items-center gap-related rounded-xl lc-squircle px-heading py-related text-start " \
+        "transition-colors duration-(--lc-motion-quick) hover:bg-accent aria-expanded:bg-accent lc-rail:justify-center lc-rail:px-0"
+
+      def initialize(view, toggle_label, expanded)
+        super(view)
+        @toggle_label = toggle_label
+        @expanded = expanded
+      end
+
+      # The top row: the block, usually a wordmark linking home, then the toggle. On the rail the row
+      # stacks; show a short mark there with the lc-rail: variant. toggle: false leaves the toggle out.
+      def header(toggle: true, **attributes, &block)
+        part(:div, "sidebar-header", "flex items-center justify-between gap-related ps-heading lc-rail:flex-col lc-rail:ps-0", attributes) do
+          view.safe_join([ (view.capture(&block) if block), (self.toggle if toggle) ].compact)
+        end
+      end
+
+      # The button that folds the sidebar to a rail and back. Its label, title and aria-expanded follow the state.
+      def toggle(**attributes)
+        view.lc_icon_button(@toggle_label, icon: "chevron-double-left", size: :sm,
+          **merge({ class: "lc-sidebar__toggle", title: @toggle_label, aria: { expanded: @expanded },
+            data: { slot: "sidebar-toggle", action: "lc-sidebar#toggle", lc_sidebar_target: "toggle" } }, attributes))
+      end
+
+      # The growing middle, usually an lc_nav_list. On the rail its group titles and link labels stay
+      # for screen readers only and the links center their icons; give each link a title:.
+      def body(**attributes, &block)
+        part(:div, "sidebar-body", "flex min-h-0 flex-1 flex-col gap-content", attributes, &block)
+      end
+
+      def footer(**attributes, &block)
+        part(:div, "sidebar-footer", "flex min-w-0 flex-col gap-related", attributes, &block)
+      end
+
+      # A full-width row that opens an lc_menu of the block's lc_menu_option items: avatar:, the name and
+      # a detail line, such as an email. On the rail only the avatar shows. Attributes go to the row.
+      def account(name, detail: nil, avatar: nil, id: "sidebar-account", align: :start, **attributes, &block)
+        view.send(:lc_label!, name, :name)
+        raise ArgumentError, "sidebar account needs a block of menu options" unless block
+
+        text = view.tag.span(class: "min-w-0 grow lc-rail:sr-only", data: { slot: "sidebar-account-text" }) do
+          view.safe_join([
+            view.tag.span(name, class: "block truncate text-label"),
+            (view.tag.span(detail, class: "block truncate text-caption text-muted-foreground") if detail.present?)
+          ].compact)
+        end
+        ellipsis = view.lc_icon("ellipsis-horizontal", options: { class: "size-4 shrink-0 text-muted-foreground lc-rail:hidden", "aria-hidden": true })
+        view.lc_menu(id: id, align: align, wrapper_attributes: { class: "flex w-full", data: { slot: "sidebar-account" } }) do |menu|
+          menu.trigger(**merge({ class: ACCOUNT_TRIGGER, title: name, data: { slot: "sidebar-account-trigger" } }, attributes)) do |wiring|
+            view.tag.button(view.safe_join([ avatar, text, ellipsis ].compact), type: "button", **wiring)
+          end
+          view.capture(&block)
+        end
       end
     end
 

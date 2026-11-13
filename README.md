@@ -57,8 +57,8 @@ app's theme and keep your Tailwind theme declarations after the imports.
 `core.css` holds the tokens, buttons, badges, avatars, cards, alerts, form controls, choices,
 toggles, layout, typography and navigation. The opt-in entries are `dialog` (with the phone sheet),
 `menu` (menus and popovers), `toast`, `search`, `tooltip`, `collapsible`, `code-block`,
-`emoji-picker`, `table`, `prose` and `shell` (`lc_app_header`, `lc_docs_shell` and `lc_dock`; the dock's action
-menu also needs `menu`). A component whose entry is missing renders unstyled.
+`emoji-picker`, `table`, `prose` and `shell` (`lc_app_header`, `lc_sidebar`, `lc_docs_shell` and `lc_dock`; the
+dock's action menu and the sidebar's account menu also need `menu`). A component whose entry is missing renders unstyled.
 
 The gem's stylesheets write into the `components` and `modules` layers, so the host declares that layer order.
 The theme defines the `dark:` variant with `html[data-theme="dark"]`, and with `html[data-theme="system"]` under an OS dark preference. Each entry carries its own `@source` lines, so Tailwind
@@ -356,6 +356,8 @@ Badge, icon badge, Alert and Toast share `neutral`, `primary`, `success`, `warni
 `lc_toggle` renders a button that flips its own `aria-pressed`; set `aria-pressed` or `aria-expanded` yourself
 and it leaves the state to your controller. `href:` renders a link marked `aria-current` when active, and `name:`
 with `value:` a label around a visually hidden native radio, styled by `:checked`.
+`icon:` adds a leading icon, and `icon_only: true` makes a square toggle of just that icon whose label stays as its
+accessible name; `tooltip: true` shows the label on hover and focus, as on `lc_icon_button`.
 `lc_toggle_group` with `lc_toggle_group_item` holds mutually exclusive choices, and the group decides what its items are.
 With `name:` they are native radios in labels, which bring their own arrows, submitted value and reset; items take
 `value:` and `checked:`, and the group's `value:` checks the matching item. With `as: :nav` they are links in a
@@ -373,7 +375,36 @@ given another kind's arguments raises. `variant: :pills` lays any of them out as
   <%= lc_toggle_group_item "Annual", value: "annual" %>
 <% end %>
 <%= lc_toggle "Food", aria: { pressed: false }, data: { value: "food" } %>
+<%= lc_toggle "Bold", icon: "bold", icon_only: true, tooltip: true %>
 ```
+
+`lc_empty_state(title:, text:, icon:)` lays out the usual empty state: a round icon badge, a heading
+(`level:`, 2 by default), a line of muted text, then the block, such as an action. `card: true` puts it on a card.
+Without those options the block is the whole content, as before.
+
+```erb
+<%= lc_empty_state title: "No drafts yet", text: "Drafts appear here until you post them.", icon: "pencil-square", card: true do %>
+  <%= lc_button_link_to "New draft", new_draft_path, icon: "plus" %>
+<% end %>
+```
+
+`lc_stats` shows headline numbers as a description list of `lc_stat` items: the value in bold tabular figures
+and its label in muted text. `layout: :inline` (the default) runs them along a line; `layout: :grid` gives each a
+tile, in `columns:` 2, 3 or 4, or as many as fit. `tone:` colours a value with a status tone, and a block replaces
+the value, such as a link around it.
+
+```erb
+<%= lc_stats do %>
+  <%= lc_stat number_with_delimiter(@replies), label: "replies sent", tone: :primary %>
+  <%= lc_stat(label: "people") { link_to @people, people_path } %>
+<% end %>
+<%= lc_stats layout: :grid, columns: 2 do %>…<% end %>
+```
+
+`lc_time(time)` renders a `<time>` with the short text X shows: "now", "12m" and "4h" within a day, then
+"4 Nov", and "4 Nov 2025" in another year. The full date and time is its title, and `detail:` adds to it. The
+texts and date formats are translations under `lostcoords.ui.time`; month names come from the host's
+`date.month_names`, as rails-i18n provides them, and fall back to English. `now:` sets the moment to count from.
 
 `lc_collapsible` expands content through a native `<details>` element. `lc_alert` renders persistent inline feedback;
 `lc_toast` adds timed dismissal.
@@ -485,6 +516,21 @@ attribute. `form.field … size: :sm` (or `lc_field size: :sm`) is the compact f
 with a caption label. Pass `builder: Lostcoords::Ui::FormBuilder` to `form_with` directly, or call `lc_field`
 with `error: record.errors.full_messages_for(:name)` when you keep your own builder.
 
+`lc_char_counter(max:)` is the ring X shows under a post: it fills as a field nears `max:` characters, hides
+while the field is empty, turns to the warning tone with the characters left once `warn:` (20) or fewer remain,
+and to the destructive tone with a negative number past the limit. Its accessible name reads "120 of 280
+characters". It counts the field whose id is `for:`, or the nearest field around it. To count another way,
+such as X's weighted characters, set `data-lc-char-counter-count-value` or send it an event whose
+`detail.count` is the count, as in `data: { action: "composer:count@window->lc-char-counter#update" }`; `count:` renders a count
+before JavaScript runs.
+
+```erb
+<%= lc_field label: "Post", id: "post" do |field| %>
+  <%= lc_textarea name: "post[text]", rows: 4, **field %>
+  <%= lc_char_counter max: 280, for: "post" %>
+<% end %>
+```
+
 `lc_checkbox`, `lc_radio` and `lc_switch` render native inputs with a label and optional hint.
 Checkboxes and switches submit an unchecked value like Rails' `check_box`; pass `unchecked_value: nil`
 to omit it. A `nil` label renders the bare input, for a row selector the row labels; give it
@@ -516,6 +562,19 @@ Text that labels something other than one control, such as a list, uses `lc_text
   <%= list.item("Plan") { lc_badge @project.plan } %>
 <% end %>
 ```
+
+```erb
+<%= lc_tab_bar label: "Drafts", fill: true do |bar| %>
+  <%= bar.link "Open", drafts_path, current: true, count: @open_count %>
+  <%= bar.link "Posted", drafts_path(status: :posted), count: @posted_count %>
+<% end %>
+```
+
+`lc_tab_bar` is a row of links styled as underlined tabs, for the views of a page that each have a URL; use
+`lc_tabs` when the panels live on one page. The current tab carries `aria-current="page"`, bold text and a
+rounded underline in `--lc-tab-bar-indicator` (the primary color by default). `count:` adds a muted number after
+the label, and `fill: true` stretches the tabs to share the row. A row too long for its container scrolls
+sideways and fades at the edge it continues past.
 
 Tabs follow the ARIA tabs pattern with arrow key, Home and End navigation, and dispatch
 `lc-tabs:change`. `orientation: :vertical` stacks the tabs beside their panels and moves with Arrow Up
@@ -585,6 +644,41 @@ the reader has scrolled to. This documentation site is built with them.
   <%= lc_section title: "Usage", id: "usage", anchor: true do %>…<% end %>
 <% end %>
 ```
+
+`lc_sidebar` is a sticky, full-height app sidebar that folds to an icon rail. Its toggle stores the choice in a
+cookie (`cookie:`, `lc_sidebar` by default) that the helper reads back, so the server renders the next page the
+same way; `state: "collapsed"` or `"expanded"` overrides it. Below `rail_below:` (`:xl` by default; `:md`, `:lg`,
+`:2xl`, or `false` for never) it starts as a rail unless the reader expanded it. On the rail, `lc_nav_list` group
+titles and link labels stay for screen readers only and links center their icons, so give each link a `title:`.
+The current link gets a bar at the sidebar's edge in `--lc-sidebar-indicator` (any background, such as a
+gradient). `--lc-sidebar-width` (15rem) and `--lc-sidebar-rail-width` (4rem) set the widths, and the `lc-rail:`
+variant styles your own content on the rail, as in `lc-rail:hidden`. It dispatches `lc-sidebar:toggle` with
+`{ collapsed }`.
+
+```erb
+<%= lc_sidebar cookie: "sidebar" do |sidebar| %>
+  <%= sidebar.header do %>
+    <%= link_to root_path, aria: { label: "Acme home" } do %>
+      <span class="lc-rail:hidden">Acme</span><span class="hidden lc-rail:inline" aria-hidden="true">A</span>
+    <% end %>
+  <% end %>
+  <%= sidebar.body do %>
+    <%= lc_nav_list label: "Main", indicator: true do |nav| %>
+      <%= nav.link "Inbox", inbox_path, icon: "inbox", title: "Inbox", current: true %>
+    <% end %>
+  <% end %>
+  <%= sidebar.footer do %>
+    <%= sidebar.account current_user.name, detail: current_user.email, avatar: lc_avatar(current_user.initials, size: :sm) do %>
+      <%= lc_menu_option "Settings", icon: "cog-6-tooth", href: settings_path %>
+      <%= lc_menu_option "Sign out", href: session_path, method: :delete %>
+    <% end %>
+  <% end %>
+<% end %>
+```
+
+`sidebar.header` renders the toggle after its block (`toggle: false` leaves it out; `sidebar.toggle` renders it
+anywhere). `sidebar.account` is a full-width row, the avatar, name, a detail line and an ellipsis, that opens an
+`lc_menu` of the block's options; on the rail only the avatar shows.
 
 For rendered Markdown, such as a Kiln `.md` view, pass the HTML to both: `lc_prose(anchors: true) { html }`
 links its headings, and `lc_toc(headings: html)` lists them. On phones, `lc_dock` floats `dock.nav` and a
@@ -873,7 +967,10 @@ styles a kicker or footer column label; under `lang="ja"` it keeps natural case 
 Stacks and inline groups take the spacing names from [Foundations](#foundations). `lc_stack`, `lc_inline`,
 `lc_text` and `lc_card` take `as:` to render a meaningful element, such as `lc_stack(as: :ul)`, `lc_text(as: :span)` or
 `lc_card(as: :section)`. `lc_section` leaves
-`heading` below its title and `content` between blocks. `lc_section_header` is that heading row on its own,
+`heading` below its title and `content` between blocks. `lc_split` lays out a main column and an aside: one
+column on small screens, and from `lg` a flexible main beside an aside of `aside: :sm` (16rem), `:md` (20rem)
+or `:lg` (24rem). `lc_columns(count: 2)` flows groups, such as settings sections, into balanced columns from
+`lg` (`count: 3` adds a third from `xl`) without breaking a group across two. `lc_section_header` is that heading row on its own,
 for a heading that needs more than a title, such as a lede under it. `lc_container` provides `page`, `reading` and
 `form` widths; only the page container adds gutters. Japanese headings inherit `lang="ja"` and use
 natural letter spacing.
@@ -956,6 +1053,8 @@ Generated by `bin/rails lostcoords:ui:builders`; `bin/lint` checks this list aga
 - `lc_stack_class(gap: :content, extra: nil)` (LayoutHelper)
 - `lc_inline_class(gap: :related, extra: nil)` (LayoutHelper)
 - `lc_container_class(size: :page, extra: nil)` (LayoutHelper)
+- `lc_split_class(aside: :md, extra: nil)` (LayoutHelper)
+- `lc_columns_class(count: 2, extra: nil)` (LayoutHelper)
 - `lc_section_header_class(extra: nil)` (LayoutHelper)
 - `lc_popover_class(align: :end, extra: nil)` (MenuHelper)
 - `lc_menu_popover_class(align: :end, extra: nil)` (MenuHelper)

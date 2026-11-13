@@ -1,4 +1,5 @@
 import AppHeader from "lostcoords/ui/controllers/lc_app_header_controller"
+import CharCounter from "lostcoords/ui/controllers/lc_char_counter_controller"
 import CodeBlock from "lostcoords/ui/controllers/lc_code_block_controller"
 import Collapsible from "lostcoords/ui/controllers/lc_collapsible_controller"
 import Copy from "lostcoords/ui/controllers/lc_copy_controller"
@@ -14,6 +15,7 @@ import Search from "lostcoords/ui/controllers/lc_search_controller"
 import Selection from "lostcoords/ui/controllers/lc_selection_controller"
 import Sheet from "lostcoords/ui/controllers/lc_sheet_controller"
 import Shortcut from "lostcoords/ui/controllers/lc_shortcut_controller"
+import Sidebar from "lostcoords/ui/controllers/lc_sidebar_controller"
 import Tabs from "lostcoords/ui/controllers/lc_tabs_controller"
 import Toast from "lostcoords/ui/controllers/lc_toast_controller"
 import ToastRegion from "lostcoords/ui/controllers/lc_toast_region_controller"
@@ -23,6 +25,7 @@ import Tooltip from "lostcoords/ui/controllers/lc_tooltip_controller"
 
 const controllers = {
   "lc-app-header": AppHeader,
+  "lc-char-counter": CharCounter,
   "lc-collapsible": Collapsible,
   "lc-code-block": CodeBlock,
   "lc-copy": Copy,
@@ -38,6 +41,7 @@ const controllers = {
   "lc-selection": Selection,
   "lc-sheet": Sheet,
   "lc-shortcut": Shortcut,
+  "lc-sidebar": Sidebar,
   "lc-tabs": Tabs,
   "lc-toc": Toc,
   "lc-toast": Toast,

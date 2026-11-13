@@ -70,7 +70,12 @@ module ShowcaseHelper
       lc_spinner: { size: ui::FeedbackHelper::SPINNER_SIZES.keys },
       lc_menu: { align: ui::MenuHelper::MENU_POPOVER_ALIGN.keys },
       lc_popover: { align: ui::MenuHelper::MENU_POPOVER_ALIGN.keys, trigger_variant: ui::ButtonHelper::BUTTON_VARIANTS.keys },
-      lc_menu_option: { tone: ui::MenuHelper::MENU_OPTION_TONES.keys }
+      lc_menu_option: { tone: ui::MenuHelper::MENU_OPTION_TONES.keys },
+      lc_stats: { layout: ui::DescriptionListHelper::STATS_LAYOUTS.keys, columns: ui::DescriptionListHelper::STATS_COLUMNS.keys.compact },
+      lc_stat: { tone: ui::DescriptionListHelper::STAT_TONES.keys },
+      lc_split: { aside: ui::LayoutHelper::SPLIT_ASIDES.keys },
+      lc_columns: { count: ui::LayoutHelper::COLUMN_COUNTS.keys },
+      lc_sidebar: { rail_below: ui::ShellHelper::SIDEBAR_RAIL_BELOW }
     }.dig(name, parameter)
     return choices.map { |key| ":#{key}" }.join(" · ") if choices
     return ":start · :end" if parameter == :icon_position

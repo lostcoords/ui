@@ -118,6 +118,41 @@ module Lostcoords::Ui
       assert_equal "Graph", list["aria-label"]
     end
 
+    test "an icon-only toggle keeps its label as the accessible name" do
+      button = fragment(@view.lc_toggle("Bold", icon: "bold", icon_only: true, active: true)).at_css("button")
+      assert_equal "true", button["aria-pressed"]
+      assert_equal "true", button["data-icon-only"]
+      assert_equal "Bold", button.at_css("span.sr-only").text
+      assert_equal "true", button.at_css("svg")["aria-hidden"]
+      assert_nil button.at_css("svg")["data-icon"]
+      assert_includes button["class"].split, "aspect-square"
+      assert_includes button["class"].split, "px-0"
+
+      tip = fragment(@view.lc_toggle("Italic", icon: "italic", icon_only: true, tooltip: true)).at_css("[data-slot=tooltip]")
+      assert_equal "Italic", tip.at_css("[data-slot=tooltip-content]").text
+      assert_equal "true", tip.at_css("[data-slot=tooltip-content]")["aria-hidden"]
+      assert tip.at_css("button[data-slot=toggle][aria-pressed=false]")
+
+      described = fragment(@view.lc_toggle("Pin", icon: "bookmark", icon_only: true, tooltip: "Keep at the top", id: "pin")).at_css("[data-slot=tooltip]")
+      assert_equal "pin-tooltip", described.at_css("button")["aria-describedby"]
+
+      link = fragment(@view.lc_toggle("Grid", icon: "squares-2x2", icon_only: true, href: "/grid", active: true)).at_css("a")
+      assert_equal "true", link["aria-current"]
+      assert_equal "Grid", link.at_css(".sr-only").text
+
+      radio = fragment(@view.lc_toggle("List", icon: "list-bullet", icon_only: true, name: "view", value: "list")).at_css("label")
+      assert radio.at_css("input[type=radio][value=list]")
+      assert_equal "List", radio.at_css("span.sr-only").text
+    end
+
+    test "icon: adds a leading icon to a labelled toggle" do
+      button = fragment(@view.lc_toggle("Pinned", icon: "bookmark")).at_css("button")
+      assert_equal "inline-start", button.at_css("svg")["data-icon"]
+      assert_equal "Pinned", button.text
+      assert_raises(ArgumentError) { @view.lc_toggle("Bold", icon_only: true) }
+      assert_raises(ArgumentError) { @view.lc_toggle(icon: "bold", icon_only: true) }
+    end
+
     private
       def fragment(html)
         Nokogiri::HTML5.fragment(html)

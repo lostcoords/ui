@@ -29,6 +29,20 @@ ja:
         navigation: "メイン"
       dock:
         close: "%{label}を閉じる"
+      sidebar:
+        label: "サイドバー"
+        collapse: "サイドバーを折りたたむ"
+        expand: "サイドバーを展開する"
+      char_counter:
+        label: "%{max}文字中%{count}文字"
+      time:
+        now: "たった今"
+        minutes: "%{count}分"
+        hours: "%{count}時間"
+        formats:
+          date: "%-m月%-d日"
+          date_with_year: "%Y年%-m月%-d日"
+          full: "%Y年%-m月%-d日 %H:%M"
       breadcrumb:
         label: "パンくずリスト"
       code_block:

@@ -1,0 +1,5 @@
+<%= lc_columns count: 2 do %>
+  <%= lc_section title: "Profile" do %><%= lc_card do %><%= lc_text "Name, handle and avatar." %><% end %><% end %>
+  <%= lc_section title: "Notifications" do %><%= lc_card do %><%= lc_text "Email and push preferences, grouped so no card splits between columns." %><% end %><% end %>
+  <%= lc_section title: "Connections" do %><%= lc_card do %><%= lc_text "Linked accounts." %><% end %><% end %>
+<% end %>

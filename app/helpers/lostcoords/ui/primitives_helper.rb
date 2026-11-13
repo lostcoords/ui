@@ -154,8 +154,26 @@ module Lostcoords::Ui
       end
     end
 
-    def lc_empty_state(**attributes, &block)
-      tag.div(**lc_attributes({ class: lc_empty_state_class, data: { slot: "empty-state" } }, attributes), &block)
+    # title:, text: and icon: lay out the usual empty state: a round icon badge, a heading and a line
+    # of muted text, then the block, such as an action. Without them the block is the whole content.
+    # level: sets the heading level, and card: true puts the empty state on an lc_card.
+    def lc_empty_state(title: nil, text: nil, icon: nil, level: 2, card: false, **attributes, &block)
+      extra = capture(&block) if block
+      content = if title.present? || text.present? || icon
+        heading = [
+          (lc_heading(title, level: level, size: :subheading, data: { slot: "empty-state-title" }) if title.present?),
+          (lc_text(text, size: :small, tone: :muted, data: { slot: "empty-state-description" }) if text.present?)
+        ].compact
+        safe_join([
+          (lc_icon_badge(icon: icon, shape: :circle, size: :lg, data: { slot: "empty-state-icon" }) if icon),
+          (lc_stack(gap: :tight, class: "max-w-md") { safe_join(heading) } if heading.any?),
+          extra
+        ].compact)
+      else
+        extra
+      end
+      state = tag.div(content, **lc_attributes({ class: lc_empty_state_class, data: { slot: "empty-state" } }, attributes))
+      card ? lc_card { state } : state
     end
 
     def lc_spinner(size: :md, label: lc_t("lostcoords.ui.spinner.label"), **attributes)

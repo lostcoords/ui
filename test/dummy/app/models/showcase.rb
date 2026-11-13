@@ -47,8 +47,10 @@ module Showcase
         Example.new(:reading, "Reading content", :bare),
         Example.new(:reading_japanese, "Japanese reading", :bare),
         Example.new(:motion_controls, "Hover and press", :panel),
-        Example.new(:motion_feedback, "Motion feedback", :panel)
-      ], %i[lc_stack lc_inline lc_container lc_section lc_section_header lc_heading lc_text lc_prose]),
+        Example.new(:motion_feedback, "Motion feedback", :panel),
+        Example.new(:layout_split, "Main column and aside", :bare),
+        Example.new(:layout_columns, "Balanced columns", :bare)
+      ], %i[lc_stack lc_inline lc_container lc_split lc_columns lc_section lc_section_header lc_heading lc_text lc_prose]),
       Section.new(:code_block, "Code block", "Source snippets with copying, optional highlighting and collapsible long content.", [
         Example.new(:code_block, "Plain source", :bare),
         Example.new(:code_block_title, "With a filename", :bare),
@@ -84,7 +86,8 @@ module Showcase
       Section.new(:toggle, "Toggle", "Pressed controls, filter links and radio choices.", [
         Example.new(:toggle, "Filters", :panel),
         Example.new(:toggle_links, "Navigation", :panel),
-        Example.new(:toggle_disabled, "Disabled and ghost", :panel)
+        Example.new(:toggle_disabled, "Disabled and ghost", :panel),
+        Example.new(:toggle_icons, "Icon-only toggles", :panel)
       ]),
       Section.new(:avatar, "Avatar", "Initials or an image representing a person.", [
         Example.new(:avatar, "Initials and images", :panel),
@@ -111,7 +114,15 @@ module Showcase
         Example.new(:table, "Records", :bare)
       ]),
       Section.new(:empty_state, "Empty state", "A starting point when there is no content yet.", [
-        Example.new(:empty_state, "Empty state", :panel)
+        Example.new(:empty_state, "Empty state", :panel),
+        Example.new(:empty_state_composed, "Title, text and icon on a card", :bare)
+      ]),
+      Section.new(:stats, "Stats", "Headline numbers, in a line or as tiles.", [
+        Example.new(:stats, "In a line", :panel),
+        Example.new(:stats_grid, "Tiles", :panel)
+      ], %i[lc_stats lc_stat]),
+      Section.new(:time, "Time", "A short relative time, as X shows it, with the full date on hover.", [
+        Example.new(:time, "Relative and dated", :panel)
       ]),
       Section.new(:field, "Field", "Labels, controls and validation that stay connected.", [
         Example.new(:field, "Label and hint", :panel),
@@ -141,6 +152,9 @@ module Showcase
       Section.new(:textarea, "Textarea", "Room for more than one line.", [
         Example.new(:textarea, "Textarea", :panel)
       ]),
+      Section.new(:char_counter, "Character counter", "A ring that fills as a field nears its character limit.", [
+        Example.new(:char_counter, "Counting a field", :panel)
+      ]),
       Section.new(:alert, "Alert", "Inline feedback, warnings and errors.", [
         Example.new(:alert, "Error", :panel),
         Example.new(:alert_success, "Success", :panel),
@@ -158,6 +172,14 @@ module Showcase
         Example.new(:nav_list_compact, "On this page", :panel),
         Example.new(:nav_list_row, "Row with a sliding indicator", :bare),
         Example.new(:nav_list_dock, "Dock", :panel)
+      ]),
+      Section.new(:tab_bar, "Tab bar", "Links to the views of a page as a row of underlined tabs, with counts.", [
+        Example.new(:tab_bar, "Tabs that share the row", :bare),
+        Example.new(:tab_bar_scroll, "Scrolling when it overflows", :bare)
+      ]),
+      Section.new(:sidebar, "Sidebar", "A sticky app sidebar that folds to an icon rail and remembers the choice.", [
+        Example.new(:sidebar, "Navigation and an account menu", :bare),
+        Example.new(:sidebar_rail, "Folded to a rail", :bare)
       ]),
       Section.new(:toc, "Table of contents", "An \"On this page\" list that marks the section the reader has scrolled to.", [
         Example.new(:toc, "Links you list", :panel),

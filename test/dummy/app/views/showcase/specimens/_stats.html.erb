@@ -1,0 +1,6 @@
+<%= lc_stats do %>
+  <%= lc_stat "1,204", label: "replies sent", tone: :primary %>
+  <%= lc_stat "318", label: "replies received" %>
+  <%= lc_stat label: "people" do %><a href="#people" class="text-inherit hover:underline">96</a><% end %>
+  <%= lc_stat "42", label: "two-way", tone: :success %>
+<% end %>

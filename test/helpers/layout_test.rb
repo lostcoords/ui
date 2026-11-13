@@ -89,6 +89,24 @@ module Lostcoords::Ui
       assert_raises(ArgumentError) { @view.lc_section(title: "Expenses", level: 7) }
     end
 
+    test "a split puts a main column beside a fixed aside from lg" do
+      split = fragment(@view.lc_split(as: :section, class: "mt-4") { @view.tag.main("Main") + @view.tag.aside("Aside") }).at_css("section")
+      assert_equal %w[main aside], split.element_children.map(&:name)
+      assert_includes split["class"].split, "lg:grid-cols-[minmax(0,1fr)_20rem]"
+      assert_includes split["class"].split, "items-start"
+      assert_includes split["class"].split, "mt-4"
+      assert_equal "grid min-w-0 items-start gap-section lg:grid-cols-[minmax(0,1fr)_24rem]", @view.lc_split_class(aside: :lg)
+      assert_raises(ArgumentError) { @view.lc_split(aside: :xl) }
+    end
+
+    test "columns flow groups into balanced columns without breaking one" do
+      columns = fragment(@view.lc_columns { @view.tag.section("A") }).at_css("div")
+      assert_includes columns["class"].split, "lg:columns-2"
+      assert_includes columns["class"].split, "*:break-inside-avoid"
+      assert_includes @view.lc_columns_class(count: 3).split, "xl:columns-3"
+      assert_raises(ArgumentError) { @view.lc_columns(count: 4) }
+    end
+
     private
       def fragment(html)
         Nokogiri::HTML.fragment(html)

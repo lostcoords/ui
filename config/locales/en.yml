@@ -29,6 +29,20 @@ en:
         navigation: "Main"
       dock:
         close: "Close %{label}"
+      sidebar:
+        label: "Sidebar"
+        collapse: "Collapse sidebar"
+        expand: "Expand sidebar"
+      char_counter:
+        label: "%{count} of %{max} characters"
+      time:
+        now: "now"
+        minutes: "%{count}m"
+        hours: "%{count}h"
+        formats:
+          date: "%-d %b"
+          date_with_year: "%-d %b %Y"
+          full: "%-d %B %Y, %H:%M"
       breadcrumb:
         label: "Breadcrumb"
       code_block:

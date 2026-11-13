@@ -13,6 +13,43 @@ module Lostcoords::Ui
       tag.textarea(block ? capture(&block) : content, **lc_attributes({ name: name, class: lc_textarea_class, data: { slot: "textarea" } }, attributes))
     end
 
+    CHAR_COUNTER = "inline-flex items-center gap-related text-small tabular-nums text-primary data-[state=near]:text-warning data-[state=over]:text-destructive"
+    CHAR_COUNTER_RADIUS = 9
+
+    # A ring that fills as a field nears max: characters, as on X. It hides while the field is empty,
+    # turns to the warning tone and shows the characters left once warn: or fewer remain, and to the
+    # destructive tone with a negative number past the limit. for: is the field's id; without it the
+    # nearest field around the counter is counted. To count another way, such as weighted characters,
+    # set data-lc-char-counter-count-value or send an event with detail.count to lc-char-counter#update.
+    # count: renders that count before JavaScript runs.
+    def lc_char_counter(max:, for: nil, warn: 20, count: nil, **attributes)
+      field = binding.local_variable_get(:for)
+      raise ArgumentError, "max: must be a positive integer" unless max.is_a?(Integer) && max.positive?
+      raise ArgumentError, "warn: must be a non-negative integer" unless warn.is_a?(Integer) && !warn.negative?
+      raise ArgumentError, "count: must be an integer" unless count.nil? || count.is_a?(Integer)
+
+      shown = count || 0
+      left = max - shown
+      circumference = 2 * Math::PI * CHAR_COUNTER_RADIUS
+      data = { slot: "char-counter", state: (left.negative? ? "over" : (left <= warn ? "near" : "ok")), controller: "lc-char-counter",
+        lc_char_counter_max_value: max, lc_char_counter_warn_value: warn, lc_char_counter_for_value: field.presence,
+        lc_char_counter_label_value: lc_t("lostcoords.ui.char_counter.label"), lc_char_counter_count_value: count }.compact
+      defaults = { class: CHAR_COUNTER, role: "img", hidden: shown.zero?, aria: { label: lc_t("lostcoords.ui.char_counter.label", count: shown, max: max) }, data: data }
+      circle = { cx: 10, cy: 10, r: CHAR_COUNTER_RADIUS, fill: "none", stroke: "currentColor", "stroke-width": 2 }
+      tag.span(**lc_attributes(defaults, attributes)) do
+        safe_join([
+          tag.span((left if left <= warn), data: { slot: "char-counter-remaining", lc_char_counter_target: "remaining" }),
+          tag.svg(viewBox: "0 0 20 20", class: "size-6 shrink-0 -rotate-90", aria: { hidden: true }) do
+            safe_join([
+              tag.circle(**circle, class: "opacity-20"),
+              tag.circle(**circle, "stroke-linecap": "round", "stroke-dasharray": "#{([ shown.fdiv(max), 1 ].min * circumference).round(2)} #{circumference.round(2)}",
+                data: { lc_char_counter_target: "progress" })
+            ])
+          end
+        ])
+      end
+    end
+
     def lc_select(options = nil, name: nil, selected: nil, size: :md, **attributes, &block)
       size = lc_option!(:size, size, TailwindHelper::CONTROL_SIZES.keys)
       content = block ? capture(&block) : options_for_select(options || [], selected)
@@ -108,27 +145,41 @@ module Lostcoords::Ui
       tag.button(content, **lc_attributes(defaults.merge(aria: { checked: selected || false }), attributes, required))
     end
 
+    TOGGLE_ICON_ONLY = "aspect-square px-0"
+
     # A button that flips its own aria-pressed. href: renders a link marked current when active, and
     # name: a label around a radio checked when active. A caller that sets aria-pressed or
     # aria-expanded owns the state, so the toggle drops its own controller.
-    def lc_toggle(label = nil, active: false, ghost: false, size: :md, href: nil, name: nil, value: nil, input: {}, **attributes, &block)
+    # icon: adds a leading icon; with icon_only: true the toggle is a square of just the icon and
+    # the label stays as its accessible name. tooltip: true shows the label on hover and focus, and
+    # tooltip: "text" describes the toggle with other text, as on lc_icon_button.
+    def lc_toggle(label = nil, active: false, ghost: false, size: :md, href: nil, name: nil, value: nil, input: {}, icon: nil, icon_only: false, tooltip: nil, **attributes, &block)
+      raise ArgumentError, "icon_only: true needs icon: and a label, not a block" if icon_only && (icon.nil? || label.blank? || block)
+
       content = block ? capture(&block) : label
-      defaults = { class: lc_toggle_class(ghost: ghost, size: size), data: { slot: "toggle" } }
-      return lc_toggle_link(content, href, active, defaults, attributes) if href
-
-      if name
-        value ||= label
-        lc_label!(value, :value)
-        return lc_toggle_radio(content, name, value, active, input, defaults, attributes)
+      if icon
+        glyph = lc_icon(icon, options: { "aria-hidden": true, "data-icon": ("inline-start" unless icon_only) }.compact)
+        content = safe_join([ glyph, (icon_only ? tag.span(label, class: "sr-only") : content) ])
       end
+      defaults = { class: lc_toggle_class(ghost: ghost, size: size, extra: (TOGGLE_ICON_ONLY if icon_only)), data: { slot: "toggle", icon_only: (true if icon_only) }.compact }
+      lc_icon_button_tooltip(label, tooltip, attributes) do |tip|
+        attributes = lc_attributes(attributes, tip)
+        next lc_toggle_link(content, href, active, defaults, attributes) if href
 
-      if lc_normalize_attributes(attributes).fetch(:aria, {}).slice(:pressed, :expanded).any?
-        raise ArgumentError, "pass active: or aria: { pressed: }, not both" if active
-      else
-        defaults[:aria] = { pressed: active }
-        defaults[:data].merge!(controller: "lc-toggle", action: "click->lc-toggle#toggle")
+        if name
+          value ||= label
+          lc_label!(value, :value)
+          next lc_toggle_radio(content, name, value, active, input, defaults, attributes)
+        end
+
+        if lc_normalize_attributes(attributes).fetch(:aria, {}).slice(:pressed, :expanded).any?
+          raise ArgumentError, "pass active: or aria: { pressed: }, not both" if active
+        else
+          defaults[:aria] = { pressed: active }
+          defaults[:data].merge!(controller: "lc-toggle", action: "click->lc-toggle#toggle")
+        end
+        tag.button(content, **lc_attributes(defaults, attributes).merge(type: "button"))
       end
-      tag.button(content, **lc_attributes(defaults, attributes).merge(type: "button"))
     end
 
     private

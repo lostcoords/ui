@@ -1,0 +1,8 @@
+<% now = Time.utc(2026, 11, 4, 12) %>
+<%= lc_stack gap: :related, as: :ul, class: "m-0 list-none p-0 text-small" do %>
+  <li>Posted <%= lc_time now - 30.seconds, now: now %></li>
+  <li>Posted <%= lc_time now - 12.minutes, now: now %></li>
+  <li>Posted <%= lc_time now - 4.hours, now: now %></li>
+  <li>Posted <%= lc_time Time.utc(2026, 10, 28, 9, 30), now: now %></li>
+  <li>Posted <%= lc_time Time.utc(2025, 11, 4, 18), now: now, detail: "edited" %></li>
+<% end %>

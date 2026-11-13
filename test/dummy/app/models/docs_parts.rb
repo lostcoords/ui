@@ -8,7 +8,8 @@ module DocsParts
   OWNERS = {
     "Card" => [ :lc_card, "card" ], "Dialog" => [ :lc_dialog, "dialog" ], "Alert" => [ :lc_alert, "alert" ],
     "Tabs" => [ :lc_tabs, "tabs" ], "NavList" => [ :lc_nav_list, "nav" ], "DescriptionList" => [ :lc_description_list, "list" ],
-    "Toc" => [ :lc_toc, "toc" ], "AppHeader" => [ :lc_app_header, "header" ], "Dock" => [ :lc_dock, "dock" ], "DockMenu" => [ :lc_dock, "menu" ]
+    "Toc" => [ :lc_toc, "toc" ], "AppHeader" => [ :lc_app_header, "header" ], "Dock" => [ :lc_dock, "dock" ], "DockMenu" => [ :lc_dock, "menu" ],
+    "TabBar" => [ :lc_tab_bar, "bar" ], "Sidebar" => [ :lc_sidebar, "sidebar" ]
   }.freeze
 
   Part = Data.define(:receiver, :name, :parameters) do

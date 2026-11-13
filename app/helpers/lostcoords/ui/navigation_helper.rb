@@ -84,6 +84,19 @@ module Lostcoords::Ui
       end
     end
 
+    # Links styled as a row of tabs over a rule, each page of a view behind one. Unlike lc_tabs, every
+    # tab is a link to its own URL. Yields a builder: `bar.link "Replies", replies_path, current: true, count: 12`.
+    # fill: true stretches the tabs to share the row; a row too long for its container scrolls sideways.
+    def lc_tab_bar(label:, fill: false, **attributes, &block)
+      lc_label!(label, :label)
+      raise ArgumentError, "lc_tab_bar needs a block" unless block
+
+      data = { slot: "tab-bar", fill: (true if fill) }.compact
+      tag.nav(**lc_attributes({ class: "min-w-0 border-b border-border", aria: { label: label }, data: data }, attributes)) do
+        tag.ul(capture(Parts::TabBar.new(self, fill), &block), class: "m-0 flex min-w-0 list-none overflow-x-auto p-0 [scrollbar-width:none] lc-scroll-fade-x [&::-webkit-scrollbar]:hidden")
+      end
+    end
+
     TOC_INDICATOR = "pointer-events-none absolute -start-px top-0 h-0 w-0.5 rounded-pill bg-primary opacity-0 " \
       "transition-[translate,height,opacity] duration-300 ease-(--lc-ease-out-expo) motion-reduce:transition-none"
 
