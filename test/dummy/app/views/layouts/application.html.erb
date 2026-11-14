@@ -21,6 +21,10 @@
     <meta name="turbo-refresh-method" content="morph">
     <meta name="turbo-refresh-scroll" content="preserve">
     <%= javascript_importmap_tags %>
+    <%# Umami page views on the published export only. data-domains ignores local previews of the export. %>
+    <% if Kiln.building? %>
+      <script defer src="https://t.lostcoords.com/lc.js" data-website-id="50278ae6-be08-43dc-9b09-32975d533c8d" data-domains="ui.lostcoords.com"></script>
+    <% end %>
   </head>
   <body class="antialiased" data-controller="showcase palette-split" data-action="submit->showcase#preventExampleSubmit palette-split:choose->showcase#choosePalette">
     <%= lc_skip_link %>
@@ -37,12 +41,12 @@
         <%= render "showcase/search" %>
         <%= lc_icon_button "Switch color theme", icon: "moon", size: :sm, data: { action: "showcase#toggleTheme", showcase_target: "theme" }, aria: { pressed: false } %>
         <%= render "showcase/palette_picker" %>
-        <%= lc_button_link_to "https://github.com/lostcoords/ui", variant: :ghost, size: :sm, class: "max-sm:hidden", aria: { label: "Source on GitHub" } do %><%= render "showcase/github_icon" %><% end %>
+        <%= lc_button_link_to "https://github.com/lostcoords/ui", variant: :ghost, size: :sm, class: "max-sm:hidden", aria: { label: "Source on GitHub" }, data: { umami_event: "github", umami_event_place: "header" } do %><%= render "showcase/github_icon" %><% end %>
       <% end %>
     <% end %>
     <%= yield %>
     <footer class="mx-auto flex max-w-360 flex-wrap items-center justify-between gap-4 px-5 py-10 text-xs text-muted-foreground sm:px-8 lg:px-10">
-      <span>LOST COORDS UI</span><%= lc_link "Source on GitHub ↗", "https://github.com/lostcoords/ui", tone: :muted, class: "no-underline hover:underline" %>
+      <span>LOST COORDS UI</span><%= lc_link "Source on GitHub ↗", "https://github.com/lostcoords/ui", tone: :muted, class: "no-underline hover:underline", data: { umami_event: "github", umami_event_place: "footer" } %>
     </footer>
     <%= render "showcase/palette_split" %>
   </body>

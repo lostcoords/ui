@@ -17,6 +17,7 @@ class StaticExportTest < ActiveSupport::TestCase
       assert_includes Nokogiri::HTML(directory.join("installation.html").read).text, "app/assets/tailwind/application.css"
       assert_includes directory.join("starter.css").read, '@import "../builds/tailwind/lostcoords_ui.css"'
       assert_equal "Theming", Nokogiri::HTML(directory.join("theming.html").read).at_css("h1").text
+      assert Nokogiri::HTML(directory.join("index.html").read).at_css('head script[src="https://t.lostcoords.com/lc.js"][data-domains="ui.lostcoords.com"]'), "The export loads Umami"
       assert_equal Showcase.sections.size + 7 + DocsBlocks.all.size * 2, Dir[directory.join("**/*.html")].size
 
       search = JSON.parse(directory.join("search.json").read).fetch("documents")
