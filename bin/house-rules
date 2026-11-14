@@ -183,7 +183,7 @@ end
 # Hosts call builders from their own repositories, so here a caller is another builder, a view, or the snapshot.
 # A builder with neither is untested surface that drifts from the design rules unnoticed.
 def orphan_builder_violations(files, builders)
-  sources = files.grep(%r{\A(?:app|test)/}).to_h { |path| [ path, File.read(path) ] }
+  sources = files.grep(%r{\A(?:app|test)/}).grep_v(/\.(?:png|ico)\z/).to_h { |path| [ path, File.read(path) ] }
 
   builders.filter_map do |builder|
     called = /\b#{builder.name}\b/
