@@ -1,5 +1,6 @@
 module ShowcaseHelper
-  # The header's brand mark, inlined so the static export needs no icon file. It follows the browser's color scheme.
+  # The header's brand mark, inlined so it follows the browser's color scheme. Raster copies in public/ serve
+  # favicon services that skip SVG.
   FAVICON = <<~SVG.squish.freeze
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28" fill="none">
     <style>path{stroke:#111}@media (prefers-color-scheme:dark){path{stroke:#fff}}</style>
@@ -7,7 +8,11 @@ module ShowcaseHelper
   SVG
 
   def showcase_favicon_tag
-    tag.link(rel: "icon", type: "image/svg+xml", href: "data:image/svg+xml,#{ERB::Util.url_encode(FAVICON)}")
+    safe_join([
+      tag.link(rel: "icon", href: "/favicon.ico", sizes: "32x32"),
+      tag.link(rel: "icon", type: "image/svg+xml", href: "data:image/svg+xml,#{ERB::Util.url_encode(FAVICON)}"),
+      tag.link(rel: "apple-touch-icon", href: "/apple-touch-icon.png")
+    ], "\n    ")
   end
 
   def showcase_components(section)
