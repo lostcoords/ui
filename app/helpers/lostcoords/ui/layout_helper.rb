@@ -83,15 +83,19 @@ module Lostcoords::Ui
     end
 
     # anchor: true links the heading to the section's id:, for pages readers link into.
-    def lc_section(title:, level: 2, actions: nil, anchor: false, **attributes, &block)
+    # header: :from_sm shows the heading row from sm up, for content that explains itself on a phone. Below
+    # sm the heading stays for screen readers (sr-only also takes it out of the stack gap) and the actions go.
+    def lc_section(title:, level: 2, actions: nil, anchor: false, header: :visible, **attributes, &block)
       raise ArgumentError, "title must not be blank" if title.blank?
       raise ArgumentError, "anchor: true needs an id" if anchor && attributes[:id].blank?
 
       tag.section(**lc_attributes({ class: lc_stack_class(gap: :heading, extra: ("lc-anchor-target" if anchor)) }, attributes)) do
         heading = lc_heading(title, level: level, size: :heading, anchor: (attributes[:id] if anchor))
         action_content = actions.respond_to?(:call) ? capture(&actions) : actions
-        header = lc_section_header { safe_join([ heading, action_content ].compact) }
-        safe_join([ header, lc_stack(&block) ])
+        from_sm = lc_option!(:header, header, %i[visible from_sm]) == :from_sm
+        action_content = tag.div(action_content, class: "contents max-sm:hidden") if from_sm && action_content.present?
+        header_row = lc_section_header(class: ("max-sm:sr-only" if from_sm)) { safe_join([ heading, action_content ].compact) }
+        safe_join([ header_row, lc_stack(&block) ])
       end
     end
 

@@ -36,14 +36,32 @@ async function _verifyDialogs(page) {
       width: dialog.offsetWidth,
       action: actions.firstElementChild.textContent.trim(),
       bodyScrolls: getComputedStyle(body).overflowY === "auto",
+      focused: document.activeElement === dialog,
     }
   }, members)
   verify(Math.round(layout.width) === 640, "size: :lg opens a 40rem dialog on desktop")
   verify(layout.action === "Invite", "header actions sit before the close button")
   verify(layout.bodyScrolls, "the dialog body scrolls under a fixed header on desktop")
+  verify(layout.focused, "the dialog takes focus on open rather than its close button")
   await page.locator(`${members} [data-slot=dialog-dismiss]`).click()
   await page.waitForFunction((selector) => !document.querySelector(selector).open, members)
   verify(true, "a dialog without a built-in trigger closes through the caller's controller")
+  await page.locator(`[data-controller~='lc-dialog']:has(${members}) > button`).first().focus()
+  await page.keyboard.press("Enter")
+  await page.waitForFunction((selector) => document.querySelector(selector).open, members)
+  const ring = await page.evaluate((selector) => {
+    const dialog = document.querySelector(selector)
+    return {
+      focused: document.activeElement === dialog,
+      outline: getComputedStyle(dialog).outlineStyle,
+    }
+  }, members)
+  verify(
+    ring.focused && ring.outline === "none",
+    "a dialog opened from the keyboard takes focus without drawing the focus halo around itself",
+  )
+  await page.keyboard.press("Escape")
+  await page.waitForFunction((selector) => !document.querySelector(selector).open, members)
 
   const invite = "dialog[id$='-invite']"
   await page.getByRole("button", { name: "Invite with your own trigger" }).click()

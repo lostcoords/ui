@@ -1,5 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
-import { registerDialog } from "lostcoords/ui/helpers/dialog"
+import { registerDialog, showDialog } from "lostcoords/ui/helpers/dialog"
 
 // Opens a dialog whose body is a Turbo frame fetched on open. It reloads on every
 // open, so what it shows is never staler than the page that opened it.
@@ -16,7 +16,7 @@ export default class extends Controller {
       if (this.frameTarget.src) this.frameTarget.reload()
       else this.frameTarget.src = this.frameTarget.dataset.src
     }
-    if (!this.dialogTarget.open) this.dialogTarget.showModal()
+    showDialog(this.dialogTarget)
 
     this.unregisterDialog = registerDialog(this.dialogTarget)
   }

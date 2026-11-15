@@ -81,6 +81,16 @@ module Lostcoords::Ui
       assert_raises(ArgumentError) { @view.lc_glass(as: :button) }
     end
 
+    test "a section can hide its heading row on phones" do
+      section = fragment(@view.lc_section(title: "Settlements", header: :from_sm, actions: @view.tag.button("How?")) { "Body" })
+      header = section.at_css("section > header")
+      assert_includes header["class"].split, "max-sm:sr-only"
+      assert_equal "Settlements", header.at_css("h2").text
+      assert_includes header.at_css("button").parent["class"].split, "max-sm:hidden"
+      assert_not_includes fragment(@view.lc_section(title: "Settlements") { "" }).at_css("header")["class"].to_s, "sr-only"
+      assert_raises(ArgumentError) { @view.lc_section(title: "Settlements", header: :hidden) }
+    end
+
     test "unknown spacing sizes blank titles and invalid heading levels are rejected" do
       assert_raises(ArgumentError) { @view.lc_stack(gap: :missing) }
       assert_raises(ArgumentError) { @view.lc_inline(gap: nil) }

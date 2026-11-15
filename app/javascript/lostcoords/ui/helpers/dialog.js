@@ -2,6 +2,17 @@ import { registerDismissable } from "lostcoords/ui/helpers/dismiss_stack"
 
 const registrations = new WeakMap()
 
+// Shows a modal <dialog> with focus on the dialog itself rather than its first control: a close
+// button would draw the focus ring after a tap that focused nothing, and a first field would raise
+// a phone's keyboard. A control marked autofocus still takes focus, and Tab reaches every control.
+export function showDialog(dialog) {
+  if (dialog.open) return
+  dialog.showModal()
+  if (dialog.querySelector("[autofocus]")) return
+  if (!dialog.hasAttribute("tabindex")) dialog.tabIndex = -1
+  dialog.focus({ preventScroll: true })
+}
+
 // Joins a <dialog> to the dismiss stack: Escape, the backdrop and a swipe call close, which may
 // return false to keep it open, such as while it asks whether to discard changes. priority ranks
 // it against panels open in it (a dialog is 10, a panel 20); restoreFocus runs after a close;

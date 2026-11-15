@@ -170,6 +170,21 @@ Omit `only` to register every library controller. Unknown identifiers raise befo
 registered, and repeated calls on the same application keep later overrides, so register defaults
 before application overrides.
 
+## Changes in 0.12.1
+
+Nothing needs an edit. Changed:
+
+- **A dialog opens with focus on itself.** `lc-dialog` and the new **`showDialog(dialog)`** helper in
+  `lostcoords/ui/helpers/dialog` focus the dialog rather than its first control, so the close button no longer
+  shows the focus ring after a tap and a first field no longer raises the keyboard. A control marked
+  `autofocus` still takes focus.
+- **The focus halo skips dialogs**, including ones with a `tabindex`.
+
+New option:
+
+- **`lc_section(header: :from_sm)` hides the heading row on phones**, for a section whose content explains
+  itself on a small screen, such as a balance card. Screen readers still get the heading; its actions are hidden.
+
 ## Changes in 0.12.0
 
 One edit, and some components look different:
@@ -914,10 +929,12 @@ the scroller's edges and clears the home indicator.
 <% end %>
 ```
 
-A controller that opens a `<dialog>` itself joins it to the dismiss stack with `registerDialog` from
-`lostcoords/ui/helpers/dialog`, so Escape, a backdrop click and a swipe close it, and the page stops scrolling
-behind it. `registerDialog(dialog, { close, priority, restoreFocus, lockScroll })`: `close` may return `false`
-to keep the dialog open, such as while it asks to discard changes; `priority` ranks it against panels open in
+A controller that opens a `<dialog>` itself shows it with `showDialog(dialog)` and joins it to the dismiss
+stack with `registerDialog`, both from `lostcoords/ui/helpers/dialog`. `showDialog` opens it modal with focus
+on the dialog itself, so no focus ring lands on its close button and no keyboard rises for a first field; a
+control marked `autofocus` still takes focus. With `registerDialog`, Escape, a backdrop click and a swipe close
+it, and the page stops scrolling behind it.
+`registerDialog(dialog, { close, priority, restoreFocus, lockScroll })`: `close` may return `false` to keep the dialog open, such as while it asks to discard changes; `priority` ranks it against panels open in
 it (a dialog is 10, a panel 20); `restoreFocus` runs after a close; `lockScroll: false` leaves the page
 scrollable. It returns the unregister function and ends when the dialog closes; a click on the dialog's own
 padding does not close it.
