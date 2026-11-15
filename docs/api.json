@@ -510,7 +510,7 @@
     },
     {
       "name": "lc_section",
-      "signature": "lc_section(title:, level: 2, actions: nil, anchor: false, **attributes, &block)",
+      "signature": "lc_section(title:, level: 2, actions: nil, anchor: false, header: :visible, **attributes, &block)",
       "url": "https://ui.lostcoords.com/components/foundations#lc_section",
       "examples": [
         {

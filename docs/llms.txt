@@ -1159,7 +1159,7 @@ Responsive containers: https://ui.lostcoords.com/components/foundations
 https://ui.lostcoords.com/components/foundations#lc_section
 
 ```ruby
-lc_section(title:, level: 2, actions: nil, anchor: false, **attributes, &block)
+lc_section(title:, level: 2, actions: nil, anchor: false, header: :visible, **attributes, &block)
 ```
 
 Page rhythm: https://ui.lostcoords.com/components/foundations
