@@ -601,7 +601,7 @@
         {
           "title": "Actions",
           "url": "https://ui.lostcoords.com/components/menu",
-          "erb": "<%= lc_menu id: \"my-component-menu\", label: \"Project actions\" do %>\n  <%= lc_menu_option \"Edit project\", href: \"/components/input.html\" %>\n  <%= lc_menu_option \"Duplicate project\" %>\n  <%= lc_menu_option \"Archive project\", tone: :destructive %>\n<% end %>"
+          "erb": "<%= lc_menu id: \"my-component-menu\", label: \"Project actions\" do %>\n  <%= lc_menu_option \"Edit project\", href: \"/components/input\" %>\n  <%= lc_menu_option \"Duplicate project\" %>\n  <%= lc_menu_option \"Archive project\", tone: :destructive %>\n<% end %>"
         },
         {
           "title": "Icon trigger, hints, choices and groups",
@@ -655,7 +655,7 @@
         {
           "title": "Actions",
           "url": "https://ui.lostcoords.com/components/menu",
-          "erb": "<%= lc_menu id: \"my-component-menu\", label: \"Project actions\" do %>\n  <%= lc_menu_option \"Edit project\", href: \"/components/input.html\" %>\n  <%= lc_menu_option \"Duplicate project\" %>\n  <%= lc_menu_option \"Archive project\", tone: :destructive %>\n<% end %>"
+          "erb": "<%= lc_menu id: \"my-component-menu\", label: \"Project actions\" do %>\n  <%= lc_menu_option \"Edit project\", href: \"/components/input\" %>\n  <%= lc_menu_option \"Duplicate project\" %>\n  <%= lc_menu_option \"Archive project\", tone: :destructive %>\n<% end %>"
         },
         {
           "title": "Icon trigger, hints, choices and groups",

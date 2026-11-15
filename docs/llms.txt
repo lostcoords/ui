@@ -1459,7 +1459,7 @@ Actions: https://ui.lostcoords.com/components/menu
 
 ```erb
 <%= lc_menu id: "my-component-menu", label: "Project actions" do %>
-  <%= lc_menu_option "Edit project", href: "/components/input.html" %>
+  <%= lc_menu_option "Edit project", href: "/components/input" %>
   <%= lc_menu_option "Duplicate project" %>
   <%= lc_menu_option "Archive project", tone: :destructive %>
 <% end %>
@@ -1573,7 +1573,7 @@ Actions: https://ui.lostcoords.com/components/menu
 
 ```erb
 <%= lc_menu id: "my-component-menu", label: "Project actions" do %>
-  <%= lc_menu_option "Edit project", href: "/components/input.html" %>
+  <%= lc_menu_option "Edit project", href: "/components/input" %>
   <%= lc_menu_option "Duplicate project" %>
   <%= lc_menu_option "Archive project", tone: :destructive %>
 <% end %>

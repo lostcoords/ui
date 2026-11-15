@@ -1,0 +1,14 @@
+// Serves the committed export, docs/, at ui.lostcoords.com. Static files only: no Worker code runs.
+// "auto-trailing-slash" serves blocks.html at /blocks and redirects /blocks/ and /blocks.html there.
+{
+  "name": "lostcoords-ui",
+  "account_id": "1745c65c70c5efcde26eed7a4d79d42d",
+  "compatibility_date": "2026-11-01",
+  "workers_dev": false,
+  "assets": {
+    "directory": "docs",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page"
+  },
+  "routes": [{ "pattern": "ui.lostcoords.com", "custom_domain": true }]
+}

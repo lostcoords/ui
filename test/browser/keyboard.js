@@ -60,7 +60,7 @@ async function _verifyKeyboard(page) {
   )
   await page.keyboard.press("Home")
   await page.keyboard.press(" ")
-  await page.waitForURL(`${origin}/components/input.html`)
+  await page.waitForURL(`${origin}/components/input`)
   verify(true, "Space activates a link menu item")
 
   // Tabs: automatic activation along a horizontal list, manual along a vertical one.

@@ -9,7 +9,6 @@ class StaticExportTest < ActiveSupport::TestCase
 
   test "the docs export is complete and repeatable" do
     kiln_build(repeatable: true) do |directory|
-      assert_equal "ui.lostcoords.com\n", directory.join("CNAME").read
       reference = JSON.parse(directory.join("api.json").read)
       assert_equal Lostcoords::Ui::Components.all.size, reference.fetch("components").size
       assert_equal DocsBlocks.all.size, reference.fetch("blocks").size
