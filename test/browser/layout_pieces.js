@@ -139,7 +139,8 @@ async function _verifyLayoutPieces(page) {
 
   await visit("list_group")
   const rows = await page.evaluate(() => {
-    const list = [...document.querySelectorAll("[data-slot=list-row]")]
+    const group = document.querySelector("[data-slot=list-group]")
+    const list = [...group.querySelectorAll(":scope > [data-slot=list-row]")]
     const radius = (row, corner) => parseFloat(getComputedStyle(row)[corner])
     return {
       gaps: list
