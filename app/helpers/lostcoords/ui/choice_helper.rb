@@ -8,8 +8,7 @@ module Lostcoords::Ui
     # card: true draws the whole label as a selectable tile, for plan or theme pickers.
     CHOICE_CARD = "flex w-full rounded-2xl lc-squircle border border-transparent bg-tile p-content " \
       "transition-[background-color,border-color] duration-(--lc-motion-quick) ease-(--lc-ease-out) hover:bg-accent " \
-      "has-checked:border-primary has-checked:bg-primary-soft has-focus-visible:outline-2 has-focus-visible:outline-offset-2 " \
-      "has-focus-visible:outline-(--ring,color-mix(in_oklab,var(--primary)_50%,transparent))"
+      "has-checked:border-primary has-checked:bg-primary-soft"
 
     def lc_choice_label_class(card: false, extra: nil)
       lc_tw(CHOICE_LABEL, (CHOICE_CARD if card), extra)

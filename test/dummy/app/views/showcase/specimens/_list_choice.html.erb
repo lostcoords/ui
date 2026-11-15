@@ -1,0 +1,10 @@
+<%= lc_list_section "How did you hear about us?", id: "EXAMPLE_ID", class: "w-full max-w-md" do %>
+  <%= lc_list_group role: "radiogroup", aria: { labelledby: "EXAMPLE_ID-heading" } do %>
+    <%= lc_list_row "A friend", choice: :radio, name: "heard_about", value: "friend", checked: true %>
+    <%= lc_list_row "Search", choice: :radio, name: "heard_about", value: "search" %>
+    <%= lc_list_row choice: :radio, name: "heard_about", value: "social" do %>
+      <%= lc_avatar "SN", size: :sm %>
+      <span>Social media</span>
+    <% end %>
+  <% end %>
+<% end %>

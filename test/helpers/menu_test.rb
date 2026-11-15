@@ -66,7 +66,7 @@ module Lostcoords::Ui
     end
 
     test "a method renders a form so non-GET actions work from a menu" do
-      html = fragment(@view.lc_menu_option("Leave", href: "/memberships/1", method: :delete, params: { reason: "moved" }, form: { data: { turbo_confirm: "Sure?" } }, tone: :destructive))
+      html = fragment(@view.lc_menu_option("Leave", href: "/memberships/1", method: :delete, params: { reason: "moved" }, form_attributes: { data: { turbo_confirm: "Sure?" } }, tone: :destructive))
       form = html.at_css("form")
       assert_equal "/memberships/1", form["action"]
       assert_equal "Sure?", form["data-turbo-confirm"]
@@ -77,6 +77,33 @@ module Lostcoords::Ui
       assert_equal "destructive", button["data-tone"]
       assert_equal "click->lc-menu#close", button["data-action"]
       assert_raises(ArgumentError) { @view.lc_menu_option("Leave", method: :delete) }
+    end
+
+    test "form: names a form elsewhere on the page for the option to submit" do
+      button = fragment(@view.lc_menu_option("Delete", tone: :destructive, type: "submit", form: "delete-entry", data: { turbo_confirm: "Sure?" })).at_css("button[role=menuitem]")
+      assert_equal "delete-entry", button["form"]
+      assert_equal "submit", button["type"]
+      assert_equal "Sure?", button["data-turbo-confirm"]
+      assert_equal "click->lc-menu#close", button["data-action"]
+    end
+
+    test "side: :top opens the menu upward" do
+      classes = ->(**options) { fragment(@view.lc_menu(id: "more", label: "More", **options) { "" }).at_css("[role=menu]")["class"].split }
+      assert_includes classes.(), "top-[calc(100%+--spacing(1))]"
+      upward = classes.(side: :top)
+      assert_includes upward, "bottom-[calc(100%+--spacing(1))]"
+      assert_includes upward, "top-auto"
+      assert_raises(ArgumentError) { @view.lc_menu(id: "more", side: :left) { "" } }
+    end
+
+    test "trigger_size: sizes the icon and custom triggers" do
+      trigger = ->(**options) { fragment(@view.lc_menu(id: "row", label: "Row actions", **options) { "" }).at_css("#row-trigger")["class"].split }
+      assert_includes trigger.(trigger: :icon), "size-control-md"
+      small = trigger.(trigger: :icon, trigger_size: :sm)
+      assert_includes small, "size-control-sm"
+      refute_includes small, "size-control-md"
+      assert_includes trigger.(trigger: @view.tag.span("AL"), trigger_size: :sm), "size-control-sm"
+      assert_raises(ArgumentError) { @view.lc_menu(id: "row", trigger: :icon, trigger_size: :xl) { "" } }
     end
 
     test "an icon trigger is a quiet icon button named by the label" do

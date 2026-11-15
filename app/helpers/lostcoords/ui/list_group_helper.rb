@@ -1,6 +1,11 @@
 module Lostcoords::Ui
   module ListGroupHelper
-    LIST_ROW = "lc-list-row min-w-0 bg-card text-card-foreground first:rounded-t-3xl last:rounded-b-3xl lc-squircle"
+    LIST_ROW = "lc-list-row min-w-0 bg-card text-card-foreground lc-squircle"
+    # The group rounds its first and last shown children, whatever they are: a row, a field, or a
+    # collapsible of rows. A hidden row leaves the rounding to its next shown sibling.
+    LIST_GROUP =
+      "m-0 grid min-w-0 list-none gap-0.5 p-0 " \
+      "[&>:not([hidden]):not(:not([hidden])~*)]:rounded-t-3xl [&>:not([hidden]):not(:has(~:not([hidden])))]:rounded-b-3xl"
     LIST_ITEM = "flex min-h-16 min-w-0 items-center gap-heading px-content py-heading text-start sm:px-inset"
     LIST_ROW_PADDING = "px-content py-heading sm:px-inset"
     LIST_ICON = "grid size-10 shrink-0 place-items-center rounded-full bg-tile [&>svg:not([class*='size-'])]:size-4.5"
@@ -14,6 +19,12 @@ module Lostcoords::Ui
       "[&_:is(a[href],button,input,select,textarea,summary,[tabindex]):not([data-slot=list-link])]:relative " \
       "[&_:is(a[href],button,input,select,textarea,summary,[tabindex]):not([data-slot=list-link])]:z-raised"
     LIST_LINK = "text-inherit no-underline focus-visible:outline-none after:absolute after:inset-0 after:rounded-[inherit] after:content-['']"
+    # A label row around a hidden radio: the checked row fills, bolds and shows a trailing check, as
+    # a menuitemradio does. The global focus halo rings the row while its radio has focus.
+    LIST_ROW_CHOICE =
+      "group/choice flex items-center gap-heading cursor-pointer transition-colors duration-(--lc-motion-quick) " \
+      "hover:bg-accent has-checked:bg-primary-soft has-checked:font-semibold has-disabled:cursor-not-allowed has-disabled:opacity-45"
+    LIST_ROW_CHOICE_CHECK = "ms-auto size-4 shrink-0 text-primary invisible group-has-checked/choice:visible"
     LIST_FIELD_TAGS = %i[div fieldset span].freeze
     LIST_FIELD = "@container px-content py-2.5 transition-colors duration-(--lc-motion-quick) has-[[data-plain]:focus]:bg-accent"
     LIST_FIELD_GRID = "grid min-h-9 grid-cols-[1.25rem_minmax(0,1fr)] items-center gap-x-heading gap-y-related @md:grid-cols-[8rem_minmax(0,1fr)]"
@@ -41,7 +52,7 @@ module Lostcoords::Ui
     # first and last rows round.
     def lc_list_group(tag: :div, **attributes, &block)
       tag = lc_option!(:tag, tag, %i[div ul])
-      content_tag(tag, (capture(&block) if block), **lc_attributes({ class: "m-0 grid min-w-0 list-none gap-0.5 p-0", data: { slot: "list-group" } }, attributes))
+      content_tag(tag, (capture(&block) if block), **lc_attributes({ class: LIST_GROUP, data: { slot: "list-group" } }, attributes))
     end
 
     # With a title, the row lays out icon:, the title and subtitle, then the block as its trailing
@@ -49,7 +60,13 @@ module Lostcoords::Ui
     # content that pads itself, such as an lc_list_item button. href: makes the row a link. On an li
     # or div row, the title is the link and covers the row, so the block can hold buttons and links
     # of its own; a click elsewhere in the row follows the title.
-    def lc_list_row(title = nil, subtitle: nil, icon: nil, href: nil, tag: nil, padded: true, **attributes, &block)
+    # choice: :radio makes the row one choice of a radio group: a label around a hidden radio named
+    # name: with value:, then the title or block, then a check shown while checked:. input: adds
+    # attributes to the radio.
+    def lc_list_row(title = nil, subtitle: nil, icon: nil, href: nil, tag: nil, padded: true, choice: nil, name: nil, value: nil, checked: false, input: {}, **attributes, &block)
+      return lc_list_choice_row(title, choice, name, value, checked, input, attributes, &block) if choice
+      raise ArgumentError, "name:, value:, checked: and input: belong to a choice: row" if name || value || checked || input.any?
+
       tag = lc_option!(:tag, tag || (href ? :a : :div), LIST_ROW_TAGS)
       titled = href && tag != :a
       raise ArgumentError, "href: needs tag: :a, :li or :div" if titled && !%i[li div].include?(tag)
@@ -61,6 +78,24 @@ module Lostcoords::Ui
 
       classes = lc_tw(LIST_ROW, (LIST_ROW_PADDING if padded), link)
       content_tag(tag, (capture(&block) if block), **lc_attributes(defaults.merge(class: classes), attributes))
+    end
+
+    private def lc_list_choice_row(title, choice, name, value, checked, input, attributes, &block)
+      lc_option!(:choice, choice, %i[radio])
+      lc_label!(name, :name)
+      raise ArgumentError, "a choice row needs value:" if value.nil?
+      raise ArgumentError, "a choice row takes a title or a block, not both" if title.present? && block
+
+      attributes = attributes.dup
+      input = input.merge(disabled: attributes.delete(:disabled)) if attributes.key?(:disabled)
+      content = block ? capture(&block) : content_tag(:span, title, class: "min-w-0", data: { slot: "list-title" })
+      content_tag(:label, **lc_attributes({ class: lc_tw(LIST_ROW, LIST_ROW_PADDING, LIST_ROW_CHOICE), data: { slot: "list-row", choice: "radio" } }, attributes)) do
+        safe_join([
+          radio_button_tag(name, value, checked, **lc_attributes({ class: "sr-only" }, input)),
+          content,
+          lc_icon("check", variant: :mini, options: { class: LIST_ROW_CHOICE_CHECK, "aria-hidden": true })
+        ])
+      end
     end
 
     # A form row: a label column, then the block as the control. In a narrow row the label folds to

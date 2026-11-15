@@ -1,0 +1,16 @@
+<%= lc_stack gap: :inset, class: "w-full max-w-md" do %>
+  <%= lc_toggle_group label: "View", as: :nav do %>
+    <%= lc_toggle_group_item "List", href: "/components/toggle_group.html", current: true, icon: "list-bullet", icon_only: true %>
+    <%= lc_toggle_group_item "Calendar", href: "/components/toggle.html", icon: "calendar-days", icon_only: true %>
+  <% end %>
+  <%= lc_toggle_group label: "Who can open it", name: "access", value: "link", layout: :stacked, class: "w-full" do %>
+    <%= lc_toggle_group_item "Anyone with the link", value: "link", icon: "link" %>
+    <%= lc_toggle_group_item "Members", value: "members", icon: "user-group" %>
+    <%= lc_toggle_group_item "Only me", value: "private", icon: "lock-closed" %>
+  <% end %>
+  <%= lc_toggle_group label: "Split", value: "equal", layout: :adaptive do %>
+    <%= lc_toggle_group_item "Equally", value: "equal", selected: true, icon: "equals" %>
+    <%= lc_toggle_group_item "Shares", value: "shares", icon: "chart-pie" %>
+    <%= lc_toggle_group_item "Amounts", value: "exact", icon: "banknotes" %>
+  <% end %>
+<% end %>

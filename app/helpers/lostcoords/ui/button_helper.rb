@@ -30,6 +30,8 @@ module Lostcoords::Ui
       outline: "border border-border bg-transparent text-(--lc-button-ink,var(--foreground)) #{BUTTON_HOVER}",
       glass: "[--lc-button-bg:var(--_lc-glass-fill)] text-(--lc-button-ink,var(--foreground)) #{BUTTON_HOVER}",
       ghost: "border border-transparent bg-transparent text-muted-foreground not-disabled:hover:text-(--lc-button-ink,var(--foreground)) #{BUTTON_HOVER}",
+      # The page's own fill, for a quiet control sitting on a card.
+      inset: "border border-transparent [--lc-button-bg:var(--background)] bg-(--lc-button-bg) text-muted-foreground not-disabled:hover:text-(--lc-button-ink,var(--foreground)) #{BUTTON_HOVER}",
       destructive: "border border-transparent [--lc-button-bg:color-mix(in_oklab,var(--destructive)_60%,black)] [--lc-button-ink:#fff] bg-(--lc-button-bg) text-(--lc-button-ink) #{BUTTON_HOVER}"
     }.freeze
 
@@ -45,6 +47,7 @@ module Lostcoords::Ui
         outline: "#{BUTTON_DESTRUCTIVE_INK} border-[color-mix(in_oklab,var(--destructive)_32%,var(--border))]",
         glass: BUTTON_DESTRUCTIVE_INK,
         ghost: "#{BUTTON_DESTRUCTIVE_INK} #{BUTTON_DESTRUCTIVE_SOFT}",
+        inset: BUTTON_DESTRUCTIVE_INK,
         destructive: ""
       }
     }.freeze
@@ -95,9 +98,16 @@ module Lostcoords::Ui
     }.freeze
 
     ICON_BUTTON_SIZES = {
-      sm: "size-control-sm [&_svg]:size-4",
-      md: "size-control-md [&_svg]:size-5",
-      lg: "size-control-lg [&_svg]:size-6"
+      sm: "size-control-sm",
+      md: "size-control-md",
+      lg: "size-control-lg"
+    }.freeze
+
+    # The icon keeps about the same share of the button at every size; icon_size: picks another tier.
+    ICON_BUTTON_ICON_SIZES = {
+      sm: "[&_svg]:size-4.5",
+      md: "[&_svg]:size-5",
+      lg: "[&_svg]:size-6"
     }.freeze
 
     # A row action that stays out of the way until it is hovered, focused or open.
@@ -129,15 +139,17 @@ module Lostcoords::Ui
     end
 
     # The base is already a ghost button, so variant: :ghost adds nothing; tone: recolours any variant.
-    def lc_icon_button_class(shape: :square, size: :md, variant: :ghost, tone: :default, extra: nil)
+    def lc_icon_button_class(shape: :square, size: :md, icon_size: size, variant: :ghost, tone: :default, extra: nil)
       shape = lc_option!(:shape, shape, ICON_BUTTON_SHAPES.keys)
       size = lc_option!(:size, size, ICON_BUTTON_SIZES.keys)
+      icon_size = lc_option!(:icon_size, icon_size, ICON_BUTTON_ICON_SIZES.keys)
       variant = lc_option!(:variant, variant, BUTTON_VARIANTS.keys)
       tone = lc_option!(:tone, tone, BUTTON_TONES.keys)
       lc_tw(
         ICON_BUTTON_BASE,
         ICON_BUTTON_SHAPES.fetch(shape),
         ICON_BUTTON_SIZES.fetch(size),
+        ICON_BUTTON_ICON_SIZES.fetch(icon_size),
         (lc_glass_class(shape: :bar) if variant == :glass),
         (BUTTON_VARIANTS.fetch(variant) unless variant == :ghost),
         BUTTON_TONES.fetch(tone).fetch(variant),

@@ -1,9 +1,9 @@
 /* Tokens, foundations and the components almost every app uses: buttons,
-   badges, avatars, cards, alerts, form controls, choices, toggles, copy buttons,
+   badges, avatars and their corner badges, cards, alerts, form controls, file drops, choices, toggles, copy buttons,
    layout, typography and navigation. Add the opt-in components in ./components/ that
    you render, or import ../components.css for everything. */
 @import "./theme.css";
-@source "../../../../helpers/lostcoords/ui/{badge,button,card,choice,copy_button,description_list,feedback,form,glass,icon,layout,list_group,navigation,primitives,render_attributes,structures,tailwind,translation,typography}_helper.rb";
+@source "../../../../helpers/lostcoords/ui/{avatar_badge,badge,button,card,choice,copy_button,description_list,feedback,file_drop,form,glass,icon,layout,list_group,navigation,primitives,render_attributes,structures,tailwind,translation,typography}_helper.rb";
 @source "../../../../javascript/lostcoords/ui/helpers/*.js";
 @source "../../../../javascript/lostcoords/ui/controllers/lc_{char_counter,copy,kbd,nav,scroll_keeper,selection,shortcut,tabs,toc,toggle}_controller.js";
 @source "../../../../../lib/lostcoords/ui/parts.rb";

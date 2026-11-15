@@ -11,7 +11,8 @@
         <button type="button" class="<%= lc_icon_button_class(size: :sm, shape: :circle) %>" aria-label="<%= close_label %>" data-action="<%= close_action %>" data-slot="dialog-dismiss"><%= lc_icon "x-mark", options: { "aria-hidden": true } %></button>
       </div>
     </header>
-    <div class="-mx-inset -mb-inset flex min-h-0 flex-1 flex-col gap-inset px-inset pb-inset sm:overflow-y-auto sm:overscroll-contain" data-slot="dialog-body"><%= content %></div>
+    <%# Children keep their height, so a long body scrolls instead of squashing a fixed-height button. %>
+    <div class="-mx-inset -mb-inset flex min-h-0 flex-1 flex-col gap-inset px-inset pb-inset *:shrink-0 sm:overflow-y-auto sm:overscroll-contain" data-slot="dialog-body"><%= content %></div>
   </div>
 <% end %>
 <% if trigger %>

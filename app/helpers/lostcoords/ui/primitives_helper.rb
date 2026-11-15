@@ -37,7 +37,7 @@ module Lostcoords::Ui
         content = capture(&content_block)
       end
 
-      button_to(lc_button_content(content, icon, icon_position), url, lc_button_attributes(variant, tone, size, block, {}, attributes))
+      button_to(lc_button_content(content, icon, icon_position), url, lc_button_attributes(variant, tone, size, block, {}, lc_button_form(attributes)))
     end
 
     # A button styled as a select for opening a menu or picker. A string label truncates; a block
@@ -86,21 +86,21 @@ module Lostcoords::Ui
       tag.div(safe_join([ primary, toggle, popover ]), **lc_attributes(defaults, attributes))
     end
 
-    def lc_icon_button(label, icon: nil, size: :md, shape: :circle, variant: :ghost, tone: :default, tooltip: nil, **attributes, &content)
-      attributes = lc_icon_button_attributes(label, size, shape, variant, tone, { type: "button" }, attributes)
+    def lc_icon_button(label, icon: nil, size: :md, icon_size: size, shape: :circle, variant: :ghost, tone: :default, tooltip: nil, **attributes, &content)
+      attributes = lc_icon_button_attributes(label, size, icon_size, shape, variant, tone, { type: "button" }, attributes)
       lc_icon_button_tooltip(label, tooltip, attributes) { |tip| tag.button(lc_icon_button_content(icon, &content), **lc_attributes(attributes, tip)) }
     end
 
-    def lc_icon_button_link_to(label, url, icon: nil, size: :md, shape: :circle, variant: :ghost, tone: :default, tooltip: nil, **attributes, &content)
-      attributes = lc_icon_button_attributes(label, size, shape, variant, tone, {}, attributes)
+    def lc_icon_button_link_to(label, url, icon: nil, size: :md, icon_size: size, shape: :circle, variant: :ghost, tone: :default, tooltip: nil, **attributes, &content)
+      attributes = lc_icon_button_attributes(label, size, icon_size, shape, variant, tone, {}, attributes)
       raise ArgumentError, "Links cannot be disabled; use lc_icon_button for a disabled control" if attributes[:disabled]
 
       lc_icon_button_tooltip(label, tooltip, attributes) { |tip| link_to(lc_icon_button_content(icon, &content), url, lc_attributes(attributes, tip)) }
     end
 
-    def lc_icon_button_to(label, url, icon: nil, size: :md, shape: :circle, variant: :ghost, tone: :default, tooltip: nil, **attributes, &content)
-      attributes = lc_icon_button_attributes(label, size, shape, variant, tone, {}, attributes)
-      lc_icon_button_tooltip(label, tooltip, attributes) { |tip| button_to(lc_icon_button_content(icon, &content), url, lc_attributes(attributes, tip)) }
+    def lc_icon_button_to(label, url, icon: nil, size: :md, icon_size: size, shape: :circle, variant: :ghost, tone: :default, tooltip: nil, **attributes, &content)
+      attributes = lc_icon_button_attributes(label, size, icon_size, shape, variant, tone, {}, attributes)
+      lc_icon_button_tooltip(label, tooltip, attributes) { |tip| button_to(lc_icon_button_content(icon, &content), url, lc_attributes(lc_button_form(attributes), tip)) }
     end
 
     def lc_badge(content = nil, tone: :neutral, shape: :rounded, **attributes, &block)
@@ -133,8 +133,9 @@ module Lostcoords::Ui
     end
 
     # row: takes attributes for the inner row that overlaps the avatars, such as a controller target.
-    def lc_avatar_stack(compact: false, row: {}, **attributes, &block)
-      tag.span(**lc_attributes({ class: lc_avatar_stack_class(compact: compact), data: { slot: "avatar-stack" } }, attributes)) do
+    # size: pins every avatar in the stack to one lc_avatar size; overlap: :sm tightens it for a line of text.
+    def lc_avatar_stack(compact: false, size: :md, overlap: :md, row: {}, **attributes, &block)
+      tag.span(**lc_attributes({ class: lc_avatar_stack_class(compact: compact, size: size, overlap: overlap), data: { slot: "avatar-stack" } }, attributes)) do
         tag.span(**lc_attributes({ class: lc_avatar_stack_row_class }, row), &block)
       end
     end
@@ -222,11 +223,11 @@ module Lostcoords::Ui
         lc_attributes(defaults.merge(class: lc_button_class(variant: variant, tone: tone, size: size, block: block), data: data), attributes)
       end
 
-      def lc_icon_button_attributes(label, size, shape, variant, tone, defaults, attributes)
+      def lc_icon_button_attributes(label, size, icon_size, shape, variant, tone, defaults, attributes)
         size = lc_option!(:size, size, ButtonHelper::ICON_BUTTON_SIZES.keys)
         shape = lc_option!(:shape, shape, ButtonHelper::ICON_BUTTON_SHAPES.keys)
         data = { slot: "icon-button", size: size, variant: (variant.to_sym unless variant.to_sym == :ghost), tone: (tone.to_sym unless tone.to_sym == :default) }.compact
-        defaults = defaults.merge(class: lc_icon_button_class(size: size, shape: shape, variant: variant, tone: tone), aria: { label: label }, data: data)
+        defaults = defaults.merge(class: lc_icon_button_class(size: size, icon_size: icon_size, shape: shape, variant: variant, tone: tone), aria: { label: label }, data: data)
         attributes = lc_attributes(defaults, attributes)
         accessible_label = attributes.fetch(:"aria-label", attributes.dig(:aria, :label))
         raise ArgumentError, "lc_icon_button requires a nonblank accessible label" if label.blank? || accessible_label.blank?
@@ -242,6 +243,13 @@ module Lostcoords::Ui
         text = tooltip == true ? label : tooltip
         id = ("#{attributes[:id] || "lc-icon-button-#{@lc_tooltip_count = (@lc_tooltip_count || 0) + 1}"}-tooltip" unless text == label)
         lc_tooltip(text, id: id) { |tip| yield(tip) }
+      end
+
+      # button_to's form is a box of its own; contents lets the button sit in the caller's row or grid.
+      def lc_button_form(attributes)
+        attributes = attributes.dup
+        form = attributes.delete(:form) || attributes.delete("form") || {}
+        attributes.merge(form: lc_attributes({ class: "contents" }, form))
       end
 
       def lc_icon_button_content(icon, &content)

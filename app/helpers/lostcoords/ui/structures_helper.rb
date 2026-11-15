@@ -3,10 +3,21 @@ module Lostcoords::Ui
     INPUT_TYPES = %i[text search email password tel url number date time datetime-local month week].freeze
 
     # plain: true drops the fill, border, padding and height, for a control in an lc_list_field row.
-    def lc_input(name: nil, value: nil, type: :text, size: :md, plain: false, **attributes)
+    INPUT_ICON = "pointer-events-none absolute start-3.5 size-4.5 text-muted-foreground"
+
+    # icon: draws a leading icon inside the field, such as a magnifying glass on a search field; the field
+    # comes wrapped in a span then, and class: and the other attributes still reach the <input>.
+    def lc_input(name: nil, value: nil, type: :text, size: :md, plain: false, icon: nil, **attributes)
       type = lc_option!(:type, type, INPUT_TYPES)
+      raise ArgumentError, "icon: needs a field; plain: true has no room for one" if icon && plain
+
       data = { slot: "input", plain: (true if plain) }.compact
-      tag.input(**lc_attributes({ type: type, name: name, value: value, class: lc_input_class(size: size, plain: plain), data: data }, attributes))
+      input = tag.input(**lc_attributes({ type: type, name: name, value: value, class: lc_input_class(size: size, plain: plain, extra: ("ps-10" if icon)), data: data }, attributes))
+      return input unless icon
+
+      tag.span(class: "relative flex min-w-0 items-center", data: { slot: "input-group" }) do
+        safe_join([ lc_icon(icon, options: { class: INPUT_ICON, "aria-hidden": true }), input ])
+      end
     end
 
     def lc_textarea(content = nil, name: nil, **attributes, &block)
@@ -97,18 +108,21 @@ module Lostcoords::Ui
     # as: :nav makes links, the current one marked with aria-current; otherwise radio buttons whose
     # selection lives in the lc-selection controller.
     # variant: :pills lays the items out as wrapping toggle pills, sized by size:, instead of a segmented track.
-    def lc_toggle_group(label:, name: nil, value: nil, as: :div, variant: :segmented, size: :md, **attributes, &block)
+    # layout: and scroll: shape the segmented track; see lc_toggle_group_class.
+    def lc_toggle_group(label:, name: nil, value: nil, as: :div, variant: :segmented, size: :md, layout: :inline, scroll: false, **attributes, &block)
       lc_label!(label, :label)
       as = lc_option!(:as, as, %i[div nav])
       variant = lc_option!(:variant, variant, %i[segmented pills])
       size = lc_option!(:size, size, ButtonHelper::BUTTON_SIZES.keys)
+      layout = lc_option!(:layout, layout, FormHelper::TOGGLE_GROUP_LAYOUTS.keys)
       raise ArgumentError, "size: sizes pills; a segmented toggle group has one size" if variant == :segmented && size != :md
+      raise ArgumentError, "layout: and scroll: shape a segmented track; pills wrap" if variant == :pills && (layout != :inline || scroll)
       raise ArgumentError, "a nav toggle group marks its current link; it takes no name: or value:" if as == :nav && (name || value)
 
       mode = as == :nav ? :links : (name ? :radios : :buttons)
-      content = lc_within_toggle_group({ mode: mode, name: name, value: value&.to_s, variant: variant, size: size }) { capture(&block) if block }
+      content = lc_within_toggle_group({ mode: mode, name: name, value: value&.to_s, variant: variant, size: size, layout: layout }) { capture(&block) if block }
 
-      defaults = { class: (variant == :pills ? lc_inline_class : lc_toggle_group_class), data: { slot: "toggle-group" } }
+      defaults = { class: (variant == :pills ? lc_inline_class : lc_toggle_group_class(layout: layout, scroll: scroll)), data: { slot: "toggle-group" } }
       case mode
       when :links
         tag.nav(content, **lc_attributes(defaults, attributes, { aria: { label: label } }))
@@ -121,17 +135,19 @@ module Lostcoords::Ui
     end
 
     # Takes href: and current: in a nav group, value: and checked: in a named group, and value: and
-    # selected: in a button group; arguments from another kind of group raise.
-    def lc_toggle_group_item(label = nil, value: nil, selected: nil, checked: nil, href: nil, current: nil, input: {}, **attributes, &block)
-      group = @_lc_toggle_group || { mode: :buttons, variant: :segmented }
+    # selected: in a button group; arguments from another kind of group raise. icon: and icon_only:
+    # work as on lc_toggle.
+    def lc_toggle_group_item(label = nil, value: nil, selected: nil, checked: nil, href: nil, current: nil, input: {}, icon: nil, icon_only: false, **attributes, &block)
+      group = @_lc_toggle_group || { mode: :buttons, variant: :segmented, layout: :inline }
       given = { value: value, selected: selected, checked: checked, href: href, current: current }.compact.keys
       allowed = { links: %i[href current], radios: %i[value checked], buttons: %i[value selected] }.fetch(group[:mode])
       stray = given - allowed
       raise ArgumentError, "#{stray.join(', ')} can't be used on an item of a #{group[:mode]} toggle group" if stray.any?
       raise ArgumentError, "an item of a nav toggle group needs href:" if group[:mode] == :links && !href
 
-      content = block ? capture(&block) : label
-      defaults = { class: (group[:variant] == :pills ? lc_toggle_class(size: group[:size]) : lc_toggle_group_item_class), data: { slot: "toggle-group-item" } }
+      content = lc_toggle_content(label, icon, icon_only, &block)
+      item_class = group[:variant] == :pills ? lc_toggle_class(size: group[:size]) : lc_toggle_group_item_class(layout: group[:layout] || :inline)
+      defaults = { class: lc_tw(item_class, (TOGGLE_ICON_ONLY if icon_only)), data: { slot: "toggle-group-item", icon_only: (true if icon_only) }.compact }
       return lc_toggle_link(content, href, current, defaults, attributes) if group[:mode] == :links
 
       value ||= label
@@ -154,13 +170,7 @@ module Lostcoords::Ui
     # the label stays as its accessible name. tooltip: true shows the label on hover and focus, and
     # tooltip: "text" describes the toggle with other text, as on lc_icon_button.
     def lc_toggle(label = nil, active: false, ghost: false, size: :md, href: nil, name: nil, value: nil, input: {}, icon: nil, icon_only: false, tooltip: nil, **attributes, &block)
-      raise ArgumentError, "icon_only: true needs icon: and a label, not a block" if icon_only && (icon.nil? || label.blank? || block)
-
-      content = block ? capture(&block) : label
-      if icon
-        glyph = lc_icon(icon, options: { "aria-hidden": true, "data-icon": ("inline-start" unless icon_only) }.compact)
-        content = safe_join([ glyph, (icon_only ? tag.span(label, class: "sr-only") : content) ])
-      end
+      content = lc_toggle_content(label, icon, icon_only, &block)
       defaults = { class: lc_toggle_class(ghost: ghost, size: size, extra: (TOGGLE_ICON_ONLY if icon_only)), data: { slot: "toggle", icon_only: (true if icon_only) }.compact }
       lc_icon_button_tooltip(label, tooltip, attributes) do |tip|
         attributes = lc_attributes(attributes, tip)
@@ -183,6 +193,16 @@ module Lostcoords::Ui
     end
 
     private
+      def lc_toggle_content(label, icon, icon_only, &block)
+        raise ArgumentError, "icon_only: true needs icon: and a label, not a block" if icon_only && (icon.nil? || label.blank? || block)
+
+        content = block ? capture(&block) : label
+        return content unless icon
+
+        glyph = lc_icon(icon, options: { "aria-hidden": true, "data-icon": ("inline-start" unless icon_only) }.compact)
+        safe_join([ glyph, (icon_only ? tag.span(label, class: "sr-only") : content) ])
+      end
+
       # Items read the enclosing group's mode, so a nested group restores the outer one.
       def lc_within_toggle_group(group)
         previous, @_lc_toggle_group = @_lc_toggle_group, group

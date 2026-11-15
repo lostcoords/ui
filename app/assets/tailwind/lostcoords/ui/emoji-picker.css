@@ -425,7 +425,7 @@
       position: absolute;
       inset-block: calc(100% + 8px) auto;
       inset-inline: 0 auto;
-      inline-size: min(22rem, calc(100vw - 32px));
+      inline-size: min(var(--lc-emoji-picker-popover-width, 22rem), calc(100vw - 32px));
       max-block-size: min(28rem, calc(100vh - 96px));
       padding-block-end: 0;
       border-radius: var(--radius-3xl, 1.5rem);

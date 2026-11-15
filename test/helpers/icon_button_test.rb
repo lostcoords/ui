@@ -50,6 +50,33 @@ module Lostcoords::Ui
       assert_equal "Delete", form.at_css("button[type=submit]")["aria-label"]
     end
 
+    test "button forms step out of the layout so the button sits in the caller's row" do
+      plain = fragment(@view.lc_button_to("Go", "/")).at_css("form")
+      assert_equal %w[contents], plain["class"].split
+
+      styled = fragment(@view.lc_icon_button_to("Delete", "/files/1", icon: "trash", form: { class: "flex", data: { turbo_stream: true } })).at_css("form")
+      assert_equal %w[flex], styled["class"].split
+      assert_equal "true", styled["data-turbo-stream"]
+    end
+
+    test "the icon follows the button size unless icon_size: picks another tier" do
+      icon = ->(html) { fragment(html).at_css("[data-slot=icon-button]")["class"].split.grep(/\A\[&_svg\]:size-/) }
+      assert_equal %w[[&_svg]:size-4.5], icon.(@view.lc_icon_button("Close", icon: "x-mark", size: :sm))
+      assert_equal %w[[&_svg]:size-5], icon.(@view.lc_icon_button("Close", icon: "x-mark", size: :sm, icon_size: :md))
+      assert_equal %w[[&_svg]:size-6], icon.(@view.lc_icon_button_link_to("Back", "/", icon: "chevron-left", icon_size: :lg))
+      assert_equal %w[[&_svg]:size-5], icon.(@view.lc_icon_button_to("Delete", "/files/1", icon: "trash", size: :lg, icon_size: :md))
+      assert_raises(ArgumentError) { @view.lc_icon_button("Close", icon: "x-mark", icon_size: :xl) }
+    end
+
+    test "the inset variant fills with the page colour for a quiet control on a card" do
+      button = fragment(@view.lc_icon_button("Next month", icon: "chevron-right", variant: :inset)).at_css("button")
+      classes = button["class"].split
+      assert_includes classes, "[--lc-button-bg:var(--background)]"
+      assert_includes classes, "text-muted-foreground"
+      assert_equal "inset", button["data-variant"]
+      assert_includes @view.lc_button_class(variant: :inset, tone: :destructive).split, "text-destructive"
+    end
+
     test "buttons, links and button forms take block: for full width" do
       html = fragment(@view.lc_button("Save", block: true) + @view.lc_button_link_to("Open", "/", block: true) + @view.lc_button_to("Go", "/", block: true))
       assert html.css("button[data-slot=button], a[data-slot=button]").all? { it["class"].split.include?("w-full") }

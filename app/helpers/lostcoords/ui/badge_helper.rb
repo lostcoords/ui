@@ -61,6 +61,20 @@ module Lostcoords::Ui
       "@sm:[--lc-avatar-size:--spacing(5.5)] @sm:[--lc-avatar-font-size:0.5rem] " \
       "[--lc-avatar-stack-overlap:--spacing(1.25)] [--lc-avatar-stack-padding:0px]"
 
+    # A stack pins its avatars' size, so avatars rendered at another size still line up. Small stacks
+    # take a thinner cutout.
+    AVATAR_STACK_SIZES = {
+      xs: "[--lc-avatar-size:--spacing(5)] [--lc-avatar-border:--spacing(0.375)]",
+      5.5 => "[--lc-avatar-size:--spacing(5.5)] [--lc-avatar-border:--spacing(0.375)]",
+      sm: "[--lc-avatar-size:--spacing(6.5)] [--lc-avatar-border:--spacing(0.375)]",
+      md: "",
+      lg: "[--lc-avatar-size:--spacing(12)]"
+    }.freeze
+
+    # :sm tucks each avatar further under the one before and drops the row's padding, for a stack
+    # that sits in a line of text.
+    AVATAR_STACK_OVERLAPS = { md: "", sm: "[--lc-avatar-stack-overlap:--spacing(0.5)] [--lc-avatar-stack-padding:0px]" }.freeze
+
     # dynamic_avatar_stack_controller marks the leading visible avatar with data-first as it narrows the stack.
     AVATAR_STACK_ROW =
       "lc-avatar-stack__row flex shrink-0 p-[var(--lc-avatar-stack-padding,--spacing(1))] " \
@@ -112,8 +126,12 @@ module Lostcoords::Ui
       lc_tw(AVATAR_BASE, AVATAR_SIZES.fetch(lc_option!(:size, size, AVATAR_SIZES.keys)), (AVATAR_INK if ink), (AVATAR_LINKED if linked), extra)
     end
 
-    def lc_avatar_stack_class(compact: false, extra: nil)
-      lc_tw(AVATAR_STACK_BASE, (AVATAR_STACK_COMPACT if compact), extra)
+    def lc_avatar_stack_class(compact: false, size: :md, overlap: :md, extra: nil)
+      size = lc_option!(:size, size, AVATAR_STACK_SIZES.keys)
+      overlap = lc_option!(:overlap, overlap, AVATAR_STACK_OVERLAPS.keys)
+      raise ArgumentError, "compact: sets its own size and overlap" if compact && (size != :md || overlap != :md)
+
+      lc_tw(AVATAR_STACK_BASE, (AVATAR_STACK_COMPACT if compact), AVATAR_STACK_SIZES.fetch(size), AVATAR_STACK_OVERLAPS.fetch(overlap), extra)
     end
 
     def lc_avatar_stack_row_class(extra: nil)

@@ -80,6 +80,13 @@ module Lostcoords::Ui
       choice_label(method, label, hint, "switch", input)
     end
 
+    # lc_file_drop around this attribute's file_field; options other than the drop zone's go to the input.
+    def file_drop(method, title:, hint: nil, button: nil, icon: "arrow-up-tray", **options)
+      @template.lc_file_drop(title: title, hint: hint, button: button, icon: icon) do
+        file_field(method, options.merge(class: @template.lc_tw("sr-only", options[:class])))
+      end
+    end
+
     # A checkbox with its label beside it.
     def choice(method, label: nil, hint: nil, checked_value: "1", unchecked_value: "0", **options)
       input = rails_check_box(method, control_options(method, options, "checkbox-input", @template.lc_checkbox_class, described: true), checked_value, unchecked_value)

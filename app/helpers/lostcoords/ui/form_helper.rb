@@ -20,6 +20,18 @@ module Lostcoords::Ui
 
     TOGGLE_GROUP_ITEM_ACTIVE = "lc-toggle-group-item-active bg-background text-foreground hover:text-foreground"
 
+    # :stacked puts each item's icon over its label; :adaptive makes the group full width and stacks
+    # its items only while the group itself is narrow.
+    TOGGLE_GROUP_LAYOUTS = { inline: nil, stacked: nil, adaptive: "@container/lc-toggle flex w-full" }.freeze
+    TOGGLE_GROUP_ITEM_LAYOUTS = {
+      inline: nil,
+      stacked: "flex-col h-auto min-h-control-sm gap-0.5 px-1.5 py-1.5 text-caption whitespace-normal text-center text-balance [&_svg]:size-5",
+      adaptive: "@max-sm/lc-toggle:flex-col @max-sm/lc-toggle:h-auto @max-sm/lc-toggle:gap-0.5 @max-sm/lc-toggle:px-1.5 " \
+        "@max-sm/lc-toggle:py-1.5 @max-sm/lc-toggle:text-caption @max-sm/lc-toggle:[&_svg]:size-5"
+    }.freeze
+    # A track wider than its container scrolls sideways, its edges fading while there is more to see.
+    TOGGLE_GROUP_SCROLL = "lc-scroll-fade-x max-w-full overflow-x-auto [scrollbar-width:none] *:shrink-0"
+
     INPUT_BASE =
       "w-full max-w-full min-w-0 " \
       "px-3 " \
@@ -55,12 +67,14 @@ module Lostcoords::Ui
       form_with(**options, builder: Lostcoords::Ui::FormBuilder, &block)
     end
 
-    def lc_toggle_group_class(extra: nil)
-      lc_tw(TOGGLE_GROUP_BASE, extra)
+    def lc_toggle_group_class(layout: :inline, scroll: false, extra: nil)
+      layout = lc_option!(:layout, layout, TOGGLE_GROUP_LAYOUTS.keys)
+      lc_tw(TOGGLE_GROUP_BASE, TOGGLE_GROUP_LAYOUTS.fetch(layout), (TOGGLE_GROUP_SCROLL if scroll), extra)
     end
 
-    def lc_toggle_group_item_class(active: false, extra: nil)
-      lc_tw(TOGGLE_GROUP_ITEM_BASE, (TOGGLE_GROUP_ITEM_ACTIVE if active), extra)
+    def lc_toggle_group_item_class(active: false, layout: :inline, extra: nil)
+      layout = lc_option!(:layout, layout, TOGGLE_GROUP_ITEM_LAYOUTS.keys)
+      lc_tw(TOGGLE_GROUP_ITEM_BASE, TOGGLE_GROUP_ITEM_LAYOUTS.fetch(layout), (TOGGLE_GROUP_ITEM_ACTIVE if active), extra)
     end
 
     def lc_input_class(size: :md, plain: false, extra: nil)

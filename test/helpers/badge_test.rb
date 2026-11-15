@@ -21,6 +21,17 @@ module Lostcoords::Ui
       assert_raises(ArgumentError) { @view.lc_badge("You", shape: :circle) }
     end
 
+    test "an avatar stack pins its avatars to one size and can tighten its overlap" do
+      stack = Nokogiri::HTML.fragment(@view.lc_avatar_stack(size: 5.5, overlap: :sm) { @view.lc_avatar("AB", size: :sm) }).at_css("[data-slot=avatar-stack]")
+      classes = stack["class"].split
+      assert_includes classes, "[--lc-avatar-size:--spacing(5.5)]"
+      assert_includes classes, "[--lc-avatar-stack-overlap:--spacing(0.5)]"
+      assert_not_includes classes, "[--lc-avatar-size:--spacing(8)]"
+      assert_equal @view.lc_avatar_stack_class, @view.lc_avatar_stack_class(size: :md, overlap: :md)
+      assert_raises(ArgumentError) { @view.lc_avatar_stack(size: 9) { "" } }
+      assert_raises(ArgumentError) { @view.lc_avatar_stack(compact: true, size: :sm) { "" } }
+    end
+
     test "avatar sizes grow in order and keep the 0.7 sizes" do
       sizes = %i[xs sm md lg xl xxl].map { |size| avatar_size(@view.lc_avatar_class(size: size)) }
 

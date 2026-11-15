@@ -92,8 +92,9 @@ module Showcase
       Section.new(:avatar, "Avatar", "Initials or an image representing a person.", [
         Example.new(:avatar, "Initials and images", :panel),
         Example.new(:avatar_sizes, "Sizes", :panel),
-        Example.new(:avatar_stack, "Avatar groups", :panel)
-      ], %i[lc_avatar lc_avatar_stack]),
+        Example.new(:avatar_stack, "Avatar groups", :panel),
+        Example.new(:avatar_badge, "Corner badge", :panel)
+      ], %i[lc_avatar lc_avatar_stack lc_avatar_badge]),
       Section.new(:icon_badge, "Icon badge", "A small container for a symbol.", [
         Example.new(:icon_badge, "Shapes and sizes", :panel),
         Example.new(:icon_badge_circle, "Round icons and tones", :panel)
@@ -130,8 +131,9 @@ module Showcase
         Example.new(:rails_field, "Rails forms", :panel),
         Example.new(:layout_form_actions, "Form actions", :panel),
         Example.new(:form_builder, "Form builder", :panel),
-        Example.new(:fieldset, "Grouped controls", :panel)
-      ], %i[lc_field lc_fieldset lc_form_with]),
+        Example.new(:fieldset, "Grouped controls", :panel),
+        Example.new(:file_drop, "File drop", :panel)
+      ], %i[lc_field lc_fieldset lc_form_with lc_file_drop]),
       Section.new(:checkbox, "Checkbox", "Native checkboxes with labels and hints.", [
         Example.new(:checkbox, "Checkboxes", :panel)
       ]),
@@ -144,7 +146,8 @@ module Showcase
       ]),
       Section.new(:input, "Input", "Native single-line input.", [
         Example.new(:input, "Sizes", :panel),
-        Example.new(:input_states, "Disabled and read-only", :panel)
+        Example.new(:input_states, "Disabled and read-only", :panel),
+        Example.new(:input_icon, "Leading icon", :panel)
       ]),
       Section.new(:select, "Native select", "Native options with consistent sizing.", [
         Example.new(:select, "Native select", :panel)
@@ -211,7 +214,9 @@ module Showcase
         Example.new(:toggle_group, "Mutually exclusive choices", :panel),
         Example.new(:toggle_group_links, "Navigation links", :panel),
         Example.new(:toggle_group_pills, "Wrapping pills", :panel),
-        Example.new(:toggle_group_form, "Form values, native radios and reset", :panel)
+        Example.new(:toggle_group_form, "Form values, native radios and reset", :panel),
+        Example.new(:toggle_group_icons, "Icons, stacked and adaptive layouts", :panel),
+        Example.new(:toggle_group_scroll, "A scrolling track", :panel)
       ], %i[lc_toggle_group lc_toggle_group_item]),
       Section.new(:kbd, "Keyboard shortcut", "Page-wide keys that focus or press an element, and the hints that show them.", [
         Example.new(:kbd, "Focus a field", :panel)
@@ -260,7 +265,8 @@ module Showcase
       ]),
       Section.new(:list_group, "List group", "Grouped rows of settings, with a heading and footnote.", [
         Example.new(:list_group, "Settings", :bare),
-        Example.new(:list_field, "Form rows", :panel)
+        Example.new(:list_field, "Form rows", :panel),
+        Example.new(:list_choice, "Choice rows", :bare)
       ], %i[lc_list_section lc_list_group lc_list_row lc_list_item lc_list_field]),
       Section.new(:emoji, "Emoji picker", "Search, categories and skin tones.", [
         Example.new(:html, "Emoji picker", :panel)

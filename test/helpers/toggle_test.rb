@@ -82,6 +82,35 @@ module Lostcoords::Ui
       assert_raises(ArgumentError) { @view.lc_toggle_group_item("Link", href: "/") }
     end
 
+    test "toggle group items take an icon, alone or above their label" do
+      nav = fragment(@view.lc_toggle_group(label: "View", as: :nav) do
+        @view.safe_join([ @view.lc_toggle_group_item("List", href: "/", current: true, icon: "list-bullet", icon_only: true), @view.lc_toggle_group_item("Calendar", href: "/c", icon: "calendar-days") ])
+      end)
+      list, calendar = nav.css("a")
+      assert_equal "List", list.at_css(".sr-only").text
+      assert_equal "true", list["data-icon-only"]
+      assert_includes list["class"].split, "aspect-square"
+      assert_equal "Calendar", calendar.text.strip
+      assert_equal "true", calendar.at_css("svg")["aria-hidden"]
+      assert_raises(ArgumentError) { @view.lc_toggle_group_item(value: "x", icon: "list-bullet", icon_only: true) { "X" } }
+
+      stacked = fragment(@view.lc_toggle_group(label: "Access", name: "access", value: "open", layout: :stacked) { @view.lc_toggle_group_item("Open", value: "open", icon: "globe-alt") })
+      assert_includes stacked.at_css("label")["class"].split, "flex-col"
+      adaptive = fragment(@view.lc_toggle_group(label: "Split", layout: :adaptive) { @view.lc_toggle_group_item("Equal", value: "equal") })
+      assert_includes adaptive.at_css("[role=radiogroup]")["class"].split, "w-full"
+      assert_includes adaptive.at_css("button")["class"].split, "@max-sm/lc-toggle:flex-col"
+      assert_not_includes adaptive.at_css("button")["class"].split, "flex-col"
+      assert_raises(ArgumentError) { @view.lc_toggle_group(label: "Split", layout: :grid) { "" } }
+      assert_raises(ArgumentError) { @view.lc_toggle_group(label: "Split", variant: :pills, layout: :stacked) { "" } }
+    end
+
+    test "a scrolling toggle group keeps its items whole and fades its edges" do
+      group = fragment(@view.lc_toggle_group(label: "Range", as: :nav, scroll: true) { @view.lc_toggle_group_item("All", href: "/") }).at_css("nav")
+      assert_includes group["class"].split, "overflow-x-auto"
+      assert_includes group["class"].split, "lc-scroll-fade-x"
+      assert_includes group["class"].split, "*:shrink-0"
+    end
+
     test "a pills toggle group wraps toggle pills and accepts an empty value" do
       html = fragment(@view.lc_toggle_group(label: "Category", name: "category", value: "", variant: :pills) do
         @view.safe_join([ @view.lc_toggle_group_item("Leave unchanged", value: ""), @view.lc_toggle_group_item("Food", value: "food") ])

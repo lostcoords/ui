@@ -155,6 +155,41 @@ module Lostcoords::Ui
       assert unpadded.at_css("button[data-slot=list-item]")
     end
 
+    test "the list group rounds its shown ends, whatever they are" do
+      group = render('<%= lc_list_group do %><details>More</details><%= lc_list_row "Row" %><% end %>').at_css("[data-slot=list-group]")
+      classes = group["class"].split
+      assert_includes classes, "[&>:not([hidden]):not(:not([hidden])~*)]:rounded-t-3xl"
+      assert_includes classes, "[&>:not([hidden]):not(:has(~:not([hidden])))]:rounded-b-3xl"
+      assert_not_includes group.at_css("[data-slot=list-row]")["class"].split, "first:rounded-t-3xl"
+    end
+
+    test "a choice row is a label around a hidden radio with a trailing check" do
+      row = render('<%= lc_list_row "A friend", choice: :radio, name: :heard, value: "friend", checked: true, input: { required: true }, data: { test: "row" } %>').at_css("label[data-slot=list-row]")
+      radio = row.at_css("input[type=radio]")
+      assert_equal %w[heard friend], [ radio["name"], radio["value"] ]
+      assert radio.key?("checked")
+      assert radio.key?("required")
+      assert_includes radio["class"].split, "sr-only"
+      assert_equal "A friend", row.at_css("[data-slot=list-title]").text
+      assert_equal "row", row["data-test"]
+      assert_includes row["class"].split, "has-checked:bg-primary-soft"
+      assert_equal "true", row.element_children.last["aria-hidden"], "the check trails the row"
+
+      block = render('<%= lc_list_row choice: :radio, name: :into, value: "b", disabled: true do %><span>Ben</span><% end %>').at_css("label")
+      refute block.at_css("input").key?("checked")
+      assert block.at_css("input").key?("disabled")
+      assert_equal "Ben", block.at_css("span").text
+      assert_raises(ArgumentError) { @view.lc_list_row("Row", choice: :checkbox, name: :x, value: "y") }
+      assert_raises(ArgumentError) { @view.lc_list_row("Row", choice: :radio, name: :x) }
+      assert_raises(ArgumentError) { @view.lc_list_row("Row", name: :x, value: "y") }
+    end
+
+    test "an unpadded card clips its children to its corners" do
+      classes = @view.lc_card_class(padding: :none).split
+      assert_includes classes, "overflow-clip"
+      assert_includes classes, "border-0"
+    end
+
     test "list rows reject unknown tags and links on other tags" do
       assert_raises(ArgumentError) { @view.lc_list_row("Row", tag: :span) }
       assert_raises(ArgumentError) { @view.lc_list_row("Row", href: "/x", tag: :label) }

@@ -144,6 +144,13 @@ module Lostcoords::Ui
       assert_includes html.at_css(".lc-emoji-picker__popover")["class"].split, "host-surface"
     end
 
+    test "a large emoji picker widens its desktop popover" do
+      form = ActionView::Helpers::FormBuilder.new(:project, nil, @view, {})
+      wide = fragment(@view.lc_emoji_picker(form: form, field: :emoji, label: "Choose a symbol", catalog_url: "/emoji-catalog", id: "symbol", popover_size: :lg))
+      assert_includes wide.at_css("#symbol")["class"].split, "[--lc-emoji-picker-popover-width:28rem]"
+      assert_raises(ArgumentError) { @view.lc_emoji_picker(form: form, field: :emoji, label: "Symbol", catalog_url: "/c", popover_size: :xl) }
+    end
+
     test "unsupported options and missing accessible labels are rejected" do
       assert_raises(ArgumentError) { @view.lc_input(size: :tiny) }
       assert_raises(ArgumentError) { @view.lc_input(type: :unsupported) }

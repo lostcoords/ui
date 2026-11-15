@@ -1,0 +1,7 @@
+<div class="w-full max-w-xs">
+  <%= lc_toggle_group label: "Date range", as: :nav, scroll: true do %>
+    <% %w[Week Month Quarter Year All\ time].each_with_index do |range, index| %>
+      <%= lc_toggle_group_item range, href: "/components/toggle_group.html##{range.parameterize}", current: index.zero? %>
+    <% end %>
+  <% end %>
+</div>

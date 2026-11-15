@@ -21,7 +21,7 @@ lockfile pins its gem version, so publishing a library update does not upgrade c
 ## Install
 
 ```ruby
-gem "lostcoords-ui", "~> 0.11.0"
+gem "lostcoords-ui", "~> 0.12.0"
 ```
 
 The engine adds its rendering helpers to host views, its views and translations to the host's lookup
@@ -169,6 +169,42 @@ registerControllers(application, { only: ["lc-copy", "lc-collapsible"] })
 Omit `only` to register every library controller. Unknown identifiers raise before anything is
 registered, and repeated calls on the same application keep later overrides, so register defaults
 before application overrides.
+
+## Changes in 0.12.0
+
+One edit, and some components look different:
+
+- **`lc_menu_option` takes `form_attributes:` for the form `method:` builds.** Before: `form:` set that
+  form's attributes. After: `form:` is the option button's own HTML `form` attribute, so an option can submit a
+  form elsewhere on the page (`type: "submit", form: "profile-form"`). Rename `form:` to `form_attributes:`
+  wherever an option passes it alongside `method:`.
+- **A small icon button draws an 18px icon**, up from 16px; `icon_size:` picks another.
+- **`lc_button_to` and `lc_icon_button_to` wrap their button in a `contents` form**, so the button sits in a
+  flex or grid row as if the form weren't there. A caller's `form: { class: }` still merges over it. A
+  margin or alignment class that was on the form belongs on the button now.
+- **`lc_list_group` rounds its first and last visible child**, whatever it is, instead of each row rounding
+  itself. Non-row children and hidden rows need no corner classes.
+- **`lc_card(padding: :none)` drops the border and clips its children** to its corners, so rows reach the
+  edge without negative margins.
+- **A dialog's body no longer shrinks its children**, so a long body scrolls instead of squashing buttons.
+- **The choice card uses the global focus halo** instead of its own outline.
+
+New components and options, moved from apps that built them by hand:
+
+- **`lc_avatar_badge`** puts an icon badge on an avatar's corner: a decorative mark, a button or a file label.
+- **`lc_file_drop`** (and `form.file_drop`) is a dashed drop zone around a file input.
+- **`lc_list_row(choice: :radio, name:, value:, checked:)`** is a selectable row with a trailing check.
+- **`lc_toggle_group(layout: :inline | :stacked | :adaptive, scroll:)`** and
+  **`lc_toggle_group_item(icon:, icon_only:)`**: icons in segmented controls, stacked over their labels on
+  narrow groups, and a scrolling track with faded edges.
+- **`lc_menu(side: :top, trigger_size:)`** opens upward and sizes its trigger; `lc_popover_class` and
+  `lc_menu_popover_class` take `side:` too.
+- **`lc_icon_button(icon_size:)`** and the **`:inset` variant**, a page-coloured fill for buttons inside a card.
+- **`lc_avatar_stack(size:, overlap:)`**, **`lc_emoji_picker(popover_size:)`**, **`lc_input(icon:)`**,
+  **`lc_sheet(surface: :glass)`** with pinned `sheet.header` and `sheet.footer` parts, and
+  **`lc_heading(as:)`**.
+- **`registerDialog` takes `priority:` and `restoreFocus:`**, so a host dialog no longer registers with the
+  dismiss stack directly. A click on the dialog's own padding no longer closes it.
 
 ## Changes in 0.11.0
 
@@ -326,7 +362,8 @@ in its code panel. The API reference reads signatures from the helper definition
 [API JSON](https://ui.lostcoords.com/api.json) and [llms.txt](https://ui.lostcoords.com/llms.txt)
 include those signatures and the runnable examples.
 
-Buttons use `primary`, `secondary`, `outline`, `ghost`, `glass` or `destructive`, with `sm`, `md` or `lg` sizes.
+Buttons use `primary`, `secondary`, `outline`, `ghost`, `inset`, `glass` or `destructive`, with `sm`, `md` or `lg` sizes.
+`inset` fills with the page colour and muted ink, for a quiet control on a card.
 Primary, secondary and destructive buttons have visible filled surfaces. Ghost buttons and the
 `lc_icon_button` toolbar action are transparent at rest and show their full shape on hover.
 Primary, secondary and destructive buttons are flat. Secondary buttons use a soft neutral fill distinct from page and card backgrounds.
@@ -337,7 +374,7 @@ Button hover and press fills mix 94% of the base background with 6% of its foreg
 Ghost and icon buttons stay transparent at rest and use the secondary base for that calculation.
 Apps can override `--secondary` for the neutral base, or `--lc-button-bg` and `--lc-button-ink` on individual buttons.
 Inputs use `--input` and `--lc-input-hover`.
-`lc_button_to` preserves Rails' form, HTTP method and CSRF behavior. `lc_icon_button_link_to` and `lc_icon_button_to` are the link and form versions of `lc_icon_button`; a block replaces its icon with custom content. Icon buttons take `lc_button`'s `variant:` and `tone:` too; the default `:ghost` is the quiet toolbar look. `block: true` makes any button full width. Block helpers capture ERB content.
+`lc_button_to` preserves Rails' form, HTTP method and CSRF behavior. Its form is `display: contents`, so the button sits directly in the caller's row or grid; `form: { class: }` merges over that. `lc_icon_button_link_to` and `lc_icon_button_to` are the link and form versions of `lc_icon_button`; a block replaces its icon with custom content. Icon buttons take `lc_button`'s `variant:` and `tone:` too; the default `:ghost` is the quiet toolbar look. Their icon is 18, 20 or 24px for `sm`, `md` or `lg`; `icon_size:` picks another of those tiers, as in `size: :sm, icon_size: :md`. `block: true` makes any button full width. Block helpers capture ERB content.
 Use `icon: "plus"` for a leading Heroicon or `icon_position: :end` for a trailing one. Custom icons and
 spinners use `data-icon="inline-start"` or `data-icon="inline-end"`; buttons adjust that edge's padding.
 `lc_button(expanded_icon: "x-mark")` swaps its content for that icon while `aria-expanded` is true, for a trigger
@@ -383,6 +420,7 @@ Wrap wide tables in an app-owned horizontal scroll region with an accessible nam
 Use `lc_table_class` when an existing table renderer owns the markup.
 
 Cards share one API: `lc_card(padding: :md)`, with `:sm` and `:none` for tighter or custom spacing. Padding sizes set `--lc-inset`, so content inside follows the card.
+An unpadded card drops its border and clips its children to its corners, so full-bleed rows meet its edge and a hovered row's fill rounds with it, with no negative margins or corner classes. Menus and dialogs inside it render in the top layer and are not clipped.
 Fields and secondary buttons inside cards take `--card-input` and `--card-secondary`, which default to the page fills; set them in the theme when `--card` equals `--input` or `--secondary`, or set `--lc-field-bg` to change fields in one context. Cards provide avatar cutouts and a validation border when they contain errors. Fills that are muted on the page switch so they stay visible on the card: choice tiles, alerts, neutral badges and skeletons take the page background (`--lc-tile-bg`), and toggle group and tab tracks take the accent fill (`--lc-track-bg`). Set either variable to apply the same context to your own muted surface.
 Add `class: "@container"` when a card owns its width and its children use container queries.
 Use `--lc-card-bg`, `--lc-card-border`, `--lc-card-radius` and `--lc-card-shadow` for local appearance overrides.
@@ -392,8 +430,15 @@ Use `--lc-card-bg`, `--lc-card-border`, `--lc-card-radius` and `--lc-card-shadow
 `lc_avatar` sizes are `xs` (20px), `sm` (26px), `md` (32px), `lg` (48px), `xl` (96px) and `xxl` (112px).
 Between them, both take a step on the spacing scale, as in `size-7`: `lc_avatar` takes `7` (28px) and `11` (44px),
 `lc_icon_badge` takes `6` (24px), `7` (28px) and `11` (44px).
-Pass `as: :button` when the avatar is itself the control, such as a colour picker's trigger. `lc_avatar_stack`
-takes `row:` attributes for the inner row that overlaps the avatars, such as a controller target.
+Pass `as: :button` when the avatar is itself the control, such as a colour picker's trigger.
+`lc_avatar_badge(icon, label:, as:)` pins a round badge to an avatar's bottom corner; render it after the avatar
+in a `relative` wrapper. `as: :span` (the default) is a 28px decorative mark, such as a lock on a gated group;
+`as: :button` and `as: :label` are 44px controls named by `label:`, such as a camera that changes the photo. A
+label needs `for:` and shows the focus halo while the visually hidden input after it has focus; as a menu
+trigger, splat `menu.trigger`'s attributes into an `as: :button` badge. `lc_avatar_stack`
+takes `row:` attributes for the inner row that overlaps the avatars, such as a controller target. Its `size:`
+(`xs`, `5.5`, `sm`, `md` or `lg`) pins every avatar in it to one size, and `overlap: :sm` tucks them closer and
+drops the row's padding, for a stack in a line of text. `compact: true` is a preset of both and takes neither.
 Initials and icons scale with the size, including a size set through `--lc-avatar-size` or `--lc-icon-badge-size`;
 set `--lc-avatar-font-scale` or `--lc-icon-badge-font-scale` to change the share, or the `-font-size` variable to pin it.
 Badge, icon badge, Alert and Toast share `neutral`, `primary`, `success`, `warning` and `destructive` tones.
@@ -409,6 +454,9 @@ With `name:` they are native radios in labels, which bring their own arrows, sub
 labelled `nav`; items take `href:` and `current:`. Otherwise they are radio buttons whose selection lives in the
 `lc-selection` controller, which dispatches `lc-selection:change`; items take `value:` and `selected:`. An item
 given another kind's arguments raises. `variant: :pills` lays any of them out as wrapping toggle pills, sized by `size:`, instead of a segmented track.
+Items take `icon:` and `icon_only:` as `lc_toggle` does. A segmented group's `layout: :stacked` puts each item's icon
+over its label, and `layout: :adaptive` makes the group full width and stacks its items only while the group is
+narrower than 24rem. `scroll: true` lets a track wider than its container scroll sideways, its edges fading.
 
 ```erb
 <%= lc_toggle_group label: "Period", as: :nav do %>
@@ -421,7 +469,13 @@ given another kind's arguments raises. `variant: :pills` lays any of them out as
 <% end %>
 <%= lc_toggle "Food", aria: { pressed: false }, data: { value: "food" } %>
 <%= lc_toggle "Bold", icon: "bold", icon_only: true, tooltip: true %>
+<%= lc_toggle_group label: "View", as: :nav do %>
+  <%= lc_toggle_group_item "List", href: "/", current: true, icon: "list-bullet", icon_only: true %>
+  <%= lc_toggle_group_item "Calendar", href: "/calendar", icon: "calendar-days", icon_only: true %>
+<% end %>
 ```
+
+`lc_emoji_picker(popover_size: :lg)` widens the desktop popover from 22rem to 28rem for a roomier grid.
 
 `lc_empty_state(title:, text:, icon:)` lays out the usual empty state: a round icon badge, a heading
 (`level:`, 2 by default), a line of muted text, then the block, such as an action. `card: true` puts it on a card.
@@ -478,7 +532,8 @@ makes the summary look like that `lc_button` without the native marker, and `ind
 ```
 
 `lc_list_group` draws grouped settings rows: each row is its own card-coloured panel, 2px apart, and
-only the group's ends round. Rows are card surfaces, so fields and buttons in them follow
+only the group's ends round. The group rounds its first and last shown child, so a collapsible or any other
+element at an end rounds too, and a `hidden` row hands its corners to the next one shown. Rows are card surfaces, so fields and buttons in them follow
 `--card-input` and `--card-secondary`. `lc_list_row` with a title lays out `icon:` (a name, or your own
 markup such as a logo), the title, `subtitle:` and the block as trailing content; `tag:` makes it a
 `label`, `li`, `details` or `a` (`href:`). `href:` with `tag: :li` or `:div` links the title instead
@@ -488,6 +543,18 @@ else in the row follows the title. Without a title the block is the whole row, a
 out the same icon, title and subtitle inside your own element. `lc_list_section` adds the heading and
 footnote; with an `id:`, the heading labels the section. Put a form around `lc_list_group` inside it
 when the rows save together.
+
+`lc_list_row(choice: :radio, name:, value:, checked:)` makes a row one choice of a radio group: a `label` around a
+visually hidden radio, then the title or block, then a check shown while it is checked. The checked row fills
+with `--primary-soft` and its text turns semibold, and the focus halo rings the row while its radio has focus.
+`input:` adds attributes to the radio, such as `required: true` or a Stimulus action.
+
+```erb
+<%= lc_list_group role: "radiogroup", aria: { label: "How did you hear about us?" } do %>
+  <%= lc_list_row "A friend", choice: :radio, name: :heard_about, value: "friend", checked: true %>
+  <%= lc_list_row "Search", choice: :radio, name: :heard_about, value: "search" %>
+<% end %>
+```
 
 `lc_list_field` is a form row in the same group: a label column, then the block as the control. In a
 narrow row the label folds to its `icon:`, and the text stays the accessible name. `id:` makes the label
@@ -575,6 +642,20 @@ before JavaScript runs.
   <%= lc_char_counter max: 280, for: "post" %>
 <% end %>
 ```
+
+`lc_file_drop(title:, hint:, button:, icon:)` is a dashed drop zone: a label around a visually hidden file
+input, so a click or a dropped file reaches it. `name:` builds the input with `accept:`, `multiple:` and
+`input:` attributes, such as a controller target; `form.file_drop :files, title: …` wraps the form's own
+`file_field`, and its other options (`accept:`, `multiple:`, `data:`) reach the input. `button:` adds a
+decorative button inside, which the label already names.
+
+```erb
+<%= form.file_drop :files, title: "Add receipts", hint: "Up to 10 MB each", button: "Browse",
+      multiple: true, accept: "image/*,application/pdf", data: { action: "change->upload#update" } %>
+```
+
+`lc_input(icon: "magnifying-glass")` draws a leading icon inside the field. The input comes wrapped in a
+span then; `class:` and the other attributes still reach the `<input>`.
 
 `lc_checkbox`, `lc_radio` and `lc_switch` render native inputs with a label and optional hint.
 Checkboxes and switches submit an unchecked value like Rails' `check_box`; pass `unchecked_value: nil`
@@ -742,7 +823,8 @@ assistive technology so the label stays the name. Leading visuals share one colu
 labels line up with and without them. `hint:` adds a secondary line. `checked: true` or `false` makes
 a `menuitemradio` with a check mark. `checkbox: true` makes a `menuitemcheckbox` that flips its
 `aria-checked` on click, dispatches `lc-menu:check` with `{ checked }`, and leaves the menu open.
-`method:` renders a `button_to` form and passes `params:` and `form:` on.
+`method:` renders a `button_to` form and passes `params:` on, and `form_attributes:` to the form. `form:` is the
+button's own attribute: with `type: "submit"` the option submits that form from elsewhere on the page.
 `lc_menu_group(label, id:)` wraps options in a `role="group"` labelled by an eyebrow heading; its
 options stay on the menu's columns.
 `lc_menu` and `lc_popover` take `trigger: false` to render only the panel, named by `label:` (or
@@ -750,7 +832,8 @@ options stay on the menu's columns.
 `trigger` targets. With `click->lc-popover#toggleFromRow` on that host, a click anywhere on it that
 misses a control opens the panel; mark other regions `data-lc-menu-ignore`.
 `lc_menu` and `lc_popover` take `trigger: :icon` with `icon:` for a quiet icon button named by `label:`,
-or rendered content such as an avatar for a custom trigger. `trigger_attributes:` adds attributes such as `class:` or `title:` to either.
+or rendered content such as an avatar for a custom trigger. `lc_menu(trigger_size: :sm)` makes either one a small control.
+`lc_menu(side: :top)` opens the menu above its trigger, for a menu near the bottom of the screen. `trigger_attributes:` adds attributes such as `class:` or `title:` to either.
 For any other trigger, call the yielded part's `trigger` with a block. It receives the attributes that
 wire an element as the trigger (its id, `aria-haspopup`, `aria-expanded`, `aria-controls` and the
 Stimulus target and action), merged with any passed to `trigger`, and the element it renders replaces
@@ -815,7 +898,29 @@ picker both work; a div you toggle yourself sets `data-open` and removes it to s
 the div keeps your frame, or `anchored: true` makes it a popover under its trigger inside a positioned
 ancestor. `detents:` takes the same stops as `lc_dialog`, and `handle: true` adds a grab strip above the
 content. A swipe down dispatches `lc-sheet:dismiss`; unless a listener cancels it, an open popover then
-hides.
+hides. `surface: :glass` draws a div in the translucent menu material, as a picker that is a menu on desktop
+and a sheet on phones. The block gets a builder: `sheet.header` and `sheet.footer` stay pinned to the top and
+bottom of the scrolling content, painted with the sheet's surface (`--lc-sheet-bg` on phones, `--popover`
+above), so content scrolls under them. Put the footer last in a scroller padded with `px-inset`; it bleeds to
+the scroller's edges and clears the home indicator.
+
+```erb
+<%= lc_sheet tag: :dialog, size: :lg, aria: { label: "New expense" } do |sheet| %>
+  <%= sheet.header do %>…<% end %>
+  <div class="min-h-0 overflow-y-auto px-inset">
+    …
+    <%= sheet.footer do %><%= lc_button "Save" %><% end %>
+  </div>
+<% end %>
+```
+
+A controller that opens a `<dialog>` itself joins it to the dismiss stack with `registerDialog` from
+`lostcoords/ui/helpers/dialog`, so Escape, a backdrop click and a swipe close it, and the page stops scrolling
+behind it. `registerDialog(dialog, { close, priority, restoreFocus, lockScroll })`: `close` may return `false`
+to keep the dialog open, such as while it asks to discard changes; `priority` ranks it against panels open in
+it (a dialog is 10, a panel 20); `restoreFocus` runs after a close; `lockScroll: false` leaves the page
+scrollable. It returns the unregister function and ends when the dialog closes; a click on the dialog's own
+padding does not close it.
 
 ```erb
 <button type="button" popovertarget="filters">Filters</button>
@@ -1027,7 +1132,7 @@ Heading sizes are `display`, `title`, `heading` and `subheading`. Text sizes are
 styles a kicker or footer column label; under `lang="ja"` it keeps natural case and letter spacing. Pass `trim: true` to trim the text box.
 Stacks and inline groups take the spacing names from [Foundations](#foundations). `lc_stack`, `lc_inline`,
 `lc_text` and `lc_card` take `as:` to render a meaningful element, such as `lc_stack(as: :ul)`, `lc_text(as: :span)` or
-`lc_card(as: :section)`. `lc_section` leaves
+`lc_card(as: :section)`. `lc_heading(as: :span)` sets text in a heading role without adding a heading to the outline, such as a total in a summary row. `lc_section` leaves
 `heading` below its title and `content` between blocks. `lc_split` lays out a main column and an aside: one
 column on small screens, and from `lg` a flexible main beside an aside of `aside: :sm` (16rem), `:md` (20rem)
 or `:lg` (24rem). `lc_columns(count: 2)` flows groups, such as settings sections, into balanced columns from
@@ -1076,15 +1181,16 @@ Class helpers remain available for custom markup. The application owns its seman
 Generated by `bin/rails lostcoords:ui:builders`; `bin/lint` checks this list against the style helpers.
 
 <!-- builders -->
+- `lc_avatar_badge_class(size: :md, control: false, extra: nil)` (AvatarBadgeHelper)
 - `lc_icon_badge_class(size: :md, shape: :square, tone: :neutral, extra: nil)` (BadgeHelper)
 - `lc_avatar_class(size: :md, ink: false, linked: false, extra: nil)` (BadgeHelper)
-- `lc_avatar_stack_class(compact: false, extra: nil)` (BadgeHelper)
+- `lc_avatar_stack_class(compact: false, size: :md, overlap: :md, extra: nil)` (BadgeHelper)
 - `lc_avatar_stack_row_class(extra: nil)` (BadgeHelper)
 - `lc_badge_class(tone: :neutral, shape: :rounded, extra: nil)` (BadgeHelper)
 - `lc_toggle_class(active: false, ghost: false, size: :md, extra: nil)` (BadgeHelper)
 - `lc_button_class(variant: :primary, tone: :default, size: :md, block: false, extra: nil)` (ButtonHelper)
 - `lc_select_trigger_class(size: :md, block: false, extra: nil)` (ButtonHelper)
-- `lc_icon_button_class(shape: :square, size: :md, variant: :ghost, tone: :default, extra: nil)` (ButtonHelper)
+- `lc_icon_button_class(shape: :square, size: :md, icon_size: size, variant: :ghost, tone: :default, extra: nil)` (ButtonHelper)
 - `lc_card_class(interactive: false, padding: :md, extra: nil)` (CardHelper)
 - `lc_choice_label_class(card: false, extra: nil)` (ChoiceHelper)
 - `lc_checkbox_class(extra: nil)` (ChoiceHelper)
@@ -1103,8 +1209,9 @@ Generated by `bin/rails lostcoords:ui:builders`; `bin/lint` checks this list aga
 - `lc_spinner_class(size: :md, extra: nil)` (FeedbackHelper)
 - `lc_skeleton_class(extra: nil)` (FeedbackHelper)
 - `lc_empty_state_class(extra: nil)` (FeedbackHelper)
-- `lc_toggle_group_class(extra: nil)` (FormHelper)
-- `lc_toggle_group_item_class(active: false, extra: nil)` (FormHelper)
+- `lc_file_drop_class(extra: nil)` (FileDropHelper)
+- `lc_toggle_group_class(layout: :inline, scroll: false, extra: nil)` (FormHelper)
+- `lc_toggle_group_item_class(active: false, layout: :inline, extra: nil)` (FormHelper)
 - `lc_input_class(size: :md, plain: false, extra: nil)` (FormHelper)
 - `lc_select_class(size: :md, extra: nil)` (FormHelper)
 - `lc_textarea_class(extra: nil)` (FormHelper)
@@ -1117,8 +1224,8 @@ Generated by `bin/rails lostcoords:ui:builders`; `bin/lint` checks this list aga
 - `lc_split_class(aside: :md, extra: nil)` (LayoutHelper)
 - `lc_columns_class(count: 2, extra: nil)` (LayoutHelper)
 - `lc_section_header_class(extra: nil)` (LayoutHelper)
-- `lc_popover_class(align: :end, extra: nil)` (MenuHelper)
-- `lc_menu_popover_class(align: :end, extra: nil)` (MenuHelper)
+- `lc_popover_class(align: :end, side: :bottom, extra: nil)` (MenuHelper)
+- `lc_menu_popover_class(align: :end, side: :bottom, extra: nil)` (MenuHelper)
 - `lc_menu_option_class(tone: :default, extra: nil)` (MenuHelper)
 - `lc_link_class(tone: :inherit, extra: nil)` (NavigationHelper)
 - `lc_nav_link_class(compact: false, layout: :column, extra: nil)` (NavigationHelper)

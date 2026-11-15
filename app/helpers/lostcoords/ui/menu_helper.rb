@@ -15,6 +15,12 @@ module Lostcoords::Ui
       center: "start-1/2 end-auto -translate-x-1/2"
     }.freeze
 
+    # Below the trigger by default; :top opens upward, for a menu near the bottom of the screen.
+    MENU_POPOVER_SIDES = {
+      bottom: "",
+      top: "top-auto bottom-[calc(100%+--spacing(1))] [--lc-popover-from:translateY(--spacing(1))_scale(0.98)]"
+    }.freeze
+
     MENU_OPTION_BASE =
       "lc-menu__item lc-press [--lc-press-scale:0.98] group/option grid col-span-full grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-3 w-full " \
       "min-h-control-md px-3 py-1.5 rounded-2xl lc-squircle border-none bg-transparent text-start font-sans text-label text-foreground " \
@@ -38,12 +44,14 @@ module Lostcoords::Ui
     MENU_GROUP_BASE = "col-span-full grid grid-cols-subgrid gap-y-px"
     MENU_GROUP_LABEL = "col-span-full px-3 pt-2 pb-1"
 
-    def lc_popover_class(align: :end, extra: nil)
-      lc_glass_class(shape: :menu, extra: lc_tw(POPOVER_BASE, MENU_POPOVER_ALIGN.fetch(lc_option!(:align, align, MENU_POPOVER_ALIGN.keys)), extra))
+    def lc_popover_class(align: :end, side: :bottom, extra: nil)
+      align = MENU_POPOVER_ALIGN.fetch(lc_option!(:align, align, MENU_POPOVER_ALIGN.keys))
+      side = MENU_POPOVER_SIDES.fetch(lc_option!(:side, side, MENU_POPOVER_SIDES.keys))
+      lc_glass_class(shape: :menu, extra: lc_tw(POPOVER_BASE, align, side, extra))
     end
 
-    def lc_menu_popover_class(align: :end, extra: nil)
-      lc_popover_class(align: align, extra: lc_tw(MENU_POPOVER_BASE, extra))
+    def lc_menu_popover_class(align: :end, side: :bottom, extra: nil)
+      lc_popover_class(align: align, side: side, extra: lc_tw(MENU_POPOVER_BASE, extra))
     end
 
     def lc_menu_option_class(tone: :default, extra: nil)
@@ -51,11 +59,11 @@ module Lostcoords::Ui
     end
 
     # trigger: :icon renders a quiet icon button named by label; rendered HTML becomes the content
-    # of a custom trigger, also named by label.
-    def lc_menu(id:, label: lc_t("lostcoords.ui.menu.label"), align: :end, trigger: :button, icon: "ellipsis-vertical", trigger_attributes: {}, wrapper_attributes: {}, **attributes, &block)
-      align = lc_option!(:align, align, MENU_POPOVER_ALIGN.keys)
-      default_trigger = ->(wiring) { lc_panel_trigger(label, trigger, icon, :secondary, wiring) } unless trigger == false
-      lc_render_panel(id, label, nil, "lc-menu", "menu", lc_menu_popover_class(align: align), lc_attributes({ data: { slot: "menu" } }, attributes), default_trigger, trigger_attributes, wrapper_attributes, &block)
+    # of a custom trigger, also named by label. trigger_size: sizes either one.
+    def lc_menu(id:, label: lc_t("lostcoords.ui.menu.label"), align: :end, side: :bottom, trigger: :button, trigger_size: :md, icon: "ellipsis-vertical", trigger_attributes: {}, wrapper_attributes: {}, **attributes, &block)
+      trigger_size = lc_option!(:trigger_size, trigger_size, ButtonHelper::ICON_BUTTON_SIZES.keys)
+      default_trigger = ->(wiring) { lc_panel_trigger(label, trigger, icon, :secondary, wiring, trigger_size) } unless trigger == false
+      lc_render_panel(id, label, nil, "lc-menu", "menu", lc_menu_popover_class(align: align, side: side), lc_attributes({ data: { slot: "menu" } }, attributes), default_trigger, trigger_attributes, wrapper_attributes, &block)
     end
 
     # Takes the same trigger options as lc_menu, including trigger: false.
@@ -70,8 +78,9 @@ module Lostcoords::Ui
     # icon: names a leading Heroicon; leading: takes other rendered content, such as an avatar, and is
     # hidden from assistive technology so the label stays the name. checked: true or false makes a
     # menuitemradio with a check mark. checkbox: true makes a menuitemcheckbox that flips on click and
-    # leaves the menu open. method: renders a button_to form for href.
-    def lc_menu_option(label = nil, href: nil, tone: :default, icon: nil, leading: nil, hint: nil, checked: nil, checkbox: false, method: nil, params: {}, form: {}, **attributes, &block)
+    # leaves the menu open. method: renders a button_to form for href, with form_attributes: on the
+    # form. form: is the button's own attribute, naming a form elsewhere on the page to submit.
+    def lc_menu_option(label = nil, href: nil, tone: :default, icon: nil, leading: nil, hint: nil, checked: nil, checkbox: false, method: nil, params: {}, form_attributes: {}, **attributes, &block)
       tone = lc_option!(:tone, tone, MENU_OPTION_TONES.keys)
       raise ArgumentError, "Pass icon: or leading:, not both" if icon && leading
       raise ArgumentError, "checked: must be true, false or nil" unless [ true, false, nil ].include?(checked)
@@ -91,7 +100,7 @@ module Lostcoords::Ui
       defaults[:aria] = { checked: checked } unless checked.nil?
 
       if method
-        button_to(content, href, **lc_attributes(defaults, attributes), method: method, params: params, form: lc_attributes({ class: "contents" }, form))
+        button_to(content, href, **lc_attributes(defaults, attributes), method: method, params: params, form: lc_attributes({ class: "contents" }, form_attributes))
       elsif href
         raise ArgumentError, "Links cannot be disabled; use a menu button instead" if attributes[:disabled] || attributes["disabled"]
 
@@ -110,13 +119,13 @@ module Lostcoords::Ui
     end
 
     private
-    def lc_panel_trigger(label, trigger, icon, variant, attributes)
+    def lc_panel_trigger(label, trigger, icon, variant, attributes, size = :md)
       custom = trigger.is_a?(String) && trigger.html_safe?
       kind = custom ? :custom : lc_option!(:trigger, trigger, MENU_TRIGGERS)
       case kind
       when :custom, :icon
         content = custom ? trigger : lc_icon(icon, options: { "aria-hidden": true })
-        icon_button = { type: "button", class: lc_icon_button_class(shape: :circle, size: :md, extra: ButtonHelper::ICON_BUTTON_QUIET), aria: { label: label }, data: { slot: "icon-button" } }
+        icon_button = { type: "button", class: lc_icon_button_class(shape: :circle, size: size, extra: ButtonHelper::ICON_BUTTON_QUIET), aria: { label: label }, data: { slot: "icon-button" } }
         tag.button(content, **lc_attributes(icon_button, attributes))
       else
         lc_button(label, variant: variant, **attributes)

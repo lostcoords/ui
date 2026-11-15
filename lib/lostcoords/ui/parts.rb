@@ -85,6 +85,21 @@ module Lostcoords::Ui
       end
     end
 
+    # Rows that stay put while the sheet's content scrolls under them, painted with the sheet's surface.
+    # The footer sits last in an inset-padded scroller and bleeds to its edges, clearing the home indicator.
+    class Sheet < Base
+      SURFACE = "sticky z-sticky bg-(--lc-sheet-bg,var(--popover))"
+
+      def header(**attributes, &block)
+        part(:header, "sheet-header", "#{SURFACE} top-0 flex min-h-14 shrink-0 items-center", attributes, &block)
+      end
+
+      def footer(**attributes, &block)
+        part(:footer, "sheet-footer", "#{SURFACE} bottom-0 -mx-inset flex flex-wrap items-center justify-end gap-related " \
+          "px-inset pt-3 pb-[max(env(safe-area-inset-bottom),--spacing(3))]", attributes, &block)
+      end
+    end
+
     class Dialog < Base
       include CustomTrigger
 
