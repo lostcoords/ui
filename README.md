@@ -172,7 +172,16 @@ before application overrides.
 
 ## Unreleased
 
-Nothing needs an edit. Fixed:
+Two renames to make, and the rest needs no edit:
+
+- **`tag:` is `as:` on `lc_list_group`, `lc_list_row`, `lc_list_field`, `lc_list_item` and `lc_sheet`**, as on
+  every other builder that picks its element. Before: `lc_sheet tag: :dialog`, `lc_list_row "Alerts", tag: :label`.
+  After: `lc_sheet as: :dialog`, `lc_list_row "Alerts", as: :label`. A leftover `tag:` no longer picks the element:
+  it renders as a `tag` attribute, so search your views for it.
+- **`lc_dialog_class` takes `kind:` as a keyword**, like every other class helper. Before:
+  `lc_dialog_class(:context)`. After: `lc_dialog_class(kind: :context)`.
+
+Fixed:
 
 - **A menu in a row that a Turbo morph reordered no longer breaks the next visit.** The morph moves a menu's
   trigger and panel, which carry ids, into the row that takes its place and removes the emptied host. That
@@ -372,7 +381,7 @@ Everything else in 0.8 is additive. These changes need edits in an app built on 
   mark the selected item with `checked:` or the group's `value:` instead of `selected:`. A group without
   `name:` keeps the radio buttons and `lc-selection:change`; it no longer has an `input` target.
 - **`lc_sheet_data` is gone.** Before: `tag.dialog data: lc_sheet_data({ controller: "picker" }, detents: "large")`.
-  After: `lc_sheet tag: :dialog, detents: "large", data: { controller: "picker" }`. `lc_sheet` also renders
+  After: `lc_sheet as: :dialog, detents: "large", data: { controller: "picker" }`. `lc_sheet` also renders
   non-dialog sheets, so drop any hand-written `data-controller="lc-sheet"` and handle element too.
 - **The `lc-confirm-dialog` controller is gone.** Before: a pre-rendered confirm `<dialog>` wired to
   `lc-confirm-dialog`. After: render `lc_confirm_sheet` once in the layout and put `data-turbo-confirm` on
@@ -563,7 +572,7 @@ makes the summary look like that `lc_button` without the native marker, and `ind
     <%= lc_list_row "Email", subtitle: "ada@example.com", icon: "envelope" do %>
       <%= lc_button "Change", variant: :secondary, size: :sm %>
     <% end %>
-    <%= lc_list_row "Alerts", tag: :label do %><%= check_box_tag :alerts, class: lc_switch_class %><% end %>
+    <%= lc_list_row "Alerts", as: :label do %><%= check_box_tag :alerts, class: lc_switch_class %><% end %>
   <% end %>
 <% end %>
 ```
@@ -572,8 +581,8 @@ makes the summary look like that `lc_button` without the native marker, and `ind
 only the group's ends round. The group rounds its first and last shown child, so a collapsible or any other
 element at an end rounds too, and a `hidden` row hands its corners to the next one shown. Rows are card surfaces, so fields and buttons in them follow
 `--card-input` and `--card-secondary`. `lc_list_row` with a title lays out `icon:` (a name, or your own
-markup such as a logo), the title, `subtitle:` and the block as trailing content; `tag:` makes it a
-`label`, `li`, `details` or `a` (`href:`). `href:` with `tag: :li` or `:div` links the title instead
+markup such as a logo), the title, `subtitle:` and the block as trailing content; `as:` makes it a
+`label`, `li`, `details` or `a` (`href:`). `href:` with `as: :li` or `:div` links the title instead
 and stretches it over the row, so the block can hold buttons and links of its own; a click anywhere
 else in the row follows the title. Without a title the block is the whole row, and
 `padded: false` leaves the padding to content such as an `lc_list_item` button or summary, which lays
@@ -595,8 +604,8 @@ with `--primary-soft` and its text turns semibold, and the focus halo rings the 
 
 `lc_list_field` is a form row in the same group: a label column, then the block as the control. In a
 narrow row the label folds to its `icon:`, and the text stays the accessible name. `id:` makes the label
-a `<label>` for that control; `tag: :fieldset` names a group of controls, such as chips, with a legend.
-`tag: :span, surface: false` draws the row inside another element, such as a collapsible's summary.
+a `<label>` for that control; `as: :fieldset` names a group of controls, such as chips, with a legend.
+`as: :span, surface: false` draws the row inside another element, such as a collapsible's summary.
 `lc_input(plain: true)` drops the field's fill, border, padding and height so the text sits in the row,
 which tints while that input has focus. Toggles take `--lc-field-bg` like fields, so on a card or list
 row they use `--card-input`.
@@ -606,7 +615,7 @@ row they use `--card-input`.
   <%= lc_list_field "Description", icon: "pencil", id: "description" do %>
     <%= lc_input plain: true, id: "description", name: "description" %>
   <% end %>
-  <%= lc_list_field "Paid by", icon: "user", tag: :fieldset do %>
+  <%= lc_list_field "Paid by", icon: "user", as: :fieldset do %>
     <div class="flex flex-wrap gap-related"><%= lc_toggle "Ada", size: :sm, aria: { pressed: true } %></div>
   <% end %>
 <% end %>
@@ -927,9 +936,9 @@ has `data-turbo-confirm-tone="destructive"`, or the submitter is an `lc_button_t
 the sheet beside the menu on desktop. `ask(message, { description, accept, destructive, anchor })` from the
 same module opens it from your own code and resolves to `true` or `false`.
 
-`lc_sheet` renders any other phone sheet, with the `lc-sheet` controller wired. `tag: :dialog` makes a
+`lc_sheet` renders any other phone sheet, with the `lc-sheet` controller wired. `as: :dialog` makes a
 modal `<dialog>` sheet, which is what `lc_dialog` and `lc_confirm_sheet` render; with `size:` it gets
-`lc_dialog`'s frame and width without its header, for content that brings its own. The default `tag: :div`
+`lc_dialog`'s frame and width without its header, for content that brings its own. The default `as: :div`
 shows while it is `:popover-open` or carries `[data-open]`, so a native `[popover]` and a FloatingPanel
 picker both work; a div you toggle yourself sets `data-open` and removes it to slide out. From `sm` up
 the div keeps your frame, or `anchored: true` makes it a popover under its trigger inside a positioned
@@ -942,7 +951,7 @@ above), so content scrolls under them. Put the footer last in a scroller padded 
 the scroller's edges and clears the home indicator.
 
 ```erb
-<%= lc_sheet tag: :dialog, size: :lg, aria: { label: "New expense" } do |sheet| %>
+<%= lc_sheet as: :dialog, size: :lg, aria: { label: "New expense" } do |sheet| %>
   <%= sheet.header do %>…<% end %>
   <div class="min-h-0 overflow-y-auto px-inset">
     …
@@ -1235,7 +1244,7 @@ Generated by `bin/rails lostcoords:ui:builders`; `bin/lint` checks this list aga
 - `lc_checkbox_class(extra: nil)` (ChoiceHelper)
 - `lc_radio_class(extra: nil)` (ChoiceHelper)
 - `lc_switch_class(extra: nil)` (ChoiceHelper)
-- `lc_dialog_class(kind = :modal, size: nil, extra: nil)` (DialogHelper)
+- `lc_dialog_class(kind: :modal, size: nil, extra: nil)` (DialogHelper)
 - `lc_emoji_picker_groups` (EmojiPickerHelper)
 - `lc_emoji_picker_count` (EmojiPickerHelper)
 - `lc_emoji_picker_version` (EmojiPickerHelper)

@@ -2,7 +2,7 @@
   <%= lc_list_field "Description", icon: "pencil", id: "EXAMPLE_ID-description" do %>
     <%= lc_input plain: true, id: "EXAMPLE_ID-description", name: "description", placeholder: "Dinner at Ichiran" %>
   <% end %>
-  <%= lc_list_field "Paid by", icon: "user", tag: :fieldset do %>
+  <%= lc_list_field "Paid by", icon: "user", as: :fieldset do %>
     <div class="flex flex-wrap items-center gap-related min-w-0">
       <%= lc_toggle "Ada", size: :sm, active: true %>
       <%= lc_toggle "Grace", size: :sm %>

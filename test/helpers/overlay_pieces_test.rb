@@ -64,7 +64,7 @@ module Lostcoords::Ui
       assert_includes sheet["class"].split, "lc-glass"
       assert_includes sheet.at_css("[data-slot=sheet-header]")["class"].split, "sticky"
       assert_includes sheet.at_css("[data-slot=sheet-footer]")["class"].split, "bottom-0"
-      assert_raises(ArgumentError) { @view.lc_sheet(tag: :dialog, surface: :glass) }
+      assert_raises(ArgumentError) { @view.lc_sheet(as: :dialog, surface: :glass) }
     end
 
     test "a heading can render as a span" do

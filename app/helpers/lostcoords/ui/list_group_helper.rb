@@ -9,7 +9,7 @@ module Lostcoords::Ui
     LIST_ITEM = "flex min-h-16 min-w-0 items-center gap-heading px-content py-heading text-start sm:px-inset"
     LIST_ROW_PADDING = "px-content py-heading sm:px-inset"
     LIST_ICON = "grid size-10 shrink-0 place-items-center rounded-full bg-tile [&>svg:not([class*='size-'])]:size-4.5"
-    LIST_ROW_TAGS = %i[div li label details a].freeze
+    LIST_ROW_ELEMENTS = %i[div li label details a].freeze
     LIST_ROW_HOVER = "transition-colors duration-(--lc-motion-quick) hover:bg-accent"
     # A linked li or div row: the title's link covers the row, the row's own controls sit above it,
     # and the row shows the link's focus ring.
@@ -25,7 +25,7 @@ module Lostcoords::Ui
       "group/choice flex items-center gap-heading cursor-pointer transition-colors duration-(--lc-motion-quick) " \
       "hover:bg-accent has-checked:bg-primary-soft has-checked:font-semibold has-disabled:cursor-not-allowed has-disabled:opacity-45"
     LIST_ROW_CHOICE_CHECK = "ms-auto size-4 shrink-0 text-primary invisible group-has-checked/choice:visible"
-    LIST_FIELD_TAGS = %i[div fieldset span].freeze
+    LIST_FIELD_ELEMENTS = %i[div fieldset span].freeze
     LIST_FIELD = "@container px-content py-2.5 transition-colors duration-(--lc-motion-quick) has-[[data-plain]:focus]:bg-accent"
     LIST_FIELD_GRID = "grid min-h-9 grid-cols-[1.25rem_minmax(0,1fr)] items-center gap-x-heading gap-y-related @md:grid-cols-[8rem_minmax(0,1fr)]"
     LIST_FIELD_LABEL =
@@ -50,9 +50,9 @@ module Lostcoords::Ui
 
     # Rows as in iOS settings: each row is its own card-coloured panel, 2px apart, and only the
     # first and last rows round.
-    def lc_list_group(tag: :div, **attributes, &block)
-      tag = lc_option!(:tag, tag, %i[div ul])
-      content_tag(tag, (capture(&block) if block), **lc_attributes({ class: LIST_GROUP, data: { slot: "list-group" } }, attributes))
+    def lc_list_group(as: :div, **attributes, &block)
+      as = lc_option!(:as, as, %i[div ul])
+      content_tag(as, (capture(&block) if block), **lc_attributes({ class: LIST_GROUP, data: { slot: "list-group" } }, attributes))
     end
 
     # With a title, the row lays out icon:, the title and subtitle, then the block as its trailing
@@ -63,21 +63,21 @@ module Lostcoords::Ui
     # choice: :radio makes the row one choice of a radio group: a label around a hidden radio named
     # name: with value:, then the title or block, then a check shown while checked:. input: adds
     # attributes to the radio.
-    def lc_list_row(title = nil, subtitle: nil, icon: nil, href: nil, tag: nil, padded: true, choice: nil, name: nil, value: nil, checked: false, input: {}, **attributes, &block)
+    def lc_list_row(title = nil, subtitle: nil, icon: nil, href: nil, as: nil, padded: true, choice: nil, name: nil, value: nil, checked: false, input: {}, **attributes, &block)
       return lc_list_choice_row(title, choice, name, value, checked, input, attributes, &block) if choice
       raise ArgumentError, "name:, value:, checked: and input: belong to a choice: row" if name || value || checked || input.any?
 
-      tag = lc_option!(:tag, tag || (href ? :a : :div), LIST_ROW_TAGS)
-      titled = href && tag != :a
-      raise ArgumentError, "href: needs tag: :a, :li or :div" if titled && !%i[li div].include?(tag)
+      as = lc_option!(:as, as || (href ? :a : :div), LIST_ROW_ELEMENTS)
+      titled = href && as != :a
+      raise ArgumentError, "href: needs as: :a, :li or :div" if titled && !%i[li div].include?(as)
       raise ArgumentError, "href: on an li or div row links its title, so it needs one" if titled && title.blank?
 
       link = (titled ? lc_tw(LIST_ROW_HOVER, LIST_ROW_LINKED) : lc_tw("no-underline", LIST_ROW_HOVER)) if href
       defaults = { href: (href unless titled), data: { slot: "list-row" } }
-      return lc_list_item(title, subtitle: subtitle, icon: icon, link: (href if titled), tag: tag, **lc_attributes(defaults.merge(class: lc_tw(LIST_ROW, link)), attributes), &block) if title.present?
+      return lc_list_item(title, subtitle: subtitle, icon: icon, link: (href if titled), as: as, **lc_attributes(defaults.merge(class: lc_tw(LIST_ROW, link)), attributes), &block) if title.present?
 
       classes = lc_tw(LIST_ROW, (LIST_ROW_PADDING if padded), link)
-      content_tag(tag, (capture(&block) if block), **lc_attributes(defaults.merge(class: classes), attributes))
+      content_tag(as, (capture(&block) if block), **lc_attributes(defaults.merge(class: classes), attributes))
     end
 
     private def lc_list_choice_row(title, choice, name, value, checked, input, attributes, &block)
@@ -100,36 +100,36 @@ module Lostcoords::Ui
 
     # A form row: a label column, then the block as the control. In a narrow row the label folds to
     # icon: alone and stays the accessible name. id: makes the label a <label> for that control;
-    # tag: :fieldset names a group of controls with a legend. surface: false drops the row's panel,
-    # for a row drawn inside another element, such as a collapsible's summary (with tag: :span).
-    def lc_list_field(label, icon: nil, id: nil, tag: :div, surface: true, **attributes, &block)
+    # as: :fieldset names a group of controls with a legend. surface: false drops the row's panel,
+    # for a row drawn inside another element, such as a collapsible's summary (with as: :span).
+    def lc_list_field(label, icon: nil, id: nil, as: :div, surface: true, **attributes, &block)
       lc_label!(label, :label)
-      tag = lc_option!(:tag, tag, LIST_FIELD_TAGS)
-      raise ArgumentError, "id: labels one control; a fieldset is named by its legend" if id && tag == :fieldset
+      as = lc_option!(:as, as, LIST_FIELD_ELEMENTS)
+      raise ArgumentError, "id: labels one control; a fieldset is named by its legend" if id && as == :fieldset
 
-      inline = tag == :span ? :span : :div
+      inline = as == :span ? :span : :div
       text = content_tag(:span, label, class: "@max-md:sr-only", data: { slot: "list-field-text" })
       glyph = (icon.is_a?(ActiveSupport::SafeBuffer) ? icon : lc_icon(icon, options: { "aria-hidden": true })) if icon.present?
-      label_classes = lc_tw(LIST_FIELD_LABEL, ("self-start min-h-control-sm" if tag == :fieldset))
+      label_classes = lc_tw(LIST_FIELD_LABEL, ("self-start min-h-control-sm" if as == :fieldset))
       label_tag = if id
         content_tag(:label, safe_join([ glyph, text ].compact), for: id, class: label_classes, data: { slot: "list-field-label" })
       else
-        content_tag(:span, safe_join([ glyph, text ].compact), class: label_classes, aria: { hidden: (true if tag == :fieldset) }, data: { slot: "list-field-label" })
+        content_tag(:span, safe_join([ glyph, text ].compact), class: label_classes, aria: { hidden: (true if as == :fieldset) }, data: { slot: "list-field-label" })
       end
       grid = content_tag(inline, safe_join([ label_tag, (capture(&block) if block) ].compact), class: LIST_FIELD_GRID)
-      legend = content_tag(:legend, label, class: "sr-only") if tag == :fieldset
-      classes = lc_tw((LIST_ROW if surface), LIST_FIELD, ("block" if tag == :span), ("m-0 min-w-0 border-0" if tag == :fieldset))
-      content_tag(tag, safe_join([ legend, grid ].compact), **lc_attributes({ class: classes, data: { slot: "list-field" } }, attributes))
+      legend = content_tag(:legend, label, class: "sr-only") if as == :fieldset
+      classes = lc_tw((LIST_ROW if surface), LIST_FIELD, ("block" if as == :span), ("m-0 min-w-0 border-0" if as == :fieldset))
+      content_tag(as, safe_join([ legend, grid ].compact), **lc_attributes({ class: classes, data: { slot: "list-field" } }, attributes))
     end
 
     # The row layout without the row's surface, for an element inside a free-form row: a summary, a
     # button that opens an editor. icon: takes an icon name or your own markup, such as a logo.
     # link: links the title to that URL and stretches the link over the nearest positioned ancestor.
-    def lc_list_item(title, subtitle: nil, icon: nil, link: nil, tag: :div, **attributes, &block)
+    def lc_list_item(title, subtitle: nil, icon: nil, link: nil, as: :div, **attributes, &block)
       lc_label!(title, :title)
       glyph = icon.is_a?(ActiveSupport::SafeBuffer) ? icon : lc_icon(icon) if icon.present?
       title = link_to(title, link, class: LIST_LINK, data: { slot: "list-link" }) if link
-      content_tag(tag, **lc_attributes({ class: LIST_ITEM, data: { slot: "list-item" } }, attributes)) do
+      content_tag(as, **lc_attributes({ class: LIST_ITEM, data: { slot: "list-item" } }, attributes)) do
         text = safe_join([
           content_tag(:span, title, class: "font-semibold", data: { slot: "list-title" }),
           (content_tag(:span, subtitle, class: "text-small text-muted-foreground [overflow-wrap:anywhere]", data: { slot: "list-subtitle" }) if subtitle.present?)

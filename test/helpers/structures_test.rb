@@ -53,12 +53,12 @@ module Lostcoords::Ui
       assert_equal "handle", panel.element_children.first["data-lc-sheet-target"]
       assert_equal "Body", panel.text
 
-      modal = fragment(@view.lc_sheet(tag: :dialog, data: { controller: "picker" }) { "Body" }).at_css("dialog")
+      modal = fragment(@view.lc_sheet(as: :dialog, data: { controller: "picker" }) { "Body" }).at_css("dialog")
       assert_nil modal["class"]
       assert_equal "lc-sheet picker", modal["data-controller"]
       assert_nil modal.at_css("[data-lc-sheet-target]")
 
-      framed = fragment(@view.lc_sheet(tag: :dialog, size: :lg, class: "[--lc-dialog-width:42rem]", aria: { label: "New expense" }) { "Body" }).at_css("dialog")
+      framed = fragment(@view.lc_sheet(as: :dialog, size: :lg, class: "[--lc-dialog-width:42rem]", aria: { label: "New expense" }) { "Body" }).at_css("dialog")
       assert_equal @view.lc_dialog_class(size: :lg, extra: "[--lc-dialog-width:42rem]").split, framed["class"].split
       assert_raises(ArgumentError) { @view.lc_sheet(size: :lg) }
     end
@@ -155,13 +155,13 @@ module Lostcoords::Ui
       assert_raises(ArgumentError) { @view.lc_input(size: :tiny) }
       assert_raises(ArgumentError) { @view.lc_input(type: :unsupported) }
       assert_raises(ArgumentError) { @view.lc_select(size: :tiny) }
-      assert_raises(ArgumentError) { @view.lc_dialog_class(:nope) }
+      assert_raises(ArgumentError) { @view.lc_dialog_class(kind: :nope) }
       assert_raises(ArgumentError) { @view.lc_popover_class(align: :left) }
       assert_raises(ArgumentError) { @view.lc_menu_option_class(tone: :loud) }
       assert_raises(ArgumentError) { @view.lc_glass_class(shape: :blob) }
       assert_raises(ArgumentError) { @view.lc_sheet(detents: "huge") }
-      assert_raises(ArgumentError) { @view.lc_sheet(tag: :section) }
-      assert_raises(ArgumentError) { @view.lc_sheet(tag: :dialog, anchored: true) }
+      assert_raises(ArgumentError) { @view.lc_sheet(as: :section) }
+      assert_raises(ArgumentError) { @view.lc_sheet(as: :dialog, anchored: true) }
       assert_raises(ArgumentError) { @view.lc_tabs(id: "t", label: "T") { |tabs| tabs.panel("a b") { "1" }; tabs.panel("a-b") { "2" } } }
       assert_raises(ArgumentError) { @view.lc_dialog(id: "", title: "Dialog") { "Body" } }
       assert_raises(ArgumentError) { @view.lc_dialog(id: "lc-sheet", title: "Sheet", detents: "short") { "Body" } }

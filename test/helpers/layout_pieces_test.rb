@@ -105,7 +105,7 @@ module Lostcoords::Ui
         <%= lc_list_section "Security", id: "security", footnote: "Sign-in methods", level: 3, class: "scroll-mt-22" do %>
           <%= lc_list_group do %>
             <%= lc_list_row "Passkey", subtitle: "Not set up", icon: "key" do %><button>Add</button><% end %>
-            <%= lc_list_row "Apple", icon: tag.svg(data: { test: "logo" }), tag: :label %>
+            <%= lc_list_row "Apple", icon: tag.svg(data: { test: "logo" }), as: :label %>
             <%= lc_list_row class: "grid" do %>Free<% end %>
             <%= lc_list_row "Docs", href: "/docs" %>
           <% end %>
@@ -132,7 +132,7 @@ module Lostcoords::Ui
     end
 
     test "a linked li or div row links its title over the row and keeps its own controls above it" do
-      row = render('<%= lc_list_row "primary", subtitle: "app.localhost", href: "/logs", tag: :li do %><button>Stop</button><% end %>').at_css("li[data-slot=list-row]")
+      row = render('<%= lc_list_row "primary", subtitle: "app.localhost", href: "/logs", as: :li do %><button>Stop</button><% end %>').at_css("li[data-slot=list-row]")
       assert_nil row["href"]
       link = row.at_css("[data-slot=list-title] > a[data-slot=list-link]")
       assert_equal "/logs", link["href"]
@@ -143,14 +143,14 @@ module Lostcoords::Ui
       assert link["class"].split.include?("after:inset-0"), "the link covers the row"
       assert classes.any? { it.end_with?("]:z-raised") && it.include?(":not([data-slot=list-link])") }, "controls sit above the link"
       assert_equal "Stop", row.at_css("button").text
-      div = render('<%= lc_list_row "Docs", href: "/docs", tag: :div %>').at_css("div[data-slot=list-row]")
+      div = render('<%= lc_list_row "Docs", href: "/docs", as: :div %>').at_css("div[data-slot=list-row]")
       assert div.at_css("a[data-slot=list-link][href='/docs']")
     end
 
     test "list items lay out a row inside your own element" do
-      item = render('<%= lc_list_item "Other devices", subtitle: "2 devices", icon: "device-phone-mobile", tag: :summary do %><span>v</span><% end %>').at_css("summary[data-slot=list-item]")
+      item = render('<%= lc_list_item "Other devices", subtitle: "2 devices", icon: "device-phone-mobile", as: :summary do %><span>v</span><% end %>').at_css("summary[data-slot=list-item]")
       assert_equal %w[list-icon list-text], item.element_children.first(2).map { it["data-slot"] }
-      unpadded = render('<%= lc_list_row padded: false do %><%= lc_list_item "Delete", tag: :button %><% end %>').at_css("[data-slot=list-row]")
+      unpadded = render('<%= lc_list_row padded: false do %><%= lc_list_item "Delete", as: :button %><% end %>').at_css("[data-slot=list-row]")
       assert_not_includes unpadded["class"].split, "px-content"
       assert unpadded.at_css("button[data-slot=list-item]")
     end
@@ -191,10 +191,10 @@ module Lostcoords::Ui
     end
 
     test "list rows reject unknown tags and links on other tags" do
-      assert_raises(ArgumentError) { @view.lc_list_row("Row", tag: :span) }
-      assert_raises(ArgumentError) { @view.lc_list_row("Row", href: "/x", tag: :label) }
-      assert_raises(ArgumentError) { @view.lc_list_row(href: "/x", tag: :li) { "Row" } }
-      assert_raises(ArgumentError) { @view.lc_list_group(tag: :ol) }
+      assert_raises(ArgumentError) { @view.lc_list_row("Row", as: :span) }
+      assert_raises(ArgumentError) { @view.lc_list_row("Row", href: "/x", as: :label) }
+      assert_raises(ArgumentError) { @view.lc_list_row(href: "/x", as: :li) { "Row" } }
+      assert_raises(ArgumentError) { @view.lc_list_group(as: :ol) }
       assert_raises(ArgumentError) { @view.lc_list_section("Heading", level: 7) }
       assert_raises(ArgumentError) { @view.lc_list_section("") }
     end
@@ -209,15 +209,15 @@ module Lostcoords::Ui
       assert_equal "true", input["data-plain"]
       refute_includes input["class"].split, "h-control-md"
 
-      group = render('<%= lc_list_field "Paid by", icon: "user", tag: :fieldset do %><div>chips</div><% end %>').at_css("fieldset")
+      group = render('<%= lc_list_field "Paid by", icon: "user", as: :fieldset do %><div>chips</div><% end %>').at_css("fieldset")
       assert_equal "Paid by", group.at_css("legend.sr-only").text
       assert_equal "true", group.at_css("[data-slot=list-field-label]")["aria-hidden"]
 
-      inline = render('<%= lc_list_field "Split", tag: :span, surface: false do %>Equal<% end %>').at_css("span[data-slot=list-field]")
+      inline = render('<%= lc_list_field "Split", as: :span, surface: false do %>Equal<% end %>').at_css("span[data-slot=list-field]")
       refute_includes inline["class"].split, "lc-list-row"
       assert_nil @view.lc_input(name: "q")[/data-plain/]
-      assert_raises(ArgumentError) { @view.lc_list_field("Paid by", id: "x", tag: :fieldset) }
-      assert_raises(ArgumentError) { @view.lc_list_field("Row", tag: :li) }
+      assert_raises(ArgumentError) { @view.lc_list_field("Paid by", id: "x", as: :fieldset) }
+      assert_raises(ArgumentError) { @view.lc_list_field("Row", as: :li) }
     end
   end
 end

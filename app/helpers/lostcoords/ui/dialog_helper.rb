@@ -30,7 +30,7 @@ module Lostcoords::Ui
     CONFIRM_SHEET_ID = "lc-confirm-sheet"
 
     # size: :sm, :md, :lg or :xl. A modal defaults to :md; a context dialog keeps its compact width.
-    def lc_dialog_class(kind = :modal, size: nil, extra: nil)
+    def lc_dialog_class(kind: :modal, size: nil, extra: nil)
       kind = lc_option!(:kind, kind, DIALOGS.keys)
       size = lc_option!(:size, size, DIALOG_SIZES.keys) unless size.nil?
       size ||= :md if kind == :modal
@@ -48,7 +48,7 @@ module Lostcoords::Ui
       lc_label!(trigger, :trigger) unless trigger == false
       lc_label!(close_action, :close_action)
       detents = lc_option!(:detents, detents, SheetHelper::SHEET_DETENTS.map(&:to_sym)).to_s
-      defaults = { class: lc_dialog_class(kind, size: size), aria: { describedby: ("#{id}-description" if description.present?) }, data: { slot: "dialog" } }
+      defaults = { class: lc_dialog_class(kind: kind, size: size), aria: { describedby: ("#{id}-description" if description.present?) }, data: { slot: "dialog" } }
       required = { id: id, aria: { labelledby: "#{id}-title" }, data: ({ lc_dialog_target: "dialog" } if trigger) }.compact
       parts = Parts::Dialog.new(self, id, close_action)
       content = capture(parts, &block) if block
@@ -63,7 +63,7 @@ module Lostcoords::Ui
     # The sheet Turbo's confirm opens. Render it once in the layout and set
     # Turbo.config.forms.confirm to `confirm` from lostcoords/ui/helpers/confirm.
     def lc_confirm_sheet(**attributes)
-      defaults = { class: lc_dialog_class(:context), data: { slot: "confirm-sheet", turbo_permanent: true } }
+      defaults = { class: lc_dialog_class(kind: :context), data: { slot: "confirm-sheet", turbo_permanent: true } }
       required = { id: CONFIRM_SHEET_ID, tabindex: -1, aria: { labelledby: "#{CONFIRM_SHEET_ID}-message", describedby: "#{CONFIRM_SHEET_ID}-description" } }
       render "lostcoords/ui/components/lc_confirm_sheet", id: CONFIRM_SHEET_ID, attributes: lc_attributes(defaults, attributes, required)
     end
