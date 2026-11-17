@@ -170,6 +170,19 @@ Omit `only` to register every library controller. Unknown identifiers raise befo
 registered, and repeated calls on the same application keep later overrides, so register defaults
 before application overrides.
 
+## Unreleased
+
+Nothing needs an edit. Fixed:
+
+- **A menu in a row that a Turbo morph reordered no longer breaks the next visit.** The morph moves a menu's
+  trigger and panel, which carry ids, into the row that takes its place and removes the emptied host. That
+  host's `lc-menu` failed to disconnect and left listeners behind, and the next visit threw
+  `Missing target element "popover" for "lc-menu" controller` once per orphaned menu. `FloatingPanel` now
+  listens to the document only while its panel is open, and no teardown reads a target; a subclass's
+  `disconnect` should not read one either.
+- **A trigger that a morph replaces keeps its arrow keys.** `lc-menu` hears keys on its host, not on the
+  trigger and panel it found when it connected.
+
 ## Changes in 0.12.2
 
 Nothing needs an edit. Fixed:

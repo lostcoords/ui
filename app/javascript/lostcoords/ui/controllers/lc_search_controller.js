@@ -74,7 +74,7 @@ export default class extends Controller {
   reset() {
     this.animations.forEach((animation) => animation.cancel())
     this.animations = []
-    this.dialogTarget.close()
+    if (this.hasDialogTarget) this.dialogTarget.close()
     this.unregisterDialog?.()
     this.unregisterDialog = null
     this.closing = false

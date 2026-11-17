@@ -12,25 +12,33 @@ export default class extends FloatingPanel {
     super.initialize()
     this.focusOutHandler = this.handleFocusOut.bind(this)
     this.pointerDownHandler = this.handlePointerDown.bind(this)
-    this.keydownHandler = (event) => navigateMenu(event, this.popoverTarget)
-    this.triggerKeydownHandler = this.handleTriggerKeydown.bind(this)
+    this.keydownHandler = this.handleKeydown.bind(this)
     this.focusOutSuppressed = false
     this.focusOutSuppressionTimer = null
   }
 
+  // Keys are heard on the host, so a trigger or panel that a morph replaces needs no listener of its own.
   connect() {
-    super.connect()
-    this.triggerTarget.addEventListener("keydown", this.triggerKeydownHandler)
+    this.element.addEventListener("keydown", this.keydownHandler)
   }
 
   disconnect() {
-    this.triggerTarget.removeEventListener("keydown", this.triggerKeydownHandler)
+    this.element.removeEventListener("keydown", this.keydownHandler)
     this.clearFocusOutSuppression()
     super.disconnect()
   }
 
+  handleKeydown(event) {
+    if (!this.hasPopoverTarget) return
+    if (this.popoverTarget.contains(event.target)) {
+      if (this.isOpen) navigateMenu(event, this.popoverTarget)
+    } else if (this.triggerTargets.some((trigger) => trigger.contains(event.target))) {
+      this.openFromTrigger(event)
+    }
+  }
+
   // Arrow Down opens the menu on its first item, Arrow Up on its last.
-  handleTriggerKeydown(event) {
+  openFromTrigger(event) {
     if (event.key !== "ArrowDown" && event.key !== "ArrowUp") return
     if (event.altKey || event.ctrlKey || event.metaKey) return
 
@@ -62,15 +70,12 @@ export default class extends FloatingPanel {
     super.open()
     this.element.addEventListener("focusout", this.focusOutHandler)
     this.element.addEventListener("pointerdown", this.pointerDownHandler)
-    this.popoverTarget.addEventListener("keydown", this.keydownHandler)
   }
 
   release(options) {
     super.release(options)
     this.element.removeEventListener("focusout", this.focusOutHandler)
     this.element.removeEventListener("pointerdown", this.pointerDownHandler)
-    if (this.hasPopoverTarget)
-      this.popoverTarget.removeEventListener("keydown", this.keydownHandler)
   }
 
   handleFocusOut(event) {
