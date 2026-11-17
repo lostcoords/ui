@@ -181,6 +181,12 @@ Two renames to make, and the rest needs no edit:
 - **`lc_dialog_class` takes `kind:` as a keyword**, like every other class helper. Before:
   `lc_dialog_class(:context)`. After: `lc_dialog_class(kind: :context)`.
 
+Changed:
+
+- **A split button's toggle runs your actions before the menu's.** `toggle: { data: { action: … } }` now comes
+  first in `data-action`, as `trigger_attributes:` does on `lc_menu`. `lc_split_button` renders through the same
+  code as `lc_menu`, so the two cannot drift.
+
 Fixed:
 
 - **A menu in a row that a Turbo morph reordered no longer breaks the next visit.** The morph moves a menu's
@@ -191,6 +197,11 @@ Fixed:
   `disconnect` should not read one either.
 - **A trigger that a morph replaces keeps its arrow keys.** `lc-menu` hears keys on its host, not on the
   trigger and panel it found when it connected.
+
+New options:
+
+- **`lc_menu` and `lc_popover` take the same options.** `lc_menu` gains `trigger_variant:`, `lc_popover` gains
+  `side:` and `trigger_size:`, and `trigger_size:` now also sizes a text trigger.
 
 ## Changes in 0.12.2
 
@@ -415,7 +426,7 @@ Primary, secondary and destructive buttons have visible filled surfaces. Ghost b
 Primary, secondary and destructive buttons are flat. Secondary buttons use a soft neutral fill distinct from page and card backgrounds.
 Outline buttons have a transparent fill and a visible edge. Glass buttons use the shared translucent material, rim and shadow for floating controls.
 The default light theme uses white pages and softly shaded cards, with no visible card borders or resting shadows.
-Popover triggers accept `trigger_variant` using the same button variants.
+Menu and popover triggers accept `trigger_variant` using the same button variants.
 Button hover and press fills mix 94% of the base background with 6% of its foreground in OKLab.
 Ghost and icon buttons stay transparent at rest and use the secondary base for that calculation.
 Apps can override `--secondary` for the neutral base, or `--lc-button-bg` and `--lc-button-ink` on individual buttons.
@@ -878,8 +889,9 @@ options stay on the menu's columns.
 `trigger` targets. With `click->lc-popover#toggleFromRow` on that host, a click anywhere on it that
 misses a control opens the panel; mark other regions `data-lc-menu-ignore`.
 `lc_menu` and `lc_popover` take `trigger: :icon` with `icon:` for a quiet icon button named by `label:`,
-or rendered content such as an avatar for a custom trigger. `lc_menu(trigger_size: :sm)` makes either one a small control.
-`lc_menu(side: :top)` opens the menu above its trigger, for a menu near the bottom of the screen. `trigger_attributes:` adds attributes such as `class:` or `title:` to either.
+or rendered content such as an avatar for a custom trigger. `trigger_size: :sm` makes any trigger a small control, and
+`trigger_variant:` picks the button variant of a text trigger.
+`side: :top` opens the panel above its trigger, for one near the bottom of the screen. `trigger_attributes:` adds attributes such as `class:` or `title:` to either.
 For any other trigger, call the yielded part's `trigger` with a block. It receives the attributes that
 wire an element as the trigger (its id, `aria-haspopup`, `aria-expanded`, `aria-controls` and the
 Stimulus target and action), merged with any passed to `trigger`, and the element it renders replaces

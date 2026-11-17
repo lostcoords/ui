@@ -96,6 +96,23 @@ module Lostcoords::Ui
       assert_raises(ArgumentError) { @view.lc_menu(id: "more", side: :left) { "" } }
     end
 
+    test "menus and popovers take the same trigger and placement options" do
+      builders = {
+        lc_menu: ->(**options) { fragment(@view.lc_menu(id: "panel", label: "Open", **options) { "" }) },
+        lc_popover: ->(**options) { fragment(@view.lc_popover(id: "panel", label: "Open", **options) { "" }) }
+      }
+      builders.each do |name, build|
+        button = build.(trigger_variant: :ghost, trigger_size: :sm).at_css("#panel-trigger")
+        assert_equal %w[ghost sm], [ button["data-variant"], button["data-size"] ], name
+        assert_includes button["class"].split, "h-control-sm", name
+        assert_includes build.(trigger: :icon, trigger_size: :lg).at_css("#panel-trigger")["class"].split, "size-control-lg", name
+        assert_includes build.(side: :top).at_css("#panel")["class"].split, "top-auto", name
+        assert_raises(ArgumentError) { build.(trigger_variant: :nope) }
+        assert_raises(ArgumentError) { build.(trigger_size: :xl) }
+        assert_raises(ArgumentError) { build.(side: :left) }
+      end
+    end
+
     test "trigger_size: sizes the icon and custom triggers" do
       trigger = ->(**options) { fragment(@view.lc_menu(id: "row", label: "Row actions", **options) { "" }).at_css("#row-trigger")["class"].split }
       assert_includes trigger.(trigger: :icon), "size-control-md"

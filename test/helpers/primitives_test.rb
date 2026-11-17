@@ -209,7 +209,7 @@ module Lostcoords::Ui
       assert_equal "false", toggle["aria-expanded"]
       assert_equal "add", toggle["aria-controls"]
       assert_equal "trigger", toggle["data-lc-menu-target"]
-      assert_equal "lc-menu#toggle click->import#ready", toggle["data-action"]
+      assert_equal "click->import#ready lc-menu#toggle", toggle["data-action"]
       assert_includes toggle["class"].split, "hook-toggle"
       assert_equal "true", toggle.at_css("svg")["aria-hidden"]
 

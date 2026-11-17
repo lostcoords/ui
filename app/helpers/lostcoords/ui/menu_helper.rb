@@ -59,20 +59,19 @@ module Lostcoords::Ui
     end
 
     # trigger: :icon renders a quiet icon button named by label; rendered HTML becomes the content
-    # of a custom trigger, also named by label. trigger_size: sizes either one.
-    def lc_menu(id:, label: lc_t("lostcoords.ui.menu.label"), align: :end, side: :bottom, trigger: :button, trigger_size: :md, icon: "ellipsis-vertical", trigger_attributes: {}, wrapper_attributes: {}, **attributes, &block)
-      trigger_size = lc_option!(:trigger_size, trigger_size, ButtonHelper::ICON_BUTTON_SIZES.keys)
-      default_trigger = ->(wiring) { lc_panel_trigger(label, trigger, icon, :secondary, wiring, trigger_size) } unless trigger == false
-      lc_render_panel(id, label, nil, "lc-menu", "menu", lc_menu_popover_class(align: align, side: side), lc_attributes({ data: { slot: "menu" } }, attributes), default_trigger, trigger_attributes, wrapper_attributes, &block)
+    # of a custom trigger, also named by label. trigger_variant: and trigger_size: style the trigger.
+    def lc_menu(id:, label: lc_t("lostcoords.ui.menu.label"), align: :end, side: :bottom, trigger: :button, trigger_variant: :secondary, trigger_size: :md, icon: "ellipsis-vertical", trigger_attributes: {}, wrapper_attributes: {}, **attributes, &block)
+      default_trigger = lc_panel_trigger(label, trigger, icon, trigger_variant, trigger_size)
+      lc_panel(id: id, label: label, controller: "lc-menu", role: "menu", classes: lc_menu_popover_class(align: align, side: side), attributes: lc_attributes({ data: { slot: "menu" } }, attributes),
+        default_trigger: default_trigger, trigger_attributes: trigger_attributes, wrapper_attributes: wrapper_attributes, &block)
     end
 
-    # Takes the same trigger options as lc_menu, including trigger: false.
-    def lc_popover(id:, label: lc_t("lostcoords.ui.popover.trigger"), title: nil, align: :end, trigger_variant: :secondary, trigger: :button, icon: "ellipsis-vertical", trigger_attributes: {}, wrapper_attributes: {}, **attributes, &block)
-      title = title.presence
-      align = lc_option!(:align, align, MENU_POPOVER_ALIGN.keys)
-      default_trigger = ->(wiring) { lc_panel_trigger(label, trigger, icon, trigger_variant, wiring) } unless trigger == false
-      classes = lc_popover_class(align: align, extra: "data-open:flex flex-col gap-content p-inset z-(--lc-z-popover) min-w-64 max-w-[calc(100vw-2rem)]")
-      lc_render_panel(id, label, title, "lc-popover", "dialog", classes, lc_attributes({ data: { slot: "popover" } }, attributes), default_trigger, trigger_attributes, wrapper_attributes, &block)
+    # Takes the same trigger and placement options as lc_menu, including trigger: false.
+    def lc_popover(id:, label: lc_t("lostcoords.ui.popover.trigger"), title: nil, align: :end, side: :bottom, trigger: :button, trigger_variant: :secondary, trigger_size: :md, icon: "ellipsis-vertical", trigger_attributes: {}, wrapper_attributes: {}, **attributes, &block)
+      default_trigger = lc_panel_trigger(label, trigger, icon, trigger_variant, trigger_size)
+      classes = lc_popover_class(align: align, side: side, extra: "data-open:flex flex-col gap-content p-inset z-(--lc-z-popover) min-w-64 max-w-[calc(100vw-2rem)]")
+      lc_panel(id: id, label: label, title: title.presence, controller: "lc-popover", role: "dialog", classes: classes, attributes: lc_attributes({ data: { slot: "popover" } }, attributes),
+        default_trigger: default_trigger, trigger_attributes: trigger_attributes, wrapper_attributes: wrapper_attributes, &block)
     end
 
     # icon: names a leading Heroicon; leading: takes other rendered content, such as an avatar, and is
@@ -119,23 +118,28 @@ module Lostcoords::Ui
     end
 
     private
-    def lc_panel_trigger(label, trigger, icon, variant, attributes, size = :md)
+    # The default trigger as a callable that takes the panel's wiring, or nil for trigger: false.
+    def lc_panel_trigger(label, trigger, icon, variant, size)
+      return if trigger == false
+
+      size = lc_option!(:trigger_size, size, ButtonHelper::BUTTON_SIZES.keys)
+      variant = lc_option!(:trigger_variant, variant, ButtonHelper::BUTTON_VARIANTS.keys)
       custom = trigger.is_a?(String) && trigger.html_safe?
       kind = custom ? :custom : lc_option!(:trigger, trigger, MENU_TRIGGERS)
-      case kind
-      when :custom, :icon
+      lambda do |wiring|
+        next lc_button(label, variant: variant, size: size, **wiring) if kind == :button
+
         content = custom ? trigger : lc_icon(icon, options: { "aria-hidden": true })
         icon_button = { type: "button", class: lc_icon_button_class(shape: :circle, size: size, extra: ButtonHelper::ICON_BUTTON_QUIET), aria: { label: label }, data: { slot: "icon-button" } }
-        tag.button(content, **lc_attributes(icon_button, attributes))
-      else
-        lc_button(label, variant: variant, **attributes)
+        tag.button(content, **lc_attributes(icon_button, wiring))
       end
     end
 
-    # The block runs before the default trigger renders, so a menu.trigger part can replace it.
-    # trigger: false renders only the panel, for a caller that hosts the controller on an ancestor
-    # and wires its own triggers.
-    def lc_render_panel(id, label, title, controller, role, classes, attributes, default_trigger, trigger_attributes, wrapper_attributes, &block)
+    # A trigger and the panel it opens, in a wrapper that hosts the controller. The block runs
+    # before the default trigger renders, so a trigger part can replace it. Without a default
+    # trigger only the panel renders, for a caller that hosts the controller on an ancestor and
+    # wires its own triggers.
+    def lc_panel(id:, label:, controller:, role:, classes:, attributes:, default_trigger:, title: nil, trigger_attributes: {}, wrapper_attributes: {}, &block)
       lc_label!(id, :id)
       lc_label!(label, :label)
       standalone = default_trigger.nil?
@@ -149,8 +153,11 @@ module Lostcoords::Ui
       required = { id: id, role: role, aria: name, data: { "#{controller}_target" => "popover" } }
       required[:tabindex] = -1 if role == "dialog"
       merged = lc_attributes({ class: classes }, attributes, required)
-      wrapper = lc_attributes({ class: "relative inline-flex" }, wrapper_attributes, { data: { controller: controller } }) unless standalone
-      render "lostcoords/ui/components/lc_floating_panel", id: id, title: title, wrapper: wrapper, trigger: trigger, attributes: merged, content: content
+      heading = tag.h2(title, id: "#{id}-title", class: lc_heading_class(size: :subheading)) if title
+      panel = tag.div(safe_join([ heading, content ].compact), **merged)
+      return panel if standalone
+
+      tag.div(safe_join([ trigger, panel ]), **lc_attributes({ class: "relative inline-flex" }, wrapper_attributes, { data: { controller: controller } }))
     end
   end
 end

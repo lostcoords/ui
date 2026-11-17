@@ -50,7 +50,6 @@ module Lostcoords::Ui
       tag.button(safe_join([ body, chevron ]), **lc_attributes(defaults, attributes))
     end
 
-    # A block replaces the icon with custom content, such as an avatar or two stacked icons.
     # One pill with a primary action and a toggle on its inline end that opens a menu of the block's
     # lc_menu_option items. With href: the action is a link. label may be rendered HTML. action:,
     # toggle: and menu: add attributes to those parts; other attributes go on the wrapper.
@@ -60,8 +59,6 @@ module Lostcoords::Ui
     #   <% end %>
     def lc_split_button(label, id:, href: nil, menu_label: lc_t("lostcoords.ui.menu.label"), variant: :primary, tone: :default, size: :md,
                         icon: nil, icon_position: :start, block: false, align: :end, action: {}, toggle: {}, menu: {}, **attributes, &items)
-      lc_label!(id, :id)
-      lc_label!(menu_label, :menu_label)
       variant = lc_option!(:variant, variant, ButtonHelper::BUTTON_VARIANTS.keys)
       size = lc_option!(:size, size, ButtonHelper::BUTTON_SIZES.keys)
       button = { variant: variant, tone: tone, size: size, icon: icon, icon_position: icon_position }
@@ -72,20 +69,16 @@ module Lostcoords::Ui
         ButtonHelper::SPLIT_BUTTON_PART, ButtonHelper::SPLIT_BUTTON_TOGGLE, ButtonHelper::SPLIT_BUTTON_TOGGLE_WIDTHS.fetch(size),
         (ButtonHelper::SPLIT_BUTTON_DIVIDER unless variant == :outline)
       ))
-      toggle = tag.button(lc_icon("chevron-down", variant: :mini, options: { "aria-hidden": true }), **lc_attributes(
-        { type: "button", class: toggle_class, data: { slot: "split-button-toggle", action: "lc-menu#toggle" } }, toggle,
-        { id: "#{id}-trigger", aria: { label: menu_label, haspopup: "menu", expanded: false, controls: id }, data: { lc_menu_target: "trigger" } }
-      ))
-
-      popover = tag.div(capture(&items), **lc_attributes(
-        { class: lc_menu_popover_class(align: align), data: { slot: "menu" } }, menu,
-        { id: id, role: "menu", aria: { labelledby: "#{id}-trigger" }, data: { lc_menu_target: "popover" } }
-      ))
-
-      defaults = { class: lc_tw(ButtonHelper::SPLIT_BUTTON_BASE, ("flex w-full" if block)), data: { controller: "lc-menu", slot: "split-button" } }
-      tag.div(safe_join([ primary, toggle, popover ]), **lc_attributes(defaults, attributes))
+      halves = lambda do |wiring|
+        chevron = lc_icon("chevron-down", variant: :mini, options: { "aria-hidden": true })
+        safe_join([ primary, tag.button(chevron, **lc_attributes({ type: "button", class: toggle_class, aria: { label: menu_label }, data: { slot: "split-button-toggle" } }, wiring)) ])
+      end
+      wrapper = lc_attributes({ class: lc_tw(ButtonHelper::SPLIT_BUTTON_BASE, ("flex w-full" if block)), data: { controller: "lc-menu", slot: "split-button" } }, attributes)
+      lc_panel(id: id, label: menu_label, controller: "lc-menu", role: "menu", classes: lc_menu_popover_class(align: align), attributes: lc_attributes({ data: { slot: "menu" } }, menu),
+        default_trigger: halves, trigger_attributes: toggle, wrapper_attributes: wrapper, &items)
     end
 
+    # A block replaces the icon with custom content, such as an avatar or two stacked icons.
     def lc_icon_button(label, icon: nil, size: :md, icon_size: size, shape: :circle, variant: :ghost, tone: :default, tooltip: nil, **attributes, &content)
       attributes = lc_icon_button_attributes(label, size, icon_size, shape, variant, tone, { type: "button" }, attributes)
       lc_icon_button_tooltip(label, tooltip, attributes) { |tip| tag.button(lc_icon_button_content(icon, &content), **lc_attributes(attributes, tip)) }
