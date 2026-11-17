@@ -9,12 +9,7 @@ import { liftToTopLayer, onPageLeave } from "lostcoords/ui/helpers/top_layer"
 export default class extends Controller {
   static targets = ["content"]
 
-  connect() {
-    this.stopPageLeave = onPageLeave(() => this.close({ immediate: true }))
-  }
-
   disconnect() {
-    this.stopPageLeave?.()
     this.close({ immediate: true })
   }
 
@@ -24,6 +19,7 @@ export default class extends Controller {
 
     this.element.toggleAttribute("data-open", true)
     this.release = liftToTopLayer(this.contentTarget, this.element)
+    this.stopPageLeave = onPageLeave(() => this.close({ immediate: true }))
     this.unregister = registerDismissable({
       type: "tooltip",
       element: this.element,
@@ -48,6 +44,8 @@ export default class extends Controller {
     this.element.toggleAttribute("data-open", false)
     this.release?.({ immediate })
     this.release = null
+    this.stopPageLeave?.()
+    this.stopPageLeave = null
     this.unregister?.()
     this.unregister = null
   }

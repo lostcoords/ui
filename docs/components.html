@@ -15,7 +15,7 @@
       const theme = localStorage.getItem("lostcoords-ui:theme")
       if (theme === "dark" || (!theme && matchMedia("(prefers-color-scheme: dark)").matches)) document.documentElement.dataset.theme = "dark"
     </script>
-    <link rel="stylesheet" href="/assets/tailwind-f399f86c.css" data-turbo-track="reload" />
+    <link rel="stylesheet" href="/assets/tailwind-5aaf06c2.css" data-turbo-track="reload" />
     <link rel="stylesheet" href="/assets/components-3552f81a.css" data-turbo-track="dynamic" />
     <meta name="view-transition" content="same-origin">
     <meta name="turbo-prefetch" content="true">
@@ -32,13 +32,13 @@
     "lostcoords/ui/controllers/lc_dialog_controller": "/assets/lostcoords/ui/controllers/lc_dialog_controller-afc6d2cd.js",
     "lostcoords/ui/controllers/lc_dock_controller": "/assets/lostcoords/ui/controllers/lc_dock_controller-0e45af8e.js",
     "lostcoords/ui/controllers/lc_emoji_picker_controller": "/assets/lostcoords/ui/controllers/lc_emoji_picker_controller-c3f9d5d9.js",
-    "lostcoords/ui/controllers/lc_hovercard_controller": "/assets/lostcoords/ui/controllers/lc_hovercard_controller-1b08977f.js",
+    "lostcoords/ui/controllers/lc_hovercard_controller": "/assets/lostcoords/ui/controllers/lc_hovercard_controller-99a4fcea.js",
     "lostcoords/ui/controllers/lc_kbd_controller": "/assets/lostcoords/ui/controllers/lc_kbd_controller-83cd1787.js",
-    "lostcoords/ui/controllers/lc_menu_controller": "/assets/lostcoords/ui/controllers/lc_menu_controller-c2a19d16.js",
+    "lostcoords/ui/controllers/lc_menu_controller": "/assets/lostcoords/ui/controllers/lc_menu_controller-693464b4.js",
     "lostcoords/ui/controllers/lc_nav_controller": "/assets/lostcoords/ui/controllers/lc_nav_controller-9052d393.js",
     "lostcoords/ui/controllers/lc_popover_controller": "/assets/lostcoords/ui/controllers/lc_popover_controller-00b603b0.js",
     "lostcoords/ui/controllers/lc_scroll_keeper_controller": "/assets/lostcoords/ui/controllers/lc_scroll_keeper_controller-ee3b0e1b.js",
-    "lostcoords/ui/controllers/lc_search_controller": "/assets/lostcoords/ui/controllers/lc_search_controller-9164d2cd.js",
+    "lostcoords/ui/controllers/lc_search_controller": "/assets/lostcoords/ui/controllers/lc_search_controller-e855e9fe.js",
     "lostcoords/ui/controllers/lc_selection_controller": "/assets/lostcoords/ui/controllers/lc_selection_controller-cc36bc56.js",
     "lostcoords/ui/controllers/lc_sheet_controller": "/assets/lostcoords/ui/controllers/lc_sheet_controller-1638338d.js",
     "lostcoords/ui/controllers/lc_shortcut_controller": "/assets/lostcoords/ui/controllers/lc_shortcut_controller-82108a21.js",
@@ -48,7 +48,7 @@
     "lostcoords/ui/controllers/lc_toast_region_controller": "/assets/lostcoords/ui/controllers/lc_toast_region_controller-cba89595.js",
     "lostcoords/ui/controllers/lc_toc_controller": "/assets/lostcoords/ui/controllers/lc_toc_controller-29ad3321.js",
     "lostcoords/ui/controllers/lc_toggle_controller": "/assets/lostcoords/ui/controllers/lc_toggle_controller-c1f00ec9.js",
-    "lostcoords/ui/controllers/lc_tooltip_controller": "/assets/lostcoords/ui/controllers/lc_tooltip_controller-dca69acd.js",
+    "lostcoords/ui/controllers/lc_tooltip_controller": "/assets/lostcoords/ui/controllers/lc_tooltip_controller-9691fc7e.js",
     "application": "/assets/application-a9592715.js",
     "@hotwired/turbo-rails": "/assets/turbo.min-86bf8853.js",
     "@hotwired/stimulus": "/assets/stimulus.min-7ea3d58b.js",
@@ -62,13 +62,13 @@
     "controllers/lc_dialog_controller": "/assets/lostcoords/ui/controllers/lc_dialog_controller-afc6d2cd.js",
     "controllers/lc_dock_controller": "/assets/lostcoords/ui/controllers/lc_dock_controller-0e45af8e.js",
     "controllers/lc_emoji_picker_controller": "/assets/lostcoords/ui/controllers/lc_emoji_picker_controller-c3f9d5d9.js",
-    "controllers/lc_hovercard_controller": "/assets/lostcoords/ui/controllers/lc_hovercard_controller-1b08977f.js",
+    "controllers/lc_hovercard_controller": "/assets/lostcoords/ui/controllers/lc_hovercard_controller-99a4fcea.js",
     "controllers/lc_kbd_controller": "/assets/lostcoords/ui/controllers/lc_kbd_controller-83cd1787.js",
-    "controllers/lc_menu_controller": "/assets/lostcoords/ui/controllers/lc_menu_controller-c2a19d16.js",
+    "controllers/lc_menu_controller": "/assets/lostcoords/ui/controllers/lc_menu_controller-693464b4.js",
     "controllers/lc_nav_controller": "/assets/lostcoords/ui/controllers/lc_nav_controller-9052d393.js",
     "controllers/lc_popover_controller": "/assets/lostcoords/ui/controllers/lc_popover_controller-00b603b0.js",
     "controllers/lc_scroll_keeper_controller": "/assets/lostcoords/ui/controllers/lc_scroll_keeper_controller-ee3b0e1b.js",
-    "controllers/lc_search_controller": "/assets/lostcoords/ui/controllers/lc_search_controller-9164d2cd.js",
+    "controllers/lc_search_controller": "/assets/lostcoords/ui/controllers/lc_search_controller-e855e9fe.js",
     "controllers/lc_selection_controller": "/assets/lostcoords/ui/controllers/lc_selection_controller-cc36bc56.js",
     "controllers/lc_sheet_controller": "/assets/lostcoords/ui/controllers/lc_sheet_controller-1638338d.js",
     "controllers/lc_shortcut_controller": "/assets/lostcoords/ui/controllers/lc_shortcut_controller-82108a21.js",
@@ -78,13 +78,13 @@
     "controllers/lc_toast_region_controller": "/assets/lostcoords/ui/controllers/lc_toast_region_controller-cba89595.js",
     "controllers/lc_toc_controller": "/assets/lostcoords/ui/controllers/lc_toc_controller-29ad3321.js",
     "controllers/lc_toggle_controller": "/assets/lostcoords/ui/controllers/lc_toggle_controller-c1f00ec9.js",
-    "controllers/lc_tooltip_controller": "/assets/lostcoords/ui/controllers/lc_tooltip_controller-dca69acd.js",
-    "lostcoords/ui/helpers/catalog_picker": "/assets/lostcoords/ui/helpers/catalog_picker-c9ff3c51.js",
+    "controllers/lc_tooltip_controller": "/assets/lostcoords/ui/controllers/lc_tooltip_controller-9691fc7e.js",
+    "lostcoords/ui/helpers/catalog_picker": "/assets/lostcoords/ui/helpers/catalog_picker-0eb22b09.js",
     "lostcoords/ui/helpers/confirm": "/assets/lostcoords/ui/helpers/confirm-1d62b1ae.js",
     "lostcoords/ui/helpers/context_dialog": "/assets/lostcoords/ui/helpers/context_dialog-9c322515.js",
     "lostcoords/ui/helpers/dialog": "/assets/lostcoords/ui/helpers/dialog-9dde6a60.js",
     "lostcoords/ui/helpers/dismiss_stack": "/assets/lostcoords/ui/helpers/dismiss_stack-b5ac8602.js",
-    "lostcoords/ui/helpers/floating_panel": "/assets/lostcoords/ui/helpers/floating_panel-4b97b6e6.js",
+    "lostcoords/ui/helpers/floating_panel": "/assets/lostcoords/ui/helpers/floating_panel-2b7d0897.js",
     "lostcoords/ui/helpers/menu_keys": "/assets/lostcoords/ui/helpers/menu_keys-e8db11f6.js",
     "lostcoords/ui/helpers/roving_focus": "/assets/lostcoords/ui/helpers/roving_focus-37f03892.js",
     "lostcoords/ui/helpers/sheet_motion": "/assets/lostcoords/ui/helpers/sheet_motion-4ff3b084.js",

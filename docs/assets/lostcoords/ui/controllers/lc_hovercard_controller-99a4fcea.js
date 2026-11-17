@@ -15,12 +15,10 @@ export default class extends Controller {
   static values = { src: String }
 
   connect() {
-    this.stopPageLeave = onPageLeave(() => this.close({ immediate: true }))
     this.untab()
   }
 
   disconnect() {
-    this.stopPageLeave?.()
     this.cancelTimers()
     this.close({ immediate: true })
   }
@@ -52,6 +50,7 @@ export default class extends Controller {
     }
     this.element.toggleAttribute("data-open", true)
     this.release = liftToTopLayer(this.contentTarget, this.triggerTarget)
+    this.stopPageLeave = onPageLeave(() => this.close({ immediate: true }))
     this.unregister = registerDismissable({
       type: "hovercard",
       element: this.element,
@@ -92,6 +91,8 @@ export default class extends Controller {
     this.element.toggleAttribute("data-open", false)
     this.release?.({ immediate })
     this.release = null
+    this.stopPageLeave?.()
+    this.stopPageLeave = null
     this.unregister?.()
     this.unregister = null
   }

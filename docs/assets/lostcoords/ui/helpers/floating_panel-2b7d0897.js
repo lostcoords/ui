@@ -4,6 +4,10 @@ import { liftToTopLayer, onPageLeave } from "lostcoords/ui/helpers/top_layer"
 
 const BEFORE_OPEN = "overlay:before-open"
 
+// A panel listens to the document only while it is open, and its teardown (disconnect, a page
+// leave) never reads a target. A Turbo morph moves a panel's id-carrying trigger and panel into
+// another host before Stimulus disconnects the emptied one, so a target read there would throw
+// and leave the rest of the teardown undone.
 export class FloatingPanel extends Controller {
   static targets = ["trigger", "popover"]
   static values = { lift: { type: Boolean, default: true } }
@@ -20,18 +24,10 @@ export class FloatingPanel extends Controller {
     this.closeOnOutsideClick = (event) => {
       if (!this.element.contains(event.target)) this.close()
     }
-    this.closeForPageLeave = () => this.closeNow({ immediate: true })
-  }
-
-  connect() {
-    document.addEventListener(BEFORE_OPEN, this.closeForOther)
-    this.stopPageLeave = onPageLeave(this.closeForPageLeave)
   }
 
   disconnect() {
-    document.removeEventListener(BEFORE_OPEN, this.closeForOther)
-    this.stopPageLeave?.()
-    this.release({ immediate: true })
+    this.closeNow({ immediate: true })
   }
 
   toggle(event) {
@@ -58,6 +54,8 @@ export class FloatingPanel extends Controller {
     if (this.lifts) this.releaseLift = liftToTopLayer(this.popoverTarget, this.opener)
     this.triggerTarget.setAttribute("aria-expanded", "true")
 
+    document.addEventListener(BEFORE_OPEN, this.closeForOther)
+    this.stopPageLeave = onPageLeave(() => this.closeNow({ immediate: true }))
     if (this.constructor.closesOnOutsideClick)
       document.addEventListener("click", this.closeOnOutsideClick)
     this.unregisterDismissable = registerDismissable({
@@ -74,11 +72,12 @@ export class FloatingPanel extends Controller {
   }
 
   closeNow({ immediate = false } = {}) {
-    if (!this.isOpen) return
-
-    this.hide()
+    const wasOpen = this.isOpen
+    if (wasOpen) this.hide()
     this.release({ immediate })
-    this.triggerTarget.setAttribute("aria-expanded", "false")
+    if (!wasOpen) return
+
+    if (this.hasTriggerTarget) this.triggerTarget.setAttribute("aria-expanded", "false")
     this.afterClose()
   }
 
@@ -87,6 +86,9 @@ export class FloatingPanel extends Controller {
   release({ immediate = false } = {}) {
     this.releaseLift?.({ immediate })
     this.releaseLift = null
+    document.removeEventListener(BEFORE_OPEN, this.closeForOther)
+    this.stopPageLeave?.()
+    this.stopPageLeave = null
     document.removeEventListener("click", this.closeOnOutsideClick)
     this.unregisterDismissable?.()
     this.unregisterDismissable = null
@@ -103,7 +105,7 @@ export class FloatingPanel extends Controller {
   }
 
   get isOpen() {
-    return this.popoverTarget.hasAttribute("data-open")
+    return this.hasPopoverTarget && this.popoverTarget.hasAttribute("data-open")
   }
 
   get lifts() {

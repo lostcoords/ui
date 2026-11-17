@@ -673,17 +673,17 @@ Settings: https://ui.lostcoords.com/components/list_group
     <%= lc_list_row "Passkey", subtitle: "Not set up", icon: "key" do %>
       <%= lc_button "Add", variant: :secondary, size: :sm %>
     <% end %>
-    <%= lc_list_row "Sign-in alerts", subtitle: "Email me when a new device signs in", icon: "bell", tag: :label, class: "cursor-pointer" do %>
+    <%= lc_list_row "Sign-in alerts", subtitle: "Email me when a new device signs in", icon: "bell", as: :label, class: "cursor-pointer" do %>
       <input type="checkbox" role="switch" name="alerts" class="<%= lc_switch_class %>" checked>
     <% end %>
     <%= lc_list_row "Recovery codes", icon: "document-text", href: "#recovery-codes" do %>
       <%= lc_icon "chevron-right", variant: :mini, options: { class: "size-5 text-muted-foreground rtl:rotate-180", "aria-hidden": true } %>
     <% end %>
-    <%= lc_list_row "Laptop", subtitle: "Signed in 2 hours ago", icon: "computer-desktop", href: "#laptop", tag: :div do %>
+    <%= lc_list_row "Laptop", subtitle: "Signed in 2 hours ago", icon: "computer-desktop", href: "#laptop", as: :div do %>
       <%= lc_icon_button "Sign out", icon: "arrow-right-start-on-rectangle", size: :sm, tooltip: true %>
     <% end %>
     <%= lc_list_row padded: false do %>
-      <%= lc_list_item "Delete account", icon: "trash", tag: :button, type: "button", class: "w-full cursor-pointer rounded-[inherit] text-destructive transition-colors hover:bg-accent" %>
+      <%= lc_list_item "Delete account", icon: "trash", as: :button, type: "button", class: "w-full cursor-pointer rounded-[inherit] text-destructive transition-colors hover:bg-accent" %>
     <% end %>
   <% end %>
 <% end %>
@@ -1313,17 +1313,17 @@ Settings: https://ui.lostcoords.com/components/list_group
     <%= lc_list_row "Passkey", subtitle: "Not set up", icon: "key" do %>
       <%= lc_button "Add", variant: :secondary, size: :sm %>
     <% end %>
-    <%= lc_list_row "Sign-in alerts", subtitle: "Email me when a new device signs in", icon: "bell", tag: :label, class: "cursor-pointer" do %>
+    <%= lc_list_row "Sign-in alerts", subtitle: "Email me when a new device signs in", icon: "bell", as: :label, class: "cursor-pointer" do %>
       <input type="checkbox" role="switch" name="alerts" class="<%= lc_switch_class %>" checked>
     <% end %>
     <%= lc_list_row "Recovery codes", icon: "document-text", href: "#recovery-codes" do %>
       <%= lc_icon "chevron-right", variant: :mini, options: { class: "size-5 text-muted-foreground rtl:rotate-180", "aria-hidden": true } %>
     <% end %>
-    <%= lc_list_row "Laptop", subtitle: "Signed in 2 hours ago", icon: "computer-desktop", href: "#laptop", tag: :div do %>
+    <%= lc_list_row "Laptop", subtitle: "Signed in 2 hours ago", icon: "computer-desktop", href: "#laptop", as: :div do %>
       <%= lc_icon_button "Sign out", icon: "arrow-right-start-on-rectangle", size: :sm, tooltip: true %>
     <% end %>
     <%= lc_list_row padded: false do %>
-      <%= lc_list_item "Delete account", icon: "trash", tag: :button, type: "button", class: "w-full cursor-pointer rounded-[inherit] text-destructive transition-colors hover:bg-accent" %>
+      <%= lc_list_item "Delete account", icon: "trash", as: :button, type: "button", class: "w-full cursor-pointer rounded-[inherit] text-destructive transition-colors hover:bg-accent" %>
     <% end %>
   <% end %>
 <% end %>
@@ -1349,7 +1349,7 @@ Choice rows: https://ui.lostcoords.com/components/list_group
 https://ui.lostcoords.com/components/list_group#lc_list_group
 
 ```ruby
-lc_list_group(tag: :div, **attributes, &block)
+lc_list_group(as: :div, **attributes, &block)
 ```
 
 Settings: https://ui.lostcoords.com/components/list_group
@@ -1363,17 +1363,17 @@ Settings: https://ui.lostcoords.com/components/list_group
     <%= lc_list_row "Passkey", subtitle: "Not set up", icon: "key" do %>
       <%= lc_button "Add", variant: :secondary, size: :sm %>
     <% end %>
-    <%= lc_list_row "Sign-in alerts", subtitle: "Email me when a new device signs in", icon: "bell", tag: :label, class: "cursor-pointer" do %>
+    <%= lc_list_row "Sign-in alerts", subtitle: "Email me when a new device signs in", icon: "bell", as: :label, class: "cursor-pointer" do %>
       <input type="checkbox" role="switch" name="alerts" class="<%= lc_switch_class %>" checked>
     <% end %>
     <%= lc_list_row "Recovery codes", icon: "document-text", href: "#recovery-codes" do %>
       <%= lc_icon "chevron-right", variant: :mini, options: { class: "size-5 text-muted-foreground rtl:rotate-180", "aria-hidden": true } %>
     <% end %>
-    <%= lc_list_row "Laptop", subtitle: "Signed in 2 hours ago", icon: "computer-desktop", href: "#laptop", tag: :div do %>
+    <%= lc_list_row "Laptop", subtitle: "Signed in 2 hours ago", icon: "computer-desktop", href: "#laptop", as: :div do %>
       <%= lc_icon_button "Sign out", icon: "arrow-right-start-on-rectangle", size: :sm, tooltip: true %>
     <% end %>
     <%= lc_list_row padded: false do %>
-      <%= lc_list_item "Delete account", icon: "trash", tag: :button, type: "button", class: "w-full cursor-pointer rounded-[inherit] text-destructive transition-colors hover:bg-accent" %>
+      <%= lc_list_item "Delete account", icon: "trash", as: :button, type: "button", class: "w-full cursor-pointer rounded-[inherit] text-destructive transition-colors hover:bg-accent" %>
     <% end %>
   <% end %>
 <% end %>
@@ -1386,7 +1386,7 @@ Form rows: https://ui.lostcoords.com/components/list_group
   <%= lc_list_field "Description", icon: "pencil", id: "my-component-description" do %>
     <%= lc_input plain: true, id: "my-component-description", name: "description", placeholder: "Dinner at Ichiran" %>
   <% end %>
-  <%= lc_list_field "Paid by", icon: "user", tag: :fieldset do %>
+  <%= lc_list_field "Paid by", icon: "user", as: :fieldset do %>
     <div class="flex flex-wrap items-center gap-related min-w-0">
       <%= lc_toggle "Ada", size: :sm, active: true %>
       <%= lc_toggle "Grace", size: :sm %>
@@ -1418,7 +1418,7 @@ Choice rows: https://ui.lostcoords.com/components/list_group
 https://ui.lostcoords.com/components/list_group#lc_list_row
 
 ```ruby
-lc_list_row(title = nil, subtitle: nil, icon: nil, href: nil, tag: nil, padded: true, choice: nil, name: nil, value: nil, checked: false, input: {}, **attributes, &block)
+lc_list_row(title = nil, subtitle: nil, icon: nil, href: nil, as: nil, padded: true, choice: nil, name: nil, value: nil, checked: false, input: {}, **attributes, &block)
 ```
 
 Settings: https://ui.lostcoords.com/components/list_group
@@ -1432,17 +1432,17 @@ Settings: https://ui.lostcoords.com/components/list_group
     <%= lc_list_row "Passkey", subtitle: "Not set up", icon: "key" do %>
       <%= lc_button "Add", variant: :secondary, size: :sm %>
     <% end %>
-    <%= lc_list_row "Sign-in alerts", subtitle: "Email me when a new device signs in", icon: "bell", tag: :label, class: "cursor-pointer" do %>
+    <%= lc_list_row "Sign-in alerts", subtitle: "Email me when a new device signs in", icon: "bell", as: :label, class: "cursor-pointer" do %>
       <input type="checkbox" role="switch" name="alerts" class="<%= lc_switch_class %>" checked>
     <% end %>
     <%= lc_list_row "Recovery codes", icon: "document-text", href: "#recovery-codes" do %>
       <%= lc_icon "chevron-right", variant: :mini, options: { class: "size-5 text-muted-foreground rtl:rotate-180", "aria-hidden": true } %>
     <% end %>
-    <%= lc_list_row "Laptop", subtitle: "Signed in 2 hours ago", icon: "computer-desktop", href: "#laptop", tag: :div do %>
+    <%= lc_list_row "Laptop", subtitle: "Signed in 2 hours ago", icon: "computer-desktop", href: "#laptop", as: :div do %>
       <%= lc_icon_button "Sign out", icon: "arrow-right-start-on-rectangle", size: :sm, tooltip: true %>
     <% end %>
     <%= lc_list_row padded: false do %>
-      <%= lc_list_item "Delete account", icon: "trash", tag: :button, type: "button", class: "w-full cursor-pointer rounded-[inherit] text-destructive transition-colors hover:bg-accent" %>
+      <%= lc_list_item "Delete account", icon: "trash", as: :button, type: "button", class: "w-full cursor-pointer rounded-[inherit] text-destructive transition-colors hover:bg-accent" %>
     <% end %>
   <% end %>
 <% end %>
@@ -1468,7 +1468,7 @@ Choice rows: https://ui.lostcoords.com/components/list_group
 https://ui.lostcoords.com/components/list_group#lc_list_field
 
 ```ruby
-lc_list_field(label, icon: nil, id: nil, tag: :div, surface: true, **attributes, &block)
+lc_list_field(label, icon: nil, id: nil, as: :div, surface: true, **attributes, &block)
 ```
 
 Form rows: https://ui.lostcoords.com/components/list_group
@@ -1478,7 +1478,7 @@ Form rows: https://ui.lostcoords.com/components/list_group
   <%= lc_list_field "Description", icon: "pencil", id: "my-component-description" do %>
     <%= lc_input plain: true, id: "my-component-description", name: "description", placeholder: "Dinner at Ichiran" %>
   <% end %>
-  <%= lc_list_field "Paid by", icon: "user", tag: :fieldset do %>
+  <%= lc_list_field "Paid by", icon: "user", as: :fieldset do %>
     <div class="flex flex-wrap items-center gap-related min-w-0">
       <%= lc_toggle "Ada", size: :sm, active: true %>
       <%= lc_toggle "Grace", size: :sm %>
@@ -1495,7 +1495,7 @@ Form rows: https://ui.lostcoords.com/components/list_group
 https://ui.lostcoords.com/components/list_group#lc_list_item
 
 ```ruby
-lc_list_item(title, subtitle: nil, icon: nil, link: nil, tag: :div, **attributes, &block)
+lc_list_item(title, subtitle: nil, icon: nil, link: nil, as: :div, **attributes, &block)
 ```
 
 Settings: https://ui.lostcoords.com/components/list_group
@@ -1509,17 +1509,17 @@ Settings: https://ui.lostcoords.com/components/list_group
     <%= lc_list_row "Passkey", subtitle: "Not set up", icon: "key" do %>
       <%= lc_button "Add", variant: :secondary, size: :sm %>
     <% end %>
-    <%= lc_list_row "Sign-in alerts", subtitle: "Email me when a new device signs in", icon: "bell", tag: :label, class: "cursor-pointer" do %>
+    <%= lc_list_row "Sign-in alerts", subtitle: "Email me when a new device signs in", icon: "bell", as: :label, class: "cursor-pointer" do %>
       <input type="checkbox" role="switch" name="alerts" class="<%= lc_switch_class %>" checked>
     <% end %>
     <%= lc_list_row "Recovery codes", icon: "document-text", href: "#recovery-codes" do %>
       <%= lc_icon "chevron-right", variant: :mini, options: { class: "size-5 text-muted-foreground rtl:rotate-180", "aria-hidden": true } %>
     <% end %>
-    <%= lc_list_row "Laptop", subtitle: "Signed in 2 hours ago", icon: "computer-desktop", href: "#laptop", tag: :div do %>
+    <%= lc_list_row "Laptop", subtitle: "Signed in 2 hours ago", icon: "computer-desktop", href: "#laptop", as: :div do %>
       <%= lc_icon_button "Sign out", icon: "arrow-right-start-on-rectangle", size: :sm, tooltip: true %>
     <% end %>
     <%= lc_list_row padded: false do %>
-      <%= lc_list_item "Delete account", icon: "trash", tag: :button, type: "button", class: "w-full cursor-pointer rounded-[inherit] text-destructive transition-colors hover:bg-accent" %>
+      <%= lc_list_item "Delete account", icon: "trash", as: :button, type: "button", class: "w-full cursor-pointer rounded-[inherit] text-destructive transition-colors hover:bg-accent" %>
     <% end %>
   <% end %>
 <% end %>
@@ -1530,7 +1530,7 @@ Settings: https://ui.lostcoords.com/components/list_group
 https://ui.lostcoords.com/components/menu#lc_menu
 
 ```ruby
-lc_menu(id:, label: lc_t("lostcoords.ui.menu.label"), align: :end, side: :bottom, trigger: :button, trigger_size: :md, icon: "ellipsis-vertical", trigger_attributes: {}, wrapper_attributes: {}, **attributes, &block)
+lc_menu(id:, label: lc_t("lostcoords.ui.menu.label"), align: :end, side: :bottom, trigger: :button, trigger_variant: :secondary, trigger_size: :md, icon: "ellipsis-vertical", trigger_attributes: {}, wrapper_attributes: {}, **attributes, &block)
 ```
 
 Select trigger: https://ui.lostcoords.com/components/button
@@ -1596,7 +1596,7 @@ Icon trigger, hints, choices and groups: https://ui.lostcoords.com/components/me
 https://ui.lostcoords.com/components/popover#lc_popover
 
 ```ruby
-lc_popover(id:, label: lc_t("lostcoords.ui.popover.trigger"), title: nil, align: :end, trigger_variant: :secondary, trigger: :button, icon: "ellipsis-vertical", trigger_attributes: {}, wrapper_attributes: {}, **attributes, &block)
+lc_popover(id:, label: lc_t("lostcoords.ui.popover.trigger"), title: nil, align: :end, side: :bottom, trigger: :button, trigger_variant: :secondary, trigger_size: :md, icon: "ellipsis-vertical", trigger_attributes: {}, wrapper_attributes: {}, **attributes, &block)
 ```
 
 Anchored content: https://ui.lostcoords.com/components/popover
@@ -2462,17 +2462,17 @@ Settings: https://ui.lostcoords.com/components/list_group
     <%= lc_list_row "Passkey", subtitle: "Not set up", icon: "key" do %>
       <%= lc_button "Add", variant: :secondary, size: :sm %>
     <% end %>
-    <%= lc_list_row "Sign-in alerts", subtitle: "Email me when a new device signs in", icon: "bell", tag: :label, class: "cursor-pointer" do %>
+    <%= lc_list_row "Sign-in alerts", subtitle: "Email me when a new device signs in", icon: "bell", as: :label, class: "cursor-pointer" do %>
       <input type="checkbox" role="switch" name="alerts" class="<%= lc_switch_class %>" checked>
     <% end %>
     <%= lc_list_row "Recovery codes", icon: "document-text", href: "#recovery-codes" do %>
       <%= lc_icon "chevron-right", variant: :mini, options: { class: "size-5 text-muted-foreground rtl:rotate-180", "aria-hidden": true } %>
     <% end %>
-    <%= lc_list_row "Laptop", subtitle: "Signed in 2 hours ago", icon: "computer-desktop", href: "#laptop", tag: :div do %>
+    <%= lc_list_row "Laptop", subtitle: "Signed in 2 hours ago", icon: "computer-desktop", href: "#laptop", as: :div do %>
       <%= lc_icon_button "Sign out", icon: "arrow-right-start-on-rectangle", size: :sm, tooltip: true %>
     <% end %>
     <%= lc_list_row padded: false do %>
-      <%= lc_list_item "Delete account", icon: "trash", tag: :button, type: "button", class: "w-full cursor-pointer rounded-[inherit] text-destructive transition-colors hover:bg-accent" %>
+      <%= lc_list_item "Delete account", icon: "trash", as: :button, type: "button", class: "w-full cursor-pointer rounded-[inherit] text-destructive transition-colors hover:bg-accent" %>
     <% end %>
   <% end %>
 <% end %>
@@ -2700,17 +2700,17 @@ Settings: https://ui.lostcoords.com/components/list_group
     <%= lc_list_row "Passkey", subtitle: "Not set up", icon: "key" do %>
       <%= lc_button "Add", variant: :secondary, size: :sm %>
     <% end %>
-    <%= lc_list_row "Sign-in alerts", subtitle: "Email me when a new device signs in", icon: "bell", tag: :label, class: "cursor-pointer" do %>
+    <%= lc_list_row "Sign-in alerts", subtitle: "Email me when a new device signs in", icon: "bell", as: :label, class: "cursor-pointer" do %>
       <input type="checkbox" role="switch" name="alerts" class="<%= lc_switch_class %>" checked>
     <% end %>
     <%= lc_list_row "Recovery codes", icon: "document-text", href: "#recovery-codes" do %>
       <%= lc_icon "chevron-right", variant: :mini, options: { class: "size-5 text-muted-foreground rtl:rotate-180", "aria-hidden": true } %>
     <% end %>
-    <%= lc_list_row "Laptop", subtitle: "Signed in 2 hours ago", icon: "computer-desktop", href: "#laptop", tag: :div do %>
+    <%= lc_list_row "Laptop", subtitle: "Signed in 2 hours ago", icon: "computer-desktop", href: "#laptop", as: :div do %>
       <%= lc_icon_button "Sign out", icon: "arrow-right-start-on-rectangle", size: :sm, tooltip: true %>
     <% end %>
     <%= lc_list_row padded: false do %>
-      <%= lc_list_item "Delete account", icon: "trash", tag: :button, type: "button", class: "w-full cursor-pointer rounded-[inherit] text-destructive transition-colors hover:bg-accent" %>
+      <%= lc_list_item "Delete account", icon: "trash", as: :button, type: "button", class: "w-full cursor-pointer rounded-[inherit] text-destructive transition-colors hover:bg-accent" %>
     <% end %>
   <% end %>
 <% end %>
@@ -3567,7 +3567,7 @@ Filtered in the browser: https://ui.lostcoords.com/components/search
 https://ui.lostcoords.com/components/dialog#lc_sheet
 
 ```ruby
-lc_sheet(tag: :div, anchored: false, detents: "fit", handle: false, size: nil, surface: nil, **attributes, &block)
+lc_sheet(as: :div, anchored: false, detents: "fit", handle: false, size: nil, surface: nil, **attributes, &block)
 ```
 
 Popover sheet: https://ui.lostcoords.com/components/dialog
@@ -3880,7 +3880,7 @@ Form rows: https://ui.lostcoords.com/components/list_group
   <%= lc_list_field "Description", icon: "pencil", id: "my-component-description" do %>
     <%= lc_input plain: true, id: "my-component-description", name: "description", placeholder: "Dinner at Ichiran" %>
   <% end %>
-  <%= lc_list_field "Paid by", icon: "user", tag: :fieldset do %>
+  <%= lc_list_field "Paid by", icon: "user", as: :fieldset do %>
     <div class="flex flex-wrap items-center gap-related min-w-0">
       <%= lc_toggle "Ada", size: :sm, active: true %>
       <%= lc_toggle "Grace", size: :sm %>
@@ -4365,7 +4365,7 @@ Form rows: https://ui.lostcoords.com/components/list_group
   <%= lc_list_field "Description", icon: "pencil", id: "my-component-description" do %>
     <%= lc_input plain: true, id: "my-component-description", name: "description", placeholder: "Dinner at Ichiran" %>
   <% end %>
-  <%= lc_list_field "Paid by", icon: "user", tag: :fieldset do %>
+  <%= lc_list_field "Paid by", icon: "user", as: :fieldset do %>
     <div class="flex flex-wrap items-center gap-related min-w-0">
       <%= lc_toggle "Ada", size: :sm, active: true %>
       <%= lc_toggle "Grace", size: :sm %>
@@ -5289,7 +5289,7 @@ Glass surfaces use lc_glass_class; lc_tw merges utility classes. Read https://gi
 - `lc_checkbox_class(extra: nil)`
 - `lc_radio_class(extra: nil)`
 - `lc_switch_class(extra: nil)`
-- `lc_dialog_class(kind = :modal, size: nil, extra: nil)`
+- `lc_dialog_class(kind: :modal, size: nil, extra: nil)`
 - `lc_emoji_picker_groups`
 - `lc_emoji_picker_count`
 - `lc_emoji_picker_version`

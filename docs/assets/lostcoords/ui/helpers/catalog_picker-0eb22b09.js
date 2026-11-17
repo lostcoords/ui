@@ -468,7 +468,7 @@ export class CatalogPicker extends FloatingPanel {
   }
 
   get catalogElement() {
-    return this.bodyTarget.querySelector("[data-picker-catalog]")
+    return this.hasBodyTarget ? this.bodyTarget.querySelector("[data-picker-catalog]") : null
   }
 
   get optionSelector() {
