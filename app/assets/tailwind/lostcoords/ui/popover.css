@@ -22,4 +22,14 @@
       transform: var(--lc-popover-from, translateY(--spacing(-1)) scale(0.98));
     }
   }
+
+  /* The panel still fades; it no longer moves or grows. */
+  @media (prefers-reduced-motion: reduce) {
+    /* stylelint-disable-next-line no-invalid-position-declaration -- an @utility body nests like a rule */
+    transform: none;
+
+    &:is([data-open], :popover-open) {
+      @starting-style { transform: none; }
+    }
+  }
 }

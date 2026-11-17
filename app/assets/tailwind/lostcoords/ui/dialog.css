@@ -73,7 +73,14 @@
       backdrop-filter: none;
     }
 
+    /* The dialog still fades; it no longer moves or grows. */
     @media (prefers-reduced-motion: reduce) {
+      transform: none;
+
+      &[open] {
+        @starting-style { transform: none; }
+      }
+
       &::backdrop { transition: none; }
     }
   }

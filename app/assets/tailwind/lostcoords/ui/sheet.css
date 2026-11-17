@@ -109,7 +109,10 @@
         @starting-style { opacity: 0; }
       }
 
+      /* The sheet appears in place; lc-sheet's own slides already skip under reduced motion. */
       @media (prefers-reduced-motion: reduce) {
+        transition: none;
+
         &::backdrop { transition: none; }
       }
     }

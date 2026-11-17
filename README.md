@@ -197,6 +197,9 @@ Fixed:
   `disconnect` should not read one either.
 - **A trigger that a morph replaces keeps its arrow keys.** `lc-menu` hears keys on its host, not on the
   trigger and panel it found when it connected.
+- **Menus, popovers, dialogs, phone sheets and linked cards stay put under reduced motion.** They still fade, but
+  no longer slide, grow or lift. Before, only the document reset in `base.css` shortened these, so a host that
+  skips `base.css` kept the movement.
 
 New options:
 
