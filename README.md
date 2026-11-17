@@ -203,6 +203,11 @@ New options:
 - **`lc_menu` and `lc_popover` take the same options.** `lc_menu` gains `trigger_variant:`, `lc_popover` gains
   `side:` and `trigger_size:`, and `trigger_size:` now also sizes a text trigger.
 
+Faster:
+
+- **`lc_tw` keeps one class merger for the process** instead of one per view, so a class list merged in one
+  request is a cache hit in the next.
+
 ## Changes in 0.12.2
 
 Nothing needs an edit. Fixed:

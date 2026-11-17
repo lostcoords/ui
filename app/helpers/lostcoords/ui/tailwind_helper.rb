@@ -15,9 +15,15 @@ module Lostcoords::Ui
       "radius" => %w[pill]
     }.freeze
 
+    # One merger for the process. Its cache is thread-safe and keyed by the class string, so a class
+    # list merged in one request is a lookup in every later one; a merger per view would start each
+    # request cold.
+    def self.merger
+      @merger ||= TailwindMerge::Merger.new(config: { theme: MERGE_THEME, cache_size: 4096 })
+    end
+
     def lc_tw(*classes)
-      @tailwind_merger ||= TailwindMerge::Merger.new(config: { theme: MERGE_THEME })
-      @tailwind_merger.merge(classes.flatten.compact.join(" "))
+      TailwindHelper.merger.merge(classes.flatten.compact.join(" "))
     end
   end
 end
