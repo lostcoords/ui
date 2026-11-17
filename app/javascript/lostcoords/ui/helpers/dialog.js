@@ -2,6 +2,22 @@ import { registerDismissable } from "lostcoords/ui/helpers/dismiss_stack"
 
 const registrations = new WeakMap()
 
+// Turbo snapshots a page for Back with its open dialogs, and restoring one brings back the open
+// attribute but not the top layer: the dialog shows inline, with no backdrop, focus trap or
+// Escape. A dialog registered when the snapshot was taken is marked, so it comes back closed.
+const MARK = "lcDialog"
+document.addEventListener("turbo:before-render", ({ detail: { newBody } }) => {
+  for (const dialog of newBody.querySelectorAll("dialog[data-lc-dialog]")) {
+    dialog.removeAttribute("open")
+    delete dialog.dataset[MARK]
+  }
+})
+// A same-URL refresh morphs the page against server HTML, which never carries the mark.
+document.addEventListener("turbo:before-morph-attribute", (event) => {
+  if (event.detail.attributeName === "data-lc-dialog" && registrations.has(event.target))
+    event.preventDefault()
+})
+
 // Shows a modal <dialog> with focus on the dialog itself rather than its first control: a close
 // button would draw the focus ring after a tap that focused nothing, and a first field would raise
 // a phone's keyboard. A control marked autofocus still takes focus, and Tab reaches every control.
@@ -53,12 +69,14 @@ export function registerDialog(
   const unregister = () => {
     if (registrations.get(dialog) !== unregister) return
     registrations.delete(dialog)
+    delete dialog.dataset[MARK]
     dialog.removeEventListener("close", unregisterOnClose)
     dialog.removeEventListener("click", closeOnBackdrop)
     unregisterDismissable()
   }
 
   registrations.set(dialog, unregister)
+  dialog.dataset[MARK] = ""
   dialog.addEventListener("close", unregisterOnClose)
   dialog.addEventListener("click", closeOnBackdrop)
   return unregister

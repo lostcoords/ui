@@ -170,6 +170,15 @@ Omit `only` to register every library controller. Unknown identifiers raise befo
 registered, and repeated calls on the same application keep later overrides, so register defaults
 before application overrides.
 
+## Changes in 0.12.2
+
+Nothing needs an edit. Fixed:
+
+- **Back no longer brings a dialog back half open.** Turbo snapshots a page with its open dialogs, and
+  restoring one kept the `open` attribute without the top layer: no backdrop, focus trap or Escape, and the
+  page stayed pinned by the scroll lock. A dialog joined through `registerDialog` now comes back closed and
+  the page unpinned; a controller that reopens its dialog on connect shows it as a real modal again.
+
 ## Changes in 0.12.1
 
 Nothing needs an edit. Changed:

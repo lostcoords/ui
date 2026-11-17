@@ -167,12 +167,22 @@ function unlockDocumentScroll() {
   const body = document.body
   if (body?.dataset.modalScrollLock !== "true") return
 
+  releaseScrollLock(body)
+  window.scrollTo({ top: lockedScrollY, behavior: "instant" })
+  lockedScrollY = 0
+}
+
+function releaseScrollLock(body) {
   body.style.position = ""
   body.style.inset = ""
   body.style.top = ""
   body.style.removeProperty("--lc-scroll-lock-y")
   body.style.inlineSize = ""
   delete body.dataset.modalScrollLock
-  window.scrollTo({ top: lockedScrollY, behavior: "instant" })
-  lockedScrollY = 0
 }
+
+// A page snapshotted for Back while a dialog held the lock comes back pinned; the dialog
+// that held it comes back closed (helpers/dialog), so the restored page is free to scroll.
+document.addEventListener("turbo:before-render", ({ detail: { newBody } }) => {
+  if (newBody.dataset.modalScrollLock === "true") releaseScrollLock(newBody)
+})

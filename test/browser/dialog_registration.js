@@ -58,6 +58,24 @@ async function _verifyDialogRegistration(page) {
       throw new Error("A reopened dialog did not close and restore focus")
     await secondClose
 
+    // Back restores a snapshot of the page taken while the dialog was open and locking scroll.
+    dialog.showModal()
+    const locked = registerDialog(dialog)
+    const snapshot = document.body.cloneNode(true)
+    document.dispatchEvent(
+      new CustomEvent("turbo:before-render", { detail: { newBody: snapshot } }),
+    )
+    const restoredDialog = snapshot.querySelector("dialog")
+    if (restoredDialog.open || "lcDialog" in restoredDialog.dataset)
+      throw new Error("A restored snapshot kept its dialog open outside the top layer")
+    if (snapshot.dataset.modalScrollLock || snapshot.style.position)
+      throw new Error("A restored snapshot kept the page pinned")
+    if (!dialog.open || !document.body.dataset.modalScrollLock)
+      throw new Error("Cleaning a snapshot touched the live page")
+    locked()
+    dialog.close()
+    if ("lcDialog" in dialog.dataset) throw new Error("An unregistered dialog kept its mark")
+
     dialog.remove()
     opener.remove()
     return {
@@ -65,6 +83,7 @@ async function _verifyDialogRegistration(page) {
       paddingIgnored: true,
       backdropCloses: true,
       reopenRegisters: true,
+      snapshotRestoresClosed: true,
     }
   })
 }
