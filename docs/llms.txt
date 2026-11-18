@@ -423,7 +423,7 @@ Mobile dialog: https://ui.lostcoords.com/components/dialog
 
 ```erb
 <%= lc_dialog id: "my-component-sheet", title: "Workspace details", trigger: "Open mobile dialog", detents: "fit" do %>
-  <p class="text-sm text-muted-foreground">Drag the handle down to dismiss.</p>
+  <p class="text-sm text-muted-foreground">On a phone this is a half sheet. Swipe it down to dismiss.</p>
   <%= lc_field label: "Workspace", id: "my-component-workspace" do |field| %>
     <%= lc_input value: "Design studio", **field %>
   <% end %>
@@ -3567,7 +3567,7 @@ Filtered in the browser: https://ui.lostcoords.com/components/search
 https://ui.lostcoords.com/components/dialog#lc_sheet
 
 ```ruby
-lc_sheet(as: :div, anchored: false, detents: "fit", handle: false, size: nil, surface: nil, **attributes, &block)
+lc_sheet(as: :div, anchored: false, detents: "fit", size: nil, surface: nil, **attributes, &block)
 ```
 
 Popover sheet: https://ui.lostcoords.com/components/dialog
@@ -3816,7 +3816,7 @@ Mobile dialog: https://ui.lostcoords.com/components/dialog
 
 ```erb
 <%= lc_dialog id: "my-component-sheet", title: "Workspace details", trigger: "Open mobile dialog", detents: "fit" do %>
-  <p class="text-sm text-muted-foreground">Drag the handle down to dismiss.</p>
+  <p class="text-sm text-muted-foreground">On a phone this is a half sheet. Swipe it down to dismiss.</p>
   <%= lc_field label: "Workspace", id: "my-component-workspace" do |field| %>
     <%= lc_input value: "Design studio", **field %>
   <% end %>
@@ -4046,7 +4046,7 @@ Mobile dialog: https://ui.lostcoords.com/components/dialog
 
 ```erb
 <%= lc_dialog id: "my-component-sheet", title: "Workspace details", trigger: "Open mobile dialog", detents: "fit" do %>
-  <p class="text-sm text-muted-foreground">Drag the handle down to dismiss.</p>
+  <p class="text-sm text-muted-foreground">On a phone this is a half sheet. Swipe it down to dismiss.</p>
   <%= lc_field label: "Workspace", id: "my-component-workspace" do |field| %>
     <%= lc_input value: "Design studio", **field %>
   <% end %>

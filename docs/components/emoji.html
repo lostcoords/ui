@@ -15,7 +15,7 @@
       const theme = localStorage.getItem("lostcoords-ui:theme")
       if (theme === "dark" || (!theme && matchMedia("(prefers-color-scheme: dark)").matches)) document.documentElement.dataset.theme = "dark"
     </script>
-    <link rel="stylesheet" href="/assets/tailwind-5aaf06c2.css" data-turbo-track="reload" />
+    <link rel="stylesheet" href="/assets/tailwind-aa0d666e.css" data-turbo-track="reload" />
     
     <meta name="view-transition" content="same-origin">
     <meta name="turbo-prefetch" content="true">
@@ -40,7 +40,7 @@
     "lostcoords/ui/controllers/lc_scroll_keeper_controller": "/assets/lostcoords/ui/controllers/lc_scroll_keeper_controller-ee3b0e1b.js",
     "lostcoords/ui/controllers/lc_search_controller": "/assets/lostcoords/ui/controllers/lc_search_controller-e855e9fe.js",
     "lostcoords/ui/controllers/lc_selection_controller": "/assets/lostcoords/ui/controllers/lc_selection_controller-cc36bc56.js",
-    "lostcoords/ui/controllers/lc_sheet_controller": "/assets/lostcoords/ui/controllers/lc_sheet_controller-1638338d.js",
+    "lostcoords/ui/controllers/lc_sheet_controller": "/assets/lostcoords/ui/controllers/lc_sheet_controller-b92447a2.js",
     "lostcoords/ui/controllers/lc_shortcut_controller": "/assets/lostcoords/ui/controllers/lc_shortcut_controller-82108a21.js",
     "lostcoords/ui/controllers/lc_sidebar_controller": "/assets/lostcoords/ui/controllers/lc_sidebar_controller-6b86bd06.js",
     "lostcoords/ui/controllers/lc_tabs_controller": "/assets/lostcoords/ui/controllers/lc_tabs_controller-9f1d494f.js",
@@ -70,7 +70,7 @@
     "controllers/lc_scroll_keeper_controller": "/assets/lostcoords/ui/controllers/lc_scroll_keeper_controller-ee3b0e1b.js",
     "controllers/lc_search_controller": "/assets/lostcoords/ui/controllers/lc_search_controller-e855e9fe.js",
     "controllers/lc_selection_controller": "/assets/lostcoords/ui/controllers/lc_selection_controller-cc36bc56.js",
-    "controllers/lc_sheet_controller": "/assets/lostcoords/ui/controllers/lc_sheet_controller-1638338d.js",
+    "controllers/lc_sheet_controller": "/assets/lostcoords/ui/controllers/lc_sheet_controller-b92447a2.js",
     "controllers/lc_shortcut_controller": "/assets/lostcoords/ui/controllers/lc_shortcut_controller-82108a21.js",
     "controllers/lc_sidebar_controller": "/assets/lostcoords/ui/controllers/lc_sidebar_controller-6b86bd06.js",
     "controllers/lc_tabs_controller": "/assets/lostcoords/ui/controllers/lc_tabs_controller-9f1d494f.js",
@@ -385,8 +385,6 @@
       aria-label="Choose an emoji"
       hidden
     >
-      <span class="lc-emoji-picker__handle" data-lc-sheet-target="handle" aria-hidden="true"></span>
-
       <div class="lc-emoji-picker__search">
         <div class="lc-emoji-picker__search-field">
           <svg class="lc-emoji-picker__search-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">

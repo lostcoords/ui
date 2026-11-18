@@ -1,19 +1,15 @@
 import { Controller } from "@hotwired/stimulus"
-import { holdDocumentScroll } from "lostcoords/ui/helpers/dismiss_stack"
 import { SHEET_TIMING, sheetDuration } from "lostcoords/ui/helpers/sheet_motion"
 import { hideTopLayer, supportsTopLayer } from "lostcoords/ui/helpers/top_layer"
 import { isSheetViewport, prefersReducedMotion, TEXT_ENTRY } from "lostcoords/ui/helpers/viewport"
 
 const PROJECTION_MS = 180
 const MEDIUM_FRACTION = 0.5
-const PAGE_SCALE_LOSS = 0.06
 const NO_DRAG = "input[type=range], [data-lc-sheet-no-drag]"
-const HANDLE = "[data-lc-sheet-target~='handle']"
-const GRABBER_ZONE = 28
+const DRAG_ZONE = 28
 const KEYBOARD_FREE = 0.5
 
 export default class extends Controller {
-  static targets = ["handle"]
   static values = { detents: { type: String, default: "fit" } }
 
   connect() {
@@ -59,7 +55,6 @@ export default class extends Controller {
     this.stopMouseTracking()
     clearTimeout(this.settleTimer)
     clearTimeout(this.transitionTimer)
-    this.releasePage()
     this.resetSurface()
   }
 
@@ -72,8 +67,6 @@ export default class extends Controller {
     this.detent = detents[0]
     if (detents.length > 1 || this.detent.large)
       this.element.style.blockSize = `${this.detent.height}px`
-    this.setLargeness(this.detent.large ? 1 : 0)
-    if (this.detent.large) this.animatePage(1)
   }
 
   // The keyboard rises over the sheet. Safari and in-app browsers shrink the
@@ -86,11 +79,7 @@ export default class extends Controller {
 
   closed() {
     this.gesture = null
-    if (this.ownsPage) this.animatePage(0)
-    this.later(() => {
-      this.releasePage()
-      this.resetSurface()
-    })
+    this.later(() => this.resetSurface())
   }
 
   // Touch: decide on the first move whether the gesture is the sheet's or the
@@ -149,8 +138,7 @@ export default class extends Controller {
 
   onPointerDown(event) {
     if (!this.isSheet || event.pointerType !== "mouse" || event.button !== 0) return
-    const fromTop = event.clientY - this.element.getBoundingClientRect().top
-    if (!event.target.closest(HANDLE) && fromTop > GRABBER_ZONE) return
+    if (event.clientY - this.element.getBoundingClientRect().top > DRAG_ZONE) return
 
     this.begin(event.clientX, event.clientY, event.timeStamp, null)
     this.startDrag(event.clientY)
@@ -206,7 +194,6 @@ export default class extends Controller {
     gesture.startVisible = this.visibleHeight()
     this.element.style.transition = "none"
     this.element.style.willChange = "transform"
-    this.pageTransition("0s")
 
     const field = document.activeElement
     if (this.element.contains(field) && field.matches("input, textarea, select")) field.blur()
@@ -240,7 +227,6 @@ export default class extends Controller {
   settle(detent, detents = this.detents()) {
     this.detent = detent
     this.transition()
-    this.pageTransition()
     this.show(detent.height, detents)
   }
 
@@ -298,16 +284,6 @@ export default class extends Controller {
       style.transform = ""
       if (resizes || visible > largest) style.blockSize = `${visible}px`
     }
-
-    if (!detents.some((detent) => detent.large)) return
-    const clamp = (n) => Math.max(0, Math.min(1, n))
-    if (detents.length > 1) {
-      const p = clamp((visible - smallest) / (largest - smallest))
-      this.setLargeness(p)
-      this.setPage(p)
-    } else {
-      this.setPage(clamp(visible / largest))
-    }
   }
 
   rubberBand(wanted, detents) {
@@ -341,49 +317,6 @@ export default class extends Controller {
     return parseFloat(getComputedStyle(this.element).maxBlockSize) || window.innerHeight
   }
 
-  setLargeness(p) {
-    this.element.style.setProperty("--lc-sheet-p", p.toFixed(3))
-  }
-
-  setPage(p) {
-    const root = document.documentElement
-    if (!this.ownsPage) {
-      if (p <= 0) return
-      this.releaseScroll = holdDocumentScroll()
-      const lockedTop = -parseFloat(document.body.style.top || "0")
-      root.style.setProperty("--lc-sheet-page-origin", `${window.scrollY + lockedTop}px`)
-      root.dataset.lcSheetPage = ""
-      this.ownsPage = true
-    }
-    root.style.setProperty("--lc-sheet-page-p", p.toFixed(3))
-    root.style.setProperty("--lc-sheet-page-scale", (1 - PAGE_SCALE_LOSS * p).toFixed(4))
-  }
-
-  animatePage(p) {
-    this.pageTransition()
-    if (p > 0 && !this.ownsPage) {
-      this.setPage(0.001)
-      requestAnimationFrame(() => requestAnimationFrame(() => this.setPage(p)))
-    } else {
-      this.setPage(p)
-    }
-  }
-
-  releasePage() {
-    if (!this.ownsPage) return
-    this.ownsPage = false
-    const root = document.documentElement
-    delete root.dataset.lcSheetPage
-    for (const name of ["p", "scale", "origin", "transition"])
-      root.style.removeProperty(`--lc-sheet-page-${name}`)
-    this.releaseScroll()
-  }
-
-  pageTransition(value = prefersReducedMotion() ? "0s" : SHEET_TIMING) {
-    if (this.ownsPage || value !== "0s")
-      document.documentElement.style.setProperty("--lc-sheet-page-transition", value)
-  }
-
   transition() {
     const timing = prefersReducedMotion() ? "0s" : SHEET_TIMING
     this.element.style.transition = `transform ${timing}, block-size ${timing}, display ${timing} allow-discrete, overlay ${timing} allow-discrete`
@@ -405,7 +338,6 @@ export default class extends Controller {
     style.transform = ""
     style.willChange = ""
     style.blockSize = ""
-    style.removeProperty("--lc-sheet-p")
     style.removeProperty("--lc-sheet-floor")
   }
 

@@ -220,7 +220,7 @@
         {
           "title": "Mobile dialog",
           "url": "https://ui.lostcoords.com/components/dialog",
-          "erb": "<%= lc_dialog id: \"my-component-sheet\", title: \"Workspace details\", trigger: \"Open mobile dialog\", detents: \"fit\" do %>\n  <p class=\"text-sm text-muted-foreground\">Drag the handle down to dismiss.</p>\n  <%= lc_field label: \"Workspace\", id: \"my-component-workspace\" do |field| %>\n    <%= lc_input value: \"Design studio\", **field %>\n  <% end %>\n<% end %>"
+          "erb": "<%= lc_dialog id: \"my-component-sheet\", title: \"Workspace details\", trigger: \"Open mobile dialog\", detents: \"fit\" do %>\n  <p class=\"text-sm text-muted-foreground\">On a phone this is a half sheet. Swipe it down to dismiss.</p>\n  <%= lc_field label: \"Workspace\", id: \"my-component-workspace\" do |field| %>\n    <%= lc_input value: \"Design studio\", **field %>\n  <% end %>\n<% end %>"
         },
         {
           "title": "Mobile height options",
@@ -1503,7 +1503,7 @@
     },
     {
       "name": "lc_sheet",
-      "signature": "lc_sheet(as: :div, anchored: false, detents: \"fit\", handle: false, size: nil, surface: nil, **attributes, &block)",
+      "signature": "lc_sheet(as: :div, anchored: false, detents: \"fit\", size: nil, surface: nil, **attributes, &block)",
       "url": "https://ui.lostcoords.com/components/dialog#lc_sheet",
       "examples": [
         {
@@ -1616,7 +1616,7 @@
         {
           "title": "Mobile dialog",
           "url": "https://ui.lostcoords.com/components/dialog",
-          "erb": "<%= lc_dialog id: \"my-component-sheet\", title: \"Workspace details\", trigger: \"Open mobile dialog\", detents: \"fit\" do %>\n  <p class=\"text-sm text-muted-foreground\">Drag the handle down to dismiss.</p>\n  <%= lc_field label: \"Workspace\", id: \"my-component-workspace\" do |field| %>\n    <%= lc_input value: \"Design studio\", **field %>\n  <% end %>\n<% end %>"
+          "erb": "<%= lc_dialog id: \"my-component-sheet\", title: \"Workspace details\", trigger: \"Open mobile dialog\", detents: \"fit\" do %>\n  <p class=\"text-sm text-muted-foreground\">On a phone this is a half sheet. Swipe it down to dismiss.</p>\n  <%= lc_field label: \"Workspace\", id: \"my-component-workspace\" do |field| %>\n    <%= lc_input value: \"Design studio\", **field %>\n  <% end %>\n<% end %>"
         },
         {
           "title": "Label and hint",
@@ -1739,7 +1739,7 @@
         {
           "title": "Mobile dialog",
           "url": "https://ui.lostcoords.com/components/dialog",
-          "erb": "<%= lc_dialog id: \"my-component-sheet\", title: \"Workspace details\", trigger: \"Open mobile dialog\", detents: \"fit\" do %>\n  <p class=\"text-sm text-muted-foreground\">Drag the handle down to dismiss.</p>\n  <%= lc_field label: \"Workspace\", id: \"my-component-workspace\" do |field| %>\n    <%= lc_input value: \"Design studio\", **field %>\n  <% end %>\n<% end %>"
+          "erb": "<%= lc_dialog id: \"my-component-sheet\", title: \"Workspace details\", trigger: \"Open mobile dialog\", detents: \"fit\" do %>\n  <p class=\"text-sm text-muted-foreground\">On a phone this is a half sheet. Swipe it down to dismiss.</p>\n  <%= lc_field label: \"Workspace\", id: \"my-component-workspace\" do |field| %>\n    <%= lc_input value: \"Design studio\", **field %>\n  <% end %>\n<% end %>"
         },
         {
           "title": "Label and hint",
