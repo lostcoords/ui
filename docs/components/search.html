@@ -15,7 +15,7 @@
       const theme = localStorage.getItem("lostcoords-ui:theme")
       if (theme === "dark" || (!theme && matchMedia("(prefers-color-scheme: dark)").matches)) document.documentElement.dataset.theme = "dark"
     </script>
-    <link rel="stylesheet" href="/assets/tailwind-aa0d666e.css" data-turbo-track="reload" />
+    <link rel="stylesheet" href="/assets/tailwind-f0a12226.css" data-turbo-track="reload" />
     
     <meta name="view-transition" content="same-origin">
     <meta name="turbo-prefetch" content="true">
@@ -135,7 +135,7 @@
         <div class="contents" data-controller="docs-search" data-docs-search-url-value="/search.json" data-action="lc-search:query->docs-search#query">
   <div class="contents" data-slot="search" data-controller="lc-search" data-action="turbo:before-cache@document->lc-search#reset" data-lc-search-src-value="" data-lc-search-param-value="q" data-lc-search-empty-value="No results" data-lc-search-one-value="%{count} result" data-lc-search-other-value="%{count} results">
   <button class="lc-search-trigger lg:max-xl:w-48" aria-label="Search documentation" aria-haspopup="dialog" aria-controls="lc-search" type="button" data-lc-search-target="trigger" data-action="lc-search#open" data-slot="search-trigger" data-controller="lc-shortcut" data-lc-shortcut-keys-value="mod+k">
-    <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" class="lc-icon size-4 shrink-0" data-slot="icon" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/></svg>
+    <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" class="lc-icon size-4 shrink-0 max-sm:size-4.5" data-slot="icon" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/></svg>
     <span class="flex-1 truncate text-start max-sm:sr-only">Search docs…</span>
     <kbd class="lc-kbd items-center rounded-md font-sans text-caption leading-5 whitespace-nowrap text-muted-foreground hidden bg-transparent px-0 any-pointer-fine:sm:inline" data-controller="lc-kbd" data-lc-kbd-keys-value="mod+k" aria-hidden="true">Ctrl K</kbd>
 </button>  <dialog id="lc-search" class="lc-search" aria-label="Search documentation" data-lc-search-target="dialog" data-action="close->lc-search#closed keydown->lc-search#navigate click->lc-search#dismiss">
@@ -330,7 +330,7 @@
     <div class="flex min-h-48 flex-wrap items-center justify-center gap-4 rounded-2xl bg-muted p-6 sm:p-10 [--lc-tile-bg:var(--background)] [--lc-track-bg:var(--accent)] [--lc-avatar-cutout:var(--muted)]" data-example-preview data-stage="panel">
       <div class="contents" data-slot="search" data-controller="lc-search" data-action="turbo:before-cache@document->lc-search#reset" data-lc-search-src-value="" data-lc-search-param-value="q" data-lc-search-empty-value="Nothing matches %{query}" data-lc-search-one-value="%{count} result" data-lc-search-other-value="%{count} results">
   <button class="lc-search-trigger" aria-label="Search the workspace" aria-haspopup="dialog" aria-controls="example-0" type="button" data-lc-search-target="trigger" data-action="lc-search#open" data-slot="search-trigger">
-    <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" class="lc-icon size-4 shrink-0" data-slot="icon" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/></svg>
+    <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" class="lc-icon size-4 shrink-0 max-sm:size-4.5" data-slot="icon" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/></svg>
     <span class="flex-1 truncate text-start max-sm:sr-only">Search…</span>
     
 </button>  <dialog id="example-0" class="lc-search" aria-label="Search the workspace" data-lc-search-target="dialog" data-action="close->lc-search#closed keydown->lc-search#navigate click->lc-search#dismiss">
