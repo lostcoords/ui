@@ -115,6 +115,10 @@ async function _verifyDialogs(page) {
     "a short submitter label relabels the accept button",
   )
   verify(destructive.focused, "the sheet takes focus rather than its Cancel button")
+  verify(
+    !(await page.locator(`${sheet} [data-slot=confirm-sheet-dismiss]`).isVisible()),
+    "the confirm dialog has no ✕ on desktop, where Cancel is beside the accept button",
+  )
   await page.keyboard.press("Escape")
   await page.waitForFunction((selector) => !document.querySelector(selector).open, sheet)
   verify(

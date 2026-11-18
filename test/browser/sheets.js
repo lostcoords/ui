@@ -203,6 +203,84 @@ async function _verifySheets(page) {
       return display
     })
     verify(closing === "none", "a panel sheet leaves the layout once [data-open] goes")
+
+    // A dialog that arrives from a server (a Turbo frame, a stream) is inserted and opened in one
+    // task, with no closed frame to start from. It still slides up from the bottom edge.
+    const arriving = await page.evaluate(async () => {
+      const frame = () => new Promise((resolve) => requestAnimationFrame(resolve))
+      const sheet = document.createElement("dialog")
+      sheet.className = "lc-dialog"
+      sheet.dataset.controller = "lc-sheet"
+      sheet.innerHTML = '<p style="block-size: 20rem">Arrived</p>'
+      document.body.append(sheet)
+      sheet.showModal()
+      await frame()
+      const entering = sheet.getBoundingClientRect().top
+      await new Promise((resolve) => setTimeout(resolve, 700))
+      const rect = sheet.getBoundingClientRect()
+      sheet.close()
+      await frame()
+      await frame()
+      const leaving = sheet.getBoundingClientRect().top
+      await new Promise((resolve) => setTimeout(resolve, 700))
+      const gone = getComputedStyle(sheet).display
+      sheet.remove()
+      return { entering, top: rect.top, bottomGap: innerHeight - rect.bottom, leaving, gone }
+    })
+    verify(
+      arriving.entering > arriving.top + 160 && Math.abs(arriving.bottomGap) < 1,
+      "a dialog sheet inserted and opened in one task slides up from the bottom edge",
+    )
+    verify(
+      arriving.leaving > arriving.top && arriving.gone === "none",
+      "a dialog sheet slides back down as it closes",
+    )
+
+    // The confirm sheet has the ✕ every phone sheet closes from, and it cancels.
+    const confirmSheet = "#lc-confirm-sheet"
+    const deleteButton = page.getByRole("button", { name: "Delete project", exact: true })
+    await deleteButton.scrollIntoViewIfNeeded()
+    await deleteButton.click()
+    await page.waitForFunction((selector) => document.querySelector(selector).open, confirmSheet)
+    await pause(700)
+    const confirmClose = await page.evaluate((selector) => {
+      const sheet = document.querySelector(selector)
+      const rect = sheet.getBoundingClientRect()
+      const close = sheet.querySelector("[data-slot=confirm-sheet-dismiss]").getBoundingClientRect()
+      const message = sheet
+        .querySelector("[data-slot=confirm-sheet-message]")
+        .getBoundingClientRect()
+      return {
+        left: close.left - rect.left,
+        top: close.top - rect.top,
+        size: close.width,
+        clearOfMessage: close.right <= message.left,
+        offCentre: Math.abs((message.left + message.right) / 2 - (rect.left + rect.right) / 2),
+      }
+    }, confirmSheet)
+    verify(
+      confirmClose.size === 44 && confirmClose.left < 16 && confirmClose.top < 16,
+      "the confirm sheet has the 44px ✕ at its top start",
+    )
+    verify(
+      confirmClose.clearOfMessage && confirmClose.offCentre < 1,
+      "the confirm message is centred, clear of the ✕",
+    )
+    await page.locator(`${confirmSheet} [data-slot=confirm-sheet-dismiss]`).click()
+    await page.waitForFunction((selector) => !document.querySelector(selector).open, confirmSheet)
+    verify(
+      await page
+        .waitForFunction(
+          () =>
+            document.querySelector("form:has(button[data-variant=destructive])[data-turbo-confirm]")
+              .dataset.confirmed === "false",
+        )
+        .then(
+          () => true,
+          () => false,
+        ),
+      "the confirm sheet's ✕ declines, as Cancel does",
+    )
   } finally {
     await page.setViewportSize({ width: 1440, height: 900 })
   }

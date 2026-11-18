@@ -15,6 +15,7 @@ en:
         close: "Close %{title}"
       confirm:
         cancel: "Cancel"
+        close: "Close"
         accept: "Confirm"
       menu:
         label: "Actions"

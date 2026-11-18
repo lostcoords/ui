@@ -1,4 +1,4 @@
-/* lc_search: a pill trigger that opens a full-screen search over a
+/* lc_search: a trigger, a pill from sm up, that opens a full-screen search over a
    blurred page. The controller animates it open and closed. */
 @layer components {
   .lc-search-trigger {
@@ -20,10 +20,12 @@
     /* The bar grows out of the trigger, so the trigger steps aside while search is open. */
     [data-slot="search"][data-open] & { opacity: 0; }
 
+    /* On phones it is a plain icon button, like the ones beside it in a bar. */
     @media (width < 40rem) {
       justify-content: center;
       inline-size: var(--spacing-control-sm);
       padding-inline: 0;
+      background: transparent;
     }
 
     @media (width >= 40rem) { inline-size: calc(var(--spacing) * 64); }

@@ -1,10 +1,12 @@
 <%# locals: (id:, attributes:) %>
-<%= lc_sheet(as: :dialog, **attributes) do %>
-  <form method="dialog" class="flex flex-col gap-inset p-inset" data-slot="confirm-sheet-content">
-    <div class="flex flex-col gap-tight max-sm:text-center">
+<%# On phones the message sits in the sheet's title bar, with the ✕ every sheet closes from. It cancels. %>
+<%= lc_sheet(as: :dialog, **attributes) do |sheet| %>
+  <form method="dialog" class="flex flex-col gap-inset p-inset max-sm:pt-0" data-slot="confirm-sheet-content">
+    <div class="flex flex-col gap-tight max-sm:-mx-inset max-sm:min-h-14 max-sm:justify-center max-sm:px-14 max-sm:py-2 max-sm:text-center" data-slot="confirm-sheet-header">
       <p id="<%= id %>-message" class="<%= lc_heading_class(size: :subheading) %>" data-slot="confirm-sheet-message"></p>
-      <p id="<%= id %>-description" class="<%= lc_text_class(size: :small, tone: :muted) %>" data-slot="confirm-sheet-description" hidden></p>
+      <p id="<%= id %>-description" class="<%= lc_text_class(size: :small, tone: :muted, extra: "max-sm:text-balance") %>" data-slot="confirm-sheet-description" hidden></p>
     </div>
+    <%= sheet.close lc_t("lostcoords.ui.confirm.close"), size: :sm, type: "submit", value: "cancel", class: "sm:hidden", data: { slot: "confirm-sheet-dismiss" } %>
     <div class="grid grid-cols-2 gap-related" data-slot="confirm-sheet-actions">
       <button type="submit" value="cancel" class="<%= lc_button_class(variant: :secondary, block: true) %>" data-slot="confirm-sheet-cancel"><%= lc_t("lostcoords.ui.confirm.cancel") %></button>
       <button type="submit" value="confirm" class="<%= lc_button_class(variant: :primary, block: true) %>" data-slot="confirm-sheet-accept" data-variant="primary"><%= lc_t("lostcoords.ui.confirm.accept") %></button>

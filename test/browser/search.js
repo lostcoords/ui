@@ -196,5 +196,33 @@ async function _verifySearch(page) {
     "Results from the server replace the note",
   )
 
+  // The trigger is a filled pill from sm up and a plain icon button on phones.
+  await page.goto(`${origin}/components/search.html`)
+  const triggerLook = () =>
+    page.evaluate(() => {
+      const trigger = document.querySelector(
+        "[data-slot=search]:has(dialog[aria-label='Search the workspace']) [data-slot=search-trigger]",
+      )
+      const style = getComputedStyle(trigger)
+      const rect = trigger.getBoundingClientRect()
+      return { fill: style.backgroundColor, width: rect.width, height: rect.height }
+    })
+  const pill = await triggerLook()
+  await page.setViewportSize({ width: 390, height: 844 })
+  try {
+    await page.evaluate(() => new Promise((resolve) => setTimeout(resolve, 400)))
+    const icon = await triggerLook()
+    verify(
+      pill.fill !== "rgba(0, 0, 0, 0)" && pill.width > 200,
+      "the search trigger is a filled pill from sm up",
+    )
+    verify(
+      icon.fill === "rgba(0, 0, 0, 0)" && icon.width === icon.height && icon.width < 60,
+      "the search trigger is a plain icon button on phones",
+    )
+  } finally {
+    await page.setViewportSize({ width: 1440, height: 900 })
+  }
+
   return checks
 }

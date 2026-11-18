@@ -97,7 +97,9 @@ module Lostcoords::Ui
       assert_equal "true", sheet["data-turbo-permanent"]
       assert_includes sheet["data-controller"].split, "lc-sheet"
       assert_equal "dialog", sheet.at_css("form")["method"]
-      assert_equal "Cancel", sheet.at_css("button[value=cancel]").text
+      assert_equal "Cancel", sheet.at_css("[data-slot=confirm-sheet-cancel][value=cancel]").text
+      dismiss = sheet.at_css("button[data-slot=confirm-sheet-dismiss]")
+      assert_equal [ "submit", "cancel", "Close" ], %w[type value aria-label].map { |name| dismiss[name] }
       accepts = sheet.css("[data-slot=confirm-sheet-accept]")
       assert_equal [ "primary", "destructive" ], accepts.map { |button| button["data-variant"] }
       assert_equal [ false, true ], accepts.map { |button| button.key?("hidden") }

@@ -170,6 +170,15 @@ Omit `only` to register every library controller. Unknown identifiers raise befo
 registered, and repeated calls on the same application keep later overrides, so register defaults
 before application overrides.
 
+## Unreleased
+
+Two phone fixes, with nothing to edit:
+
+- **The `lc_search` trigger is a plain icon button on phones**, with no fill until it is hovered, so it
+  matches the icon buttons beside it in a bar. From `sm` up it is the same filled pill.
+- **`lc_confirm_sheet` has the ✕ on phones**, at the top start like every other sheet, with the message
+  centred in the title bar. It cancels, as Cancel does. Its label is `lostcoords.ui.confirm.close`.
+
 ## Changes in 0.14.0
 
 Phone sheets have one look. One option to drop, and the rest needs no edit:
@@ -1041,7 +1050,7 @@ from the page the link opens. Inside a paragraph, keep `content:` to phrasing el
 
 ### Search
 
-`lc_search` renders a search trigger, a pill with the ⌘K hint that shrinks to an icon on phones, and
+`lc_search` renders a search trigger, a pill with the ⌘K hint that is a plain icon button on phones, and
 the full-screen search it opens. Attributes go to the trigger, which is what sits in your layout.
 Build results from `lc_search_group` and `lc_search_result`.
 

@@ -15,6 +15,7 @@ ja:
         close: "%{title}を閉じる"
       confirm:
         cancel: "キャンセル"
+        close: "閉じる"
         accept: "OK"
       menu:
         label: "操作"
