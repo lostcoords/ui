@@ -43,20 +43,18 @@ module Lostcoords::Ui
       assert dialogs.at_css("button[data-action='lc-dialog#close'][aria-label='Close First']")
     end
 
-    test "a sheet renders its element with the controller, detents and an optional handle" do
-      panel = fragment(@view.lc_sheet(id: "filters", popover: "auto", anchored: true, detents: "large", handle: true, class: "sm:w-80", data: { action: "lc-sheet:dismiss->filters#reset" }) { "Body" }).at_css("div")
+    test "a sheet renders its element with the controller and detents" do
+      panel = fragment(@view.lc_sheet(id: "filters", popover: "auto", anchored: true, detents: "large", class: "sm:w-80", data: { action: "lc-sheet:dismiss->filters#reset" }) { "Body" }).at_css("div")
       assert_equal %w[lc-sheet lc-sheet-anchored sm:w-80], panel["class"].split
       assert_equal "auto", panel["popover"]
       assert_equal "lc-sheet", panel["data-controller"]
       assert_equal "large", panel["data-lc-sheet-detents-value"]
       assert_equal "lc-sheet:dismiss->filters#reset", panel["data-action"]
-      assert_equal "handle", panel.element_children.first["data-lc-sheet-target"]
       assert_equal "Body", panel.text
 
       modal = fragment(@view.lc_sheet(as: :dialog, data: { controller: "picker" }) { "Body" }).at_css("dialog")
       assert_nil modal["class"]
       assert_equal "lc-sheet picker", modal["data-controller"]
-      assert_nil modal.at_css("[data-lc-sheet-target]")
 
       framed = fragment(@view.lc_sheet(as: :dialog, size: :lg, class: "[--lc-dialog-width:42rem]", aria: { label: "New expense" }) { "Body" }).at_css("dialog")
       assert_equal @view.lc_dialog_class(size: :lg, extra: "[--lc-dialog-width:42rem]").split, framed["class"].split

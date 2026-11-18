@@ -129,22 +129,6 @@
     }
   }
 
-  /* Drag handle for swipe-to-dismiss. Full-width grab strip, so the touch target
-     is large; the host's sheet draws the pill.
-     touch-action: none lets a vertical drag pull the sheet down rather than
-     scroll. Drag-to-dismiss is wired by the sheet controller. */
-  .lc-emoji-picker__handle {
-    flex: 0 0 auto;
-    display: grid;
-    place-items: center;
-    inline-size: 100%;
-    min-block-size: 1.75rem;
-    touch-action: none;
-    cursor: grab;
-  }
-
-  .lc-emoji-picker__handle:active { cursor: grabbing; }
-
   /* ---- Search row --------------------------------------------------- */
   .lc-emoji-picker__search {
     flex: 0 0 auto;
@@ -450,8 +434,6 @@
 
       @media (prefers-reduced-motion: reduce) { transition: none; }
     }
-
-    .lc-emoji-picker__handle { display: none; }
 
     main:has(.lc-emoji-picker__popover[data-open]),
     .lc-emoji-picker:has(.lc-emoji-picker__popover[data-open]) {

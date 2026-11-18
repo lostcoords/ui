@@ -65,7 +65,7 @@ module Lostcoords::Ui
       assert_equal "import#close", dismiss["data-action"]
       assert_equal "Discard import", dismiss["aria-label"]
       assert_equal "import#close", dialog.at_css("[data-slot=dialog-close]")["data-action"]
-      assert_equal [ "a", "button" ], dialog.css("[data-slot=dialog-actions] > *").map(&:name)
+      assert_equal [ "a", "button" ], dialog.css("[data-slot=dialog-actions] a, [data-slot=dialog-actions] button").map(&:name)
       assert_nil dialog.at_css("[data-slot=dialog-body] a[href='/help']")
       assert_raises(ArgumentError) { @view.lc_dialog(id: "d", title: "D", size: :huge) { "Body" } }
       titled = fragment(@view.lc_dialog(id: "merge", title: "Merge", description: "Pick one", trigger: false,

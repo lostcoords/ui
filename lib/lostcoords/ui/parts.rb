@@ -86,12 +86,21 @@ module Lostcoords::Ui
     end
 
     # Rows that stay put while the sheet's content scrolls under them, painted with the sheet's surface.
+    # On phones the header is the sheet's title bar: the ✕ at its start and the title centred.
     # The footer sits last in an inset-padded scroller and bleeds to its edges, clearing the home indicator.
     class Sheet < Base
       SURFACE = "sticky z-sticky bg-(--lc-sheet-bg,var(--popover))"
 
+      # Every phone sheet closes from a 44px ✕ at its header's start.
+      CLOSE = "max-sm:absolute max-sm:start-3 max-sm:top-1.5 max-sm:size-11 max-sm:bg-muted max-sm:[&_svg]:size-5"
+
       def header(**attributes, &block)
         part(:header, "sheet-header", "#{SURFACE} top-0 flex min-h-14 shrink-0 items-center", attributes, &block)
+      end
+
+      # Goes in the header. From sm up it is a plain icon button, placed by the caller.
+      def close(label, **attributes)
+        view.lc_icon_button(label, **slot("sheet-close", attributes, class: CLOSE)) { view.lc_icon("x-mark", options: { aria: { hidden: true } }) }
       end
 
       def footer(**attributes, &block)

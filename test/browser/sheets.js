@@ -11,7 +11,7 @@ async function _verifySheets(page) {
 
   await page.setViewportSize({ width: 390, height: 844 })
   try {
-    // A phone sheet dragged to its large detent pushes the page back, as UIKit's page sheet does.
+    // Every phone sheet spans the screen and sits on its bottom edge; the page stays put behind it.
     await page.goto(`${origin}/components/dialog.html`)
     await page.waitForFunction(
       () => document.querySelector('dialog[data-lc-sheet-detents-value="medium large"]'),
@@ -30,17 +30,44 @@ async function _verifySheets(page) {
       polling: 100,
     })
     await pause(700)
-    const medium = await page.evaluate(() => ({
-      glass: getComputedStyle(document.querySelector("body > header .lc-app-header__glass"))
-        .opacity,
-      page: document.documentElement.hasAttribute("data-lc-sheet-page"),
-      transform: getComputedStyle(document.body).transform,
-    }))
-    verify(!medium.page && medium.transform === "none", "a medium sheet leaves the page in place")
+    const medium = await page.evaluate((id) => {
+      const sheet = document.getElementById(id)
+      const rect = sheet.getBoundingClientRect()
+      const header = sheet.querySelector("[data-slot=dialog-header]").getBoundingClientRect()
+      const close = sheet.querySelector("[data-slot=dialog-dismiss]").getBoundingClientRect()
+      const title = sheet.querySelector("[data-slot=dialog-title]").getBoundingClientRect()
+      return {
+        glass: getComputedStyle(document.querySelector("body > header .lc-app-header__glass"))
+          .opacity,
+        transform: getComputedStyle(document.body).transform,
+        left: rect.left,
+        right: innerWidth - rect.right,
+        bottom: innerHeight - rect.bottom,
+        height: rect.height,
+        grabber: getComputedStyle(sheet, "::before").content,
+        closeLeft: close.left - rect.left,
+        closeSize: close.width,
+        titleOffCentre: Math.abs((title.left + title.right) / 2 - (rect.left + rect.right) / 2),
+        headerTop: header.top - rect.top,
+      }
+    }, dialogId)
+    verify(medium.transform === "none", "a sheet leaves the page in place")
     verify(
       medium.glass === "1",
       "the scrolled header keeps its glass while the scroll lock pins the page",
     )
+    verify(
+      medium.left === 0 && medium.right === 0 && Math.abs(medium.bottom) < 1,
+      "a half sheet spans the phone's width and sits on its bottom edge",
+    )
+    verify(medium.height < 844 * 0.6, "a medium sheet takes half the screen")
+    verify(medium.grabber === "none", "a sheet draws no grabber")
+    verify(
+      medium.closeLeft < 20 && medium.closeSize === 44,
+      "a dialog sheet has a 44px close button at its start",
+    )
+    verify(medium.titleOffCentre < 1, "a dialog sheet centres its title")
+    verify(medium.headerTop < 2, "a dialog sheet's title bar sits at its top edge")
 
     const box = await dialog.boundingBox()
     const x = box.x + box.width / 2
@@ -54,40 +81,28 @@ async function _verifySheets(page) {
       await page.evaluate((id) => document.getElementById(id).open, dialogId),
       "a mouse drag that ends above the sheet keeps it open",
     )
-    const large = await page.evaluate(() => {
-      const root = document.documentElement
-      const body = getComputedStyle(document.body)
-      const matrix = new DOMMatrixReadOnly(body.transform)
+    const large = await page.evaluate((id) => {
+      const rect = document.getElementById(id).getBoundingClientRect()
       return {
-        page: root.hasAttribute("data-lc-sheet-page"),
-        scale: matrix.a,
-        backdrop: getComputedStyle(root).backgroundColor,
-        clipped: body.clipPath !== "none",
-        sheetTop: document.querySelector("dialog[open]").getBoundingClientRect().top,
+        transform: getComputedStyle(document.body).transform,
+        top: rect.top,
+        left: rect.left,
+        right: innerWidth - rect.right,
       }
-    })
-    verify(large.page, "a sheet at its large detent marks the page behind it")
-    verify(large.scale < 1 && large.scale > 0.85, "the page behind a large sheet shrinks back")
-    verify(large.backdrop === "rgb(0, 0, 0)", "the page shrinks over black")
-    verify(large.clipped, "the page behind a large sheet rounds its corners")
-    verify(large.sheetTop < box.y, "dragging the sheet up reaches the large detent")
+    }, dialogId)
+    verify(large.top < box.y && large.top < 40, "dragging the sheet up reaches the large detent")
+    verify(large.left === 0 && large.right === 0, "a large sheet spans the phone's width")
+    verify(large.transform === "none", "the page stays in place behind a large sheet")
 
     await page.keyboard.press("Escape")
     await page.waitForFunction((id) => !document.getElementById(id).open, dialogId, {
       polling: 100,
     })
     await pause(900)
-    const after = await page.evaluate(() => ({
-      page: document.documentElement.hasAttribute("data-lc-sheet-page"),
-      transform: getComputedStyle(document.body).transform,
-      variables: [...document.documentElement.style].filter((name) =>
-        name.startsWith("--lc-sheet-page"),
-      ),
-      locked: document.body.dataset.modalScrollLock === "true",
-    }))
-    verify(!after.page && after.transform === "none", "closing the sheet restores the page")
-    verify(after.variables.length === 0, "closing the sheet clears its page variables")
-    verify(!after.locked, "closing the sheet releases the scroll lock")
+    verify(
+      await page.evaluate(() => document.body.dataset.modalScrollLock !== "true"),
+      "closing the sheet releases the scroll lock",
+    )
 
     // A native [popover] with lc_sheet_class is the same phone sheet, and a swipe down hides it.
     const popover = page.locator('[popover].lc-sheet[id$="-filters"]').first()
@@ -116,13 +131,10 @@ async function _verifySheets(page) {
       opened.position === "fixed" && opened.transform === "none",
       "a popover sheet rests in place",
     )
-    verify(
-      opened.bottomGap >= 0 && opened.bottomGap < 24,
-      "a popover sheet sits on the bottom edge",
-    )
-    verify(opened.width > 390 - 24, "a popover sheet spans the phone's width")
+    verify(Math.abs(opened.bottomGap) < 1, "a popover sheet sits on the bottom edge")
+    verify(opened.width === 390, "a popover sheet spans the phone's width")
     verify(opened.backdrop === "1", "a popover sheet dims the page behind it")
-    verify(opened.grabber === '""', "a popover sheet without a handle draws the grabber")
+    verify(opened.grabber === "none", "a popover sheet draws no grabber")
     verify(opened.floor.endsWith("px"), "lc-sheet pins a popover sheet's floor as it opens")
 
     const sheetBox = await popover.boundingBox()
@@ -145,8 +157,7 @@ async function _verifySheets(page) {
       const sheet = document.createElement("div")
       sheet.className = "lc-sheet"
       sheet.dataset.controller = "lc-sheet"
-      sheet.innerHTML =
-        '<span data-lc-sheet-target="handle"></span><p style="block-size: 12rem">Panel</p>'
+      sheet.innerHTML = '<p style="block-size: 12rem">Panel</p>'
       document.body.append(sheet)
       await new Promise((resolve) => requestAnimationFrame(resolve))
       const closed = getComputedStyle(sheet).display
@@ -160,7 +171,6 @@ async function _verifySheets(page) {
         bottomGap: innerHeight - rect.bottom,
         top: rect.top,
         floor: sheet.style.getPropertyValue("--lc-sheet-floor"),
-        grabber: getComputedStyle(sheet, "::before").content,
       }
     })
     verify(panel.closed === "none", "a panel sheet stays out of the layout until [data-open]")
@@ -168,9 +178,8 @@ async function _verifySheets(page) {
       panel.display === "flex" && panel.transform === "none",
       "a panel sheet slides in on [data-open]",
     )
-    verify(panel.bottomGap >= 0 && panel.bottomGap < 24, "a panel sheet sits on the bottom edge")
+    verify(Math.abs(panel.bottomGap) < 1, "a panel sheet sits on the bottom edge")
     verify(panel.floor.endsWith("px"), "lc-sheet pins a panel sheet's floor as it opens")
-    verify(panel.grabber === "none", "a panel sheet with a handle leaves the grabber to it")
 
     await page.evaluate(() => {
       const sheet = document.querySelector("body > .lc-sheet")

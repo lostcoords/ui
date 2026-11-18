@@ -1,19 +1,4 @@
 @layer components {
-  @media (width < 40rem) {
-    /* UIKit's 36×5 grabber. */
-    :is(
-      [data-lc-sheet-target~="handle"],
-      :is(dialog[data-controller~="lc-sheet"], .lc-sheet):not(:has([data-lc-sheet-target~="handle"]))
-    )::before {
-      content: "";
-      display: block;
-      inline-size: 2.25rem;
-      block-size: 0.3125rem;
-      border-radius: 9999px;
-      background: color-mix(in oklab, var(--muted-foreground) 45%, transparent);
-    }
-  }
-
   /* From sm up an anchored sheet is a popover under its trigger, opened by a
      FloatingPanel ([data-open]); the positioned ancestor is the caller's. */
   @media (width >= 40rem) {
@@ -36,39 +21,34 @@
 }
 
 @layer modules {
-  /* Phones: every modal dialog is an iOS sheet (lc-sheet), and so is any
-     .lc-sheet panel. It floats inset with all corners round while it is short,
-     and docks to the screen edges as it reaches the large detent: --lc-sheet-p
-     runs 0 → 1 between them. Lives in this layer so it out-ranks a panel's own
-     frame. A dialog is open while [open]; a .lc-sheet while :popover-open or
-     [data-open]. */
+  /* Phones: every modal dialog is a sheet (lc-sheet), and so is any .lc-sheet
+     panel. It spans the screen's width and sits on its bottom edge, at its
+     content's height up to the large detent. Lives in this layer so it
+     out-ranks a panel's own frame. A dialog is open while [open]; a .lc-sheet
+     while :popover-open or [data-open]. */
   @media (width < 40rem) {
     :is(dialog[data-controller~="lc-sheet"], .lc-sheet) {
-      --lc-sheet-p: 0;
-      --lc-sheet-inset: 0.5rem;
       --lc-sheet-radius: 2.25rem;
       --lc-sheet-bg: var(--background);
-      --lc-sheet-gap: calc(var(--lc-sheet-inset) * (1 - var(--lc-sheet-p)));
 
       position: fixed;
 
       /* Anchored from the top edge: the keyboard covers it and
          nothing moves. */
-      inset: calc(var(--lc-sheet-floor, 100dvh) - var(--lc-sheet-gap)) 0 auto;
+      inset: var(--lc-sheet-floor, 100dvh) 0 auto;
       translate: 0 -100%;
-      margin: 0 var(--lc-sheet-gap);
+      margin: 0;
       inline-size: auto;
       max-inline-size: none;
       block-size: auto;
       max-block-size: calc(var(--lc-sheet-floor, 100dvh) - max(env(safe-area-inset-top), 0.75rem) - 0.625rem);
-      padding: 0 0 max(0px, calc(env(safe-area-inset-bottom) - var(--lc-sheet-gap)));
+      padding: 0 0 env(safe-area-inset-bottom);
       overflow: hidden auto;
       overscroll-behavior: contain;
       scrollbar-width: none;
       border: 1px solid var(--lc-glass-edge);
-      border-radius:
-        var(--lc-sheet-radius) var(--lc-sheet-radius)
-        calc(var(--lc-sheet-radius) * (1 - var(--lc-sheet-p))) calc(var(--lc-sheet-radius) * (1 - var(--lc-sheet-p)));
+      border-block-end: 0;
+      border-radius: var(--lc-sheet-radius) var(--lc-sheet-radius) 0 0;
       background: var(--lc-sheet-bg);
       box-shadow: var(--lc-glass-rim), 0 -8px 40px -12px rgb(0 0 0 / 0.28);
       opacity: 1;
@@ -83,14 +63,6 @@
         transform: none;
 
         @starting-style { transform: translateY(var(--lc-sheet-offscreen)); }
-      }
-
-      &::before {
-        position: absolute;
-        z-index: 1;
-        inset: 0.3125rem auto auto 50%;
-        translate: -50% 0;
-        pointer-events: none;
       }
 
       &::backdrop {
@@ -123,23 +95,6 @@
       flex-direction: column;
 
       &:is(:popover-open, [data-open]) { display: flex; }
-    }
-
-    /* Behind a large sheet the page shrinks back and rounds off, over black,
-       as UIKit's page sheet does; lc-sheet drives the variables. */
-    html[data-lc-sheet-page] {
-      background: #000;
-
-      > body {
-        transform-origin: 50% var(--lc-sheet-page-origin, 0);
-        transform:
-          translateY(calc(var(--lc-sheet-page-p, 0) * (max(env(safe-area-inset-top), 0.75rem) - 0.25rem)))
-          scale(var(--lc-sheet-page-scale, 1));
-        clip-path: inset(var(--lc-sheet-page-origin, 0) 0 0 round calc(var(--lc-sheet-page-p, 0) * 0.75rem));
-        transition:
-          transform var(--lc-sheet-page-transition, 0s),
-          clip-path var(--lc-sheet-page-transition, 0s);
-      }
     }
   }
 }

@@ -21,7 +21,7 @@ lockfile pins its gem version, so publishing a library update does not upgrade c
 ## Install
 
 ```ruby
-gem "lostcoords-ui", "~> 0.12.0"
+gem "lostcoords-ui", "~> 0.14.0"
 ```
 
 The engine adds its rendering helpers to host views, its views and translations to the host's lookup
@@ -169,6 +169,26 @@ registerControllers(application, { only: ["lc-copy", "lc-collapsible"] })
 Omit `only` to register every library controller. Unknown identifiers raise before anything is
 registered, and repeated calls on the same application keep later overrides, so register defaults
 before application overrides.
+
+## Changes in 0.14.0
+
+Phone sheets have one look. One option to drop, and the rest needs no edit:
+
+- **Every phone sheet spans the screen's width and sits on its bottom edge**, with round top corners and no
+  grabber. Before, a sheet shorter than the large detent floated inset as a card with a grabber on top.
+  `detents: "fit"` (the default) is now a half sheet at its content's height, up to the large detent;
+  `"large"` fills the screen; `"medium large"` drags between the two. A swipe down still dismisses.
+- **`lc_dialog` on phones has the sheet's title bar**: the ✕ at the start, 44px on a muted circle, the title
+  centred and the description centred under it. The bar stays pinned while the body scrolls. From `sm` up the
+  dialog is unchanged.
+- **`sheet.close(label, **attributes)` is that ✕ for a sheet with a header of its own.** Put it in
+  `sheet.header`; from `sm` up it is a plain icon button that the caller places.
+- **`lc_sheet` no longer takes `handle:`**, and the `handle` target is gone from `lc-sheet`. Remove
+  `handle: true` and any `data-lc-sheet-target="handle"` element. A mouse still drags a sheet by its top 28px.
+- **The page no longer shrinks back behind a large sheet.** It stays in place under the sheet's backdrop.
+  `html[data-lc-sheet-page]` and the `--lc-sheet-page-*` variables are gone, and so are `--lc-sheet-p` and
+  `--lc-sheet-inset`.
+- **`lc_confirm_sheet` and the emoji picker lose their grabber room** on phones.
 
 ## Changes in 0.13.0
 
@@ -915,8 +935,9 @@ The icon trigger is muted at rest, with full ink and a slightly larger icon on h
 `wrapper_attributes:` styles the element that holds the trigger and panel, an `inline-flex` box by default,
 for example `class: "flex min-w-0"` when the trigger fills a grid cell. A `data: { controller: }` there joins the panel's own.
 
-`lc_dialog` handles modal content and the mobile sheet layout. Set `detents: "medium large"` or `"large"`
-to choose mobile height stops; the default is `"fit"`. Icon buttons, avatar groups, motion and mobile dialogs
+`lc_dialog` handles modal content and the mobile sheet layout: on phones it is a sheet across the screen's
+width, with the ✕ at the start of its title bar and the title centred. The default `detents: "fit"` is a half
+sheet at its content's height; `"large"` fills the screen and `"medium large"` drags between half and full. Icon buttons, avatar groups, motion and mobile dialogs
 appear with their parent component examples.
 
 `size:` sets the desktop width: `:sm` (24rem), `:md` (32rem, the modal default), `:lg` (40rem) or `:xl`
@@ -962,17 +983,20 @@ modal `<dialog>` sheet, which is what `lc_dialog` and `lc_confirm_sheet` render;
 shows while it is `:popover-open` or carries `[data-open]`, so a native `[popover]` and a FloatingPanel
 picker both work; a div you toggle yourself sets `data-open` and removes it to slide out. From `sm` up
 the div keeps your frame, or `anchored: true` makes it a popover under its trigger inside a positioned
-ancestor. `detents:` takes the same stops as `lc_dialog`, and `handle: true` adds a grab strip above the
-content. A swipe down dispatches `lc-sheet:dismiss`; unless a listener cancels it, an open popover then
+ancestor. `detents:` takes the same stops as `lc_dialog`. A swipe down dispatches `lc-sheet:dismiss`; unless a listener cancels it, an open popover then
 hides. `surface: :glass` draws a div in the translucent menu material, as a picker that is a menu on desktop
-and a sheet on phones. The block gets a builder: `sheet.header` and `sheet.footer` stay pinned to the top and
+and a sheet on phones. The block gets a builder: `sheet.close "Close"` is the ✕ every phone sheet has at the
+start of its header, and `sheet.header` and `sheet.footer` stay pinned to the top and
 bottom of the scrolling content, painted with the sheet's surface (`--lc-sheet-bg` on phones, `--popover`
 above), so content scrolls under them. Put the footer last in a scroller padded with `px-inset`; it bleeds to
 the scroller's edges and clears the home indicator.
 
 ```erb
 <%= lc_sheet as: :dialog, size: :lg, aria: { label: "New expense" } do |sheet| %>
-  <%= sheet.header do %>…<% end %>
+  <%= sheet.header do %>
+    <h2 class="mx-auto">New expense</h2>
+    <%= sheet.close "Close", data: { action: "expense#close" } %>
+  <% end %>
   <div class="min-h-0 overflow-y-auto px-inset">
     …
     <%= sheet.footer do %><%= lc_button "Save" %><% end %>

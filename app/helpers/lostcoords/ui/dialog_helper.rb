@@ -1,6 +1,6 @@
 module Lostcoords::Ui
   module DialogHelper
-    # Below sm these open as iOS sheets (sheet.css), which paint their own surface.
+    # Below sm these open as sheets (sheet.css), which paint their own surface.
     SHEET_DIALOG_SURFACE =
       "sm:border sm:border-(--lc-glass-edge) sm:rounded-3xl sm:bg-popover text-popover-foreground sm:shadow-[var(--lc-glass-rim),var(--lc-shadow-lg)]"
 
@@ -52,8 +52,8 @@ module Lostcoords::Ui
       required = { id: id, aria: { labelledby: "#{id}-title" }, data: ({ lc_dialog_target: "dialog" } if trigger) }.compact
       parts = Parts::Dialog.new(self, id, close_action)
       content = capture(parts, &block) if block
-      title_tag = tag.h2(title, **lc_attributes({ class: lc_heading_class(size: :subheading), data: { slot: "dialog-title" } }, title_attributes, { id: "#{id}-title" }))
-      description_tag = tag.p(description, **lc_attributes({ class: lc_text_class(size: :small, tone: :muted), data: { slot: "dialog-description" } }, description_attributes, { id: "#{id}-description" })) if description.present?
+      title_tag = tag.h2(title, **lc_attributes({ class: lc_heading_class(size: :subheading, extra: "max-sm:text-center"), data: { slot: "dialog-title" } }, title_attributes, { id: "#{id}-title" }))
+      description_tag = tag.p(description, **lc_attributes({ class: lc_text_class(size: :small, tone: :muted, extra: "max-sm:text-center max-sm:text-balance"), data: { slot: "dialog-description" } }, description_attributes, { id: "#{id}-description" })) if description.present?
       raise ArgumentError, "dialog.trigger can't be used with trigger: false" if trigger == false && parts.rendered_trigger
       render "lostcoords/ui/components/lc_dialog", id: id, title: title_tag, description: description_tag, trigger: trigger, rendered_trigger: parts.rendered_trigger, detents: detents,
         close_action: close_action, close_label: close_label || lc_t("lostcoords.ui.dialog.close", title: title),

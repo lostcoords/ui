@@ -67,6 +67,15 @@ module Lostcoords::Ui
       assert_raises(ArgumentError) { @view.lc_sheet(as: :dialog, surface: :glass) }
     end
 
+    test "a sheet's close part is a labelled icon button that takes the caller's wiring" do
+      html = @view.render(inline: "<%= lc_sheet as: :dialog do |sheet| %><%= sheet.header do %><%= sheet.close 'Close', data: { action: 'form#cancel' } %><% end %><% end %>")
+      close = fragment(html).at_css("[data-slot=sheet-header] > button")
+      assert_equal "Close", close["aria-label"]
+      assert_equal "button", close["type"]
+      assert_equal "form#cancel", close["data-action"]
+      assert_equal "sheet-close", close["data-slot"]
+    end
+
     test "a heading can render as a span" do
       span = fragment(@view.lc_heading("¥4,500", as: :span, size: :title)).at_css("span")
       assert_includes span["class"].split, "text-title"

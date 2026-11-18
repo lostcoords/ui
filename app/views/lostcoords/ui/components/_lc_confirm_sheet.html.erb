@@ -1,6 +1,6 @@
 <%# locals: (id:, attributes:) %>
 <%= lc_sheet(as: :dialog, **attributes) do %>
-  <form method="dialog" class="flex flex-col gap-inset p-inset max-sm:pt-7" data-slot="confirm-sheet-content">
+  <form method="dialog" class="flex flex-col gap-inset p-inset" data-slot="confirm-sheet-content">
     <div class="flex flex-col gap-tight max-sm:text-center">
       <p id="<%= id %>-message" class="<%= lc_heading_class(size: :subheading) %>" data-slot="confirm-sheet-message"></p>
       <p id="<%= id %>-description" class="<%= lc_text_class(size: :small, tone: :muted) %>" data-slot="confirm-sheet-description" hidden></p>

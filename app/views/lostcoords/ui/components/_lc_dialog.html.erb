@@ -1,14 +1,17 @@
 <%# locals: (id:, title:, description:, trigger:, rendered_trigger:, detents:, close_action:, close_label:, attributes:, actions:, content:) %>
-<% dialog = lc_sheet(as: :dialog, detents: detents, **attributes) do %>
-  <div class="flex min-h-0 flex-col gap-inset p-inset sm:h-full sm:max-h-[inherit]" data-slot="dialog-content">
-    <header class="flex shrink-0 items-start justify-between gap-content" data-slot="dialog-header">
+<%# On phones the header is the sheet's title bar: pinned, the ✕ at its start and the title centred. %>
+<% dialog = lc_sheet(as: :dialog, detents: detents, **attributes) do |sheet| %>
+  <div class="flex min-h-0 flex-col gap-inset p-inset max-sm:pt-0 sm:h-full sm:max-h-[inherit]" data-slot="dialog-content">
+    <header class="flex shrink-0 items-start justify-between gap-content max-sm:sticky max-sm:top-0 max-sm:z-sticky max-sm:-mx-inset max-sm:min-h-14 max-sm:flex-col max-sm:items-center max-sm:justify-center max-sm:bg-(--lc-sheet-bg) max-sm:px-14 max-sm:py-2" data-slot="dialog-header">
       <div class="flex min-w-0 flex-col gap-tight">
         <%= title %>
         <%= description %>
       </div>
-      <div class="flex shrink-0 items-center gap-related -me-related -mt-tight" data-slot="dialog-actions">
-        <%= actions %>
-        <button type="button" class="<%= lc_icon_button_class(size: :sm, shape: :circle) %>" aria-label="<%= close_label %>" data-action="<%= close_action %>" data-slot="dialog-dismiss"><%= lc_icon "x-mark", options: { "aria-hidden": true } %></button>
+      <div class="flex shrink-0 items-center gap-related -me-related -mt-tight max-sm:contents" data-slot="dialog-actions">
+        <% if actions.present? %>
+          <div class="contents max-sm:absolute max-sm:end-3 max-sm:top-0 max-sm:flex max-sm:h-14 max-sm:items-center max-sm:gap-related"><%= actions %></div>
+        <% end %>
+        <%= sheet.close close_label, size: :sm, data: { action: close_action, slot: "dialog-dismiss" } %>
       </div>
     </header>
     <%# Children keep their height, so a long body scrolls instead of squashing a fixed-height button. %>
