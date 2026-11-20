@@ -1,10 +1,10 @@
 module Lostcoords::Ui
   module ButtonHelper
-    # Disabled controls drop their variant colours for a faint tint and dim ink, so they read as unavailable on any surface.
+    # Disabled controls, unless pending (aria-busy), drop their variant colours for a faint tint and dim ink, so they read as unavailable on any surface.
     BUTTON_DISABLED =
-      "disabled:cursor-not-allowed disabled:shadow-none " \
-      "disabled:[--lc-button-bg:color-mix(in_oklab,var(--foreground)_10%,transparent)] " \
-      "disabled:text-[color-mix(in_oklab,var(--foreground)_38%,transparent)]"
+      "lc-disabled:cursor-not-allowed lc-pending:cursor-progress lc-disabled:shadow-none " \
+      "lc-disabled:[--lc-button-bg:color-mix(in_oklab,var(--foreground)_10%,transparent)] " \
+      "lc-disabled:text-[color-mix(in_oklab,var(--foreground)_38%,transparent)]"
 
     BUTTON_BASE =
       "inline-flex items-center justify-center gap-related rounded-pill font-sans " \
@@ -58,7 +58,7 @@ module Lostcoords::Ui
       "font-sans text-base text-start text-foreground whitespace-nowrap no-underline cursor-pointer " \
       "transition-[background-color,color] duration-(--lc-motion-quick) ease-(--lc-ease-out) " \
       "not-disabled:hover:bg-(--lc-input-hover) aria-expanded:bg-(--lc-input-hover) " \
-      "disabled:cursor-not-allowed disabled:text-[color-mix(in_oklab,var(--foreground)_38%,transparent)] " \
+      "lc-disabled:cursor-not-allowed lc-pending:cursor-progress lc-disabled:text-[color-mix(in_oklab,var(--foreground)_38%,transparent)] " \
       "[&_svg]:block [&_svg]:shrink-0 " \
       "[&>[data-icon=inline-end]]:ms-auto [&>[data-icon=inline-end]]:size-5 [&>[data-icon=inline-end]]:text-muted-foreground " \
       "motion-safe:[&>[data-icon=inline-end]]:transition-transform motion-safe:[&>[data-icon=inline-end]]:duration-(--lc-motion-quick) " \

@@ -14,8 +14,8 @@ module Lostcoords::Ui
       "has-checked:bg-background has-checked:text-foreground " \
       "aria-[current]:not-aria-[current=false]:bg-background aria-[current]:not-aria-[current=false]:text-foreground " \
       "transition-[background-color,color,box-shadow,transform] duration-(--lc-motion-quick) ease-(--lc-ease-out) " \
-      "disabled:cursor-not-allowed disabled:text-[color-mix(in_oklab,var(--foreground)_38%,transparent)] " \
-      "has-disabled:cursor-not-allowed has-disabled:text-[color-mix(in_oklab,var(--foreground)_38%,transparent)] " \
+      "lc-disabled:cursor-not-allowed lc-pending:cursor-progress lc-disabled:text-[color-mix(in_oklab,var(--foreground)_38%,transparent)] " \
+      "has-lc-disabled:cursor-not-allowed has-lc-pending:cursor-progress has-lc-disabled:text-[color-mix(in_oklab,var(--foreground)_38%,transparent)] " \
       "[&_svg]:size-[1.1em] [&_svg]:shrink-0"
 
     TOGGLE_GROUP_ITEM_ACTIVE = "lc-toggle-group-item-active bg-background text-foreground hover:text-foreground"

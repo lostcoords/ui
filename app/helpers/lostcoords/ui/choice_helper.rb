@@ -1,9 +1,9 @@
 module Lostcoords::Ui
   module ChoiceHelper
-    CHOICE_BASE = "shrink-0 size-4.5 m-0 cursor-pointer accent-primary disabled:cursor-not-allowed disabled:opacity-40"
+    CHOICE_BASE = "shrink-0 size-4.5 m-0 cursor-pointer accent-primary lc-disabled:cursor-not-allowed lc-pending:cursor-progress lc-disabled:opacity-40"
 
     # The label row centers the control on the first line of text, so a hint wraps under the label.
-    CHOICE_LABEL = "lc-choice inline-flex min-w-0 items-start gap-related text-body text-foreground cursor-pointer has-disabled:cursor-not-allowed has-disabled:opacity-60"
+    CHOICE_LABEL = "lc-choice inline-flex min-w-0 items-start gap-related text-body text-foreground cursor-pointer has-lc-disabled:cursor-not-allowed has-lc-pending:cursor-progress has-lc-disabled:opacity-60"
 
     # card: true draws the whole label as a selectable tile, for plan or theme pickers.
     CHOICE_CARD = "flex w-full rounded-2xl lc-squircle border border-transparent bg-tile p-content " \
@@ -23,7 +23,7 @@ module Lostcoords::Ui
     end
 
     def lc_switch_class(extra: nil)
-      lc_tw("lc-switch shrink-0 m-0 cursor-pointer disabled:cursor-not-allowed disabled:opacity-40", extra)
+      lc_tw("lc-switch shrink-0 m-0 cursor-pointer lc-disabled:cursor-not-allowed lc-pending:cursor-progress lc-disabled:opacity-40", extra)
     end
 
     # A native checkbox. unchecked_value: submits a value when unchecked, like Rails' check_box; pass nil to omit it.

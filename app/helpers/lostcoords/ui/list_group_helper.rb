@@ -23,7 +23,7 @@ module Lostcoords::Ui
     # a menuitemradio does. The global focus halo rings the row while its radio has focus.
     LIST_ROW_CHOICE =
       "group/choice flex items-center gap-heading cursor-pointer transition-colors duration-(--lc-motion-quick) " \
-      "hover:bg-accent has-checked:bg-primary-soft has-checked:font-semibold has-disabled:cursor-not-allowed has-disabled:opacity-45"
+      "hover:bg-accent has-checked:bg-primary-soft has-checked:font-semibold has-lc-disabled:cursor-not-allowed has-lc-pending:cursor-progress has-lc-disabled:opacity-45"
     LIST_ROW_CHOICE_CHECK = "ms-auto size-4 shrink-0 text-primary invisible group-has-checked/choice:visible"
     LIST_FIELD_ELEMENTS = %i[div fieldset span].freeze
     LIST_FIELD = "@container px-content py-2.5 transition-colors duration-(--lc-motion-quick) has-[[data-plain]:focus]:bg-accent"

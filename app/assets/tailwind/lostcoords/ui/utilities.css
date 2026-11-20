@@ -1,3 +1,10 @@
+/* A pending control is disabled with aria-busy="true" while its script loads: it
+   keeps its enabled look, so it does not flash grey, and only its cursor tells.
+   lc-disabled: styles a disabled control that is not pending; lc-pending: one that is.
+   Both compose, as in has-lc-disabled:opacity-60. */
+@custom-variant lc-disabled (&:disabled:not([aria-busy="true"]));
+@custom-variant lc-pending (&:disabled[aria-busy="true"]);
+
 /* A control gives a little as it is pressed, unless it is disabled. */
 @utility lc-press {
   @media (prefers-reduced-motion: no-preference) {

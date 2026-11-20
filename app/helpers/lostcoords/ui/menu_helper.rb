@@ -26,7 +26,7 @@ module Lostcoords::Ui
       "min-h-control-md px-3 py-1.5 rounded-2xl lc-squircle border-none bg-transparent text-start font-sans text-label text-foreground " \
       "no-underline cursor-pointer transition-[background-color] duration-120 [--lc-avatar-size:--spacing(7)] " \
       "hover:bg-accent focus-visible:bg-accent focus-visible:outline-none " \
-      "disabled:text-muted-foreground disabled:cursor-not-allowed disabled:hover:bg-transparent"
+      "lc-disabled:text-muted-foreground lc-disabled:cursor-not-allowed lc-pending:cursor-progress disabled:hover:bg-transparent"
 
     MENU_OPTION_TONES = {
       default: "",

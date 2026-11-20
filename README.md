@@ -170,6 +170,21 @@ Omit `only` to register every library controller. Unknown identifiers raise befo
 registered, and repeated calls on the same application keep later overrides, so register defaults
 before application overrides.
 
+## Unreleased
+
+Nothing needs an edit unless you override the disabled look, and one look changes:
+
+- **A disabled control marked `aria-busy="true"` keeps its enabled look.** It still can't be pressed and gives
+  no hover or press feedback; only its cursor, `progress`, tells. Render a control that waits for its script
+  this way and it no longer flashes grey for the moment before the script turns it on. Buttons, icon buttons,
+  select and menu triggers, menu options, toggle group items, switches and choice rows all follow it. A
+  native checkbox or radio still greys, as the browser draws it. The loading button
+  (`lc_button disabled: true, aria: { busy: true }`) now keeps its colours beside its spinner.
+- **`lc-disabled:` and `lc-pending:` style your own controls the same way.** `lc-disabled:` matches a disabled
+  control that is not busy, `lc-pending:` one that is, and both compose, as in `has-lc-disabled:opacity-60`. The
+  helpers use `lc-disabled:` where they used `disabled:`, so a `class:` override of the disabled look is now
+  written `lc-disabled:`.
+
 ## Changes in 0.14.1
 
 Two phone fixes, with nothing to edit:
@@ -502,6 +517,10 @@ from its ink and keeps its pressed fill while open. It takes the button's `varia
   Saving…
 <% end %>
 ```
+
+A disabled control that is also `aria-busy="true"` is pending: it keeps its enabled look and a `progress`
+cursor but can't be pressed, so a control waiting for its script or its request doesn't flash grey. Style
+your own controls with the `lc-disabled:` and `lc-pending:` variants, which tell the two apart.
 
 Use native attributes for application behavior, `class:` to merge additional Tailwind utilities, and
 theme tokens to restyle the library. `popover: true` renders `popover="auto"`, as a bare `popover`

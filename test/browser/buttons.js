@@ -186,5 +186,34 @@ async function _verifyButtons(page) {
     `an expanded button swaps its label for the icon and keeps its name: ${JSON.stringify(swap)}`,
   )
 
+  const pending = await preview("Saving").evaluate((stage) => {
+    const button = stage.querySelector("button")
+    const look = () => {
+      getComputedStyle(button).color
+      for (const animation of button.getAnimations()) animation.finish()
+      const { backgroundColor, color, cursor } = getComputedStyle(button)
+      return { backgroundColor, color, cursor }
+    }
+    const busy = look()
+    button.removeAttribute("aria-busy")
+    const disabled = look()
+    button.disabled = false
+    const enabled = look()
+    button.disabled = true
+    button.setAttribute("aria-busy", "true")
+    return { busy, disabled, enabled }
+  })
+  verify(
+    pending.busy.backgroundColor === pending.enabled.backgroundColor &&
+      pending.busy.color === pending.enabled.color &&
+      pending.busy.cursor === "progress",
+    `a disabled, busy button keeps its enabled look with a progress cursor: ${JSON.stringify(pending)}`,
+  )
+  verify(
+    pending.disabled.backgroundColor !== pending.enabled.backgroundColor &&
+      pending.disabled.cursor === "not-allowed",
+    `a disabled button that is not busy still reads as unavailable: ${JSON.stringify(pending)}`,
+  )
+
   return checks
 }
