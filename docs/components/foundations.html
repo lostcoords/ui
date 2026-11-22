@@ -15,7 +15,7 @@
       const theme = localStorage.getItem("lostcoords-ui:theme")
       if (theme === "dark" || (!theme && matchMedia("(prefers-color-scheme: dark)").matches)) document.documentElement.dataset.theme = "dark"
     </script>
-    <link rel="stylesheet" href="/assets/tailwind-14671237.css" data-turbo-track="reload" />
+    <link rel="stylesheet" href="/assets/tailwind-dfb61ef0.css" data-turbo-track="reload" />
     
     <meta name="view-transition" content="same-origin">
     <meta name="turbo-prefetch" content="true">
@@ -878,6 +878,16 @@
                 </span>
             </td>
             <td class="text-muted-foreground">Hovered select background</td>
+          </tr>
+          <tr data-showcase-target="token filterableToken" data-token="--lc-switch-track">
+            <th scope="row" class="text-start"><code class="break-all">--lc-switch-track</code></th>
+            <td class="max-w-72 break-words">
+                <span class="flex min-w-0 items-center gap-2">
+                  <span class="size-5 shrink-0 rounded-md bg-(--swatch) shadow-(--lc-shadow)" data-token-swatch hidden></span>
+                  <code class="font-mono text-xs break-all" data-token-value></code>
+                </span>
+            </td>
+            <td class="text-muted-foreground">Unchecked switch track; a translucent tint that shows on any surface</td>
           </tr>
       </tbody>
       <tbody>
