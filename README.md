@@ -170,6 +170,15 @@ Omit `only` to register every library controller. Unknown identifiers raise befo
 registered, and repeated calls on the same application keep later overrides, so register defaults
 before application overrides.
 
+## Unreleased
+
+Nothing needs an edit, and one look changes:
+
+- **An unchecked switch has a visible track on any surface.** It drew its track with `--input`, so on a host
+  whose cards share the field fill it showed only its thumb. The track is now `--lc-switch-track`, a
+  translucent foreground tint that shows on the page, a card or any other fill, in both themes. Set it to
+  restyle the track; checked switches still fill with `--primary`.
+
 ## Changes in 0.14.2
 
 Nothing needs an edit unless you override the disabled look, and one look changes:

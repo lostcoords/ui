@@ -393,6 +393,72 @@ async function _verifyControlSurfaces(page) {
         }, previous)
       }
     }
+
+    // A host whose cards share the field fill (--input = --muted) is the case that hid the track.
+    await page.goto(`${origin}/components/switch.html`)
+    await page.locator("[data-example-preview] input[role=switch]").first().waitFor()
+    const switchTracks = await page.evaluate(() => {
+      const root = document.documentElement
+      const previous = {
+        theme: root.getAttribute("data-theme"),
+        palette: root.getAttribute("data-palette"),
+      }
+      const stage = document.querySelector("[data-example-preview]")
+      const style = stage.getAttribute("style")
+      const input = stage.querySelector("input[role=switch]")
+      const checked = input.checked
+      const canvas = document.createElement("canvas")
+      canvas.width = canvas.height = 1
+      const ctx = canvas.getContext("2d")
+      const color = (css, backdrop) => {
+        ctx.clearRect(0, 0, 1, 1)
+        if (backdrop) {
+          ctx.fillStyle = backdrop
+          ctx.fillRect(0, 0, 1, 1)
+        }
+        ctx.fillStyle = css
+        ctx.fillRect(0, 0, 1, 1)
+        return [...ctx.getImageData(0, 0, 1, 1).data]
+      }
+      const failures = []
+      try {
+        root.removeAttribute("data-palette")
+        input.checked = false
+        for (const theme of ["light", "dark"]) {
+          root.dataset.theme = theme
+          for (const [surface, matching] of [
+            ["--background", null],
+            ["--muted", null],
+            ["--accent", null],
+            ["--muted", "var(--muted)"],
+          ]) {
+            stage.setAttribute("style", `background-color: var(${surface})`)
+            if (matching) stage.style.setProperty("--input", matching)
+            for (const a of stage.getAnimations()) a.finish()
+            for (const a of input.getAnimations()) a.finish()
+            const backdrop = getComputedStyle(stage).backgroundColor
+            const track = color(getComputedStyle(input).backgroundColor, backdrop)
+            const behind = color(backdrop)
+            const difference = Math.max(...track.slice(0, 3).map((n, i) => Math.abs(n - behind[i])))
+            if (difference < 24)
+              failures.push(`${theme} ${surface}${matching ? " with --input matching" : ""}`)
+          }
+        }
+      } finally {
+        input.checked = checked
+        for (const [name, value] of Object.entries(previous)) {
+          if (value === null) root.removeAttribute(`data-${name}`)
+          else root.setAttribute(`data-${name}`, value)
+        }
+        if (style === null) stage.removeAttribute("style")
+        else stage.setAttribute("style", style)
+      }
+      return failures
+    })
+    verify(
+      switchTracks.length === 0,
+      `An unchecked switch track stands out from every surface: ${switchTracks.join("; ")}`,
+    )
     return checks
   } finally {
     await page.emulateMedia({ reducedMotion: null })

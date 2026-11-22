@@ -8,7 +8,7 @@
     inline-size: calc(var(--spacing) * 9);
     block-size: calc(var(--spacing) * 5.5);
     border-radius: var(--radius-pill);
-    background-color: var(--input);
+    background-color: var(--lc-switch-track);
     background-image: radial-gradient(circle closest-side, var(--lc-switch-thumb) calc(100% - var(--spacing) * 0.375), transparent 100%);
     background-size: calc(var(--spacing) * 5.5) calc(var(--spacing) * 5.5);
     background-repeat: no-repeat;

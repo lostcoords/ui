@@ -204,6 +204,10 @@
     --lc-scrim-veil: color-mix(in oklab, var(--background) 35%, transparent);
     --lc-input-hover: color-mix(in oklab, var(--foreground) 13%, var(--accent));
 
+    /* The unchecked switch track is a translucent tint, not a fill, so it shows on the page,
+       a card or any host surface, even one that matches --input. */
+    --lc-switch-track: color-mix(in oklab, var(--foreground) 20%, transparent);
+
     --lc-shadow-sm: 0 1px 2px rgb(0 0 0 / 0.05);
     --lc-shadow:
       0 1px 3px rgb(0 0 0 / 0.05),

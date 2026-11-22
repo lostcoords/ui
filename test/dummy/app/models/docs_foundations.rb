@@ -14,6 +14,7 @@ module DocsFoundations
     Token.new("Controls", "--lc-control-md", "2.5rem", "Default control height (h-control-md)"),
     Token.new("Controls", "--lc-control-lg", "3rem", "Large control height (h-control-lg)"),
     Token.new("Controls", "--lc-input-hover", nil, "Hovered select background"),
+    Token.new("Controls", "--lc-switch-track", nil, "Unchecked switch track; a translucent tint that shows on any surface"),
     Token.new("Shadows", "--lc-shadow-sm", nil, "Small surface shadow"),
     Token.new("Shadows", "--lc-shadow", nil, "Default floating surface shadow"),
     Token.new("Shadows", "--lc-shadow-lg", nil, "Large floating surface shadow"),
