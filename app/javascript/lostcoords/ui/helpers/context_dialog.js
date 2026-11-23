@@ -1,10 +1,11 @@
+import { showDialog } from "lostcoords/ui/helpers/dialog"
 import { isSheetViewport } from "lostcoords/ui/helpers/viewport"
 
 const EDGE = 16
 
 export function showContextDialog(dialog, menu) {
   delete dialog.dataset.anchored
-  if (!dialog.open) dialog.showModal()
+  showDialog(dialog)
 
   const rect = menu?.getBoundingClientRect()
   const corner = rect?.height

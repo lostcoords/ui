@@ -1,5 +1,5 @@
 import { registerDismissable } from "lostcoords/ui/helpers/dismiss_stack"
-import { settleFocus } from "lostcoords/ui/helpers/focus"
+import { currentOpener, returnFocus, settleFocus } from "lostcoords/ui/helpers/focus"
 
 const registrations = new WeakMap()
 
@@ -42,6 +42,8 @@ export function registerDialog(
   const existing = registrations.get(dialog)
   if (existing) return existing
 
+  const opener = currentOpener(dialog)
+
   const unregisterDismissable = registerDismissable({
     element: dialog,
     type: "lc-dialog",
@@ -64,10 +66,12 @@ export function registerDialog(
     if (!inside) close(event)
   }
   // A dialog closed and shown again in the same task fires close while it is already open again.
-  // By now the browser has handed focus back to what had it before the dialog opened.
+  // By now the browser has handed focus back to what had it before the dialog opened, if
+  // anything had.
   const unregisterOnClose = () => {
     if (dialog.open) return
     unregister()
+    returnFocus(opener, dialog)
     settleFocus()
   }
   const unregister = () => {

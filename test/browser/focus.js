@@ -56,6 +56,24 @@ async function _verifyFocus(page) {
     "a dialog opened and closed by keyboard returns focus with its ring",
   )
 
+  // Safari on a Mac doesn't focus a button on click: a press and a click that leave focus on the body.
+  await page.evaluate(() => document.activeElement.blur())
+  await opener.dispatchEvent("pointerdown")
+  await opener.evaluate((button) => button.click())
+  await page.waitForFunction((selector) => document.querySelector(selector).open, members)
+  await page.locator(`${members} [data-slot=dialog-dismiss]`).evaluate((button) => button.click())
+  await closed(members)
+  // The close event, which returns focus, fires after the dialog reads as closed.
+  await page.waitForFunction(
+    (button) => document.activeElement === button,
+    await opener.elementHandle(),
+  )
+  state = await focus(opener)
+  verify(
+    state.here && !state.ring,
+    "a dialog closed with nothing focused before it returns focus to the pressed button",
+  )
+
   await visit("/components/menu.html")
   const trigger = page.getByRole("button", { name: "Project actions", exact: true }).first()
   const triggerId = await trigger.getAttribute("id")
