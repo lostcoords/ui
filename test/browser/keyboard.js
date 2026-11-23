@@ -119,7 +119,11 @@ async function _verifyKeyboard(page) {
   await page.keyboard.press("Enter")
   const search = page.getByRole("searchbox")
   await search.waitFor()
-  await page.waitForFunction(() => document.querySelector("[data-picker-catalog]"))
+  // The checks below compare positions, so the panel has to be done growing and animating in.
+  await page.waitForFunction(() => {
+    const catalog = document.querySelector("[data-picker-catalog]")
+    return catalog && catalog.closest("[popover]").getAnimations().length === 0
+  })
   verify(
     await search.evaluate((node) => node === document.activeElement),
     "Opening the emoji picker focuses its search",

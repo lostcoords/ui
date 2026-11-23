@@ -40,7 +40,7 @@ module Lostcoords::Ui
       "transition-[border-color,box-shadow] duration-(--lc-motion-quick) ease-(--lc-ease-out) " \
       "aria-invalid:border-destructive aria-invalid:shadow-[0_0_0_3px_color-mix(in_oklab,var(--destructive)_16%,transparent)]"
 
-    # Text and nothing else: for a control inside a row that shows focus itself, such as lc_list_field.
+    # Text and nothing else: for a control inside a row that draws the focus ring itself, such as lc_list_field.
     INPUT_PLAIN =
       "w-full max-w-full min-w-0 min-h-9 p-0 border-0 bg-transparent font-sans text-base text-foreground " \
       "placeholder:text-muted-foreground aria-invalid:placeholder:text-destructive outline-none"

@@ -170,6 +170,19 @@ Omit `only` to register every library controller. Unknown identifiers raise befo
 registered, and repeated calls on the same application keep later overrides, so register defaults
 before application overrides.
 
+## Changes in 0.14.8
+
+Nothing needs an edit. Changed:
+
+- **An `lc_list_field` row rings while its plain input has focus.** It showed the accent fill alone, so
+  these rows were the one place a focused field had no ring. The fill stays.
+
+Fixed:
+
+- **A lifted panel moves in the frame it grows in.** A panel that outgrew the viewport as its content
+  loaded, such as the emoji picker when its catalog arrives, was painted once at the old spot before
+  flipping to the other side of its trigger.
+
 ## Changes in 0.14.7
 
 Nothing needs an edit. Fixed:
@@ -732,7 +745,7 @@ narrow row the label folds to its `icon:`, and the text stays the accessible nam
 a `<label>` for that control; `as: :fieldset` names a group of controls, such as chips, with a legend.
 `as: :span, surface: false` draws the row inside another element, such as a collapsible's summary.
 `lc_input(plain: true)` drops the field's fill, border, padding and height so the text sits in the row,
-which tints while that input has focus. Toggles take `--lc-field-bg` like fields, so on a card or list
+which tints and shows the focus ring while that input has focus. Toggles take `--lc-field-bg` like fields, so on a card or list
 row they use `--card-input`.
 
 ```erb

@@ -96,7 +96,9 @@ export function liftToTopLayer(panel, trigger) {
   const schedule = () => (frame ??= requestAnimationFrame(place))
 
   place()
-  const resizes = new ResizeObserver(schedule)
+  // A resize is delivered before the frame paints, so the panel moves in the frame it grows in:
+  // one that outgrows the viewport as its content loads is never painted at the old spot.
+  const resizes = new ResizeObserver(place)
   resizes.observe(panel)
   window.addEventListener("scroll", schedule, { capture: true, passive: true })
   window.addEventListener("resize", schedule, { passive: true })
