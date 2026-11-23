@@ -7,6 +7,7 @@ import { prefersReducedMotion } from "lostcoords/ui/helpers/viewport"
 
 const TONE_MODIFIERS = ["", "\u{1F3FB}", "\u{1F3FC}", "\u{1F3FD}", "\u{1F3FE}", "\u{1F3FF}"]
 const TONE_STORAGE_KEY = "lostcoords_ui:lc-emoji-picker:tone"
+const REACH = ["pointerenter", "touchstart", "focusin"]
 
 function markCurrent(element, current) {
   element.setAttribute("aria-current", String(current))
@@ -36,10 +37,15 @@ export default class extends CatalogPicker {
     super.connect()
     this.tone = this.readTone()
     this.syncTones()
-    this.preloadCatalog()
+    // The catalog is every emoji there is. It loads once someone reaches for the picker, not
+    // with each page that has one: opening it waits for the same request.
+    this.reach = () => this.fetchCatalog()
+    for (const type of REACH)
+      this.element.addEventListener(type, this.reach, { once: true, passive: true })
   }
 
   disconnect() {
+    for (const type of REACH) this.element.removeEventListener(type, this.reach)
     this.unregisterTones?.()
     this.clearPopover()
     super.disconnect()

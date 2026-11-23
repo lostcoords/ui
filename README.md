@@ -170,7 +170,7 @@ Omit `only` to register every library controller. Unknown identifiers raise befo
 registered, and repeated calls on the same application keep later overrides, so register defaults
 before application overrides.
 
-## Unreleased
+## Changes in 0.14.5
 
 One edit, only for a host that skips `base.css`:
 
@@ -179,6 +179,12 @@ One edit, only for a host that skips `base.css`:
   shared ring: `base.css` applies it to whatever holds keyboard focus, and the list row applies the same
   utility while its link has focus. A host with its own base styles gets its own focus style on fields; to
   keep the library's, add `:is(input, textarea, select):focus-visible { @apply lc-focus-ring; }`.
+
+Faster:
+
+- **The emoji catalog loads when someone reaches for the picker** (pointer, touch or focus), not with every
+  page that has one. It is every emoji there is, about 900KB of markup; opening the picker waits for the
+  same request.
 
 ## Changes in 0.14.4
 

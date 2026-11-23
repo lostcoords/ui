@@ -15,7 +15,7 @@
       const theme = localStorage.getItem("lostcoords-ui:theme")
       if (theme === "dark" || (!theme && matchMedia("(prefers-color-scheme: dark)").matches)) document.documentElement.dataset.theme = "dark"
     </script>
-    <link rel="stylesheet" href="/assets/tailwind-17281fb5.css" data-turbo-track="reload" />
+    <link rel="stylesheet" href="/assets/tailwind-9e4954eb.css" data-turbo-track="reload" />
     
     <meta name="view-transition" content="same-origin">
     <meta name="turbo-prefetch" content="true">
@@ -31,7 +31,7 @@
     "lostcoords/ui/controllers/lc_copy_controller": "/assets/lostcoords/ui/controllers/lc_copy_controller-d436312d.js",
     "lostcoords/ui/controllers/lc_dialog_controller": "/assets/lostcoords/ui/controllers/lc_dialog_controller-afc6d2cd.js",
     "lostcoords/ui/controllers/lc_dock_controller": "/assets/lostcoords/ui/controllers/lc_dock_controller-0e45af8e.js",
-    "lostcoords/ui/controllers/lc_emoji_picker_controller": "/assets/lostcoords/ui/controllers/lc_emoji_picker_controller-c5334888.js",
+    "lostcoords/ui/controllers/lc_emoji_picker_controller": "/assets/lostcoords/ui/controllers/lc_emoji_picker_controller-91b7d200.js",
     "lostcoords/ui/controllers/lc_hovercard_controller": "/assets/lostcoords/ui/controllers/lc_hovercard_controller-99a4fcea.js",
     "lostcoords/ui/controllers/lc_kbd_controller": "/assets/lostcoords/ui/controllers/lc_kbd_controller-83cd1787.js",
     "lostcoords/ui/controllers/lc_menu_controller": "/assets/lostcoords/ui/controllers/lc_menu_controller-693464b4.js",
@@ -61,7 +61,7 @@
     "controllers/lc_copy_controller": "/assets/lostcoords/ui/controllers/lc_copy_controller-d436312d.js",
     "controllers/lc_dialog_controller": "/assets/lostcoords/ui/controllers/lc_dialog_controller-afc6d2cd.js",
     "controllers/lc_dock_controller": "/assets/lostcoords/ui/controllers/lc_dock_controller-0e45af8e.js",
-    "controllers/lc_emoji_picker_controller": "/assets/lostcoords/ui/controllers/lc_emoji_picker_controller-c5334888.js",
+    "controllers/lc_emoji_picker_controller": "/assets/lostcoords/ui/controllers/lc_emoji_picker_controller-91b7d200.js",
     "controllers/lc_hovercard_controller": "/assets/lostcoords/ui/controllers/lc_hovercard_controller-99a4fcea.js",
     "controllers/lc_kbd_controller": "/assets/lostcoords/ui/controllers/lc_kbd_controller-83cd1787.js",
     "controllers/lc_menu_controller": "/assets/lostcoords/ui/controllers/lc_menu_controller-693464b4.js",
@@ -488,7 +488,7 @@
   <header class="flex min-w-0 items-start justify-between gap-content" data-slot="card-header"><div class="flex min-w-0 flex-col gap-tight" data-slot="card-heading"><h3 class="lc-heading m-0 text-foreground text-subheading" data-slot="card-title">Project settings</h3></div></header>
   <div class="flex min-w-0 flex-col gap-content" data-slot="card-content">
     <div class="lc-field grid min-w-0 has-aria-invalid:[&amp;&gt;label]:text-destructive gap-related" data-slot="field"><label for="example-5-name" class="block font-sans text-muted-foreground transition-colors duration-(--lc-motion-quick) ease-(--lc-ease-out) text-label font-semibold" data-slot="field-label">Project name</label>
-      <input type="text" name="project[name]" value="Design system" class="w-full max-w-full min-w-0 px-3 font-sans text-base bg-(--lc-field-bg,var(--input)) text-foreground placeholder:text-muted-foreground border border-transparent rounded-xl lc-squircle outline-none transition-[border-color,box-shadow] duration-(--lc-motion-quick) ease-(--lc-ease-out) focus:shadow-[0_0_0_calc(var(--spacing)*0.5)_var(--ring,color-mix(in_oklab,var(--primary)_50%,transparent))] aria-invalid:border-destructive aria-invalid:shadow-[0_0_0_3px_color-mix(in_oklab,var(--destructive)_16%,transparent)] h-control-md" data-slot="input" id="example-5-name">
+      <input type="text" name="project[name]" value="Design system" class="w-full max-w-full min-w-0 px-3 font-sans text-base bg-(--lc-field-bg,var(--input)) text-foreground placeholder:text-muted-foreground border border-transparent rounded-xl lc-squircle transition-[border-color,box-shadow] duration-(--lc-motion-quick) ease-(--lc-ease-out) aria-invalid:border-destructive aria-invalid:shadow-[0_0_0_3px_color-mix(in_oklab,var(--destructive)_16%,transparent)] h-control-md" data-slot="input" id="example-5-name">
 </div></div>  <div class="flex min-w-0 flex-wrap items-center justify-end gap-related" data-slot="card-footer">
     <button type="button" class="inline-flex items-center justify-center gap-related rounded-pill font-sans whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform,translate,scale,filter] duration-(--lc-motion-control) ease-(--lc-ease-out) motion-safe:not-disabled:hover:-translate-y-px motion-safe:not-disabled:active:translate-y-px active:shadow-none lc-disabled:cursor-not-allowed lc-pending:cursor-progress lc-disabled:shadow-none lc-disabled:[--lc-button-bg:color-mix(in_oklab,var(--foreground)_10%,transparent)] lc-disabled:text-[color-mix(in_oklab,var(--foreground)_38%,transparent)] [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 h-control-md px-4 has-[&gt;[data-icon=inline-start]]:ps-3.5 has-[&gt;[data-icon=inline-end]]:pe-3.5 text-label border border-transparent [--lc-button-bg:var(--primary)] [--lc-button-ink:var(--primary-foreground)] bg-(--lc-button-bg) text-(--lc-button-ink) not-disabled:hover:bg-[color-mix(in_oklab,var(--lc-button-bg,var(--secondary))_94%,var(--lc-button-ink,var(--foreground)))] not-disabled:active:bg-[color-mix(in_oklab,var(--lc-button-bg,var(--secondary))_94%,var(--lc-button-ink,var(--foreground)))]" data-slot="button" data-variant="primary" data-size="md">Save changes</button>
 </div></div>
@@ -525,7 +525,7 @@
   <div class="flex min-w-0 flex-col gap-content" data-slot="card-content">
     <div class="flex items-start gap-related py-heading px-content rounded-2xl lc-squircle bg-tile text-foreground text-label" role="alert" data-tone="destructive" data-slot="alert"><svg viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg" class="lc-icon size-5 shrink-0 text-destructive" data-slot="icon" aria-hidden="true"><path fill-rule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-8-5a.75.75 0 0 1 .75.75v4.5a.75.75 0 0 1-1.5 0v-4.5A.75.75 0 0 1 10 5Zm0 10a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" clip-rule="evenodd"/></svg><div class="flex min-w-0 flex-col gap-tight"><p class="m-0 min-w-0 text-pretty [overflow-wrap:anywhere]" data-slot="alert-description">Choose a unique project name.</p></div></div>
     <div class="lc-field grid min-w-0 has-aria-invalid:[&amp;&gt;label]:text-destructive gap-related" data-slot="field" data-invalid="true"><label for="example-6-name" class="block font-sans text-muted-foreground transition-colors duration-(--lc-motion-quick) ease-(--lc-ease-out) text-label font-semibold" data-slot="field-label">Project name</label>
-      <input type="text" name="project[name]" value="Design system" class="w-full max-w-full min-w-0 px-3 font-sans text-base bg-(--lc-field-bg,var(--input)) text-foreground placeholder:text-muted-foreground border border-transparent rounded-xl lc-squircle outline-none transition-[border-color,box-shadow] duration-(--lc-motion-quick) ease-(--lc-ease-out) focus:shadow-[0_0_0_calc(var(--spacing)*0.5)_var(--ring,color-mix(in_oklab,var(--primary)_50%,transparent))] aria-invalid:border-destructive aria-invalid:shadow-[0_0_0_3px_color-mix(in_oklab,var(--destructive)_16%,transparent)] h-control-md" data-slot="input" id="example-6-name" aria-describedby="example-6-name-error" aria-invalid="true">
+      <input type="text" name="project[name]" value="Design system" class="w-full max-w-full min-w-0 px-3 font-sans text-base bg-(--lc-field-bg,var(--input)) text-foreground placeholder:text-muted-foreground border border-transparent rounded-xl lc-squircle transition-[border-color,box-shadow] duration-(--lc-motion-quick) ease-(--lc-ease-out) aria-invalid:border-destructive aria-invalid:shadow-[0_0_0_3px_color-mix(in_oklab,var(--destructive)_16%,transparent)] h-control-md" data-slot="input" id="example-6-name" aria-describedby="example-6-name-error" aria-invalid="true">
 <p id="example-6-name-error" class="m-0 text-small text-destructive" role="alert" data-slot="field-error">This name is already taken.</p></div></div></div>
     </div>
     <div id="example-6-code" class="lc-code-block group/code-block relative min-h-15 overflow-hidden rounded-2xl bg-muted" data-controller="lc-code-block" data-action="lc-copy:error-&gt;lc-code-block#copyFailed">
