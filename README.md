@@ -170,6 +170,14 @@ Omit `only` to register every library controller. Unknown identifiers raise befo
 registered, and repeated calls on the same application keep later overrides, so register defaults
 before application overrides.
 
+## Changes in 0.14.7
+
+Nothing needs an edit. Fixed:
+
+- **Focus also returns when the host removes the dialog as it closes.** Such a caller unregisters before
+  the `close` event arrives, which is where 0.14.6 returned focus, so Safari still left it on the page.
+  Focus now settles when a closed dialog is unregistered.
+
 ## Changes in 0.14.6
 
 Nothing needs an edit. Fixed:
