@@ -170,6 +170,17 @@ Omit `only` to register every library controller. Unknown identifiers raise befo
 registered, and repeated calls on the same application keep later overrides, so register defaults
 before application overrides.
 
+## Changes in 0.14.6
+
+Nothing needs an edit. Fixed:
+
+- **Focus returns to the pressed control in Safari.** Safari on a Mac doesn't focus a button or link on
+  click, so the browser had nothing to hand focus back to when a dialog closed and it fell to the page.
+  `registerDialog` now remembers what was pressed and returns focus there when closing leaves it nowhere.
+- **`showContextDialog` opens through `showDialog`**, so a dialog anchored to a menu takes focus itself, as
+  every other dialog does, instead of ringing its first control. The confirm sheet no longer repeats the
+  step.
+
 ## Changes in 0.14.5
 
 One edit, only for a host that skips `base.css`:
@@ -1152,7 +1163,9 @@ Every interactive component works from the keyboard without extra code:
 The focus ring follows how the person is moving. Focus that comes back from a closed dialog, sheet, menu
 or popover shows its ring only after Tab or an arrow key moved focus; Escape, Enter in a field and typing
 don't count, so a dialog opened with the mouse and closed with Escape leaves no ring on its button. A panel
-closed from inside, such as by choosing a menu item, returns focus to what opened it. A controller that
+closed from inside, such as by choosing a menu item, returns focus to what opened it, and a dialog
+closed with nothing focused before it, as after a click in Safari, returns focus to the control that was
+pressed. A controller that
 moves focus back itself calls `settleFocus()` from `lostcoords/ui/helpers/focus` afterwards for the same
 rule. Hosts that skip `base.css` hide the ring on `[data-lc-focus-quiet]:focus-visible`.
 

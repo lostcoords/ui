@@ -50,8 +50,5 @@ export function ask(
     dialog.style.removeProperty("--lc-dialog-origin")
     showContextDialog(dialog, anchor)
     registerDialog(dialog, { lockScroll: false })
-    // showModal focuses Cancel, and a confirm raised while typing would hand it the field's focus ring.
-    // The sheet itself takes focus; Tab still reaches both buttons.
-    dialog.focus({ preventScroll: true })
   })
 }
