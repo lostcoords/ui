@@ -108,7 +108,8 @@ module Lostcoords::Ui
     # as: :nav makes links, the current one marked with aria-current; otherwise radio buttons whose
     # selection lives in the lc-selection controller.
     # variant: :pills lays the items out as wrapping toggle pills, sized by size:, instead of a segmented track.
-    # layout: and scroll: shape the segmented track; see lc_toggle_group_class.
+    # layout: and scroll: shape the segmented track; see lc_toggle_group_class. Pills take scroll: true
+    # to stay one sideways-scrolling row, or scroll: :narrow to do so only inside a container under @md.
     def lc_toggle_group(label:, name: nil, value: nil, as: :div, variant: :segmented, size: :md, layout: :inline, scroll: false, **attributes, &block)
       lc_label!(label, :label)
       as = lc_option!(:as, as, %i[div nav])
@@ -116,13 +117,16 @@ module Lostcoords::Ui
       size = lc_option!(:size, size, ButtonHelper::BUTTON_SIZES.keys)
       layout = lc_option!(:layout, layout, FormHelper::TOGGLE_GROUP_LAYOUTS.keys)
       raise ArgumentError, "size: sizes pills; a segmented toggle group has one size" if variant == :segmented && size != :md
-      raise ArgumentError, "layout: and scroll: shape a segmented track; pills wrap" if variant == :pills && (layout != :inline || scroll)
+      raise ArgumentError, "layout: shapes a segmented track; pills wrap" if variant == :pills && layout != :inline
+      scroll = scroll.to_sym if scroll.is_a?(String)
+      allowed_scroll = variant == :pills ? [ false, *FormHelper::PILLS_SCROLL.keys ] : [ false, true ]
+      raise ArgumentError, "Invalid scroll: #{scroll.inspect}. Expected one of: #{allowed_scroll.map(&:inspect).join(', ')}" unless allowed_scroll.include?(scroll)
       raise ArgumentError, "a nav toggle group marks its current link; it takes no name: or value:" if as == :nav && (name || value)
 
       mode = as == :nav ? :links : (name ? :radios : :buttons)
       content = lc_within_toggle_group({ mode: mode, name: name, value: value&.to_s, variant: variant, size: size, layout: layout }) { capture(&block) if block }
 
-      defaults = { class: (variant == :pills ? lc_inline_class : lc_toggle_group_class(layout: layout, scroll: scroll)), data: { slot: "toggle-group" } }
+      defaults = { class: (variant == :pills ? lc_inline_class(extra: FormHelper::PILLS_SCROLL[scroll]) : lc_toggle_group_class(layout: layout, scroll: scroll)), data: { slot: "toggle-group" } }
       case mode
       when :links
         tag.nav(content, **lc_attributes(defaults, attributes, { aria: { label: label } }))

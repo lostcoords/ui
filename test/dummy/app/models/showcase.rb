@@ -213,7 +213,7 @@ module Showcase
       Section.new(:toggle_group, "Toggle group", "Mutually exclusive choices with keyboard navigation and form values.", [
         Example.new(:toggle_group, "Mutually exclusive choices", :panel),
         Example.new(:toggle_group_links, "Navigation links", :panel),
-        Example.new(:toggle_group_pills, "Wrapping pills", :panel),
+        Example.new(:toggle_group_pills, "Pills, wrapping or in one scrolling row", :panel),
         Example.new(:toggle_group_form, "Form values, native radios and reset", :panel),
         Example.new(:toggle_group_icons, "Icons, stacked and adaptive layouts", :panel),
         Example.new(:toggle_group_scroll, "A scrolling track", :panel)

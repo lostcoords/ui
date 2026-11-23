@@ -409,6 +409,11 @@
           "erb": "<% now = Time.utc(2026, 11, 4, 12) %>\n<%= lc_stack gap: :related, as: :ul, class: \"m-0 list-none p-0 text-small\" do %>\n  <li>Posted <%= lc_time now - 30.seconds, now: now %></li>\n  <li>Posted <%= lc_time now - 12.minutes, now: now %></li>\n  <li>Posted <%= lc_time now - 4.hours, now: now %></li>\n  <li>Posted <%= lc_time Time.utc(2026, 10, 28, 9, 30), now: now %></li>\n  <li>Posted <%= lc_time Time.utc(2025, 11, 4, 18), now: now, detail: \"edited\" %></li>\n<% end %>"
         },
         {
+          "title": "Pills, wrapping or in one scrolling row",
+          "url": "https://ui.lostcoords.com/components/toggle_group",
+          "erb": "<%= lc_stack do %>\n  <%= lc_toggle_group label: \"Category\", name: \"category\", value: \"\", variant: :pills do %>\n    <%= lc_toggle_group_item \"Leave unchanged\", value: \"\" %>\n    <%= lc_toggle_group_item \"Food\", value: \"food\" %>\n    <%= lc_toggle_group_item \"Transport\", value: \"transport\" %>\n    <%= lc_toggle_group_item \"Lodging\", value: \"lodging\" %>\n  <% end %>\n  <%= lc_toggle_group label: \"Paid by\", name: \"payer\", value: \"ana\", variant: :pills, scroll: true do %>\n    <% %w[Ana Bruno Chiara Daisuke Emeka Farah Gustav].each do |name| %>\n      <%= lc_toggle_group_item name, value: name.downcase %>\n    <% end %>\n  <% end %>\n<% end %>"
+        },
+        {
           "title": "Icons, stacked and adaptive layouts",
           "url": "https://ui.lostcoords.com/components/toggle_group",
           "erb": "<%= lc_stack gap: :inset, class: \"w-full max-w-md\" do %>\n  <%= lc_toggle_group label: \"View\", as: :nav do %>\n    <%= lc_toggle_group_item \"List\", href: \"/components/toggle_group.html\", current: true, icon: \"list-bullet\", icon_only: true %>\n    <%= lc_toggle_group_item \"Calendar\", href: \"/components/toggle.html\", icon: \"calendar-days\", icon_only: true %>\n  <% end %>\n  <%= lc_toggle_group label: \"Who can open it\", name: \"access\", value: \"link\", layout: :stacked, class: \"w-full\" do %>\n    <%= lc_toggle_group_item \"Anyone with the link\", value: \"link\", icon: \"link\" %>\n    <%= lc_toggle_group_item \"Members\", value: \"members\", icon: \"user-group\" %>\n    <%= lc_toggle_group_item \"Only me\", value: \"private\", icon: \"lock-closed\" %>\n  <% end %>\n  <%= lc_toggle_group label: \"Split\", value: \"equal\", layout: :adaptive do %>\n    <%= lc_toggle_group_item \"Equally\", value: \"equal\", selected: true, icon: \"equals\" %>\n    <%= lc_toggle_group_item \"Shares\", value: \"shares\", icon: \"chart-pie\" %>\n    <%= lc_toggle_group_item \"Amounts\", value: \"exact\", icon: \"banknotes\" %>\n  <% end %>\n<% end %>"
@@ -1796,9 +1801,9 @@
           "erb": "<%= lc_toggle_group label: \"Period\", as: :nav do %>\n  <%= lc_toggle_group_item \"Month\", href: \"/components/toggle_group.html\", current: true %>\n  <%= lc_toggle_group_item \"Quarter\", href: \"/components/toggle.html\" %>\n  <%= lc_toggle_group_item \"Year\", href: \"/components/tabs.html\" %>\n<% end %>"
         },
         {
-          "title": "Wrapping pills",
+          "title": "Pills, wrapping or in one scrolling row",
           "url": "https://ui.lostcoords.com/components/toggle_group",
-          "erb": "<%= lc_toggle_group label: \"Category\", name: \"category\", value: \"\", variant: :pills do %>\n  <%= lc_toggle_group_item \"Leave unchanged\", value: \"\" %>\n  <%= lc_toggle_group_item \"Food\", value: \"food\" %>\n  <%= lc_toggle_group_item \"Transport\", value: \"transport\" %>\n  <%= lc_toggle_group_item \"Lodging\", value: \"lodging\" %>\n<% end %>"
+          "erb": "<%= lc_stack do %>\n  <%= lc_toggle_group label: \"Category\", name: \"category\", value: \"\", variant: :pills do %>\n    <%= lc_toggle_group_item \"Leave unchanged\", value: \"\" %>\n    <%= lc_toggle_group_item \"Food\", value: \"food\" %>\n    <%= lc_toggle_group_item \"Transport\", value: \"transport\" %>\n    <%= lc_toggle_group_item \"Lodging\", value: \"lodging\" %>\n  <% end %>\n  <%= lc_toggle_group label: \"Paid by\", name: \"payer\", value: \"ana\", variant: :pills, scroll: true do %>\n    <% %w[Ana Bruno Chiara Daisuke Emeka Farah Gustav].each do |name| %>\n      <%= lc_toggle_group_item name, value: name.downcase %>\n    <% end %>\n  <% end %>\n<% end %>"
         },
         {
           "title": "Form values, native radios and reset",
@@ -1838,9 +1843,9 @@
           "erb": "<%= lc_toggle_group label: \"Period\", as: :nav do %>\n  <%= lc_toggle_group_item \"Month\", href: \"/components/toggle_group.html\", current: true %>\n  <%= lc_toggle_group_item \"Quarter\", href: \"/components/toggle.html\" %>\n  <%= lc_toggle_group_item \"Year\", href: \"/components/tabs.html\" %>\n<% end %>"
         },
         {
-          "title": "Wrapping pills",
+          "title": "Pills, wrapping or in one scrolling row",
           "url": "https://ui.lostcoords.com/components/toggle_group",
-          "erb": "<%= lc_toggle_group label: \"Category\", name: \"category\", value: \"\", variant: :pills do %>\n  <%= lc_toggle_group_item \"Leave unchanged\", value: \"\" %>\n  <%= lc_toggle_group_item \"Food\", value: \"food\" %>\n  <%= lc_toggle_group_item \"Transport\", value: \"transport\" %>\n  <%= lc_toggle_group_item \"Lodging\", value: \"lodging\" %>\n<% end %>"
+          "erb": "<%= lc_stack do %>\n  <%= lc_toggle_group label: \"Category\", name: \"category\", value: \"\", variant: :pills do %>\n    <%= lc_toggle_group_item \"Leave unchanged\", value: \"\" %>\n    <%= lc_toggle_group_item \"Food\", value: \"food\" %>\n    <%= lc_toggle_group_item \"Transport\", value: \"transport\" %>\n    <%= lc_toggle_group_item \"Lodging\", value: \"lodging\" %>\n  <% end %>\n  <%= lc_toggle_group label: \"Paid by\", name: \"payer\", value: \"ana\", variant: :pills, scroll: true do %>\n    <% %w[Ana Bruno Chiara Daisuke Emeka Farah Gustav].each do |name| %>\n      <%= lc_toggle_group_item name, value: name.downcase %>\n    <% end %>\n  <% end %>\n<% end %>"
         },
         {
           "title": "Form values, native radios and reset",

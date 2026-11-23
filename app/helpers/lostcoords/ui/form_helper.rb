@@ -31,6 +31,17 @@ module Lostcoords::Ui
     }.freeze
     # A track wider than its container scrolls sideways, its edges fading while there is more to see.
     TOGGLE_GROUP_SCROLL = "lc-scroll-fade-x max-w-full overflow-x-auto [scrollbar-width:none] *:shrink-0"
+    # Pills that scroll sideways in one row instead of wrapping. The 2px inset keeps a pill's focus ring
+    # inside the scroller, which clips it otherwise. :narrow scrolls only while the nearest @container is
+    # under @md and wraps above it; the fade is inert whenever nothing overflows.
+    # Class names are written out whole so Tailwind finds them in this source.
+    PILLS_SCROLL = {
+      true => "lc-scroll-fade-x motion-safe:scroll-smooth flex-nowrap overflow-x-auto overscroll-x-contain [scrollbar-width:none] " \
+        "[&::-webkit-scrollbar]:hidden *:shrink-0 -my-0.5 py-0.5 -mx-0.5 px-0.5",
+      narrow: "lc-scroll-fade-x motion-safe:scroll-smooth @max-md:flex-nowrap @max-md:overflow-x-auto @max-md:overscroll-x-contain " \
+        "@max-md:[scrollbar-width:none] @max-md:[&::-webkit-scrollbar]:hidden @max-md:*:shrink-0 @max-md:-my-0.5 @max-md:py-0.5 " \
+        "@max-md:-mx-0.5 @max-md:px-0.5"
+    }.freeze
 
     INPUT_BASE =
       "w-full max-w-full min-w-0 " \

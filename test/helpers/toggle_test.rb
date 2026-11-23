@@ -111,6 +111,23 @@ module Lostcoords::Ui
       assert_includes group["class"].split, "*:shrink-0"
     end
 
+    test "pills scroll in one row, always or only inside a narrow container" do
+      always = fragment(@view.lc_toggle_group(label: "Category", name: "category", variant: :pills, scroll: true) { @view.lc_toggle_group_item("Food", value: "food") }).at_css("[role=radiogroup]")["class"].split
+      assert_includes always, "flex-nowrap"
+      assert_includes always, "overflow-x-auto"
+      assert_includes always, "lc-scroll-fade-x"
+      assert_not_includes always, "flex-wrap"
+
+      narrow = fragment(@view.lc_toggle_group(label: "Category", name: "category", variant: :pills, scroll: :narrow) { @view.lc_toggle_group_item("Food", value: "food") }).at_css("[role=radiogroup]")["class"].split
+      assert_includes narrow, "flex-wrap"
+      assert_includes narrow, "@max-md:flex-nowrap"
+      assert_includes narrow, "@max-md:overflow-x-auto"
+      assert_includes narrow, "lc-scroll-fade-x"
+
+      assert_raises(ArgumentError) { @view.lc_toggle_group(label: "Range", scroll: :narrow) { "" } }
+      assert_raises(ArgumentError) { @view.lc_toggle_group(label: "Category", variant: :pills, scroll: :wide) { "" } }
+    end
+
     test "a pills toggle group wraps toggle pills and accepts an empty value" do
       html = fragment(@view.lc_toggle_group(label: "Category", name: "category", value: "", variant: :pills) do
         @view.safe_join([ @view.lc_toggle_group_item("Leave unchanged", value: ""), @view.lc_toggle_group_item("Food", value: "food") ])

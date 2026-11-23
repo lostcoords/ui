@@ -170,6 +170,15 @@ Omit `only` to register every library controller. Unknown identifiers raise befo
 registered, and repeated calls on the same application keep later overrides, so register defaults
 before application overrides.
 
+## Changes in 0.14.9
+
+Nothing needs an edit. Added:
+
+- **Pills can scroll in one row.** `lc_toggle_group(variant: :pills, scroll: true)` keeps its pills in a
+  single row that scrolls sideways, its edges fading while there is more to see; `scroll: :narrow` does
+  so only while the nearest `@container` is under `@md`, and wraps above it. A pill's focus ring stays
+  visible at the scroller's edge.
+
 ## Changes in 0.14.8
 
 Nothing needs an edit. Changed:
@@ -637,7 +646,7 @@ With `name:` they are native radios in labels, which bring their own arrows, sub
 `value:` and `checked:`, and the group's `value:` checks the matching item. With `as: :nav` they are links in a
 labelled `nav`; items take `href:` and `current:`. Otherwise they are radio buttons whose selection lives in the
 `lc-selection` controller, which dispatches `lc-selection:change`; items take `value:` and `selected:`. An item
-given another kind's arguments raises. `variant: :pills` lays any of them out as wrapping toggle pills, sized by `size:`, instead of a segmented track.
+given another kind's arguments raises. `variant: :pills` lays any of them out as wrapping toggle pills, sized by `size:`, instead of a segmented track; with `scroll: true` (or `:narrow`, only inside a container under `@md`) the pills stay in one row that scrolls sideways.
 Items take `icon:` and `icon_only:` as `lc_toggle` does. A segmented group's `layout: :stacked` puts each item's icon
 over its label, and `layout: :adaptive` makes the group full width and stacks its items only while the group is
 narrower than 24rem. `scroll: true` lets a track wider than its container scroll sideways, its edges fading.

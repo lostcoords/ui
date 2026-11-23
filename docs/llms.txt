@@ -884,6 +884,24 @@ Relative and dated: https://ui.lostcoords.com/components/time
 <% end %>
 ```
 
+Pills, wrapping or in one scrolling row: https://ui.lostcoords.com/components/toggle_group
+
+```erb
+<%= lc_stack do %>
+  <%= lc_toggle_group label: "Category", name: "category", value: "", variant: :pills do %>
+    <%= lc_toggle_group_item "Leave unchanged", value: "" %>
+    <%= lc_toggle_group_item "Food", value: "food" %>
+    <%= lc_toggle_group_item "Transport", value: "transport" %>
+    <%= lc_toggle_group_item "Lodging", value: "lodging" %>
+  <% end %>
+  <%= lc_toggle_group label: "Paid by", name: "payer", value: "ana", variant: :pills, scroll: true do %>
+    <% %w[Ana Bruno Chiara Daisuke Emeka Farah Gustav].each do |name| %>
+      <%= lc_toggle_group_item name, value: name.downcase %>
+    <% end %>
+  <% end %>
+<% end %>
+```
+
 Icons, stacked and adaptive layouts: https://ui.lostcoords.com/components/toggle_group
 
 ```erb
@@ -4164,14 +4182,21 @@ Navigation links: https://ui.lostcoords.com/components/toggle_group
 <% end %>
 ```
 
-Wrapping pills: https://ui.lostcoords.com/components/toggle_group
+Pills, wrapping or in one scrolling row: https://ui.lostcoords.com/components/toggle_group
 
 ```erb
-<%= lc_toggle_group label: "Category", name: "category", value: "", variant: :pills do %>
-  <%= lc_toggle_group_item "Leave unchanged", value: "" %>
-  <%= lc_toggle_group_item "Food", value: "food" %>
-  <%= lc_toggle_group_item "Transport", value: "transport" %>
-  <%= lc_toggle_group_item "Lodging", value: "lodging" %>
+<%= lc_stack do %>
+  <%= lc_toggle_group label: "Category", name: "category", value: "", variant: :pills do %>
+    <%= lc_toggle_group_item "Leave unchanged", value: "" %>
+    <%= lc_toggle_group_item "Food", value: "food" %>
+    <%= lc_toggle_group_item "Transport", value: "transport" %>
+    <%= lc_toggle_group_item "Lodging", value: "lodging" %>
+  <% end %>
+  <%= lc_toggle_group label: "Paid by", name: "payer", value: "ana", variant: :pills, scroll: true do %>
+    <% %w[Ana Bruno Chiara Daisuke Emeka Farah Gustav].each do |name| %>
+      <%= lc_toggle_group_item name, value: name.downcase %>
+    <% end %>
+  <% end %>
 <% end %>
 ```
 
@@ -4268,14 +4293,21 @@ Navigation links: https://ui.lostcoords.com/components/toggle_group
 <% end %>
 ```
 
-Wrapping pills: https://ui.lostcoords.com/components/toggle_group
+Pills, wrapping or in one scrolling row: https://ui.lostcoords.com/components/toggle_group
 
 ```erb
-<%= lc_toggle_group label: "Category", name: "category", value: "", variant: :pills do %>
-  <%= lc_toggle_group_item "Leave unchanged", value: "" %>
-  <%= lc_toggle_group_item "Food", value: "food" %>
-  <%= lc_toggle_group_item "Transport", value: "transport" %>
-  <%= lc_toggle_group_item "Lodging", value: "lodging" %>
+<%= lc_stack do %>
+  <%= lc_toggle_group label: "Category", name: "category", value: "", variant: :pills do %>
+    <%= lc_toggle_group_item "Leave unchanged", value: "" %>
+    <%= lc_toggle_group_item "Food", value: "food" %>
+    <%= lc_toggle_group_item "Transport", value: "transport" %>
+    <%= lc_toggle_group_item "Lodging", value: "lodging" %>
+  <% end %>
+  <%= lc_toggle_group label: "Paid by", name: "payer", value: "ana", variant: :pills, scroll: true do %>
+    <% %w[Ana Bruno Chiara Daisuke Emeka Farah Gustav].each do |name| %>
+      <%= lc_toggle_group_item name, value: name.downcase %>
+    <% end %>
+  <% end %>
 <% end %>
 ```
 
