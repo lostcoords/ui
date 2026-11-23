@@ -24,13 +24,15 @@
 
   :where([popover]) { color: inherit; }
 
-  :is(a, button, input, textarea, select, summary, [tabindex]:not(dialog)):focus-visible,
+  /* data-lc-focus-quiet: focus handed back by a closed dialog or panel while the person is not
+     on the keyboard (helpers/focus). */
+  :is(a, button, input, textarea, select, summary, [tabindex]:not(dialog)):focus-visible:not([data-lc-focus-quiet]),
   label:has(input.sr-only:focus-visible, + input.sr-only:focus-visible) {
     outline: calc(var(--spacing) * 0.5) solid var(--ring, color-mix(in oklab, var(--primary) 50%, transparent));
     outline-offset: 0;
   }
 
-  dialog:focus-visible { outline: none; }
+  dialog:focus-visible, [data-lc-focus-quiet]:focus-visible { outline: none; }
 
   :where(code):not(:where(pre code)) {
     @apply lc-inline-code;

@@ -1119,6 +1119,13 @@ Every interactive component works from the keyboard without extra code:
 | Emoji picker | Arrow Down from the search enters the grid, arrows move through it by row, Arrow Up from the top row returns to the search, and Enter in the search picks the best match. The grid is one Tab stop. |
 | Dialogs, sheets, popovers, menus, tooltips | Escape closes the topmost one and returns focus to what opened it; an open tooltip closes before the menu or dialog around it. Escape in a search field with text clears it first. |
 
+The focus ring follows how the person is moving. Focus that comes back from a closed dialog, sheet, menu
+or popover shows its ring only after Tab or an arrow key moved focus; Escape, Enter in a field and typing
+don't count, so a dialog opened with the mouse and closed with Escape leaves no ring on its button. A panel
+closed from inside, such as by choosing a menu item, returns focus to what opened it. A controller that
+moves focus back itself calls `settleFocus()` from `lostcoords/ui/helpers/focus` afterwards for the same
+rule. Hosts that skip `base.css` hide the ring on `[data-lc-focus-quiet]:focus-visible`.
+
 Page-wide shortcuts focus a field or press a button. Merge `lc_shortcut_data` into the element's data and
 show the keys with `lc_kbd`:
 

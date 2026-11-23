@@ -1,4 +1,5 @@
 import { registerDismissable } from "lostcoords/ui/helpers/dismiss_stack"
+import { settleFocus } from "lostcoords/ui/helpers/focus"
 
 const registrations = new WeakMap()
 
@@ -63,8 +64,11 @@ export function registerDialog(
     if (!inside) close(event)
   }
   // A dialog closed and shown again in the same task fires close while it is already open again.
+  // By now the browser has handed focus back to what had it before the dialog opened.
   const unregisterOnClose = () => {
-    if (!dialog.open) unregister()
+    if (dialog.open) return
+    unregister()
+    settleFocus()
   }
   const unregister = () => {
     if (registrations.get(dialog) !== unregister) return

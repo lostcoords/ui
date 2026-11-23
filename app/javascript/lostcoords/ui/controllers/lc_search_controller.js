@@ -1,5 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 import { registerDialog } from "lostcoords/ui/helpers/dialog"
+import { settleFocus } from "lostcoords/ui/helpers/focus"
 import { prefersReducedMotion } from "lostcoords/ui/helpers/viewport"
 
 // Full-screen search. Each query dispatches lc-search:query with { query, results }; a listener
@@ -85,6 +86,7 @@ export default class extends Controller {
     this.reset()
     this.returnFocus?.focus({ preventScroll: true })
     this.returnFocus = null
+    settleFocus()
   }
 
   // A click on the backdrop closes search, and so does choosing a result, which matters for

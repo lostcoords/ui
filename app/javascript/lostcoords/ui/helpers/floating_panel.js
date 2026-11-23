@@ -1,5 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 import { registerDismissable } from "lostcoords/ui/helpers/dismiss_stack"
+import { settleFocus } from "lostcoords/ui/helpers/focus"
 import { liftToTopLayer, onPageLeave } from "lostcoords/ui/helpers/top_layer"
 
 const BEFORE_OPEN = "overlay:before-open"
@@ -73,9 +74,17 @@ export class FloatingPanel extends Controller {
 
   closeNow({ immediate = false } = {}) {
     const wasOpen = this.isOpen
+    // Focus left on a hidden item would fall to the body: a panel closed from inside, such as by
+    // choosing a menu item, hands focus back to what opened it.
+    const heldFocus = wasOpen && !immediate && this.popoverTarget.contains(document.activeElement)
     if (wasOpen) this.hide()
     this.release({ immediate })
     if (!wasOpen) return
+
+    if (heldFocus) {
+      this.focusOnClose?.focus({ preventScroll: true })
+      settleFocus()
+    }
 
     if (this.hasTriggerTarget) this.triggerTarget.setAttribute("aria-expanded", "false")
     this.afterClose()

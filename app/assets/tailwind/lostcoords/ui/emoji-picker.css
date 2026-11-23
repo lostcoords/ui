@@ -175,7 +175,7 @@
 
     &:focus {
       outline: none;
-      box-shadow: var(--focus-halo, 0 0 0 2px color-mix(in oklab, var(--primary) 50%, transparent));
+      box-shadow: 0 0 0 calc(var(--spacing) * 0.5) var(--ring, color-mix(in oklab, var(--primary) 50%, transparent));
     }
   }
 
