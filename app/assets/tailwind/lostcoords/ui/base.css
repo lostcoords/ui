@@ -28,8 +28,7 @@
      on the keyboard (helpers/focus). */
   :is(a, button, input, textarea, select, summary, [tabindex]:not(dialog)):focus-visible:not([data-lc-focus-quiet]),
   label:has(input.sr-only:focus-visible, + input.sr-only:focus-visible) {
-    outline: calc(var(--spacing) * 0.5) solid var(--ring, color-mix(in oklab, var(--primary) 50%, transparent));
-    outline-offset: 0;
+    @apply lc-focus-ring;
   }
 
   dialog:focus-visible, [data-lc-focus-quiet]:focus-visible { outline: none; }

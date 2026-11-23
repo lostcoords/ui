@@ -170,6 +170,16 @@ Omit `only` to register every library controller. Unknown identifiers raise befo
 registered, and repeated calls on the same application keep later overrides, so register defaults
 before application overrides.
 
+## Unreleased
+
+One edit, only for a host that skips `base.css`:
+
+- **The focus ring is drawn in one place, `lc-focus-ring`.** Fields and the emoji picker's search drew their
+  own copy as a box shadow, and a linked list row drew a third with a different offset. They now take the
+  shared ring: `base.css` applies it to whatever holds keyboard focus, and the list row applies the same
+  utility while its link has focus. A host with its own base styles gets its own focus style on fields; to
+  keep the library's, add `:is(input, textarea, select):focus-visible { @apply lc-focus-ring; }`.
+
 ## Changes in 0.14.4
 
 Nothing needs an edit. Focus behaves more like the platform:
@@ -1139,6 +1149,11 @@ don't count, so a dialog opened with the mouse and closed with Escape leaves no 
 closed from inside, such as by choosing a menu item, returns focus to what opened it. A controller that
 moves focus back itself calls `settleFocus()` from `lostcoords/ui/helpers/focus` afterwards for the same
 rule. Hosts that skip `base.css` hide the ring on `[data-lc-focus-quiet]:focus-visible`.
+
+The ring itself is the `lc-focus-ring` utility: two units of `--ring` hugging the element's own radius.
+`base.css` draws it on every focusable element, so a component never restates an outline. One whose ring
+belongs on another element applies the utility through a variant, as a linked list row does with
+`has-[[data-slot=list-link]:focus-visible]:lc-focus-ring`.
 
 Page-wide shortcuts focus a field or press a button. Merge `lc_shortcut_data` into the element's data and
 show the keys with `lc_kbd`:

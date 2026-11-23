@@ -36,9 +36,8 @@ module Lostcoords::Ui
       "w-full max-w-full min-w-0 " \
       "px-3 " \
       "font-sans text-base bg-(--lc-field-bg,var(--input)) text-foreground placeholder:text-muted-foreground " \
-      "border border-transparent rounded-xl lc-squircle outline-none " \
+      "border border-transparent rounded-xl lc-squircle " \
       "transition-[border-color,box-shadow] duration-(--lc-motion-quick) ease-(--lc-ease-out) " \
-      "focus:shadow-[0_0_0_calc(var(--spacing)*0.5)_var(--ring,color-mix(in_oklab,var(--primary)_50%,transparent))] " \
       "aria-invalid:border-destructive aria-invalid:shadow-[0_0_0_3px_color-mix(in_oklab,var(--destructive)_16%,transparent)]"
 
     # Text and nothing else: for a control inside a row that shows focus itself, such as lc_list_field.

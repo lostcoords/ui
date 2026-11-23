@@ -5,6 +5,14 @@
 @custom-variant lc-disabled (&:disabled:not([aria-busy="true"]));
 @custom-variant lc-pending (&:disabled[aria-busy="true"]);
 
+/* The focus ring, drawn here and nowhere else. base.css puts it on whatever holds keyboard
+   focus; a component whose ring belongs on another element, such as a row around its link,
+   applies it through a variant. */
+@utility lc-focus-ring {
+  outline: calc(var(--spacing) * 0.5) solid var(--ring, color-mix(in oklab, var(--primary) 50%, transparent));
+  outline-offset: 0;
+}
+
 /* A control gives a little as it is pressed, unless it is disabled. */
 @utility lc-press {
   @media (prefers-reduced-motion: no-preference) {

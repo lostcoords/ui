@@ -131,16 +131,15 @@ async function _verifyThemeRoles(page) {
       const input = document.getElementById("theme-probe-input")
       const fixture = document.getElementById("theme-role-verification")
       input.focus()
-      // The ring transitions, so a read right after the change would return its starting value.
-      input.style.transition = "none"
       fixture.style.setProperty("--primary", "#135ac4")
-      const before = getComputedStyle(input).boxShadow
+      const before = getComputedStyle(input).outlineColor
       fixture.style.setProperty("--primary", "#a82235")
-      const after = getComputedStyle(input).boxShadow
-      return { before, after, focused: input.matches(":focus") }
+      const after = getComputedStyle(input).outlineColor
+      const drawn = getComputedStyle(input).outlineStyle !== "none"
+      return { before, after, drawn, focused: input.matches(":focus") }
     })
     verify(
-      focus.focused && focus.after !== focus.before && focus.after !== "none",
+      focus.focused && focus.drawn && focus.after !== focus.before,
       `${mode}: keyboard focus follows a scoped primary override`,
     )
     verify(

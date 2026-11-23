@@ -14,8 +14,7 @@ module Lostcoords::Ui
     # A linked li or div row: the title's link covers the row, the row's own controls sit above it,
     # and the row shows the link's focus ring.
     LIST_ROW_LINKED =
-      "relative has-[[data-slot=list-link]:focus-visible]:outline-2 has-[[data-slot=list-link]:focus-visible]:outline-offset-2 " \
-      "has-[[data-slot=list-link]:focus-visible]:outline-(--ring,color-mix(in_oklab,var(--primary)_50%,transparent)) " \
+      "relative has-[[data-slot=list-link]:focus-visible]:lc-focus-ring " \
       "[&_:is(a[href],button,input,select,textarea,summary,[tabindex]):not([data-slot=list-link])]:relative " \
       "[&_:is(a[href],button,input,select,textarea,summary,[tabindex]):not([data-slot=list-link])]:z-raised"
     LIST_LINK = "text-inherit no-underline focus-visible:outline-none after:absolute after:inset-0 after:rounded-[inherit] after:content-['']"

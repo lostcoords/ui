@@ -172,11 +172,6 @@
       -webkit-appearance: none;
       appearance: none;
     }
-
-    &:focus {
-      outline: none;
-      box-shadow: 0 0 0 calc(var(--spacing) * 0.5) var(--ring, color-mix(in oklab, var(--primary) 50%, transparent));
-    }
   }
 
   /* ---- Skin-tone control ------------------------------------------- */
