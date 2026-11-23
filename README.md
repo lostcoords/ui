@@ -170,7 +170,7 @@ Omit `only` to register every library controller. Unknown identifiers raise befo
 registered, and repeated calls on the same application keep later overrides, so register defaults
 before application overrides.
 
-## Changes in 0.14.9
+## Changes in 0.14.10
 
 Nothing needs an edit. Added:
 
