@@ -7,10 +7,10 @@
   transform: var(--lc-popover-from, translateY(--spacing(-1)) scale(0.98));
   pointer-events: none;
   transition:
-    opacity 160ms var(--lc-ease-out-expo),
-    transform 160ms var(--lc-ease-out-expo),
-    display 160ms allow-discrete,
-    overlay 160ms allow-discrete;
+    opacity var(--lc-motion-feedback) var(--lc-ease-out-expo),
+    transform var(--lc-motion-feedback) var(--lc-ease-out-expo),
+    display var(--lc-motion-feedback) allow-discrete,
+    overlay var(--lc-motion-feedback) allow-discrete;
 
   &:is([data-open], :popover-open) {
     opacity: 1;

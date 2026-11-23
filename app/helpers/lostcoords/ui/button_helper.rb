@@ -139,7 +139,7 @@ module Lostcoords::Ui
     end
 
     # The base is already a ghost button, so variant: :ghost adds nothing; tone: recolours any variant.
-    def lc_icon_button_class(shape: :square, size: :md, icon_size: size, variant: :ghost, tone: :default, extra: nil)
+    def lc_icon_button_class(shape: :circle, size: :md, icon_size: size, variant: :ghost, tone: :default, extra: nil)
       shape = lc_option!(:shape, shape, ICON_BUTTON_SHAPES.keys)
       size = lc_option!(:size, size, ICON_BUTTON_SIZES.keys)
       icon_size = lc_option!(:icon_size, icon_size, ICON_BUTTON_ICON_SIZES.keys)

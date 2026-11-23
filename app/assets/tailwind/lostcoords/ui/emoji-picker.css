@@ -46,90 +46,16 @@
     display: inline-flex;
   }
 
-  /* ==================================================================== */
-
-  /* Mobile-first: the picker opens as a bottom half-sheet.               */
-
-  /* ==================================================================== */
-
-  /* The sheet renders in the top layer (Popover API), so this ::backdrop
-     dims everything beneath it — including the app nav. The allow-discrete
-     transitions keep it in the top layer while it eases out, so it fades
-     both ways instead of snapping away on close. */
-  .lc-emoji-picker__popover::backdrop {
-    background: var(--lc-scrim);
-    opacity: 0;
-    transition:
-      opacity 220ms var(--lc-ease-out),
-      display 220ms allow-discrete,
-      overlay 220ms allow-discrete;
-
-    @media (prefers-reduced-motion: reduce) { transition: none; }
-  }
-
-  /* Only the phone sheet dims the page; the desktop popover rides the top
-     layer too (so nothing paints over it) but floats over an undimmed page. */
-  @media (width < 40rem) {
-    .lc-emoji-picker__popover:popover-open::backdrop {
-      opacity: 1;
-
-      @starting-style { opacity: 0; }
-    }
-  }
-
-  /* Phones get a solid sheet; on desktop the host paints the popover as a
-     floating surface (glass in wariwari), so the gem leaves it unpainted. */
-  @media (width < 40rem) {
-    .lc-emoji-picker__popover {
-      border: 1px solid var(--lc-glass-edge, var(--border));
-      border-block-end: 0;
-      background: var(--background);
-      box-shadow: 0 -12px 40px -12px color-mix(in oklab, var(--foreground) 45%, transparent);
-    }
-  }
-
+  /* On a phone the popover is an lc-sheet, which owns its place, edge, backdrop and slide. From sm
+     up it is an anchored popover (below), painted by the host. */
   .lc-emoji-picker__popover {
-    position: fixed;
-    inset: auto 0 0;
     margin: 0;
     z-index: var(--lc-z-overlay);
     display: none;
+    flex-direction: column;
     max-inline-size: none;
     color: var(--foreground);
-    flex-direction: column;
-    inline-size: 100%;
-
-    /* A set height, not a maximum: the catalog arrives after the panel opens, and the panel would
-       grow under the reader's finger, or jump to the other side of its trigger on desktop. */
-    block-size: min(72svh, 34rem);
-    padding-block-end: max(env(safe-area-inset-bottom), 8px);
-    border-start-start-radius: var(--radius-3xl, 1.5rem);
-    border-start-end-radius: var(--radius-3xl, 1.5rem);
     overscroll-behavior: contain;
-    transform: translateY(100%);
-    transition:
-      transform 260ms var(--lc-ease-out-expo),
-      display 260ms allow-discrete,
-      overlay 260ms allow-discrete;
-
-    /* Top-layer (Popover API) drives display, so showPopover()/hidePopover()
-       animate the slide in AND out via the allow-discrete transitions. */
-    &:popover-open {
-      display: flex;
-      transform: translateY(0);
-
-      @starting-style { transform: translateY(100%); }
-    }
-
-    @media (prefers-reduced-motion: reduce) { transition: none; }
-  }
-
-  /* Fallback for browsers without the Popover API: class-driven display. */
-  @supports not selector(:popover-open) {
-    .lc-emoji-picker__popover[data-open] {
-      display: flex;
-      transform: translateY(0);
-    }
   }
 
   /* ---- Search row --------------------------------------------------- */
@@ -413,10 +339,10 @@
       transform: translateY(-4px) scale(0.98);
       opacity: 0;
       transition:
-        opacity 160ms var(--lc-ease-out-expo),
-        transform 160ms var(--lc-ease-out-expo),
-        display 160ms allow-discrete,
-        overlay 160ms allow-discrete;
+        opacity var(--lc-motion-feedback) var(--lc-ease-out-expo),
+        transform var(--lc-motion-feedback) var(--lc-ease-out-expo),
+        display var(--lc-motion-feedback) allow-discrete,
+        overlay var(--lc-motion-feedback) allow-discrete;
 
       &[data-open] {
         display: flex;
@@ -435,6 +361,16 @@
     main:has(.lc-emoji-picker__popover[data-open]),
     .lc-emoji-picker:has(.lc-emoji-picker__popover[data-open]) {
       z-index: var(--lc-z-overlay);
+    }
+  }
+}
+
+@layer modules {
+  /* A set height, not the sheet's fit to content: the catalog arrives after the sheet opens, and
+     it would grow under the reader's finger. */
+  @media (width < 40rem) {
+    .lc-emoji-picker__popover.lc-sheet {
+      block-size: min(calc(var(--lc-sheet-floor, 100svh) * 0.72), 34rem);
     }
   }
 }

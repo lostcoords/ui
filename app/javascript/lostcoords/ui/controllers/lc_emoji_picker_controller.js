@@ -3,7 +3,6 @@ import { registerDismissable } from "lostcoords/ui/helpers/dismiss_stack"
 import { settleFocus } from "lostcoords/ui/helpers/focus"
 import { menuItems, navigateMenu } from "lostcoords/ui/helpers/menu_keys"
 import { navigate } from "lostcoords/ui/helpers/roving_focus"
-import { prefersReducedMotion } from "lostcoords/ui/helpers/viewport"
 
 const TONE_MODIFIERS = ["", "\u{1F3FB}", "\u{1F3FC}", "\u{1F3FD}", "\u{1F3FE}", "\u{1F3FF}"]
 const TONE_STORAGE_KEY = "lostcoords_ui:lc-emoji-picker:tone"
@@ -355,16 +354,6 @@ export default class extends CatalogPicker {
 
   get catalogAnchor() {
     return this.hasRecentTarget ? this.recentTarget : null
-  }
-
-  get sheetMotion() {
-    const duration = prefersReducedMotion() ? 0 : 260
-    return {
-      duration,
-      settle: duration && 280,
-      transition: "transform 260ms var(--lc-ease-out-expo, ease-out)",
-      offscreen: "translateY(100%)",
-    }
   }
 
   get quickButtons() {

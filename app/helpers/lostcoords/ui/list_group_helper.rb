@@ -25,7 +25,7 @@ module Lostcoords::Ui
       "hover:bg-accent has-checked:bg-primary-soft has-checked:font-semibold has-lc-disabled:cursor-not-allowed has-lc-pending:cursor-progress has-lc-disabled:opacity-45"
     LIST_ROW_CHOICE_CHECK = "ms-auto size-4 shrink-0 text-primary invisible group-has-checked/choice:visible"
     LIST_FIELD_ELEMENTS = %i[div fieldset span].freeze
-    LIST_FIELD = "@container px-content py-2.5 transition-colors duration-(--lc-motion-quick) has-[[data-plain]:focus]:bg-accent has-[[data-plain]:focus-visible]:lc-focus-ring"
+    LIST_FIELD = "@container px-content py-2.5 sm:px-inset transition-colors duration-(--lc-motion-quick) has-[[data-plain]:focus]:bg-accent has-[[data-plain]:focus-visible]:lc-focus-ring"
     LIST_FIELD_GRID = "grid min-h-9 grid-cols-[1.25rem_minmax(0,1fr)] items-center gap-x-heading gap-y-related @md:grid-cols-[8rem_minmax(0,1fr)]"
     LIST_FIELD_LABEL =
       "flex items-center gap-related text-label font-semibold text-muted-foreground " \

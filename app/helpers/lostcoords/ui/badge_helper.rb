@@ -52,7 +52,7 @@ module Lostcoords::Ui
     # its avatars, so a context's own `[&_.lc-avatar]:` override still wins. The border cuts each
     # avatar out of the one beneath, so it takes the fill it sits on (--lc-avatar-cutout).
     AVATAR_STACK_BASE =
-      "lc-avatar-stack relative inline-flex items-center min-w-0 [&_.lc-avatar]:outline-none " \
+      "lc-avatar-stack relative inline-flex items-center min-w-0 [&_.lc-avatar:not(:focus-visible)]:outline-none " \
       "[--lc-avatar-size:--spacing(8)] [--lc-avatar-border:--spacing(0.5)] [--lc-avatar-ring-gap:1] " \
       "[--lc-avatar-stack-overlap:--spacing(1.5)]"
 

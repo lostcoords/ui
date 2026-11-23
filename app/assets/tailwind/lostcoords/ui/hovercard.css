@@ -22,11 +22,11 @@
 
     /* allow-discrete keeps a lifted card in the top layer while it fades out. */
     transition:
-      opacity 160ms var(--lc-ease-out-expo),
-      transform 160ms var(--lc-ease-out-expo),
-      visibility 160ms,
-      display 160ms allow-discrete,
-      overlay 160ms allow-discrete;
+      opacity var(--lc-motion-feedback) var(--lc-ease-out-expo),
+      transform var(--lc-motion-feedback) var(--lc-ease-out-expo),
+      visibility var(--lc-motion-feedback),
+      display var(--lc-motion-feedback) allow-discrete,
+      overlay var(--lc-motion-feedback) allow-discrete;
   }
 
   .lc-hovercard[data-side="top"] > .lc-hovercard__content {

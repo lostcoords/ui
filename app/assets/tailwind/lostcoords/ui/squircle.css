@@ -1,12 +1,20 @@
 /* Squircle corners where the browser supports corner-shape. WebKit keeps plain
    rounded corners. A squircle reads tighter than a circular arc of the same
    radius, so its radius grows by a third. Library surfaces carry this class;
-   host elements are never matched by their rounded-* classes. */
+   host elements are never matched by their rounded-* classes. A pill is never
+   a squircle; an element that is a pill only on phones (max-sm:) is one from sm up. */
 @utility lc-squircle {
   @supports (corner-shape: squircle) {
     &:not([class*="rounded-full"], [class*="rounded-pill"]) {
       --lc-corner-scale: 1.333;
       corner-shape: squircle;
+    }
+
+    @media (width >= 40rem) {
+      &:is([class~="max-sm:rounded-pill"], [class~="max-sm:rounded-full"]):not([class~="rounded-pill"], [class~="rounded-full"]) {
+        --lc-corner-scale: 1.333;
+        corner-shape: squircle;
+      }
     }
   }
 }

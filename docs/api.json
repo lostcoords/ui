@@ -2297,7 +2297,7 @@
     "lc_toggle_class(active: false, ghost: false, size: :md, extra: nil)",
     "lc_button_class(variant: :primary, tone: :default, size: :md, block: false, extra: nil)",
     "lc_select_trigger_class(size: :md, block: false, extra: nil)",
-    "lc_icon_button_class(shape: :square, size: :md, icon_size: size, variant: :ghost, tone: :default, extra: nil)",
+    "lc_icon_button_class(shape: :circle, size: :md, icon_size: size, variant: :ghost, tone: :default, extra: nil)",
     "lc_card_class(interactive: false, padding: :md, extra: nil)",
     "lc_choice_label_class(card: false, extra: nil)",
     "lc_checkbox_class(extra: nil)",
