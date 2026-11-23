@@ -170,6 +170,20 @@ Omit `only` to register every library controller. Unknown identifiers raise befo
 registered, and repeated calls on the same application keep later overrides, so register defaults
 before application overrides.
 
+## Changes in 0.14.4
+
+Nothing needs an edit. Focus behaves more like the platform:
+
+- **Returned focus shows its ring only for keyboard users.** Browsers ring whatever is focused after a key
+  press, and Escape, Enter in a field and typing are key presses, so a dialog opened with the mouse and
+  closed with Escape left a ring on its button. Focus that comes back from a closed dialog, sheet, menu,
+  popover or search now shows the ring only after Tab or an arrow key moved focus. A controller that moves
+  focus back itself calls the new **`settleFocus()`** from `lostcoords/ui/helpers/focus`.
+- **A panel closed from inside returns focus to what opened it.** Choosing a menu item or an emoji left
+  focus on a hidden element, so it fell to the page.
+- **The emoji picker's search halo reads `--ring`** like every other field, not a `--focus-halo` variable
+  the library never defined.
+
 ## Changes in 0.14.3
 
 Nothing needs an edit, and one look changes:

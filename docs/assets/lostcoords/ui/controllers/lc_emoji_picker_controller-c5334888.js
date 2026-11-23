@@ -1,5 +1,6 @@
 import { CatalogPicker } from "lostcoords/ui/helpers/catalog_picker"
 import { registerDismissable } from "lostcoords/ui/helpers/dismiss_stack"
+import { settleFocus } from "lostcoords/ui/helpers/focus"
 import { menuItems, navigateMenu } from "lostcoords/ui/helpers/menu_keys"
 import { navigate } from "lostcoords/ui/helpers/roving_focus"
 import { prefersReducedMotion } from "lostcoords/ui/helpers/viewport"
@@ -202,7 +203,10 @@ export default class extends CatalogPicker {
     this.unregisterTones = null
     const hadFocus = this.toneMenuTarget.contains(document.activeElement)
     this.toneMenuTarget.hidden = true
-    if (hadFocus) this.toneToggleTarget.focus({ preventScroll: true })
+    if (hadFocus) {
+      this.toneToggleTarget.focus({ preventScroll: true })
+      settleFocus()
+    }
     this.toneToggleTarget.setAttribute("aria-expanded", "false")
   }
 

@@ -1,3 +1,5 @@
+import { settleFocus } from "lostcoords/ui/helpers/focus"
+
 const stack = []
 let nextOrder = 0
 let lockedScrollY = 0
@@ -83,6 +85,7 @@ function closeEntry(entry, event) {
   if (closed === false) return
 
   entry.restoreFocus?.()
+  settleFocus()
 }
 
 function topDismissable(scope = topModal()?.element) {
