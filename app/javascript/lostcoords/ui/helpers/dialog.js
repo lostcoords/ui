@@ -66,14 +66,12 @@ export function registerDialog(
     if (!inside) close(event)
   }
   // A dialog closed and shown again in the same task fires close while it is already open again.
-  // By now the browser has handed focus back to what had it before the dialog opened, if
-  // anything had.
   const unregisterOnClose = () => {
-    if (dialog.open) return
-    unregister()
-    returnFocus(opener, dialog)
-    settleFocus()
+    if (!dialog.open) unregister()
   }
+  // A closed dialog has handed focus back to what had it before it opened, if anything had. A
+  // caller that removes the dialog as it closes unregisters before the close event arrives, so
+  // focus settles here and not in that event.
   const unregister = () => {
     if (registrations.get(dialog) !== unregister) return
     registrations.delete(dialog)
@@ -81,6 +79,10 @@ export function registerDialog(
     dialog.removeEventListener("close", unregisterOnClose)
     dialog.removeEventListener("click", closeOnBackdrop)
     unregisterDismissable()
+    if (dialog.open) return
+
+    returnFocus(opener, dialog)
+    settleFocus()
   }
 
   registrations.set(dialog, unregister)

@@ -76,9 +76,21 @@ async function _verifyDialogRegistration(page) {
     dialog.close()
     if ("lcDialog" in dialog.dataset) throw new Error("An unregistered dialog kept its mark")
 
+    // A caller that removes its dialog as it closes unregisters before the close event fires.
+    // Safari doesn't focus a button on click, so nothing has focus when the dialog opens.
+    document.activeElement?.blur()
+    opener.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true }))
+    dialog.showModal()
+    const removed = registerDialog(dialog)
+    dialog.close()
     dialog.remove()
+    removed()
+    if (document.activeElement !== opener)
+      throw new Error("A dialog removed as it closed did not return focus to the pressed control")
+
     opener.remove()
     return {
+      removedDialogReturnsFocus: true,
       closeCanRefuse: true,
       paddingIgnored: true,
       backdropCloses: true,
