@@ -49,6 +49,8 @@ export function closeTopDismissable(event) {
 
 function dismissOnEscape(event) {
   if (event.key !== "Escape" && event.key !== "Esc") return
+  // Escape that cancels an IME conversion belongs to the input method, as it does for a native dialog.
+  if (event.isComposing || event.keyCode === 229) return
   if (clearSearchField(event)) return
   if (!closeTopDismissable(event)) return
 

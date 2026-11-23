@@ -19,7 +19,7 @@ export default class extends Controller {
 
     this.element.toggleAttribute("data-open", true)
     this.release = liftToTopLayer(this.contentTarget, this.element)
-    this.stopPageLeave = onPageLeave(() => this.close({ immediate: true }))
+    this.stopPageLeave = onPageLeave(() => this.leave())
     this.unregister = registerDismissable({
       type: "tooltip",
       element: this.element,
@@ -37,6 +37,13 @@ export default class extends Controller {
 
   dismiss() {
     this.element.dataset.dismissed = ""
+    this.close({ immediate: true })
+    this.stopPageLeave = onPageLeave(() => this.leave())
+  }
+
+  // A cached page must not remember an Escape: the tooltip would stay hidden on the way back.
+  leave() {
+    delete this.element.dataset.dismissed
     this.close({ immediate: true })
   }
 

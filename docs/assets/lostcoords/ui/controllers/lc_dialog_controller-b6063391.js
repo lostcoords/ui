@@ -10,6 +10,12 @@ export default class extends Controller {
     this.unregisterDialog?.()
   }
 
+  // A stream that replaces an open dialog sends no close event, and the page would stay locked.
+  dialogTargetDisconnected() {
+    this.unregisterDialog?.()
+    this.unregisterDialog = null
+  }
+
   open(event) {
     event?.preventDefault()
     if (this.hasFrameTarget) {

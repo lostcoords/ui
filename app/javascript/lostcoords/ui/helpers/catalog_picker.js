@@ -174,7 +174,7 @@ export class CatalogPicker extends FloatingPanel {
   // Arrow Down leaves the search for the first option in view; Enter picks
   // the best match.
   onSearchKeydown(event) {
-    if (event.isComposing) return
+    if (event.isComposing || event.keyCode === 229) return
 
     if (event.key === "ArrowDown") {
       const top = this.bodyTarget.getBoundingClientRect().top
@@ -386,6 +386,11 @@ export class CatalogPicker extends FloatingPanel {
           (button) => this.indexOption(button),
         )
         catalog.template = template
+      })
+      .catch(() => {})
+      // A failed load is forgotten, so the next open asks again.
+      .finally(() => {
+        if (!catalog.template) catalog.request = null
       })
     return catalog.request
   }

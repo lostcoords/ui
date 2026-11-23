@@ -222,7 +222,9 @@ export default class extends CatalogPicker {
     }
     if (this.hasToneMenuTarget) {
       this.toneMenuTarget.querySelectorAll("[data-tone-index]").forEach((button) => {
-        markCurrent(button, Number(button.dataset.toneIndex) === this.tone)
+        const chosen = Number(button.dataset.toneIndex) === this.tone
+        markCurrent(button, chosen)
+        button.setAttribute("aria-checked", String(chosen))
       })
     }
   }

@@ -34,7 +34,7 @@ module Lostcoords::Ui
       lc_label!(title, :title)
       defaults = { class: "flex flex-col py-related", aria: { label: title }, data: { slot: "search-group" } }
       tag.section(**lc_attributes(defaults, attributes)) do
-        safe_join([ tag.h2(title, class: "px-heading pb-related font-mono text-xs font-medium uppercase tracking-widest text-muted-foreground", data: { slot: "search-group-title" }), (capture(&block) if block) ])
+        safe_join([ tag.h2(title, class: lc_text_class(size: :eyebrow, tone: :muted, extra: "px-heading pb-related"), data: { slot: "search-group-title" }), (capture(&block) if block) ])
       end
     end
 

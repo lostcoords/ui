@@ -38,7 +38,7 @@ module Lostcoords::Ui
       }
     }.freeze
     NAV_INDICATOR = "pointer-events-none absolute start-0 top-0 bg-(--lc-nav-indicator,var(--accent)) opacity-0 " \
-      "transition-[translate,width,height,opacity] duration-[400ms] ease-(--lc-ease-out-expo) motion-reduce:transition-none " \
+      "transition-[translate,width,height,opacity] duration-400 ease-(--lc-ease-out-expo) motion-reduce:transition-none " \
       "group-data-[indicator]/nav:opacity-100"
 
     # An inline text link. Prose inside lc_prose styles its links already.

@@ -1,5 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
-import { navigate } from "lostcoords/ui/helpers/roving_focus"
+import { navigate, rove } from "lostcoords/ui/helpers/roving_focus"
 
 // The ARIA tabs pattern. Arrow keys follow the tab list's aria-orientation, and
 // Home and End jump to the ends. With automatic activation, moving focus selects
@@ -21,12 +21,8 @@ export default class extends Controller {
     })
     if (!tab) return
 
-    if (this.activationValue === "manual") this.focusOnly(tab)
+    if (this.activationValue === "manual") rove(this.tabTargets, tab)
     else this.show(tab)
-  }
-
-  focusOnly(tab) {
-    for (const candidate of this.tabTargets) candidate.tabIndex = candidate === tab ? 0 : -1
   }
 
   show(tab) {

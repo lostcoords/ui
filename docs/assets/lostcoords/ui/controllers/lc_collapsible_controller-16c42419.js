@@ -89,10 +89,11 @@ export default class extends Controller {
     return this.element.querySelector(":scope > summary").offsetHeight + chrome
   }
 
+  // A browser without ::details-content reports no duration: close at once instead of throwing.
   transitionDurations() {
     return getComputedStyle(this.element, "::details-content")
       .transitionDuration.split(",")
-      .map((duration) => parseFloat(duration) * 1000)
+      .map((duration) => parseFloat(duration) * 1000 || 0)
   }
 
   // Opening near the bottom of a scroller grows content off-screen, so the

@@ -102,6 +102,8 @@ export default class extends Controller {
     this.input()
   }
 
+  // Chrome's last input event of a composition still reports isComposing, so the field also sends
+  // compositionend here.
   input(event) {
     if (event?.isComposing) return
     this.clearTarget.hidden = !this.inputTarget.value

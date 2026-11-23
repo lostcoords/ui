@@ -102,6 +102,8 @@ module Lostcoords::Ui
       "font-sans text-muted-foreground whitespace-nowrap cursor-pointer no-underline " \
       "transition-[background-color,border-color,color,transform] duration-(--lc-motion-quick) ease-(--lc-ease-out) " \
       "lc-press hover:text-foreground " \
+      "lc-disabled:cursor-not-allowed lc-disabled:text-[color-mix(in_oklab,var(--foreground)_38%,transparent)] " \
+      "has-lc-disabled:cursor-not-allowed has-lc-disabled:text-[color-mix(in_oklab,var(--foreground)_38%,transparent)] " \
       "aria-pressed:bg-primary aria-pressed:border-transparent aria-pressed:text-primary-foreground aria-pressed:shadow-none " \
       "aria-checked:bg-primary aria-checked:border-transparent aria-checked:text-primary-foreground aria-checked:shadow-none " \
       "aria-[current]:not-aria-[current=false]:bg-primary aria-[current]:not-aria-[current=false]:border-transparent " \

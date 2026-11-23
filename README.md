@@ -51,12 +51,12 @@ Tailwind build writes stable paths for them next to the engine's own import:
 @import "../builds/tailwind/lostcoords_ui/components/menu.css";
 ```
 
-`base.css` holds the document defaults: body styles, heading defaults, global inline-code styles and
-document corner radii. Skip it when the host owns its base styles, map the library's tokens to your
+`base.css` holds the document defaults: body styles, heading defaults, global inline-code styles, the
+focus ring and the reduced-motion reset. Skip it when the host owns its base styles, map the library's tokens to your
 app's theme and keep your Tailwind theme declarations after the imports.
 `core.css` holds the tokens, buttons, badges, avatars, cards, alerts, form controls, choices,
 toggles, layout, typography and navigation. The opt-in entries are `dialog` (with the phone sheet),
-`menu` (menus and popovers), `toast`, `search`, `tooltip`, `collapsible`, `code-block`,
+`menu` (menus and popovers), `toast`, `search`, `tooltip`, `hovercard`, `collapsible`, `code-block`,
 `emoji-picker`, `table`, `prose` and `shell` (`lc_app_header`, `lc_sidebar`, `lc_docs_shell` and `lc_dock`; the
 dock's action menu and the sidebar's account menu also need `menu`). A component whose entry is missing renders unstyled.
 
@@ -169,6 +169,38 @@ registerControllers(application, { only: ["lc-copy", "lc-collapsible"] })
 Omit `only` to register every library controller. Unknown identifiers raise before anything is
 registered, and repeated calls on the same application keep later overrides, so register defaults
 before application overrides.
+
+## Changes in 0.14.11
+
+Nothing needs an edit. Changed:
+
+- **A disabled `lc_input`, `lc_select`, `lc_textarea` or toggle pill looks disabled**: muted text and a
+  not-allowed cursor, as buttons and segmented items already had. A disabled select no longer fills on hover.
+- **Emoji grid buttons show the focus ring.** They marked keyboard focus with the hover fill alone.
+- **The emoji picker has a set height**, on desktop and as a phone sheet. It grew when its catalog arrived
+  after opening, and on desktop could jump to the other side of its trigger.
+- **`lc_search` group titles use the eyebrow role**, so under `lang="ja"` they drop the mono face and
+  uppercase like every other eyebrow.
+
+Fixed:
+
+- **Input methods.** Escape that cancels a conversion no longer closes the dialog, menu or popover around
+  the field. `lc_search` shows results for text committed from an input method in Chrome, which sends no
+  input event after the composition ends. In Safari, the Enter that commits a conversion no longer picks
+  the first match in the emoji picker or any other catalog picker.
+- **A catalog that failed to load is asked for again** on the next open; the failure was kept until a
+  full page load.
+- **An `lc_dialog` replaced while open releases the page.** A stream that swapped the open dialog sent no
+  close event, so the page stayed scroll-locked.
+- **A linked or interactive card eases its lift and fill on hover.** The transition named `transform`,
+  which the lift does not use, and replaced the card's own.
+- **A button-mode `lc_toggle_group` renders its `value:` selected.** The choice appeared only once the
+  controller connected.
+- **An `lc_fieldset` with an error turns its legend red**, as a field does its label.
+- **Skin-tone options carry `aria-checked`**, so a screen reader announces the chosen one.
+- **`lc_char_counter` follows a form reset**, and a tooltip dismissed with Escape shows again after
+  coming back to a cached page.
+- **A collapsible closes in a browser without `::details-content`**, where reading its duration threw.
 
 ## Changes in 0.14.10
 

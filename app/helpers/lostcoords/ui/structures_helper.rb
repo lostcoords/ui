@@ -161,6 +161,7 @@ module Lostcoords::Ui
         return lc_toggle_radio(content, group[:name], value, checked, input, defaults, attributes)
       end
 
+      selected = group[:value] == value.to_s if selected.nil?
       required = { type: "button", role: "radio", data: { lc_selection_target: "option", value: value } }
       tag.button(content, **lc_attributes(defaults.merge(aria: { checked: selected || false }), attributes, required))
     end

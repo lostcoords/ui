@@ -19,11 +19,16 @@ export default class extends Controller {
     this.field = this.forValue ? document.getElementById(this.forValue) : this.nearestField()
     this.input = () => this.render()
     this.field?.addEventListener("input", this.input)
+    // A reset empties the field after its event, and sends no input event of its own.
+    this.form = this.field?.form
+    this.reset = () => setTimeout(this.input)
+    this.form?.addEventListener("reset", this.reset)
     this.render()
   }
 
   disconnect() {
     this.field?.removeEventListener("input", this.input)
+    this.form?.removeEventListener("reset", this.reset)
   }
 
   update({ detail }) {

@@ -98,7 +98,10 @@
     color: var(--foreground);
     flex-direction: column;
     inline-size: 100%;
-    max-block-size: min(72svh, 34rem);
+
+    /* A set height, not a maximum: the catalog arrives after the panel opens, and the panel would
+       grow under the reader's finger, or jump to the other side of its trigger on desktop. */
+    block-size: min(72svh, 34rem);
     padding-block-end: max(env(safe-area-inset-bottom), 8px);
     border-start-start-radius: var(--radius-3xl, 1.5rem);
     border-start-end-radius: var(--radius-3xl, 1.5rem);
@@ -340,7 +343,6 @@
       &:focus-visible {
         background: var(--muted);
         transform: scale(1.12);
-        outline: none;
       }
 
       &[aria-current="true"] { background: color-mix(in oklab, var(--primary) 12%, var(--background)); }
@@ -405,7 +407,7 @@
       inset-block: calc(100% + 8px) auto;
       inset-inline: 0 auto;
       inline-size: min(var(--lc-emoji-picker-popover-width, 22rem), calc(100vw - 32px));
-      max-block-size: min(28rem, calc(100vh - 96px));
+      block-size: min(28rem, calc(100vh - 96px));
       padding-block-end: 0;
       border-radius: var(--radius-3xl, 1.5rem);
       transform: translateY(-4px) scale(0.98);

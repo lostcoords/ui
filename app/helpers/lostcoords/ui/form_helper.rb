@@ -49,14 +49,15 @@ module Lostcoords::Ui
       "font-sans text-base bg-(--lc-field-bg,var(--input)) text-foreground placeholder:text-muted-foreground " \
       "border border-transparent rounded-xl lc-squircle " \
       "transition-[border-color,box-shadow] duration-(--lc-motion-quick) ease-(--lc-ease-out) " \
-      "aria-invalid:border-destructive aria-invalid:shadow-[0_0_0_3px_color-mix(in_oklab,var(--destructive)_16%,transparent)]"
+      "aria-invalid:border-destructive aria-invalid:shadow-[0_0_0_3px_color-mix(in_oklab,var(--destructive)_16%,transparent)] " \
+      "lc-disabled:cursor-not-allowed lc-disabled:text-[color-mix(in_oklab,var(--foreground)_38%,transparent)]"
 
     # Text and nothing else: for a control inside a row that draws the focus ring itself, such as lc_list_field.
     INPUT_PLAIN =
       "w-full max-w-full min-w-0 min-h-9 p-0 border-0 bg-transparent font-sans text-base text-foreground " \
       "placeholder:text-muted-foreground aria-invalid:placeholder:text-destructive outline-none"
 
-    FIELD_BASE = "lc-field grid min-w-0 has-aria-invalid:[&>label]:text-destructive"
+    FIELD_BASE = "lc-field grid min-w-0 has-aria-invalid:[&>label]:text-destructive aria-invalid:[&>legend]:text-destructive"
     FIELD_SIZES = { sm: "gap-tight", md: "gap-related" }.freeze
     # Field labels use the text roles; TypographyHelper loads after this file, so its sizes are read at call time.
     FIELD_LABEL_ROLES = { sm: :caption, md: :label }.freeze
@@ -96,7 +97,7 @@ module Lostcoords::Ui
 
 
     def lc_select_class(size: :md, extra: nil)
-      lc_tw(lc_input_class(size: size), "lc-select rounded-pill ps-4 pe-10 cursor-pointer hover:bg-(--lc-input-hover)", extra)
+      lc_tw(lc_input_class(size: size), "lc-select rounded-pill ps-4 pe-10 cursor-pointer enabled:hover:bg-(--lc-input-hover)", extra)
     end
 
     def lc_textarea_class(extra: nil)
