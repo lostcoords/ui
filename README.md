@@ -170,6 +170,22 @@ Omit `only` to register every library controller. Unknown identifiers raise befo
 registered, and repeated calls on the same application keep later overrides, so register defaults
 before application overrides.
 
+## Changes in 0.14.13
+
+Nothing needs an edit. Fixed:
+
+- **Overlays animate out in Safari.** WebKit can't transition `overlay` or `display`, so a closing dialog,
+  phone sheet, menu, popover or tooltip left the screen in the frame it closed; a sheet released halfway
+  down vanished mid-slide. `lc-sheet` now holds a closing dialog in its exit pose (`[data-closing]`) until
+  the slide or fade ends, whether `close()`, Escape, the backdrop, a swipe or a `method="dialog"` form
+  closed it, and a lifted panel stays in the top layer, shown as it was, until its exit ends. Chrome keeps
+  its native exit. Where the exit is held, `close` fires when it ends; `lc-sheet:exit` fires as it starts,
+  and the confirm sheet answers then.
+- **A sheet held still before lifting settles back.** It kept the finger's speed from before the pause,
+  so a slow drag, a pause and a lift could dismiss it.
+- **A released sheet carries on at the finger's speed**, shortening its slide (to 240ms at least) instead
+  of always taking the full 500ms.
+
 ## Changes in 0.14.12
 
 Needs an edit only if you import component entries one by one: `emoji-picker` now also needs `dialog`,
