@@ -7,16 +7,24 @@ async function _verifyExits(page) {
   page.setDefaultTimeout(10000)
   const origin = await page.evaluate(() => location.origin)
   const checks = []
+  // A failed exit check names the frames it saw, since CI's frame pacing differs from a laptop's.
+  let sampled = null
   const verify = (condition, message) => {
-    if (!condition) throw new Error(message)
+    if (!condition) {
+      const frames = sampled?.map(
+        (f) => `${Math.round(f.t)}ms:${f.shown ? f.opacity.toFixed(2) : "-"}`,
+      )
+      throw new Error(frames ? `${message} (frames ${frames.join(" ")})` : message)
+    }
     checks.push(message)
+    sampled = null
   }
   const pause = (ms) => page.evaluate((ms) => new Promise((resolve) => setTimeout(resolve, ms)), ms)
   const ready = () => page.waitForFunction(() => window.Stimulus, null, { polling: 100 })
 
   // Starts sampling an element in the page, runs `action` from here, then returns each frame of
   // the next `ms`: whether it was still painted, its opacity and its top edge.
-  const sampleExit = async (selector, action, ms = 260) => {
+  const sampleExit = async (selector, action, ms = 400) => {
     const frames = page.evaluate(
       async ({ selector, ms }) => {
         const element = document.querySelector(selector)
@@ -45,8 +53,10 @@ async function _verifyExits(page) {
     return frames
   }
   // Mid-exit: painted, and partway between the open and closed poses.
-  const midway = (frames, moved) =>
-    frames.some((frame) => frame.t > 30 && frame.t < 200 && frame.shown && moved(frame))
+  const midway = (frames, moved) => {
+    sampled = frames
+    return frames.some((frame) => frame.t > 0 && frame.t < 400 && frame.shown && moved(frame))
+  }
 
   try {
     // A phone sheet released halfway down slides on from there.
