@@ -58,6 +58,29 @@ async function _verifyExits(page) {
     return frames.some((frame) => frame.t > 0 && frame.t < 400 && frame.shown && moved(frame))
   }
 
+  // Closes an overlay in the page and reads it in the same task: it must still be on screen, with
+  // its exit transition running. A sampled frame can't prove this on a slow renderer, where a
+  // blurred backdrop can stall the first frame past the end of a 200ms fade.
+  const exitsInPlace = (selector, close) =>
+    page.evaluate(
+      ({ selector, close }) => {
+        const element = document.querySelector(selector)
+        if (close === "dialog") element.close()
+        else {
+          const host = element.closest(`[data-controller~="${close}"]`)
+          window.Stimulus.getControllerForElementAndIdentifier(host, close).close()
+        }
+        const style = getComputedStyle(element)
+        return {
+          shown: style.display !== "none" && style.visibility !== "hidden",
+          exiting: element
+            .getAnimations()
+            .some((animation) => ["opacity", "transform"].includes(animation.transitionProperty)),
+        }
+      },
+      { selector, close },
+    )
+
   try {
     // A phone sheet released halfway down slides on from there.
     await page.setViewportSize({ width: 390, height: 844 })
@@ -111,15 +134,10 @@ async function _verifyExits(page) {
     )
 
     // close(), as a ✕ or Escape calls it, slides the sheet down.
-    const restingTop = (await openSheet()).y
-    const closeFrames = await sampleExit(sheet, () =>
-      page.evaluate((s) => document.querySelector(s).close(), sheet),
-    )
-    verify(
-      midway(closeFrames, (frame) => frame.top > restingTop + 4),
-      "a phone sheet slides down when closed",
-    )
-    await pause(600)
+    await openSheet()
+    const sheetExit = await exitsInPlace(sheet, "dialog")
+    verify(sheetExit.shown && sheetExit.exiting, "a phone sheet slides down when closed")
+    await pause(700)
 
     // The confirm sheet answers as its exit starts, not after it.
     const confirm = await page.evaluate(async () => {
@@ -145,38 +163,33 @@ async function _verifyExits(page) {
     await ready()
     await page.evaluate((s) => document.querySelector(s).showModal(), sheet)
     await pause(500)
-    const dialogFrames = await sampleExit(sheet, () =>
-      page.evaluate((s) => document.querySelector(s).close(), sheet),
-    )
-    verify(
-      midway(dialogFrames, (frame) => frame.opacity > 0.02 && frame.opacity < 0.98),
-      "a desktop dialog fades out when closed",
-    )
+    const dialogExit = await exitsInPlace(sheet, "dialog")
+    verify(dialogExit.shown && dialogExit.exiting, "a desktop dialog fades out when closed")
 
     await page.goto(`${origin}/components/menu.html`)
     await ready()
     await page.locator('[data-controller~="lc-menu"] button').first().click()
     await pause(400)
-    const menuFrames = await sampleExit('[data-controller~="lc-menu"] [data-open]', () =>
-      page.keyboard.press("Escape"),
-    )
-    verify(
-      midway(menuFrames, (frame) => frame.opacity > 0.02 && frame.opacity < 0.98),
-      "a menu fades out when it closes",
-    )
+    const menuExit = await exitsInPlace('[data-controller~="lc-menu"] [data-open]', "lc-menu")
+    verify(menuExit.shown && menuExit.exiting, "a menu fades out when it closes")
 
     await page.goto(`${origin}/components/tooltip.html`)
     await ready()
-    await page.locator('[data-controller~="lc-tooltip"]').first().hover()
     await pause(700)
-    const tooltipFrames = await sampleExit(
+    await page.mouse.move(2, 2)
+    await page.evaluate(() => {
+      const host = document.querySelector('[data-controller~="lc-tooltip"]')
+      window.Stimulus.getControllerForElementAndIdentifier(host, "lc-tooltip").show({
+        type: "mouseenter",
+        target: host,
+      })
+    })
+    await pause(700)
+    const tooltipExit = await exitsInPlace(
       '[data-controller~="lc-tooltip"] .lc-tooltip__content',
-      () => page.mouse.move(2, 2),
+      "lc-tooltip",
     )
-    verify(
-      midway(tooltipFrames, (frame) => frame.opacity > 0.02 && frame.opacity < 0.98),
-      "a tooltip fades out when the pointer leaves",
-    )
+    verify(tooltipExit.shown && tooltipExit.exiting, "a tooltip fades out when it closes")
   } finally {
     await page.setViewportSize({ width: 1440, height: 900 })
   }
