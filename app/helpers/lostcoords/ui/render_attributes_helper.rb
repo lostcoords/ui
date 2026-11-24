@@ -20,7 +20,16 @@ module Lostcoords::Ui
           merged[:data] ||= {}
           merged[:data][key] = [ defaults[:data][key], attributes.dig(:data, key) ].join(" ").split.uniq.join(" ")
         end
-        merged
+        lc_light_dismiss(merged)
+      end
+
+      # An auto popover's closes are lc-light-dismiss's, so its exit plays in Safari too.
+      def lc_light_dismiss(attributes)
+        return attributes unless attributes[:popover] == "auto"
+
+        data = attributes[:data].is_a?(Hash) ? attributes[:data] : {}
+        controller = [ data[:controller], "lc-light-dismiss" ].compact.join(" ").split.uniq.join(" ")
+        attributes.merge(data: data.merge(controller: controller))
       end
 
       def lc_normalize_attributes(attributes)

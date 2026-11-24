@@ -58,7 +58,7 @@ if (!baseUrl) {
   server = spawn(
     "bin/rails",
     ["server", "-p", port, "-b", "127.0.0.1", "-P", "tmp/pids/browser-test.pid"],
-    { cwd: root, env: { ...process.env, RAILS_ENV: "development" }, stdio: "ignore" },
+    { cwd: root, env: { ...process.env, RAILS_ENV: "development", LIVE_RELOAD: "0" }, stdio: "ignore" },
   )
   process.on("exit", () => server.kill())
 }

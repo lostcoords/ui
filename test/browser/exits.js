@@ -66,6 +66,13 @@ async function _verifyExits(page) {
       ({ selector, close }) => {
         const element = document.querySelector(selector)
         if (close === "dialog") element.close()
+        else if (close.startsWith("click ")) document.querySelector(close.slice(6)).click()
+        else if (close === "outside")
+          document.body.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true }))
+        else if (close === "escape")
+          document.body.dispatchEvent(
+            new KeyboardEvent("keydown", { key: "Escape", bubbles: true }),
+          )
         else {
           const host = element.closest(`[data-controller~="${close}"]`)
           window.Stimulus.getControllerForElementAndIdentifier(host, close).close()
@@ -190,6 +197,83 @@ async function _verifyExits(page) {
       "lc-tooltip",
     )
     verify(tooltipExit.shown && tooltipExit.exiting, "a tooltip fades out when it closes")
+
+    // A popover the gem rendered as auto: its closes are lc-light-dismiss's, so each plays the exit.
+    const filters = '[popover][id$="-filters"]'
+    const openFilters = async () => {
+      await page.evaluate((s) => document.querySelector(s).showPopover(), filters)
+      await pause(600)
+    }
+    const hidden = () =>
+      page.evaluate((s) => !document.querySelector(s).matches(":popover-open"), filters)
+    for (const width of [1280, 390]) {
+      await page.setViewportSize({ width, height: 844 })
+      await page.goto(`${origin}/components/dialog.html`)
+      await ready()
+      const where = width < 640 ? "phone sheet" : "desktop popover"
+      verify(
+        await page.evaluate((s) => document.querySelector(s).popover === "manual", filters),
+        `a ${where} rendered as auto is manual once its controller connects`,
+      )
+      for (const [close, how] of [
+        [`click ${filters} [popovertargetaction=hide]`, "its Done button"],
+        ["outside", "a tap outside"],
+        ["escape", "Escape"],
+      ]) {
+        await openFilters()
+        const exit = await exitsInPlace(filters, close)
+        await pause(700)
+        // From sm up the popover sheet keeps the caller's frame, which doesn't animate.
+        const exited = width < 640 ? exit.shown && exit.exiting : true
+        verify(
+          exited && (await hidden()),
+          `a ${where} closes, with its exit, when ${how} closes it`,
+        )
+      }
+    }
+
+    // A native popover in the shared popover shell, as a host's menu is, fades out.
+    await page.setViewportSize({ width: 1280, height: 844 })
+    await page.evaluate(() => {
+      const panel = document.createElement("div")
+      panel.id = "exits-shell"
+      panel.popover = "auto"
+      panel.className = "lc-popover-shell p-inset bg-popover"
+      panel.dataset.controller = "lc-light-dismiss"
+      panel.innerHTML = '<a href="#exits" data-lc-popover-close>Section</a>'
+      document.body.append(panel)
+    })
+    await pause(300)
+    for (const [close, how] of [
+      ["click #exits-shell [data-lc-popover-close]", "a link marked data-lc-popover-close"],
+      ["outside", "a tap outside"],
+      ["escape", "Escape"],
+    ]) {
+      await page.evaluate(() => document.getElementById("exits-shell").showPopover())
+      await pause(400)
+      const exit = await exitsInPlace("#exits-shell", close)
+      await pause(500)
+      const gone = await page.evaluate(
+        () => !document.getElementById("exits-shell").matches(":popover-open"),
+      )
+      verify(exit.shown && exit.exiting && gone, `a shell popover fades out when ${how} closes it`)
+    }
+
+    // closeDialog settles once the dialog has left, not when close() returns.
+    await page.setViewportSize({ width: 390, height: 844 })
+    await page.goto(`${origin}/components/dialog.html`)
+    await ready()
+    await openSheet()
+    const left = await page.evaluate(async (s) => {
+      const { closeDialog } = await import("lostcoords/ui/helpers/dialog")
+      const dialog = document.querySelector(s)
+      await closeDialog(dialog)
+      return { open: dialog.open, running: dialog.getAnimations().length }
+    }, sheet)
+    verify(
+      !left.open && left.running === 0,
+      "closeDialog settles once the dialog is closed and its exit is over",
+    )
   } finally {
     await page.setViewportSize({ width: 1440, height: 900 })
   }

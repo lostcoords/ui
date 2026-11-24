@@ -15,7 +15,7 @@
       const theme = localStorage.getItem("lostcoords-ui:theme")
       if (theme === "dark" || (!theme && matchMedia("(prefers-color-scheme: dark)").matches)) document.documentElement.dataset.theme = "dark"
     </script>
-    <link rel="stylesheet" href="/assets/tailwind-5262d9cf.css" data-turbo-track="reload" />
+    <link rel="stylesheet" href="/assets/tailwind-32afd188.css" data-turbo-track="reload" />
     
     <meta name="view-transition" content="same-origin">
     <meta name="turbo-prefetch" content="true">
@@ -23,7 +23,7 @@
     <meta name="turbo-refresh-scroll" content="preserve">
     <script type="importmap" data-turbo-track="reload">{
   "imports": {
-    "lostcoords/ui": "/assets/lostcoords/ui/index-a55cf3d1.js",
+    "lostcoords/ui": "/assets/lostcoords/ui/index-353d576f.js",
     "lostcoords/ui/controllers/lc_app_header_controller": "/assets/lostcoords/ui/controllers/lc_app_header_controller-057c2c2a.js",
     "lostcoords/ui/controllers/lc_char_counter_controller": "/assets/lostcoords/ui/controllers/lc_char_counter_controller-7a383f37.js",
     "lostcoords/ui/controllers/lc_code_block_controller": "/assets/lostcoords/ui/controllers/lc_code_block_controller-0a27362b.js",
@@ -34,6 +34,7 @@
     "lostcoords/ui/controllers/lc_emoji_picker_controller": "/assets/lostcoords/ui/controllers/lc_emoji_picker_controller-e7fb5269.js",
     "lostcoords/ui/controllers/lc_hovercard_controller": "/assets/lostcoords/ui/controllers/lc_hovercard_controller-99a4fcea.js",
     "lostcoords/ui/controllers/lc_kbd_controller": "/assets/lostcoords/ui/controllers/lc_kbd_controller-83cd1787.js",
+    "lostcoords/ui/controllers/lc_light_dismiss_controller": "/assets/lostcoords/ui/controllers/lc_light_dismiss_controller-e1467d5d.js",
     "lostcoords/ui/controllers/lc_menu_controller": "/assets/lostcoords/ui/controllers/lc_menu_controller-693464b4.js",
     "lostcoords/ui/controllers/lc_nav_controller": "/assets/lostcoords/ui/controllers/lc_nav_controller-9052d393.js",
     "lostcoords/ui/controllers/lc_popover_controller": "/assets/lostcoords/ui/controllers/lc_popover_controller-00b603b0.js",
@@ -64,6 +65,7 @@
     "controllers/lc_emoji_picker_controller": "/assets/lostcoords/ui/controllers/lc_emoji_picker_controller-e7fb5269.js",
     "controllers/lc_hovercard_controller": "/assets/lostcoords/ui/controllers/lc_hovercard_controller-99a4fcea.js",
     "controllers/lc_kbd_controller": "/assets/lostcoords/ui/controllers/lc_kbd_controller-83cd1787.js",
+    "controllers/lc_light_dismiss_controller": "/assets/lostcoords/ui/controllers/lc_light_dismiss_controller-e1467d5d.js",
     "controllers/lc_menu_controller": "/assets/lostcoords/ui/controllers/lc_menu_controller-693464b4.js",
     "controllers/lc_nav_controller": "/assets/lostcoords/ui/controllers/lc_nav_controller-9052d393.js",
     "controllers/lc_popover_controller": "/assets/lostcoords/ui/controllers/lc_popover_controller-00b603b0.js",
@@ -82,7 +84,7 @@
     "lostcoords/ui/helpers/catalog_picker": "/assets/lostcoords/ui/helpers/catalog_picker-64522561.js",
     "lostcoords/ui/helpers/confirm": "/assets/lostcoords/ui/helpers/confirm-eefecb27.js",
     "lostcoords/ui/helpers/context_dialog": "/assets/lostcoords/ui/helpers/context_dialog-dd561da3.js",
-    "lostcoords/ui/helpers/dialog": "/assets/lostcoords/ui/helpers/dialog-da49d92b.js",
+    "lostcoords/ui/helpers/dialog": "/assets/lostcoords/ui/helpers/dialog-55b9f5fc.js",
     "lostcoords/ui/helpers/dismiss_stack": "/assets/lostcoords/ui/helpers/dismiss_stack-2f31e2a7.js",
     "lostcoords/ui/helpers/floating_panel": "/assets/lostcoords/ui/helpers/floating_panel-a32b7f2c.js",
     "lostcoords/ui/helpers/focus": "/assets/lostcoords/ui/helpers/focus-a55b017e.js",
@@ -90,7 +92,7 @@
     "lostcoords/ui/helpers/roving_focus": "/assets/lostcoords/ui/helpers/roving_focus-37f03892.js",
     "lostcoords/ui/helpers/sheet_motion": "/assets/lostcoords/ui/helpers/sheet_motion-308695b1.js",
     "lostcoords/ui/helpers/shortcuts": "/assets/lostcoords/ui/helpers/shortcuts-435a59af.js",
-    "lostcoords/ui/helpers/top_layer": "/assets/lostcoords/ui/helpers/top_layer-9d3187db.js",
+    "lostcoords/ui/helpers/top_layer": "/assets/lostcoords/ui/helpers/top_layer-0de4e338.js",
     "lostcoords/ui/helpers/viewport": "/assets/lostcoords/ui/helpers/viewport-d4d43aa5.js",
     "controllers/application": "/assets/controllers/application-f811edf3.js",
     "controllers/block_preview_controller": "/assets/controllers/block_preview_controller-53c37654.js",
@@ -535,7 +537,7 @@
     
     <div class="flex min-h-48 flex-wrap items-center justify-center gap-4 rounded-2xl bg-muted p-6 sm:p-10 [--lc-tile-bg:var(--background)] [--lc-track-bg:var(--accent)] [--lc-avatar-cutout:var(--muted)]" data-example-preview data-stage="panel">
       <button type="button" class="inline-flex items-center justify-center gap-related rounded-pill font-sans whitespace-nowrap no-underline cursor-pointer transition-[background-color,border-color,color,box-shadow,transform,translate,scale,filter] duration-(--lc-motion-control) ease-(--lc-ease-out) motion-safe:not-disabled:hover:-translate-y-px motion-safe:not-disabled:active:translate-y-px active:shadow-none lc-disabled:cursor-not-allowed lc-pending:cursor-progress lc-disabled:shadow-none lc-disabled:[--lc-button-bg:color-mix(in_oklab,var(--foreground)_10%,transparent)] lc-disabled:text-[color-mix(in_oklab,var(--foreground)_38%,transparent)] [&amp;_svg]:block [&amp;_svg:not([class*=&#39;size-&#39;])]:size-[1.1em] [&amp;_svg]:shrink-0 h-control-md px-4 has-[&gt;[data-icon=inline-start]]:ps-3.5 has-[&gt;[data-icon=inline-end]]:pe-3.5 text-label border border-transparent [--lc-button-bg:var(--secondary)] [--lc-button-ink:var(--secondary-foreground)] bg-(--lc-button-bg) text-(--lc-button-ink) not-disabled:hover:bg-[color-mix(in_oklab,var(--lc-button-bg,var(--secondary))_94%,var(--lc-button-ink,var(--foreground)))] not-disabled:active:bg-[color-mix(in_oklab,var(--lc-button-bg,var(--secondary))_94%,var(--lc-button-ink,var(--foreground)))]" popovertarget="example-4-filters">Filters</button>
-<div data-slot="sheet" data-controller="lc-sheet" data-lc-sheet-detents-value="fit" class="lc-sheet lc-glass [--lc-glass-shadow:var(--lc-glass-rim),var(--lc-shadow-lg)] max-md:[--lc-glass-fill:var(--background)] dark:max-md:[--lc-glass-fill:var(--accent)] sm:m-auto sm:w-80 sm:rounded-3xl text-foreground" id="example-4-filters" popover="auto" role="dialog" aria-labelledby="example-4-filters-title">
+<div data-slot="sheet" data-controller="lc-sheet lc-light-dismiss" data-lc-sheet-detents-value="fit" class="lc-sheet lc-glass [--lc-glass-shadow:var(--lc-glass-rim),var(--lc-shadow-lg)] max-md:[--lc-glass-fill:var(--background)] dark:max-md:[--lc-glass-fill:var(--accent)] sm:m-auto sm:w-80 sm:rounded-3xl text-foreground" id="example-4-filters" popover="auto" role="dialog" aria-labelledby="example-4-filters-title">
   <div class="grid gap-content p-inset">
     <h2 class="lc-heading m-0 text-foreground text-title" id="example-4-filters-title">Filters</h2>
     <p class="text-sm text-muted-foreground">A popover on desktop, a sheet you can swipe away on phones.</p>

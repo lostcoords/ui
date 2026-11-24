@@ -30,6 +30,17 @@ export function showDialog(dialog) {
   dialog.focus({ preventScroll: true })
 }
 
+// Closes a dialog and settles once it has left: closed, with its exit transition over. Where the
+// browser can't transition a closing dialog (Safari), lc-sheet holds it open for its exit and closes
+// it when that ends, so code that clears up after a dialog waits for this, not for close().
+export function closeDialog(dialog, returnValue) {
+  if (!dialog.open) return Promise.resolve()
+  const closed = new Promise((resolve) => dialog.addEventListener("close", resolve, { once: true }))
+  dialog.close(returnValue)
+  const exits = dialog.getAnimations().map((animation) => animation.finished)
+  return Promise.allSettled([dialog.open ? closed : null, ...exits]).then(() => {})
+}
+
 // Joins a <dialog> to the dismiss stack: Escape, the backdrop and a swipe call close, which may
 // return false to keep it open, such as while it asks whether to discard changes. priority ranks
 // it against panels open in it (a dialog is 10, a panel 20); restoreFocus runs after a close;

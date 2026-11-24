@@ -8,6 +8,7 @@ import Dock from "lostcoords/ui/controllers/lc_dock_controller"
 import EmojiPicker from "lostcoords/ui/controllers/lc_emoji_picker_controller"
 import Hovercard from "lostcoords/ui/controllers/lc_hovercard_controller"
 import Kbd from "lostcoords/ui/controllers/lc_kbd_controller"
+import LightDismiss from "lostcoords/ui/controllers/lc_light_dismiss_controller"
 import Menu from "lostcoords/ui/controllers/lc_menu_controller"
 import Nav from "lostcoords/ui/controllers/lc_nav_controller"
 import Popover from "lostcoords/ui/controllers/lc_popover_controller"
@@ -35,6 +36,7 @@ const controllers = {
   "lc-emoji-picker": EmojiPicker,
   "lc-hovercard": Hovercard,
   "lc-kbd": Kbd,
+  "lc-light-dismiss": LightDismiss,
   "lc-menu": Menu,
   "lc-nav": Nav,
   "lc-popover": Popover,

@@ -47,7 +47,7 @@ module Lostcoords::Ui
       panel = fragment(@view.lc_sheet(id: "filters", popover: "auto", anchored: true, detents: "large", class: "sm:w-80", data: { action: "lc-sheet:dismiss->filters#reset" }) { "Body" }).at_css("div")
       assert_equal %w[lc-sheet lc-sheet-anchored sm:w-80], panel["class"].split
       assert_equal "auto", panel["popover"]
-      assert_equal "lc-sheet", panel["data-controller"]
+      assert_equal "lc-sheet lc-light-dismiss", panel["data-controller"]
       assert_equal "large", panel["data-lc-sheet-detents-value"]
       assert_equal "lc-sheet:dismiss->filters#reset", panel["data-action"]
       assert_equal "Body", panel.text

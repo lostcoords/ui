@@ -65,9 +65,9 @@
         @starting-style { transform: translateY(var(--lc-sheet-offscreen)); }
       }
 
-      /* Where `overlay` can't transition, lc-sheet holds a closing dialog open
-         in its exit pose until the slide ends. */
-      &[open][data-closing] { transform: translateY(var(--lc-sheet-offscreen)); }
+      /* Where `overlay` can't transition, a closing dialog or popover stays
+         open in its exit pose until the slide ends. */
+      &:is([open], :popover-open)[data-closing] { transform: translateY(var(--lc-sheet-offscreen)); }
 
       &::backdrop {
         background: var(--lc-scrim-sheet);
@@ -85,7 +85,7 @@
         @starting-style { opacity: 0; }
       }
 
-      &[open][data-closing]::backdrop { opacity: 0; }
+      &:is([open], :popover-open)[data-closing]::backdrop { opacity: 0; }
 
       /* The sheet appears in place; lc-sheet's own slides already skip under reduced motion. */
       @media (prefers-reduced-motion: reduce) {

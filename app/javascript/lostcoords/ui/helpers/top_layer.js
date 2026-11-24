@@ -36,6 +36,28 @@ export function hideTopLayer(element) {
   if (supportsTopLayer() && element.matches(":popover-open")) element.hidePopover()
 }
 
+// Hides a popover once its exit has played, and settles when it is hidden. Where `overlay` can't
+// transition, the popover stays open in its exit pose ([data-closing]) until the exit ends.
+export function hidePopoverAfterExit(element) {
+  if (!supportsTopLayer() || !element.matches(":popover-open")) return Promise.resolve()
+  if (EXITS_NATIVELY) {
+    element.hidePopover()
+    return exitOf(element)
+  }
+  if (element.hasAttribute("data-closing")) return exitOf(element)
+
+  element.toggleAttribute("data-closing", true)
+  return exitOf(element).then(() => {
+    // Shown again meanwhile: the exit was called off.
+    if (!element.hasAttribute("data-closing")) return
+    element.removeAttribute("data-closing")
+    hideTopLayer(element)
+  })
+}
+
+const exitOf = (element) =>
+  Promise.allSettled(element.getAnimations().map((animation) => animation.finished)).then(() => {})
+
 // Calls close before Turbo snapshots or leaves the page, so a cached page never
 // keeps an open overlay. Returns a function that removes the listeners.
 export function onPageLeave(close) {

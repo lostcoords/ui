@@ -170,6 +170,22 @@ Omit `only` to register every library controller. Unknown identifiers raise befo
 registered, and repeated calls on the same application keep later overrides, so register defaults
 before application overrides.
 
+## Changes in 0.14.14
+
+Nothing needs an edit; a host that waits on a dialog's animations after `close()` before clearing up can
+use `closeDialog` instead. Added:
+
+- **`closeDialog(dialog)`** in `lostcoords/ui/helpers/dialog` closes a dialog and settles once it has left.
+  In Safari `close()` now returns while the dialog is still open for its exit, so code that checked
+  `dialog.open` after its animations could find it open.
+- **The `lc-light-dismiss` controller** comes with every `popover: true` or `popover: "auto"` an lc builder
+  renders. It closes the popover itself on a tap outside, Escape or a `popovertarget` hide, with its exit:
+  Safari dropped a native popover in the frame the browser closed it.
+- **`data-lc-popover-close`** on a link or button inside such a popover closes it, with its exit, so an
+  in-page link in a menu needs no controller of its own.
+- **`hidePopoverAfterExit(popover)`** in `lostcoords/ui/helpers/top_layer` hides a popover from your code
+  with its exit.
+
 ## Changes in 0.14.13
 
 Nothing needs an edit. Fixed:
@@ -673,7 +689,10 @@ your own controls with the `lc-disabled:` and `lc-pending:` variants, which tell
 
 Use native attributes for application behavior, `class:` to merge additional Tailwind utilities, and
 theme tokens to restyle the library. `popover: true` renders `popover="auto"`, as a bare `popover`
-attribute does. `lc_field` yields the input's `id` and validation attributes so
+attribute does, with the `lc-light-dismiss` controller: it makes the popover manual once it connects and
+closes it itself on a tap outside, Escape, a `popovertarget` button that hides it, or a click on an
+element inside marked `data-lc-popover-close`, so its exit plays in Safari too. Without JavaScript it stays
+a native auto popover. `lc_field` yields the input's `id` and validation attributes so
 labels, hints and errors stay connected. Linked cards use `lc_card(href: ...)`; cards containing
 buttons or fields remain ordinary containers.
 
@@ -1189,7 +1208,9 @@ it, and the page stops scrolling behind it.
 `registerDialog(dialog, { close, priority, restoreFocus, lockScroll })`: `close` may return `false` to keep the dialog open, such as while it asks to discard changes; `priority` ranks it against panels open in
 it (a dialog is 10, a panel 20); `restoreFocus` runs after a close; `lockScroll: false` leaves the page
 scrollable. It returns the unregister function and ends when the dialog closes; a click on the dialog's own
-padding does not close it.
+padding does not close it. `closeDialog(dialog, returnValue)` closes it and returns a promise that settles
+once it has left, closed and with its exit over; clear up after a dialog (empty its frame, remove it) when
+that settles, not when `close()` returns, since Safari keeps a dialog open while its exit plays.
 
 ```erb
 <button type="button" popovertarget="filters">Filters</button>
@@ -1197,7 +1218,9 @@ padding does not close it.
       data: { action: "lc-sheet:dismiss->filters#reset" } do %>…<% end %>
 ```
 
-`lc-popover-shell` gives a native `[popover]` menu the same enter and exit as FloatingPanel panels. Set
+`lc-popover-shell` gives a native `[popover]` menu the same enter and exit as FloatingPanel panels;
+`hidePopoverAfterExit(popover)` from `lostcoords/ui/helpers/top_layer` hides one from your own code with
+its exit, as `lc-light-dismiss` does. Set
 `--lc-popover-from` to change the closed pose and an `origin-*` utility for where it grows from.
 
 `lc_hovercard` previews what a link points to, such as a profile over a name, with the `lc-hovercard`

@@ -5,7 +5,7 @@
 @import "./theme.css";
 @source "../../../../helpers/lostcoords/ui/{avatar_badge,badge,button,card,choice,copy_button,description_list,feedback,file_drop,form,glass,icon,layout,list_group,navigation,primitives,render_attributes,structures,tailwind,translation,typography}_helper.rb";
 @source "../../../../javascript/lostcoords/ui/helpers/*.js";
-@source "../../../../javascript/lostcoords/ui/controllers/lc_{char_counter,copy,kbd,nav,scroll_keeper,selection,shortcut,tabs,toc,toggle}_controller.js";
+@source "../../../../javascript/lostcoords/ui/controllers/lc_{char_counter,copy,kbd,light_dismiss,nav,scroll_keeper,selection,shortcut,tabs,toc,toggle}_controller.js";
 @source "../../../../../lib/lostcoords/ui/parts.rb";
 
 @import "./glass.css";
