@@ -4,10 +4,9 @@ import { prefersReducedMotion } from "lostcoords/ui/helpers/viewport"
 // directly; timers need the duration in milliseconds.
 export const SHEET_TIMING = "var(--lc-sheet-duration) var(--lc-ease-sheet)"
 
-export function sheetDuration() {
+// A released sheet sets its own --lc-sheet-duration; pass it to read that beat.
+export function sheetDuration(element = document.documentElement) {
   if (prefersReducedMotion()) return 0
-  const value = getComputedStyle(document.documentElement)
-    .getPropertyValue("--lc-sheet-duration")
-    .trim()
+  const value = getComputedStyle(element).getPropertyValue("--lc-sheet-duration").trim()
   return value.endsWith("ms") ? parseFloat(value) : parseFloat(value) * 1000
 }

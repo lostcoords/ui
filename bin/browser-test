@@ -1,21 +1,23 @@
 #!/usr/bin/env node
 // Runs the browser suites in test/browser against the docs app in a headless
-// Chromium of its own, so nothing depends on a desktop browser or its tabs.
+// Chromium of its own (and WebKit for the suites that ask), so nothing depends
+// on a desktop browser or its tabs.
 //
 //   bin/browser-test               every suite
 //   bin/browser-test layers sheets the named suites
 //   BASE_URL=https://ui.localhost bin/browser-test   reuse a running docs server
 //
 // Each suite is a file holding one `async function _name(page)` that returns
-// the checks it passed and throws on the first failure. Every suite gets a
+// the checks it passed and throws on the first failure. A suite runs in
+// Chromium unless its first line names its engines: `// engines: chromium webkit`. Every suite gets a
 // fresh browser context, so state such as storage or emulated media can't leak.
-// First run: npx playwright install chromium
+// First run: npx playwright install chromium webkit
 
 import { spawn } from "node:child_process"
 import { readdirSync, readFileSync } from "node:fs"
 import { dirname, join } from "node:path"
 import { fileURLToPath } from "node:url"
-import { chromium } from "playwright"
+import { chromium, webkit } from "playwright"
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..")
 const suitesDir = join(root, "test/browser")
@@ -41,11 +43,14 @@ async function waitForServer(url, timeout = 90_000) {
   throw new Error(`The docs app did not answer at ${url}`)
 }
 
+const ENGINES = { chromium, webkit }
+
 function loadSuite(name) {
   const source = readFileSync(join(suitesDir, `${name}.js`), "utf8")
   const entry = source.match(/async function (\w+)\s*\(/)?.[1]
   if (!entry) throw new Error(`${name}.js has no async function`)
-  return new Function(`${source}\nreturn ${entry}`)()
+  const engines = source.match(/^\/\/ engines: (.+)$/m)?.[1].trim().split(/\s+/) ?? ["chromium"]
+  return { run: new Function(`${source}\nreturn ${entry}`)(), engines }
 }
 
 if (!baseUrl) {
@@ -59,14 +64,20 @@ if (!baseUrl) {
 }
 
 let failed = 0
-const browser = await chromium.launch()
+const browsers = {}
+const runs = names.flatMap((name) => {
+  const suite = loadSuite(name)
+  return suite.engines.map((engine) => ({ name, engine, run: suite.run }))
+})
 try {
   if (server) await waitForServer(baseUrl)
   // Every page fetches /search.json when idle. Building it once here keeps that work out of the
   // suites: their motion checks fail while the server is busy.
   await fetch(`${baseUrl}/search.json`)
-  for (const name of names) {
-    const context = await browser.newContext({
+  for (const { name: suiteName, engine, run } of runs) {
+    const name = engine === "chromium" ? suiteName : `${suiteName} [${engine}]`
+    browsers[engine] ??= await ENGINES[engine].launch()
+    const context = await browsers[engine].newContext({
       ignoreHTTPSErrors: true,
       viewport: { width: 1440, height: 900 },
     })
@@ -74,7 +85,7 @@ try {
     const started = Date.now()
     try {
       await page.goto(baseUrl)
-      const checks = await loadSuite(name)(page)
+      const checks = await run(page)
       const count = Array.isArray(checks) ? `${checks.length} checks` : "done"
       console.log(`ok    ${name} (${count}, ${((Date.now() - started) / 1000).toFixed(1)}s)`)
     } catch (error) {
@@ -90,7 +101,7 @@ try {
     }
   }
 } finally {
-  await browser.close()
+  for (const browser of Object.values(browsers)) await browser.close()
   server?.kill()
 }
 process.exit(failed ? 1 : 0)

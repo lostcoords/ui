@@ -14,6 +14,11 @@
 // pinned to a trigger, and onPageLeave to close them before Turbo caches a page.
 
 const MARGIN = 8
+// Safari and Firefox can't transition `overlay`: a hidden popover leaves the top
+// layer, and the screen, at once. WebKit doesn't hold `display` for an exit
+// either. There a lifted panel stays in the top layer, shown as it was, until
+// its exit transition ends.
+const EXITS_NATIVELY = CSS.supports("overlay", "auto")
 const PAGE_LEAVES = ["turbo:before-cache", "turbo:before-visit", "turbo:before-render"]
 
 export const supportsTopLayer = () => typeof HTMLElement.prototype.showPopover === "function"
@@ -41,7 +46,16 @@ export function onPageLeave(close) {
     window.removeEventListener("pagehide", close)
   }
 }
-const PLACEMENT = ["position", "inset", "top", "left", "margin", "translate", "inlineSize"]
+const PLACEMENT = [
+  "position",
+  "inset",
+  "top",
+  "left",
+  "margin",
+  "translate",
+  "inlineSize",
+  "display",
+]
 
 const lifts = new WeakMap()
 const pinned = new WeakSet()
@@ -60,8 +74,12 @@ export function liftToTopLayer(panel, trigger) {
   // other panel flips above when it would leave the bottom.
   const above = placed.bottom <= anchor.top + 1
   const gap = above ? anchor.top - placed.bottom : placed.top - anchor.bottom
+  const shown = getComputedStyle(panel).display
 
   showTopLayer(panel)
+  // A lifted panel is open while [data-open], not while :popover-open, so it can
+  // play its exit pose before it leaves the top layer.
+  panel.toggleAttribute("data-lc-lifted", true)
   Object.assign(panel.style, {
     position: "fixed",
     inset: "auto",
@@ -114,10 +132,14 @@ export function liftToTopLayer(panel, trigger) {
 
     // Keep the pinned spot while the closing transition plays out, then hand
     // the panel back to its stylesheet unless it has been lifted again.
-    Promise.allSettled(panel.getAnimations().map((animation) => animation.finished)).then(() => {
+    // The caller has just hidden the panel and no style has been read since, so
+    // holding its display here starts the exit transition from the open pose.
+    if (!EXITS_NATIVELY) panel.style.display = shown
+    const exits = panel.getAnimations().map((animation) => animation.finished)
+    if (EXITS_NATIVELY) hideTopLayer(panel)
+    Promise.allSettled(exits).then(() => {
       if (!lifts.has(panel)) reset(panel)
     })
-    hideTopLayer(panel)
   }
   lifts.set(panel, release)
   return release
@@ -127,6 +149,7 @@ function reset(panel) {
   pinned.delete(panel)
   hideTopLayer(panel)
   panel.removeAttribute("popover")
+  panel.removeAttribute("data-lc-lifted")
   for (const property of PLACEMENT) panel.style[property] = ""
 }
 

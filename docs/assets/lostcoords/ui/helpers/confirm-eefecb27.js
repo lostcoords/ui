@@ -44,9 +44,14 @@ export function ask(
 
   return new Promise((resolve) => {
     dialog.returnValue = ""
-    dialog.addEventListener("close", () => resolve(dialog.returnValue === "confirm"), {
-      once: true,
-    })
+    // lc-sheet:exit comes first where the sheet holds its close for the exit slide.
+    const answer = () => {
+      dialog.removeEventListener("close", answer)
+      dialog.removeEventListener("lc-sheet:exit", answer)
+      resolve(dialog.returnValue === "confirm")
+    }
+    dialog.addEventListener("close", answer)
+    dialog.addEventListener("lc-sheet:exit", answer)
     dialog.style.removeProperty("--lc-dialog-origin")
     showContextDialog(dialog, anchor)
     registerDialog(dialog, { lockScroll: false })

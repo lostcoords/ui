@@ -29,6 +29,12 @@
       }
     }
 
+    /* Where `overlay` can't transition, lc-sheet holds a closing dialog open in its exit pose. */
+    &[open][data-closing] {
+      opacity: 0;
+      transform: var(--lc-dialog-from);
+    }
+
     /* Fades the tint and the blur, not opacity: Chrome applies a backdrop-filter
        under opacity < 1 to only some of the page's layers. */
     &::backdrop {
@@ -71,6 +77,12 @@
     &.lc-dialog-context[open]::backdrop {
       background: var(--lc-scrim-soft);
       backdrop-filter: none;
+    }
+
+    /* After the context scrim, which it must outrank. */
+    &[open][data-closing]::backdrop {
+      background: transparent;
+      backdrop-filter: blur(0);
     }
 
     /* The dialog still fades; it no longer moves or grows. */

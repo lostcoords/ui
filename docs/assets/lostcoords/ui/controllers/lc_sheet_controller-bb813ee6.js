@@ -8,6 +8,16 @@ const MEDIUM_FRACTION = 0.5
 const NO_DRAG = "input[type=range], [data-lc-sheet-no-drag]"
 const DRAG_ZONE = 28
 const KEYBOARD_FREE = 0.5
+// A finger held still this long before lifting has no fling left in it.
+const STILL_MS = 80
+// --lc-ease-sheet, cubic-bezier(0.32, 0.72, 0, 1), starts at 0.72 / 0.32 = 2.25×
+// its average speed. Change both together.
+const EASE_START = 0.72 / 0.32
+const FASTEST_MS = 240
+// Safari and Firefox can't transition `overlay`, so a closing <dialog> leaves
+// the top layer at once and vanishes mid-slide. There the controller plays the
+// exit pose ([data-closing]) first and closes when it ends.
+const EXITS_NATIVELY = CSS.supports("overlay", "auto")
 
 export default class extends Controller {
   static values = { detents: { type: String, default: "fit" } }
@@ -25,6 +35,7 @@ export default class extends Controller {
     this.element.addEventListener("touchend", this.onTouchEnd)
     this.element.addEventListener("touchcancel", this.onTouchEnd)
     this.element.addEventListener("pointerdown", this.onPointerDown)
+    if (this.isDialog && !EXITS_NATIVELY) this.holdClose()
 
     this.sync = this.sync.bind(this)
     this.shown = false
@@ -52,6 +63,7 @@ export default class extends Controller {
     this.element.removeEventListener("touchend", this.onTouchEnd)
     this.element.removeEventListener("touchcancel", this.onTouchEnd)
     this.element.removeEventListener("pointerdown", this.onPointerDown)
+    this.releaseClose()
     this.stopMouseTracking()
     clearTimeout(this.settleTimer)
     clearTimeout(this.transitionTimer)
@@ -113,7 +125,7 @@ export default class extends Controller {
   }
 
   onTouchEnd(event) {
-    if (this.gesture?.dragging) this.release()
+    if (this.gesture?.dragging) this.release(event?.timeStamp ?? performance.now())
     else if (this.gesture && event?.type === "touchend") this.focusInPlace(event)
     this.gesture = null
   }
@@ -156,7 +168,8 @@ export default class extends Controller {
   onPointerUp(event) {
     this.stopMouseTracking()
     if (this.gesture && Math.abs(event.clientY - this.gesture.startY) > 4) swallowNextClick()
-    this.onTouchEnd()
+    if (this.gesture?.dragging) this.release(event.timeStamp)
+    this.gesture = null
   }
 
   stopMouseTracking() {
@@ -212,16 +225,35 @@ export default class extends Controller {
     )
   }
 
-  release() {
-    const { detents, velocity } = this.gesture
-    const projected = this.visibleHeight() - velocity * PROJECTION_MS
+  release(time) {
+    const { detents, lastT } = this.gesture
+    const velocity = time - lastT > STILL_MS ? 0 : this.gesture.velocity
+    const visible = this.visibleHeight()
+    const projected = visible - velocity * PROJECTION_MS
 
-    if (velocity >= 0 && projected < detents[0].height * 0.6) return this.dismiss()
+    if (velocity >= 0 && projected < detents[0].height * 0.6) {
+      this.pace(visible + this.offscreenGap, velocity)
+      return this.dismiss()
+    }
 
     const target = detents.reduce((best, detent) =>
       Math.abs(detent.height - projected) < Math.abs(best.height - projected) ? detent : best,
     )
+    // A fling away from the target, or a lift in place, gets the full beat.
+    const toward = Math.sign(visible - target.height) === Math.sign(velocity)
+    this.pace(visible - target.height, toward ? velocity : 0)
     this.settle(target, detents)
+  }
+
+  // UIKit hands a released sheet on at the finger's speed. The sheet curve opens
+  // at EASE_START times its average speed, so a beat of EASE_START × distance ÷
+  // speed carries the fling on without a jolt; a slow lift keeps the full beat.
+  pace(distance, velocity) {
+    const full = sheetDuration()
+    const speed = Math.abs(velocity)
+    if (!full || !speed) return this.element.style.removeProperty("--lc-sheet-duration")
+    const ms = Math.min(full, Math.max(FASTEST_MS, (EASE_START * Math.abs(distance)) / speed))
+    this.element.style.setProperty("--lc-sheet-duration", `${Math.round(ms)}ms`)
   }
 
   settle(detent, detents = this.detents()) {
@@ -242,15 +274,69 @@ export default class extends Controller {
     })
   }
 
+  // The cancel may close the dialog, or keep it open (a listener asking to
+  // discard changes): then the sheet settles back.
   dismissDialog() {
+    this.transition()
     const cancel = new Event("cancel", { cancelable: true })
     this.element.dispatchEvent(cancel)
     if (!cancel.defaultPrevented) this.element.close()
 
-    if (this.element.open) return this.settle(this.detent || this.detents()[0])
-
-    this.transition()
+    if (this.element.open && !this.closing) return this.settle(this.detent || this.detents()[0])
     this.element.style.transform = ""
+  }
+
+  // Every close() then goes through the exit, whoever calls it, and so does a
+  // method=dialog form, which the browser would close at once. A native Escape
+  // on a dialog no dismiss stack handles still closes at once.
+  holdClose() {
+    const close = HTMLDialogElement.prototype.close
+    this.closeNow = (value) => close.call(this.element, value)
+    this.element.close = (value) => this.closeAfterExit(value)
+    this.onDialogSubmit = (event) => {
+      const method = event.submitter?.getAttribute("formmethod") || event.target.method
+      if (method !== "dialog" || event.target.closest("dialog") !== this.element) return
+      event.preventDefault()
+      this.element.close(event.submitter?.value)
+    }
+    this.element.addEventListener("submit", this.onDialogSubmit)
+  }
+
+  releaseClose() {
+    if (!this.closeNow) return
+    delete this.element.close
+    this.element.removeEventListener("submit", this.onDialogSubmit)
+    clearTimeout(this.exitTimer)
+    if (this.closing) this.finishClose()
+  }
+
+  closeAfterExit(value) {
+    if (!this.element.open || this.closing) return
+    this.closing = { value }
+    if (value !== undefined) this.element.returnValue = value
+    this.element.toggleAttribute("data-closing", true)
+    // close fires once the slide ends; lc-sheet:exit tells a caller waiting on the answer now.
+    this.dispatch("exit", { bubbles: false })
+    this.element.style.transform = ""
+    this.exitTimer = setTimeout(() => this.finishClose(), this.exitDuration())
+  }
+
+  finishClose() {
+    const { value } = this.closing
+    this.closing = null
+    this.closeNow(value)
+    this.element.removeAttribute("data-closing")
+  }
+
+  exitDuration() {
+    const { transitionDuration, transitionDelay } = getComputedStyle(this.element)
+    const ms = (list) =>
+      list.split(",").map((time) => parseFloat(time) * (time.trim().endsWith("ms") ? 1 : 1000))
+    const delays = ms(transitionDelay)
+    return Math.max(
+      0,
+      ...ms(transitionDuration).map((duration, i) => duration + (delays[i % delays.length] || 0)),
+    )
   }
 
   detents() {
@@ -324,12 +410,17 @@ export default class extends Controller {
     this.transitionTimer = setTimeout(() => {
       this.element.style.transition = ""
       this.element.style.willChange = ""
-    }, sheetDuration())
+      this.element.style.removeProperty("--lc-sheet-duration")
+    }, sheetDuration(this.element))
   }
 
   later(callback) {
     clearTimeout(this.settleTimer)
-    this.settleTimer = setTimeout(callback, sheetDuration())
+    this.settleTimer = setTimeout(callback, sheetDuration(this.element))
+  }
+
+  get offscreenGap() {
+    return parseFloat(getComputedStyle(document.documentElement).fontSize) * 2
   }
 
   resetSurface() {
@@ -339,6 +430,7 @@ export default class extends Controller {
     style.willChange = ""
     style.blockSize = ""
     style.removeProperty("--lc-sheet-floor")
+    style.removeProperty("--lc-sheet-duration")
   }
 
   scrollerFor(target) {
