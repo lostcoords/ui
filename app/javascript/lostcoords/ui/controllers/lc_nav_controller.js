@@ -4,6 +4,20 @@ import { Controller } from "@hotwired/stimulus"
 // label and the new one slides from there to its current link.
 const spots = new Map()
 
+// A same-URL refresh morphs the page against server HTML, which carries neither the indicator's
+// place nor the mark of the link the server rendered as current. Morphed away, the indicator
+// would vanish until the next click, and a page restored from Turbo's cache would mark the link
+// clicked last.
+const KEPT = {
+  "data-lc-nav-initial": '[data-lc-nav-target~="link"]',
+  "data-indicator": '[data-controller~="lc-nav"]',
+  style: '[data-lc-nav-target~="indicator"]',
+}
+document.addEventListener("turbo:before-morph-attribute", (event) => {
+  const kept = KEPT[event.detail.attributeName]
+  if (kept && event.target.matches(kept)) event.preventDefault()
+})
+
 export default class extends Controller {
   static targets = ["indicator", "link"]
 

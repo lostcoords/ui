@@ -112,6 +112,37 @@ async function _verifyMorphs(page) {
   )
   noErrors("An open menu closes for a visit without an error")
 
+  // A nav's indicator is placed by its controller; the server's HTML has neither its place nor
+  // the mark of the link first rendered as current.
+  await page.goto(`${origin}/components/nav_list.html`)
+  await controllersConnected()
+  const nav = 'main [data-controller~="lc-nav"]'
+  await page.waitForSelector(`${nav}[data-indicator]`)
+  const placed = () =>
+    page.$eval(nav, (element) => ({
+      shown: element.hasAttribute("data-indicator"),
+      at: element.querySelector('[data-lc-nav-target~="indicator"]').style.translate,
+      initial: element.querySelectorAll("[data-lc-nav-initial]").length,
+    }))
+  const before = await placed()
+  await page.$eval(nav, (element) => {
+    const server = element.cloneNode(true)
+    server.removeAttribute("data-indicator")
+    server.querySelector('[data-lc-nav-target~="indicator"]').removeAttribute("style")
+    for (const link of server.querySelectorAll("[data-lc-nav-initial]"))
+      link.removeAttribute("data-lc-nav-initial")
+    window.Turbo.morphElements(element, server)
+  })
+  await settle()
+  const after = await placed()
+  verify(
+    before.shown &&
+      before.at &&
+      before.initial === 1 &&
+      JSON.stringify(after) === JSON.stringify(before),
+    "A morph against server HTML keeps a nav's indicator where it is and its first link marked",
+  )
+
   // The same teardown for every controller the docs show: a host emptied before it is removed.
   const pages = await page.$$eval('aside a[href^="/components/"]', (links) => [
     ...new Set(links.map((link) => link.getAttribute("href"))),
